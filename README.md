@@ -7,8 +7,8 @@
 Using this library, one can create full-screen text-based applications.
 The library sends the correct control characters to the terminal to display text in the given style.
 
-The additional library of primitives, *woods* can be used to display some generic primitives on the screen:
-*box, graph, grid, label, table OR rich-text*
+The additional library of the UI-primitives, *woods* can be used to display basic elements on the screen:
+a *box*, *graph*, *grid*, *label*, *table* and *rich-text*
 
 <br clear="right" /><!-- Turn off the wrapping for the logo image. -->
 
@@ -24,7 +24,13 @@ Add the following dependency to your `build.sbt`:
 libraryDependencies += "com.github.gchudnov" %% "swearwolf" % "1.0.0"
 ```
 
-import:
+Optionally, include the library of the UI-primitives:
+
+```scala
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-woods" % "1.0.0"
+```
+
+In the application, import:
 
 ```scala
 import com.github.gchudnov.swearwolf.Screen
@@ -72,6 +78,9 @@ Constructs an instance of the Screen or throws an error if there is an exception
 
 Returns the size of the screen when default event handler is attached.
 
+## Woods -- an additional library with basic Primitives
+
+...
 
 ## Example
 
