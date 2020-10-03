@@ -4,6 +4,12 @@
 
 > A low level Scala library to construct text user interfaces.
 
+Using this library, one can create full-screen text-based applications.
+The library sends the correct control characters to the terminal to display text in the given style.
+
+The additional library of primitives, *woods* can be used to display some generic primitives on the screen:
+*box, graph, grid, label, table OR rich-text*
+
 <br clear="right" /><!-- Turn off the wrapping for the logo image. -->
 
 ## Preview
@@ -30,7 +36,7 @@ import com.github.gchudnov.swearwolf.util._
 
 In code, create an *instance of a screen* by calling `Screen.acquire()` or `Screen.acquireOrThrow()` functions.
 
-Use the screen functions `screen.put(/* ... */)` to print text data on it and call `screen.flush()` to display it.
+Use the screen functions `screen.put(/* ... */)` to print text data on it and call `screen.flush()` to display it in terminal.
 
 Close the screen with `screen.close()` method.
 
