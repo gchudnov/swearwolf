@@ -1,8 +1,7 @@
-package com.github.gchudnov.woods.label
+package com.github.gchudnov.woods
 
 import com.github.gchudnov.swearwolf.util.Size
-import com.github.gchudnov.woods.util.AlignStyle
-import com.github.gchudnov.woods.util.AlignStyle.AlignStyle
+import com.github.gchudnov.woods.label.BasicLabel
 
 trait Label {
   def value: String

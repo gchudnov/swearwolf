@@ -1,6 +1,7 @@
 package com.github.gchudnov.woods.graph
 
 import com.github.gchudnov.swearwolf.util.Size
+import com.github.gchudnov.woods.GraphStyle
 import com.github.gchudnov.woods.graph.impl.GraphDrawer
 import zio.test.Assertion._
 import zio.test._

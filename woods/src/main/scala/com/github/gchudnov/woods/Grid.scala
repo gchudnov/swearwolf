@@ -1,7 +1,7 @@
-package com.github.gchudnov.woods.grid
+package com.github.gchudnov.woods
 
 import com.github.gchudnov.swearwolf.util.Size
-import com.github.gchudnov.woods.grid.GridStyle.GridStyle
+import com.github.gchudnov.woods.grid.BasicGrid
 
 trait Grid {
   def size: Size

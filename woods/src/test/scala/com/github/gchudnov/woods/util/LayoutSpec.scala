@@ -1,6 +1,7 @@
 package com.github.gchudnov.woods.util
 
-import com.github.gchudnov.swearwolf.util.{ Point, Size }
+import com.github.gchudnov.swearwolf.util.{Point, Size}
+import com.github.gchudnov.woods.AlignStyle
 import zio.test.Assertion._
 import zio.test._
 

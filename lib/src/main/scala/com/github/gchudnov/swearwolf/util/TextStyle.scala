@@ -1,8 +1,8 @@
 package com.github.gchudnov.swearwolf.util
 
-object TextStyle {
+sealed abstract class TextStyle extends Style[Text] with Product with Serializable
 
-  sealed abstract class TextStyle     extends Style[Text] with Product with Serializable
+object TextStyle {
   case object Empty                   extends TextStyle
   case class Foreground(color: Color) extends TextStyle
   case class Background(color: Color) extends TextStyle
@@ -12,5 +12,4 @@ object TextStyle {
   case object Blink                   extends TextStyle
   case object Invert                  extends TextStyle
   case object Strikethrough           extends TextStyle
-
 }

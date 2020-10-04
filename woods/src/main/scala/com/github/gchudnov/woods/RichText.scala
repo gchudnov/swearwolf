@@ -1,6 +1,6 @@
-package com.github.gchudnov.woods.text
+package com.github.gchudnov.woods
 
-import com.github.gchudnov.woods.text.impl.{ RichTextCompiler, RichTextParser, RichTextStyler }
+import com.github.gchudnov.woods.text.impl.{RichTextCompiler, RichTextParser, RichTextStyler}
 
 sealed trait RichText {
   def bytes: Array[Byte]

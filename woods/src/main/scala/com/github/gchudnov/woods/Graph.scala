@@ -1,7 +1,7 @@
-package com.github.gchudnov.woods.graph
+package com.github.gchudnov.woods
 
 import com.github.gchudnov.swearwolf.util.Size
-import com.github.gchudnov.woods.graph.GraphStyle.GraphStyle
+import com.github.gchudnov.woods.graph.BasicGraph
 
 trait Graph {
   def size: Size
@@ -12,8 +12,6 @@ trait Graph {
 }
 
 object Graph {
-
   def apply(size: Size, data: Seq[Double], style: GraphStyle): Graph =
     BasicGraph(size, data, style)
-
 }

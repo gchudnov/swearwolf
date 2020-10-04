@@ -1,7 +1,7 @@
-package com.github.gchudnov.woods.table
+package com.github.gchudnov.woods
 
 import com.github.gchudnov.swearwolf.util.Size
-import com.github.gchudnov.woods.table.TableStyle.TableStyle
+import com.github.gchudnov.woods.table.BasicTable
 import com.github.gchudnov.woods.table.impl.TableDrawer
 
 trait Table {

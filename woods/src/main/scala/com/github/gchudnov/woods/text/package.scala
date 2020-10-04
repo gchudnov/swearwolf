@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.Point
 
 package object text {
 
-  implicit class RichTextOps(screen: Screen) {
+  class RichTextOps(private val screen: Screen) extends AnyVal {
     def put(pt: Point, value: RichText): Either[Throwable, Unit] =
       screen.put(pt, value.bytes)
   }

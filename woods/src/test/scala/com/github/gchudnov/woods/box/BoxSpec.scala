@@ -2,7 +2,7 @@ package com.github.gchudnov.woods.box
 
 import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
-import com.github.gchudnov.woods.Resources
+import com.github.gchudnov.woods._
 import zio.test.Assertion._
 import zio.test._
 

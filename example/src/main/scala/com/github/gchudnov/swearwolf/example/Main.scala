@@ -1,19 +1,12 @@
 package com.github.gchudnov.swearwolf.example
 
-import java.io.{ FileOutputStream, PrintStream }
+import java.io.{FileOutputStream, PrintStream}
 
-import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.term.{ KeySeq, SizeKeySeq }
+import com.github.gchudnov.swearwolf._
 import com.github.gchudnov.swearwolf.util.EventLoop.Action
-import com.github.gchudnov.swearwolf.util.TextStyle._
 import com.github.gchudnov.swearwolf.util._
-import com.github.gchudnov.woods.box.{ Box, _ }
-import com.github.gchudnov.woods.graph.{ Graph, GraphStyle, _ }
-import com.github.gchudnov.woods.grid.{ Grid, GridStyle }
-import com.github.gchudnov.woods.label.Label
-import com.github.gchudnov.woods.table.{ Table, TableStyle }
-import com.github.gchudnov.woods.text._
-import com.github.gchudnov.woods.util.AlignStyle
+import com.github.gchudnov.swearwolf.util.TextStyle._
+import com.github.gchudnov.woods._
 
 import scala.util.Using
 import scala.util.control.Exception.nonFatalCatch

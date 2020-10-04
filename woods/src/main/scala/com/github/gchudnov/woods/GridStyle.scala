@@ -1,8 +1,8 @@
-package com.github.gchudnov.woods.grid
+package com.github.gchudnov.woods
+
+sealed trait GridStyle
 
 object GridStyle {
-
-  sealed trait GridStyle
   case object Simple    extends GridStyle
   case object Dash2     extends GridStyle
   case object Dash2Bold extends GridStyle

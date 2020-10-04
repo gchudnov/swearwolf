@@ -15,7 +15,7 @@ final case class UnfamiliarKeySeq(bytes: Seq[Byte])                             
 
 object KeySeq {
 
-  implicit class KeySeqOps(keqSeq: KeySeq) {
+  implicit class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
 
     def size: Option[Size] = keqSeq match {
       case SizeKeySeq(sz) =>

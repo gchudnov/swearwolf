@@ -1,7 +1,7 @@
-package com.github.gchudnov.woods.box
+package com.github.gchudnov.woods
 
 import com.github.gchudnov.swearwolf.util.Size
-import com.github.gchudnov.woods.box.BoxStyle.BoxStyle
+import com.github.gchudnov.woods.box.BasicBox
 
 trait Box {
   def size: Size

@@ -1,10 +1,8 @@
 package com.github.gchudnov.woods.grid.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.TextStyle.TextStyle
-import com.github.gchudnov.swearwolf.util.{ Func, Point }
-import com.github.gchudnov.woods.grid.GridStyle.GridStyle
-import com.github.gchudnov.woods.grid.{ Grid, GridStyle }
+import com.github.gchudnov.swearwolf.util.{Func, Point, TextStyle}
+import com.github.gchudnov.woods.{Grid, GridStyle}
 import com.github.gchudnov.woods.util.Symbols
 
 object GridDrawer {

@@ -1,11 +1,10 @@
 package com.github.gchudnov.woods.box.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.TextStyle.TextStyle
-import com.github.gchudnov.swearwolf.util.{ Func, Point }
-import com.github.gchudnov.woods.box.Box
-import com.github.gchudnov.woods.box.BoxStyle._
+import com.github.gchudnov.swearwolf.util.{Func, Point, TextStyle}
+import com.github.gchudnov.woods.BoxStyle._
 import com.github.gchudnov.woods.util.Symbols
+import com.github.gchudnov.woods.{Box, BoxStyle}
 
 object BoxDrawer {
 
