@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.{Func, Point, TextStyle}
 import com.github.gchudnov.woods.{Grid, GridStyle}
 import com.github.gchudnov.woods.util.Symbols
 
-object GridDrawer {
+private[grid] object GridDrawer {
 
   private final case class GridDesc(
     topLeft: String,

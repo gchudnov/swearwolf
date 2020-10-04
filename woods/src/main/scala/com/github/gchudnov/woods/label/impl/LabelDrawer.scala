@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.{Func, Point, Text, TextStyle}
 import com.github.gchudnov.woods.Label
 import com.github.gchudnov.woods.util.Layout
 
-object LabelDrawer {
+private[label] object LabelDrawer {
 
   def draw(screen: Screen)(pt: Point, label: Label, textStyle: TextStyle): Either[Throwable, Unit] = {
     val lines          = Text.wrap(label.size.width)(label.value)

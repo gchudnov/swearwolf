@@ -7,7 +7,7 @@ import com.github.gchudnov.woods.text.impl.RichTextStyler._
 /**
  * Compiles styles to a series of terminal commands.
  */
-object RichTextCompiler {
+private[text] object RichTextCompiler {
 
   final case class State(
     fgColor: Vector[Color] = Vector.empty[Color],

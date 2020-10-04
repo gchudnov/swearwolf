@@ -1,8 +1,7 @@
 package com.github.gchudnov.woods
 
 import com.github.gchudnov.swearwolf.util.Size
-import com.github.gchudnov.woods.table.BasicTable
-import com.github.gchudnov.woods.table.impl.TableDrawer
+import com.github.gchudnov.woods.table.{BasicTable, TableFactory}
 
 trait Table {
   def data: Seq[Seq[Any]]
@@ -14,5 +13,5 @@ object Table {
     BasicTable(data, style)
 
   def estimateSize(data: Seq[Seq[Any]], style: TableStyle): Size =
-    TableDrawer.estimateSize(data, style)
+    TableFactory.estimateSize(data, style)
 }

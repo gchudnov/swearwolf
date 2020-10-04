@@ -6,7 +6,7 @@ import com.github.gchudnov.woods.BoxStyle._
 import com.github.gchudnov.woods.util.Symbols
 import com.github.gchudnov.woods.{Box, BoxStyle}
 
-object BoxDrawer {
+private[box] object BoxDrawer {
 
   private final case class BoxDesc(
     ht: String, // horizontal-top

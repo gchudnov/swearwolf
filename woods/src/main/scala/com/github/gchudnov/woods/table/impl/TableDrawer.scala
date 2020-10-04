@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.{Func, Point, Size, TextStyle}
 import com.github.gchudnov.woods.{Table, TableStyle}
 import com.github.gchudnov.woods.util.Symbols
 
-object TableDrawer {
+private[table] object TableDrawer {
 
   private final case class TableDesc(
     topLeft: String,

@@ -8,7 +8,7 @@ import com.github.gchudnov.woods.text.impl.RichTextParser._
  * Processes parsed text and convert blocks and attributes to styles.
  * At this stage all unknown tags and attribute will trigger an error.
  */
-object RichTextStyler {
+private[text] object RichTextStyler {
 
   type StyleMapFunc = Seq[RichStyle] => RichStyle
 

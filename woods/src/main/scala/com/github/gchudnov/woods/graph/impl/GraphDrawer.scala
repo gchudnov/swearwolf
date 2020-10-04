@@ -6,7 +6,7 @@ import com.github.gchudnov.woods.GraphStyle._
 import com.github.gchudnov.woods.util.Symbols
 import com.github.gchudnov.woods.{Graph, GraphStyle}
 
-object GraphDrawer {
+private[graph] object GraphDrawer {
 
   def draw(screen: Screen)(pt: Point, graph: Graph, textStyle: TextStyle): Either[Throwable, Unit] = {
     val ceilY = 100.0

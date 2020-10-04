@@ -9,7 +9,7 @@ import fastparse._
  * Only the structure is parsed.
  * Tags are not being processed.
  */
-object RichTextParser {
+private[text] object RichTextParser {
 
   sealed trait Attr
   final case class NamedAttr(key: String, value: String) extends Attr
