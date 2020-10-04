@@ -248,7 +248,7 @@ Both handlers are composed in a way that if one of them returns `Action.Exit` fo
 ### Colors
 
 A `Color` is a combination of **R**, **G** and **B** values in range `[0 - 255]` and represented as: `Color(r: Int, g: Int, b: Int)`
-A `Color` can be constructed by calling `Color.parse`.
+Colors can be constructed by calling `Color.parse` or by specifying the exact values of R, G and B values.
 
 - **Color.parse(value: String): Either[Throwable, Color]**
 
@@ -261,6 +261,8 @@ Named colors can be used directly, e.g. `NamedColor.Aqua` or `NamedColor.LightCy
 - **NamedColor.parse(name: String): Either[Throwable, Color]**
 
   Here a string is the name of the color separated by '-' for composite words, e.g.: `aqua` or `light-cyan`.
+
+The [list of named colors](res/colors/NAMED-COLORS.md) supported by the library.
 
 ## Woods - a library with basic Primitives
 
@@ -397,7 +399,7 @@ Text and tags can be nested, for example:
 
 ## Example
 
-An example that depicts the library usage and keyboard handling.
+The project contains an example that depicts the library usage and keyboard / mouse handling.
 
 To build an example application, invoke:
 
@@ -405,7 +407,7 @@ To build an example application, invoke:
 sbt example/assembly
 ```
 
-The executable file will be located in `target`directory where it could be executed.
+The executable file will be built and saved in `target `directory.
 
 ## NOTE
 

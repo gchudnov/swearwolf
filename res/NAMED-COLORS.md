@@ -1,2 +1,0 @@
-# NAMED COLORS
-
