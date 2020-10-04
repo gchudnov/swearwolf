@@ -2,11 +2,9 @@ package com.github.gchudnov.woods
 
 import com.github.gchudnov.woods.text.RichTextFactory
 
-sealed trait RichText {
+trait RichText {
   def bytes: Array[Byte]
 }
-
-final case class CompiledRichText(bytes: Array[Byte]) extends RichText
 
 /**
  * Style text with the additional attributes.
