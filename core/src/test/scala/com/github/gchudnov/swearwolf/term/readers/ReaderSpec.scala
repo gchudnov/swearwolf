@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.readers
 
-import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeySeq, UnfamiliarKeySeq }
+import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeySeq, UnknownKeySeq }
 import com.github.gchudnov.swearwolf.term._
 import zio.test.Assertion.equalTo
 import zio.test._
@@ -29,7 +29,7 @@ object ReaderSpec extends DefaultRunnableSpec {
       test(s"1bd099") {
         val inputBytes = Array(0x1b.toByte, 0xd0.toByte, 0x99.toByte)
 
-        val expected = (Vector(UnfamiliarKeySeq(Seq(27, -48, -103))), Seq.empty[Byte]): (Vector[KeySeq], Seq[Byte])
+        val expected = (Vector(UnknownKeySeq(Seq(27, -48, -103))), Seq.empty[Byte]): (Vector[KeySeq], Seq[Byte])
         val actual   = Reader.consume(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))

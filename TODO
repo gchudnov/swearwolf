@@ -1,3 +1,0 @@
-= change the number of imported namespaces to a smaller subset.
-- release to maven
-- good first issue: add scala 2.12

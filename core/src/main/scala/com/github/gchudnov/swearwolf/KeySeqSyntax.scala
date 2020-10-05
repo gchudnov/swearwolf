@@ -55,7 +55,7 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
    * @return Some(Seq[Byte]) if the sequence provides them, otherwise None
    */
   def bytes: Option[Seq[Byte]] = keqSeq match {
-    case UnfamiliarKeySeq(bs) =>
+    case UnknownKeySeq(bs) =>
       Some(bs)
     case _ =>
       None

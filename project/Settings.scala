@@ -48,7 +48,7 @@ object Settings {
   ).toVector
 
   val shared: Seq[Setting[_]] = Seq(
-    scalacOptions ++= sharedScalacOptions,
+    scalacOptions := sharedScalacOptions,
     crossScalaVersions := supportedScalaVersions,
     scalaVersion := scalaV,
     ThisBuild / turbo := true,
@@ -75,7 +75,7 @@ object Settings {
   val sonatype: Seq[Setting[_]] = Seq(
     publishMavenStyle := true,
     Test / publishArtifact := false,
-    credentials ++= Seq(Credentials(Path.userHome / ".sbt" / ".credentials-sonatype")),
+    credentials := Seq(Credentials(Path.userHome / ".sbt" / ".credentials-sonatype")),
     publishTo := Some("Sonatype Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"),
     releaseCrossBuild := true,
     releaseIgnoreUntrackedFiles := true,

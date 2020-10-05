@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.{ KeySeq, UnfamiliarKeySeq }
+import com.github.gchudnov.swearwolf.{ KeySeq, UnknownKeySeq }
 import com.github.gchudnov.swearwolf.term.readers._
 
 import scala.annotation.tailrec
@@ -23,7 +23,7 @@ private[term] object Reader {
           val rs = anyRead(ys)
           rs match {
             case UnknownReadState(_) =>
-              iterate(acc.appended(UnfamiliarKeySeq(xs)), Seq.empty[Byte])
+              iterate(acc.appended(UnknownKeySeq(xs)), Seq.empty[Byte])
             case PartialReadState(_) =>
               (acc, ys)
             case ParsedReadState(keqSeq, rest) =>

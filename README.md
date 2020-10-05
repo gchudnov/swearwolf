@@ -6,10 +6,9 @@
 
 ![Scala CI](https://github.com/gchudnov/swearwolf/workflows/Scala%20CI/badge.svg)
 
-Using this library, one can create full-screen text-based applications.
-The library sends the correct control characters to the terminal to display text in the given style.
+The library allows to create full-screen text-based applications (TUI). It sends the correct control characters to the terminal to display text in the given style.
 
-The additional library of UI-primitives, *woods* can be used to display basic elements on the screen:
+The additional library of UI-primitives, *swearwolf-woods* can be used to display basic elements on the screen:
 a *box*, *graph*, *grid*, *label*, *table* and *rich-text*.
 
 <br clear="right" /><!-- Turn off the wrapping for the logo image. -->
@@ -29,8 +28,6 @@ libraryDependencies += "com.github.gchudnov" %% "swearwolf-core" % "1.0.0"
 libraryDependencies += "com.github.gchudnov" %% "swearwolf-woods" % "1.0.0"
 ```
 
-This optional library contains a set of elelemts: *box*, *graph*, *grid*, *label*, *table* and *rich-text* to render on the `Screen`.
-
 In the application, import:
 
 ```scala
@@ -41,15 +38,15 @@ import com.github.gchudnov.swearwolf.util._
 import com.github.gchudnov.swearwolf.woods._
 ```
 
-Next, create an *instance of a screen* by calling `Screen.acquire()` or `Screen.acquireOrThrow()` functions.
+Next, create an *instance of the screen* by calling `Screen.acquire()` or `Screen.acquireOrThrow()` methods.
 
-Use the screen functions `screen.put(/* ... */)` to print text data and invoke `screen.flush()` to flush the printed data to terminal.
+Use methods `screen.put(/* ... */)` to print text on the screen and invoke `screen.flush()` to flush data to the terminal.
+At the end, call `screen.close()` to close the screen.
 
-At the end, close the screen with `screen.close()` call.
+To listen for control- (e.g. screen size change), keyboard- and mouse- events, set an *event handler* and start an *event loop*.
+Event Haldner and Event Loop are optional and might be needed only for interactive applications.
 
-Optionally, one can set an *event handler* and start an *event loop* to listen for control- (e.g. screen size change), keyboard- and mouse- events.
-
-A minimal example:
+An example:
 
 ```scala
 Using.resource(Screen.acquireOrThrow()) { (sc: Screen) =>
@@ -69,36 +66,34 @@ A `Screen` is a [Releasable](https://www.scala-lang.org/api/current/scala/util/U
 
 - **Screen.acquire(): Either[Throwable, Screen]**
 
-  Constructs an instance of the screen and returns an error or an instance of the Screen.
+  Constructs an instance of the screen.
 
 - **Screen.acquireOrThrow(): Screen**
 
-  Constructs an instance of the Screen or throws an error if there is an exception.
+  Constructs an instance of the Screen; Throws an Rxception if there is an error occured.
 
 
 ### Screen interface
 
-A Screen interface contains a list of functions to display text on the terminal and control it.
+Screen interface contains a list of methods to display text on the terminal and control it.
 
 - **def size: Size**
 
-  Returns the current size of the screen (width, height). When the size of the terminal changes, the value is updated.
+  Returns the current size of the screen *(width, height)*.
 
-  NOTE: the size of the screen is updated only when either `eventLoop` or `eventPoll` is called (see the description of these functions below). In other words, if no handler handles events from the terminal, the screen `size` is not updated.
+  NOTE: the size of the screen is updated only if either `eventLoop` or `eventPoll` are called (see the description of these methods below).
 
 - **def put(pt: Point, value: String): Either[Throwable, Unit]**
 
-  Displays a given test value at the given point of the screen.
-  
-  NOTE: Point(0, 0) represents the top-left corner of the screen.
+  Displays the given text at the specified position of the screen. NOTE: Point(0, 0) represents the top-left corner of the screen.
 
 - **def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit]**
 
-  Displays a given test value at the given point of the screen with the given [text style](#Text-Styles). After the text is written with the provided styles, these styles are reset.
+  Displays the given text at the specified position of the screen with the given [text style](#Text-Styles).
 
 - **def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit]**
 
-  Displays a given array of bytes at the given point of the screen.
+  Displays the given array of bytes at the specified position of the screen.
 
 - **def cursorHide(): Either[Throwable, Unit]**
 
@@ -130,11 +125,11 @@ A Screen interface contains a list of functions to display text on the terminal 
 
 - **def flush(): Either[Throwable, Unit]**
 
-  Flushes draw operations accumlated in the buffer to terminal, to make them effective. For example after making any of the `put()`, `clear()`, `mouseTrack() / mouseUntrack()` calls a flush is needed. Otherwise some of the operations might be still buffered and not effective.
+  Flushes buffered draw operations to the terminal. After invoking `put()`, `clear()`, `mouseTrack()` / `mouseUntrack()`, etc. calls a flush is needed. Otherwise some of the operations might be still buffered in the application and not reflected on the screen.
 
 - **def init(): Either[Throwable, Unit]**
 
-  Runs `clear()`, `cursorHide()`, `mouseTrack()` and other internal function to initialize the screen. This function is called *automatically* when the screen is created via one of the `Screen.acquire` operations.
+  Initializes the screen. This method is called *automatically* when the screen is acquired using `Screen.acquire` or `Screen.acquireOrThrow` operations. When called, it runs `clear()`, `cursorHide()`, `mouseTrack()` and other internal function to initialize the screen.
 
 - **def shutdown(): Either[Throwable, Unit]**
 
@@ -143,11 +138,11 @@ A Screen interface contains a list of functions to display text on the terminal 
 - **def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit]**
 
   Starts the event loop with the given [key sequence handler](#Key-Sequence-Handler).
-  Event loop is responsible for handling keyboard-, mouse-, screen-size- events. The default implementation of `eventLoop` with the default event handler returns only when `ESC` is pressed.
+  Event loop is responsible for handling keyboard-, mouse-, screen-size- events using the provided event handler. If the default handler is provided to the event loop (`EventLoop.defaultHandler`) the event loop exists only when `ESC` button is pressed.
 
 - **def eventLoop(): Either[Throwable, Unit]**
 
-  Starts the event loop with the default event handler: `EventLoop.defaultHandler`. The default event handler handles screen resize events and listens for the `ESC` button to be pressed. After that `eventLoop` exits and control is returned to the code that invoked `eventLoop` method.
+  Starts the event loop with the default event handler: `EventLoop.defaultHandler`. It handles screen resize events and waits for the `ESC` button to be pressed to exit the event loop.
 
 - **def eventPoll(): Either[Throwable, List[KeySeq]]**
 
@@ -161,31 +156,33 @@ A Screen interface contains a list of functions to display text on the terminal 
 ### Key Sequence Events
 
 Key Seqnence trait, `KeqSeq` represents a control event received from the terminal.
-The following Key Sequences extends `KeySeq` and are propagated to the event handler in the application:
+The following Key Sequences are propagated to the event handler:
 
 - **case class SizeKeySeq(sz: Size) extends KeySeq**
 
-  Represents a new terminal size after window resize.
+  Raised when the terminal window was resized. `Size` contains the new *width* and *height* of the screen.
 
 - **case class CharKeySeq(ch: Char, mods: Set[KeyModifier]) extends KeySeq**
 
   Represents a text character with a set of key modifers.
+  `KeyModifier` is a control key: `Shift`, `Alt` or `Ctrl`.
 
 - **case class CtrlKeySeq(key: KeyCode, mods: Set[KeyModifier]) extends KeySeq**
 
   Represents a control ket code, e.g. `F1` with a set of key modifiers.
+  `KeyModifier` is a control key: `Shift`, `Alt` or `Ctrl`.
 
 - **case class MouseKeySeq(pt: Point, button: MouseButton, action: MouseAction, mods: Set[KeyModifier]) extends KeySeq**
 
-  Representa a captured mouse event when the button was pressed or released.
+  Represents a captured mouse event when a mouse button was pressed or released.
+  `MouseButton` is one of the following events: `Left`, `Middle`, `Right`, `ScrollBackward` or `ScrollForward`.
+  `MouseAction` is either a `Press` or `Release` event.
 
-- **case class UnfamiliarKeySeq(bytes: Seq[Byte]) extends KeySeq**
+- **case class UnknownKeySeq(bytes: Seq[Byte]) extends KeySeq**
 
-`KeyModifier` is a control key that was pressed: `Shift`, `Alt` or `Ctrl`.
+  Represents an unknown input that the library failed to parse.
+  When the library reports this key sequence, most likely one of the parsers is incomplete on the given OS / terminal and cannot parse byte sequence that was sent to the library.
 
-`MouseButton` is one of the following events: `Left`, `Middle`, `Right`, `ScrollBackward` or `ScrollForward`.
-
-`MouseAction` is either `Press` or `Release` event.
 
 ### Key Sequence Handler
 
@@ -195,21 +192,23 @@ Key Sequence Handler, `KeySeqHandler` has the following signature:
 type KeySeqHandler = List[KeySeq] => Either[Throwable, EventLoop.Action]
 ```
 
-it is used insde of the `eventLoop` method of a screen and and used to process a collection of key sequences, `KeySeq`.
-For example, the processing could include printing something on the screen, when a keyboard key is pressed.
+it is used in the `eventLoop` to process the incoming key sequences, `KeySeq` and trigger some actions.
+For example, when a keyboard key is pressed, a key sequence is generated that is passed to the `KeySeqHandler` in the event loop.
 
-After processing a function should return `EventLoop.Action` that is either `Action.Continue` if we want to continue running the event loop, or
-`Action.Exit` to exit the event loop.
+After processing the event handler should return one of two `EventLoop.Action`s:
 
-There is a default event handler, `EventLoop.defaultHandler` that returns `Action.Exit` when `ESC` key is pressed.
+- `Action.Continue` if we want to continue running the event loop,
+- `Action.Exit` to exit the event loop.
 
-`EventLoop.withDefaultHandler(handler: KeySeqHandler): KeySeqHandler` can be used to compose a user-provided event handler with the default one.
-Both handlers are composed in a way that if one of them returns `Action.Exit` for the provided input, the resulting return value is `Action.Exit`.
+The default event handler, `EventLoop.defaultHandler` returns `Action.Exit` only when `ESC` key is pressed.
+
+To compose a user-provided event handler with the default one, `EventLoop.withDefaultHandler(handler: KeySeqHandler): KeySeqHandler` can be used.
+This method always invokes both handlers (one provided by the user and the default one) and returns `Action.Exit` if any of the handlers returned `Action.Exit`.
 
 
 ### Text Styles
 
-`TextStyle` is a combination of one or more of the following values:
+`TextStyle` is a combination of the following styles:
 
 - **TextStyle.Empty**
 
@@ -247,30 +246,35 @@ Both handlers are composed in a way that if one of them returns `Action.Exit` fo
 
   Draws a line throush the given text.
 
+Text Styles can be composed using '|' operator, e.g.:
+
+```scala
+val textStyle = TextStyle.Foreground(NamedColor.Azure) | TextStyle.Background(NamedColor.LightGray) | TextStyle.Strikethrough
+```
+
 ### Colors
 
-A `Color` is a combination of **R**, **G** and **B** values in range `[0 - 255]` and represented as: `Color(r: Int, g: Int, b: Int)`
-Colors can be constructed by calling `Color.parse` or by specifying the exact values of R, G and B values.
+A `Color` is a combination of **R**, **G** and **B** values in range `[0 - 255]` and represented as: `Color(r: Int, g: Int, b: Int)`.
+Colors can be constructed by calling `Color.parse` or by specifying the exact values of R, G and B.
 
 - **Color.parse(value: String): Either[Throwable, Color]**
 
-  Parses a color specified in `#RRGGBB` or `RRGGBB` format where `RR`, `GG`, `BB` is a hex value.
-  For example: `#FFFFFF` and `FFFFFF` are valid colors representing white.
+  Parses a color specified in `#RRGGBB` or `RRGGBB` format where `RR`, `GG`, `BB` are hex values.
+  For example: `#FF0000` and `FF0000` are valid inputs representing red color.
 
-In addition, a library defined a set of named colors, `NamedColor` that can be used to create a `Color` instance.
-Named colors can be used directly, e.g. `NamedColor.Aqua` or `NamedColor.LightCyan` or parsed from a text value: `NamedColor.parse`
+In addition, the library defines [a set of predefined named colors](res/colors/NAMED-COLORS.md), `NamedColor`.
+Named colors can be used directly, e.g. `NamedColor.Aqua` or `NamedColor.LightCyan` or parsed from a string by calling `NamedColor.parse`.
 
 - **NamedColor.parse(name: String): Either[Throwable, Color]**
 
-  Here a string is the name of the color separated by '-' for composite words, e.g.: `aqua` or `light-cyan`.
+  `name: String` is the name of the color separated by '-' for composite words, e.g.: `aqua` or `light-cyan`.
 
-The [list of named colors](res/colors/NAMED-COLORS.md) supported by the library.
 
-## Woods - UI Primitives Library
+## Swearwolf-Woods - UI Primitives Library
 
-`Woods` library provides basic building blocks or primitives for rendering on the screen.
+`Swearwolf-Woods` library provides basic building blocks (primitives) to rendering on the screen.
 
-The collection of available primitives includes: a *box*, *graph*, *grid*, *label*, *table* and *rich-text*.
+The available primitives include: a *box*, *graph*, *grid*, *label*, *table* and *rich-text*.
 
 In the current implementation of the library these primitives are very basic and cannot be composed. In this way it is not possible to create a table where a cell includes a label or a box.
 
@@ -284,41 +288,42 @@ import com.github.gchudnov.swearwolf.woods._
 
 #### Box
 
-Extends a `Screen` with a `put` function that alows to draw a box on the screen:
+Extends the `Screen` with a draw operation to display a box:
 
 ```scala
 def put(pt: Point, box: Box, textStyle: TextStyle): Either[Throwable, Unit]
 ```
 
-When a box is constructed, an additional `BoxStyle` can be used to specify the kind of borders to use: `Empty`, `SingleBorder`, `DoubleBorder`, `BoldBorder`.
+When a *Box* is constructed, `BoxStyle` can be used to specify a border to use: `Empty`, `SingleBorder`, `DoubleBorder`, `BoldBorder`.
 
 #### Graph
 
-Extends a `Screen` with a `put` function that alows to draw a graph on the screen:
+Extends the `Screen` with a draw operation to display a graph:
 
 ```scala
 def put(pt: Point, graph: Graph, textStyle: TextStyle): Either[Throwable, Unit]
 ```
 
-When a graph is constructed, an additional `GraphStyle` can be used to specify the kind of graph to use: `Dot`, `Step`, `Quad`. The style of the graph encodes how many values can one character of the text contain.
+When a *Graph* is constructed, `GraphStyle` can be used to specify the type of the graph to use: `Dot`, `Step`, `Quad`.
+This value encodes how many points one character of the graph can contain.
 
-- **Dot** - one text character contains 2-x and 4-y levels.
-- **Step** - one text character contains 1-x and 8-y levels.
-- **Quad** - one text character contains 2-x and 2-y levels.
+- **Dot** - one text character contains 2-x and 4-y points.
+- **Step** - one text character contains 1-x and 8-y points.
+- **Quad** - one text character contains 2-x and 2-y points.
 
 #### Grid
 
-Extends a `Screen` with a `put` function that alows to draw a grid on the screen:
+Extends the `Screen` with a draw operation to display a grid:
 
 ```scala
 def put(pt: Point, grid: Grid, textStyle: TextStyle): Either[Throwable, Unit]
 ```
 
-`Grid` is constructed with a cell-size and `GridStyle` to specify the set of borders and intersectors to use when drawing this primitive.
+`Grid` is constructed by providing a cell-size and `GridStyle` to specify borders to use.
 
 #### Label
 
-Extends a `Screen` with a `put` function that alows to draw a label on the screen:
+Extends the `Screen` with a draw operation to display a label:
 
 ```scala
 def put(pt: Point, label: Label, textStyle: TextStyle): Either[Throwable, Unit]
@@ -328,17 +333,17 @@ Label provides the `AlignStyle` that can be used to specify the way the text is 
 
 #### Table
 
-Extends a `Screen` with a `put` function that alows to draw a table on the screen:
+Extends the `Screen` with a draw operation to display a table:
 
 ```scala
 def put(pt: Point, table: Table, textStyle: TextStyle): Either[Throwable, Unit]
 ```
 
-A table takes `Seq[Seq[Any]` where each cell is converted to a string and displayed. `TableStyle` can be used to style the borders of a table.
+A table takes `Seq[Seq[Any]` where each cell is converted to a string and displayed. `TableStyle` can be used to style borders of a table.
 
 #### RichText
 
-Extends a `Screen` with a `put` function that alows to draw a rich text on the screen:
+Extends the `Screen` with a draw operation to display a rich text:
 
 ```scala
 def put(pt: Point, value: RichText): Either[Throwable, Unit]
@@ -349,37 +354,43 @@ def put(pt: Point, value: RichText): Either[Throwable, Unit]
 - **bold**, **b**
 
   ```html
-  <bold>TEXT</bold> / <b>TEXT</b>
+  <bold>TEXT</bold>
+  <b>TEXT</b>
   ```
 
 - **italic**, **i**
 
   ```html
-  <italic>TEXT</italic> / <i>TEXT</i>
+  <italic>TEXT</italic>
+  <i>TEXT</i>
   ```
 
 - **underline**, **u**
 
   ```html
-  <underline>TEXT</underline> / <u>TEXT</u>
+  <underline>TEXT</underline>
+  <u>TEXT</u>
   ```
 
 - **blink**, **k**
 
   ```html
-  <blink>TEXT</blink> / <k>TEXT</k>
+  <blink>TEXT</blink>
+  <k>TEXT</k>
   ```
 
 - **invert**, **v**
 
   ```html
-  <invert>TEXT</invert> / <v>TEXT</v>
+  <invert>TEXT</invert>
+  <v>TEXT</v>
   ```
 
 - **strikethrough**, **t**
 
   ```html
-  <strikethrough>TEXT</strikethrough> / <t>TEXT</t>
+  <strikethrough>TEXT</strikethrough>
+  <t>TEXT</t>
   ```
 
 - **color**
@@ -388,9 +399,14 @@ def put(pt: Point, value: RichText): Either[Throwable, Unit]
   - **bgcolor**, **bg** to specify the background color of the text.
   
   ```html
-  <color fg='#FF0000' >TEXT</color> / <color fgcolor='#FF0000' >TEXT</color>
-  <color bg='#00FF00' >TEXT</color> / <color bgcolor='#00FF00' >TEXT</color>
-  <color fg='#FF0000' bg='#00FF00' >TEXT</color> / <color fgcolor='#FF0000' bg='#00FF00' >TEXT</color>
+  <color fg='#FF0000' >TEXT</color>
+  <color fgcolor='#FF0000' >TEXT</color>
+
+  <color bg='#00FF00' >TEXT</color>
+  <color bgcolor='#00FF00' >TEXT</color>
+
+  <color fg='#FF0000' bg='#00FF00' >TEXT</color>
+  <color fgcolor='#FF0000' bgcolor='#00FF00' >TEXT</color>
   ```
 
 A more complex example:
@@ -405,21 +421,23 @@ Text and tags can be nested, for example:
 <i>A<b>text</b>B<u>C</u></i>
 ```
 
+
 ## Example
 
-The project contains an example that depicts the library usage and keyboard / mouse handling.
-
+The project contains an example that depicts the usage of the library with keyboard and mouse handling.
 To build an example application, invoke:
 
 ```sbt
 sbt example/assembly
 ```
 
-The executable file will be built and saved in `target `directory.
+The executable file will be built and saved in */target* directory.
 
-## NOTE
 
-**The library was built and tested on Ubuntu 18.04.5 LTS with GNU bash, version 4.4.20**. There is a chance that the library won't be working on a different OS or/and terminals.
+## Compatibility
+
+**The library was built and tested on Ubuntu 18.04.5 LTS with GNU bash, version 4.4.20**.
+
 
 ## Contact
 
