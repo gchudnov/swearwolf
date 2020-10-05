@@ -4,7 +4,7 @@ import java.io.{FileOutputStream, PrintStream}
 
 import com.github.gchudnov.swearwolf._
 import com.github.gchudnov.swearwolf.util._
-import com.github.gchudnov.woods._
+import com.github.gchudnov.swearwolf.woods.{AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle}
 
 import scala.util.Using
 import scala.util.control.Exception.nonFatalCatch

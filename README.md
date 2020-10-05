@@ -23,7 +23,7 @@ Add the following dependency to your `build.sbt`:
 ```scala
 libraryDependencies += "com.github.gchudnov" %% "swearwolf-core" % "1.0.0"
 
-// Optionally, include the library of the UI-primitives:
+// Optionally, include the UI-primitives library:
 libraryDependencies += "com.github.gchudnov" %% "swearwolf-woods" % "1.0.0"
 ```
 
@@ -34,6 +34,9 @@ In the application, import:
 ```scala
 import com.github.gchudnov.swearwolf._
 import com.github.gchudnov.swearwolf.util._
+
+// If UI-primitives library is included, add:
+import com.github.gchudnov.swearwolf.woods._
 ```
 
 Next, create an *instance of a screen* by calling `Screen.acquire()` or `Screen.acquireOrThrow()` functions.
@@ -272,7 +275,7 @@ In the current implementation of the library these primitives are very basic and
 To use the library in the application, import:
 
 ```scala
-import com.github.gchudnov.woods._
+import com.github.gchudnov.swearwolf.woods._
 ```
 
 ### Primitives Description
