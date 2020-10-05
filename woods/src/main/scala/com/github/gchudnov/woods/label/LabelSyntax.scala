@@ -13,3 +13,5 @@ private[label] class LabelOps(private val screen: Screen) extends AnyVal {
 private[woods] trait LabelSyntax {
   implicit def labelOps(screen: Screen): LabelOps = new LabelOps(screen)
 }
+
+object LabelSyntax extends LabelSyntax

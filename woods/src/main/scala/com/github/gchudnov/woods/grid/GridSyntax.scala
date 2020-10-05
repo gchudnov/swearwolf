@@ -13,3 +13,5 @@ private[grid] class GridOps(private val screen: Screen) extends AnyVal {
 private[woods] trait GridSyntax {
   implicit def gridOps(screen: Screen): GridOps = new GridOps(screen)
 }
+
+object GridSyntax extends GridSyntax

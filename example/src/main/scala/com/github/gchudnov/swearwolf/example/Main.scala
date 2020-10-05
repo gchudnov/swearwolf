@@ -3,9 +3,10 @@ package com.github.gchudnov.swearwolf.example
 import java.io.{FileOutputStream, PrintStream}
 
 import com.github.gchudnov.swearwolf._
+import com.github.gchudnov.swearwolf.term.{KeySeq, SizeKeySeq}
 import com.github.gchudnov.swearwolf.util.EventLoop.Action
-import com.github.gchudnov.swearwolf.util._
 import com.github.gchudnov.swearwolf.util.TextStyle._
+import com.github.gchudnov.swearwolf.util._
 import com.github.gchudnov.woods._
 
 import scala.util.Using
@@ -58,8 +59,7 @@ object Main extends App {
 
   private def eventHandler(screen: Screen)(pos: Point)(ks: List[KeySeq]): Either[Throwable, EventLoop.Action] = {
     // handle screen resize
-    val errOrResize = Func
-      .sequence(ks.filter(_.isInstanceOf[SizeKeySeq]).map { _ =>
+    val errOrResize = sequence(ks.filter(_.isInstanceOf[SizeKeySeq]).map { _ =>
         for {
           _ <- screen.clear()
           _ <- render(screen)
@@ -68,8 +68,7 @@ object Main extends App {
       .map(_ => ())
 
     // display key codes
-    val errOrDisplay = Func
-      .sequence(ks.zipWithIndex.map({ case (keqSeq, i) =>
+    val errOrDisplay = sequence(ks.zipWithIndex.map({ case (keqSeq, i) =>
         screen.put(pos.offset(0, i), keqSeq.toString)
       }))
       .map(_ => ())
@@ -94,4 +93,10 @@ object Main extends App {
     t.printStackTrace(output)
     output.flush()
   }
+
+  private def sequence[A, B](es: Seq[Either[A, B]]): Either[A, Seq[B]] =
+    es.partitionMap(identity) match {
+      case (Nil, rights) => Right[A, Seq[B]](rights)
+      case (lefts, _)    => Left[A, Seq[B]](lefts.head)
+    }
 }

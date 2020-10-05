@@ -1,8 +1,9 @@
 package com.github.gchudnov.woods.text.impl
 
-import com.github.gchudnov.swearwolf.util.{ Color, Func }
+import com.github.gchudnov.swearwolf.util.Color
 import com.github.gchudnov.woods.text.RichTextException
 import com.github.gchudnov.woods.text.impl.RichTextParser._
+import com.github.gchudnov.woods.util.impl.Func
 
 /**
  * Processes parsed text and convert blocks and attributes to styles.

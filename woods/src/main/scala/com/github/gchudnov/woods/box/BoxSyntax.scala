@@ -13,3 +13,5 @@ private[box] class BoxOps(private val screen: Screen) extends AnyVal {
 private[woods] trait BoxSyntax {
   implicit def boxOps(screen: Screen): BoxOps = new BoxOps(screen)
 }
+
+object BoxSyntax extends BoxSyntax

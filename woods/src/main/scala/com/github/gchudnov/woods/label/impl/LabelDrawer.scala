@@ -1,9 +1,10 @@
 package com.github.gchudnov.woods.label.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Func, Point, Text, TextStyle}
+import com.github.gchudnov.swearwolf.util.{Point, Text, TextStyle}
 import com.github.gchudnov.woods.Label
 import com.github.gchudnov.woods.util.Layout
+import com.github.gchudnov.woods.util.impl.Func
 
 private[label] object LabelDrawer {
 

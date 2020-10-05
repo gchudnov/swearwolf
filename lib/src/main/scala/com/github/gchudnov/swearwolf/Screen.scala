@@ -10,7 +10,7 @@ trait Screen {
   def size: Size
 
   def put(pt: Point, value: String): Either[Throwable, Unit]
-  def put(pt: Point, value: String, style: Style[Text]): Either[Throwable, Unit]
+  def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit]
   def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit]
 
   def cursorHide(): Either[Throwable, Unit]

@@ -26,7 +26,7 @@ final class TermScreen(term: Term) extends Screen {
   override def put(pt: Point, value: String): Either[Throwable, Unit] =
     put(pt, valueBytes(value))
 
-  override def put(pt: Point, value: String, style: Style[Text]): Either[Throwable, Unit] = {
+  override def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit] = {
     val styleBytes = styleToEscSeq(style).map(_.bytes).reduce(_ ++ _)
     val bytes      = styleBytes ++ valueBytes(value) ++ EscSeq.reset.bytes
     put(pt, bytes)
@@ -149,11 +149,11 @@ final class TermScreen(term: Term) extends Screen {
         } yield ()
     )
 
-  private def styleToEscSeq(style: Style[Text]): Seq[EscSeq] = {
+  private def styleToEscSeq(style: TextStyle): Seq[EscSeq] = {
     @tailrec
-    def iterate(acc: Vector[EscSeq], s: Style[Text], rest: List[Style[Text]]): Vector[EscSeq] =
+    def iterate(acc: Vector[EscSeq], s: TextStyle, rest: List[TextStyle]): Vector[EscSeq] =
       (s, rest) match {
-        case (a: StyleSeq[Text], rs) =>
+        case (a: TextStyleSeq, rs) =>
           iterate(acc, a.styles.head, rs ++ a.styles.tail)
         case (x, r :: rs) =>
           iterate(acc.appended(textStyleToEscSeq(x)), r, rs)
@@ -167,7 +167,7 @@ final class TermScreen(term: Term) extends Screen {
   private def valueBytes(value: String): Array[Byte] =
     sanitize(value).getBytes
 
-  private def textStyleToEscSeq(s: Style[Text]): EscSeq =
+  private def textStyleToEscSeq(s: TextStyle): EscSeq =
     s match {
       case Empty =>
         EscSeq.empty
@@ -187,6 +187,8 @@ final class TermScreen(term: Term) extends Screen {
         EscSeq.invert
       case Strikethrough =>
         EscSeq.strikethrough
+      case _ =>
+        EscSeq.empty
     }
 
   private def trackScreenSize(k: KeySeq): Unit =

@@ -9,7 +9,7 @@ object TextStyleSpec extends DefaultRunnableSpec {
     suite("TextStyle")(
       test("compose two simple styles") {
         val actual   = Bold | Italic
-        val expected = StyleSeqList(Seq(Bold, Italic))
+        val expected = TextStyleSeq(Seq(Bold, Italic))
 
         assert(actual)(equalTo(expected))
       },
@@ -17,7 +17,7 @@ object TextStyleSpec extends DefaultRunnableSpec {
         val xs       = Bold | Italic
         val x        = Blink
         val actual   = x | xs
-        val expected = StyleSeqList(Seq(Blink, Bold, Italic))
+        val expected = TextStyleSeq(Seq(Blink, Bold, Italic))
 
         assert(actual)(equalTo(expected))
       },
@@ -25,7 +25,7 @@ object TextStyleSpec extends DefaultRunnableSpec {
         val xs       = Bold | Italic
         val x        = Blink
         val actual   = xs | x
-        val expected = StyleSeqList(Seq(Blink, Bold, Italic))
+        val expected = TextStyleSeq(Seq(Blink, Bold, Italic))
 
         assert(actual)(equalTo(expected))
       },
@@ -33,7 +33,7 @@ object TextStyleSpec extends DefaultRunnableSpec {
         val xs       = Bold | Italic
         val ys       = Blink | Foreground(NamedColor.Black)
         val actual   = xs | ys
-        val expected = StyleSeqList(Seq(Bold, Italic, Blink, Foreground(NamedColor.Black)))
+        val expected = TextStyleSeq(Seq(Bold, Italic, Blink, Foreground(NamedColor.Black)))
 
         assert(actual)(equalTo(expected))
       }

@@ -2,8 +2,6 @@ package com.github.gchudnov.swearwolf.util
 
 import scala.annotation.tailrec
 
-trait Text
-
 object Text {
 
   /**

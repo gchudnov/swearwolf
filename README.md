@@ -90,7 +90,7 @@ A Screen interface contains a list of functions to display text on the terminal 
   
   NOTE: Point(0, 0) represents the top-left corner of the screen.
 
-- **def put(pt: Point, value: String, style: Style[Text]): Either[Throwable, Unit]**
+- **def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit]**
 
   Displays a given test value at the given point of the screen with the given [text style](#Text-Styles). After the text is written with the provided styles, these styles are reset.
 

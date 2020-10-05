@@ -1,9 +1,10 @@
 package com.github.gchudnov.woods.graph.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Func, Point, Size, TextStyle, Value}
+import com.github.gchudnov.swearwolf.util.{Point, Size, TextStyle, Value}
 import com.github.gchudnov.woods.GraphStyle._
 import com.github.gchudnov.woods.util.Symbols
+import com.github.gchudnov.woods.util.impl.Func
 import com.github.gchudnov.woods.{Graph, GraphStyle}
 
 private[graph] object GraphDrawer {

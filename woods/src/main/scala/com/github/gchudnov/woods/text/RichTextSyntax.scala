@@ -12,3 +12,5 @@ private[text] class RichTextOps(private val screen: Screen) extends AnyVal {
 private[woods] trait RichTextSyntax {
   implicit def richTextOps(screen: Screen): RichTextOps = new RichTextOps(screen)
 }
+
+object RichTextSyntax extends RichTextSyntax

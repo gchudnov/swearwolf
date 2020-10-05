@@ -13,3 +13,5 @@ private[table] class TableOps(private val screen: Screen) extends AnyVal {
 private[woods] trait TableSyntax {
   implicit def tableOps(screen: Screen): TableOps = new TableOps(screen)
 }
+
+object TableSyntax extends TableSyntax

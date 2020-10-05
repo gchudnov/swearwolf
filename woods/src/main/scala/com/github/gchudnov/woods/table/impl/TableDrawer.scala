@@ -1,9 +1,10 @@
 package com.github.gchudnov.woods.table.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Func, Point, Size, TextStyle}
+import com.github.gchudnov.swearwolf.util.{Point, Size, TextStyle}
 import com.github.gchudnov.woods.{Table, TableStyle}
 import com.github.gchudnov.woods.util.Symbols
+import com.github.gchudnov.woods.util.impl.Func
 
 private[table] object TableDrawer {
 

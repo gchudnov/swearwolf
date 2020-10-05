@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.Screen
 import com.github.gchudnov.swearwolf.util.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.util.{ Point, Size, Style, Text }
+import com.github.gchudnov.swearwolf.util.{Point, Size, TextStyle}
 
 /**
  * Screen that is backed by the array.
@@ -38,7 +38,7 @@ final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]
       Right(())
     }
 
-  override def put(pt: Point, value: String, style: Style[Text]): Either[Throwable, Unit] =
+  override def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit] =
     put(pt, value)
 
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =

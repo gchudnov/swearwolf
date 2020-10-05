@@ -13,3 +13,5 @@ private[graph] class GraphOps(private val screen: Screen) extends AnyVal {
 private[woods] trait GraphSyntax {
   implicit def graphOps(screen: Screen): GraphOps = new GraphOps(screen)
 }
+
+object GraphSyntax extends GraphSyntax
