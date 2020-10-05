@@ -12,25 +12,25 @@ lazy val testSettings = Seq(
 
 lazy val allSettings = Settings.shared ++ testSettings
 
-lazy val swearwolf = (project in file("lib"))
+lazy val core = (project in file("core"))
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(
-    name := "swearwolf",
+    name := "swearwolf-core",
     libraryDependencies ++= Dependencies.Swearwolf
   )
 
 lazy val woods = (project in file("woods"))
-  .dependsOn(swearwolf)
+  .dependsOn(core)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(
-    name := "woods",
+    name := "swearwolf-woods",
     libraryDependencies ++= Dependencies.Woods
   )
 
 lazy val example = (project in file("example"))
-  .dependsOn(swearwolf, woods)
+  .dependsOn(core, woods)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.assemblySettings)
@@ -43,10 +43,10 @@ lazy val example = (project in file("example"))
   )
 
 lazy val root = (project in file("."))
-  .aggregate(swearwolf, woods)
+  .aggregate(core, woods)
   .settings(allSettings: _*)
   .settings(
-    name := "swearwolf-woods"
+    name := "swearwolf"
   )
 
 addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
