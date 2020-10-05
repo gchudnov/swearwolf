@@ -266,7 +266,7 @@ Named colors can be used directly, e.g. `NamedColor.Aqua` or `NamedColor.LightCy
 
 The [list of named colors](res/colors/NAMED-COLORS.md) supported by the library.
 
-## Woods - a library with basic Primitives
+## Woods - UI Primitives Library
 
 `Woods` library provides basic building blocks or primitives for rendering on the screen.
 

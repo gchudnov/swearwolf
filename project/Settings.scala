@@ -2,9 +2,12 @@ import sbt.Keys._
 import sbt._
 import sbtassembly.AssemblyKeys._
 import sbtassembly.MergeStrategy
+import sbtrelease.ReleasePlugin.autoImport._
+import sbtrelease.ReleaseStateTransformations._
 
 object Settings {
-  private val scalaV = "2.13.3"
+  private val scala213 = "2.13.3"
+  private val scalaV   = scala213
 
   private val sharedScalacOptions = Seq(
     "-deprecation", // Emit warning and location for usages of deprecated APIs.
@@ -30,6 +33,8 @@ object Settings {
     case x                                               => fallbackStrategy(x)
   }
 
+  val supportedScalaVersions = List(scala213)
+
   val assemblySettings: Seq[Setting[_]] = Seq(
     test in assembly := {},
     assemblyOutputPath in assembly := new File("./target") / (assemblyJarName in assembly).value,
@@ -38,17 +43,57 @@ object Settings {
 
   val sharedResolvers: Vector[MavenRepository] = Seq(
     Resolver.jcenterRepo,
-    Resolver.mavenLocal
+    Resolver.mavenLocal,
+    Resolver.sonatypeRepo("releases")
   ).toVector
 
   val shared: Seq[Setting[_]] = Seq(
     scalacOptions ++= sharedScalacOptions,
+    crossScalaVersions := supportedScalaVersions,
     scalaVersion := scalaV,
     ThisBuild / turbo := true,
-//    ThisBuild / usePipelining := true,
     resolvers := Resolver.combineDefaultResolvers(sharedResolvers),
     compileOrder := CompileOrder.JavaThenScala,
-    organization := "com.github.gchudnov"
+    organization := "com.github.gchudnov",
+    homepage := Some(url("https://github.com/gchudnov/swearwolf")),
+    licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT")),
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/gchudnov/swearwolf"),
+        "scm:git@github.com:gchudnov/swearwolf.git"
+      )
+    ),
+    developers := List(
+      Developer(id = "gchudnov", name = "Grigorii Chudnov", email = "g.chudnov@gmail.com", url = url("https://github.com/gchudnov"))
+    )
+  )
+
+  val noPublish: Seq[Setting[_]] = Seq(
+    Test / publishArtifact := false,
+    Compile / publishArtifact := false
+  )
+
+  val sonatype: Seq[Setting[_]] = Seq(
+    publishMavenStyle := true,
+    Test / publishArtifact := false,
+    credentials ++= Seq(Credentials(Path.userHome / ".sbt" / ".credentials-sonatype")),
+    publishTo := Some("Sonatype Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"),
+    releaseCrossBuild := true,
+    releaseIgnoreUntrackedFiles := true,
+    releaseProcess := Seq[ReleaseStep](
+      checkSnapshotDependencies,
+      inquireVersions,
+      runClean,
+      runTest,
+      setReleaseVersion,
+      commitReleaseVersion,
+      tagRelease,
+      releaseStepCommandAndRemaining("+publishSigned"),
+      releaseStepCommandAndRemaining("sonatypeReleaseAll"),
+      setNextVersion,
+      commitNextVersion,
+      pushChanges
+    )
   )
 
   val testZioSettings: Seq[Setting[_]] = Seq(
