@@ -1,6 +1,5 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.KeySeq
 import com.github.gchudnov.swearwolf.util.{Bytes, Color, Point}
 
 /**
@@ -10,7 +9,7 @@ import com.github.gchudnov.swearwolf.util.{Bytes, Color, Point}
  *
  * http://rtfm.etla.org/xterm/ctlseq.html
  */
-final case class EscSeq(value: String) extends KeySeq {
+final case class EscSeq(value: String) {
   def bytes: Array[Byte] = value.getBytes()
 }
 

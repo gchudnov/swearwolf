@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf
 
 import com.github.gchudnov.swearwolf.util.{Point, Size}
 
-trait KeySeq
+sealed trait KeySeq
 
 final case class SizeKeySeq(sz: Size)                                                                                              extends KeySeq
 final case class CharKeySeq(ch: Char, mods: Set[KeyModifier] = Set.empty[KeyModifier])                                             extends KeySeq
