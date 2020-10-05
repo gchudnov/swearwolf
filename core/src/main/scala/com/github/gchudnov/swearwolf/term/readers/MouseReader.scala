@@ -1,7 +1,8 @@
 package com.github.gchudnov.swearwolf.term.readers
 
-import com.github.gchudnov.swearwolf.{KeyModifier, KeySeq, MouseAction, MouseButton, MouseKeySeq, PartialKeySeq, UnknownKeySeq}
+import com.github.gchudnov.swearwolf.term.{ ParsedReadState, PartialReadState, ReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.util.Point
+import com.github.gchudnov.swearwolf.{ KeyModifier, MouseAction, MouseButton, MouseKeySeq }
 
 import scala.annotation.tailrec
 
@@ -53,17 +54,17 @@ private[term] object MouseReader extends BasicKeySeqReader {
     65 -> MouseButton.ScrollForward
   )
 
-  override def read(data: Seq[Byte]): (KeySeq, Seq[Byte]) = {
+  override def read(data: Seq[Byte]): ReadState = {
 
     @tailrec
-    def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Seq[Byte]): (KeySeq, Seq[Byte]) =
+    def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Seq[Byte]): ReadState =
       state match {
         case Start =>
           xs match {
             case x +: xt if isEsc(x) =>
               iterate(Bracket, num1, num2, num3, last, xt)
             case _ =>
-              (UnknownKeySeq, data)
+              UnknownReadState(data)
           }
 
         case Bracket =>
@@ -71,9 +72,9 @@ private[term] object MouseReader extends BasicKeySeqReader {
             case x +: xt if isBracket(x) =>
               iterate(LessThan, num1, num2, num3, last, xt)
             case x +: xt =>
-              (UnknownKeySeq, data)
+              UnknownReadState(data)
             case _ =>
-              (PartialKeySeq, data)
+              PartialReadState(data)
           }
 
         case LessThan =>
@@ -81,9 +82,9 @@ private[term] object MouseReader extends BasicKeySeqReader {
             case x +: xt if isLessThan(x) =>
               iterate(Num1, num1, num2, num3, last, xt)
             case x +: xt =>
-              (UnknownKeySeq, data)
+              UnknownReadState(data)
             case _ =>
-              (PartialKeySeq, data)
+              PartialReadState(data)
           }
 
         case Num1 =>
@@ -95,7 +96,7 @@ private[term] object MouseReader extends BasicKeySeqReader {
             case x +: xt =>
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
-              (PartialKeySeq, data)
+              PartialReadState(data)
           }
 
         case Num2 =>
@@ -107,7 +108,7 @@ private[term] object MouseReader extends BasicKeySeqReader {
             case x +: xt =>
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
-              (PartialKeySeq, data)
+              PartialReadState(data)
           }
 
         case Num3 =>
@@ -117,7 +118,7 @@ private[term] object MouseReader extends BasicKeySeqReader {
             case x +: xt =>
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
-              (PartialKeySeq, data)
+              PartialReadState(data)
           }
 
         case Finish =>
@@ -127,15 +128,15 @@ private[term] object MouseReader extends BasicKeySeqReader {
     iterate(Start, num1 = 0, num2 = 0, num3 = 0, last = 0, data)
   }
 
-  private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Seq[Byte]): (KeySeq, Seq[Byte]) =
+  private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Seq[Byte]): ReadState =
     if (isUpperM(last))
       // press
-      (MouseKeySeq(toPoint(num2, num3), toMouseButton(num1), MouseAction.Press, toModifiers(num1)), rest)
+      ParsedReadState(MouseKeySeq(toPoint(num2, num3), toMouseButton(num1), MouseAction.Press, toModifiers(num1)), rest)
     else if (isLowerM(last))
       // release
-      (MouseKeySeq(toPoint(num2, num3), toMouseButton(num1), MouseAction.Release, toModifiers(num1)), rest)
+      ParsedReadState(MouseKeySeq(toPoint(num2, num3), toMouseButton(num1), MouseAction.Release, toModifiers(num1)), rest)
     else
-      (UnknownKeySeq, rest)
+      UnknownReadState(rest)
 
   private def toPoint(x: Int, y: Int): Point =
     Point(toPos(x), toPos(y))

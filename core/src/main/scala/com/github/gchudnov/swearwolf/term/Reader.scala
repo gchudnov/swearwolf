@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.{KeySeq, PartialKeySeq, UnfamiliarKeySeq, UnknownKeySeq}
+import com.github.gchudnov.swearwolf.{KeySeq, UnfamiliarKeySeq}
 import com.github.gchudnov.swearwolf.term.readers._
 
 import scala.annotation.tailrec
@@ -20,14 +20,14 @@ object Reader {
     def iterate(acc: Vector[KeySeq], xs: Seq[Byte]): (Vector[KeySeq], Seq[Byte]) =
       xs match {
         case ys if ys.nonEmpty =>
-          val (k, rest) = anyRead(ys)
-          k match {
-            case UnknownKeySeq =>
+          val rs = anyRead(ys)
+          rs match {
+            case UnknownReadState(_) =>
               iterate(acc.appended(UnfamiliarKeySeq(xs)), Seq.empty[Byte])
-            case PartialKeySeq =>
+            case PartialReadState(_) =>
               (acc, ys)
-            case keySeq =>
-              iterate(acc.appended(keySeq), rest)
+            case ParsedReadState(keqSeq, rest) =>
+              iterate(acc.appended(keqSeq), rest)
           }
         case _ =>
           (acc, Seq.empty[Byte])
@@ -36,24 +36,21 @@ object Reader {
     iterate(Vector.empty[KeySeq], bytes)
   }
 
-  private def anyRead(bytes: Seq[Byte]): (KeySeq, Seq[Byte]) = {
-    val state: (KeySeq, Seq[Byte]) = (UnknownKeySeq, Seq.empty[Byte])
-    readers.foldLeft(state) { (acc, reader) =>
+  private def anyRead(bytes: Seq[Byte]): ReadState = {
+    readers.foldLeft(ReadState.empty) { (acc, reader) =>
       val res = reader.read(bytes)
       mergeReadResults(acc, res)
     }
   }
 
-  private def isSeqFound(ks: KeySeq) =
-    !(ks == UnknownKeySeq || ks == PartialKeySeq)
-
-  private def mergeReadResults(lhs: (KeySeq, Seq[Byte]), rhs: (KeySeq, Seq[Byte])): (KeySeq, Seq[Byte]) =
-    if (isSeqFound(lhs._1))
+  private def mergeReadResults(lhs: ReadState, rhs: ReadState): ReadState = (lhs, rhs) match {
+    case (ParsedReadState(_, _), _) =>
       lhs
-    else if (isSeqFound(rhs._1))
+    case (_, ParsedReadState(_, _)) =>
       rhs
-    else if (lhs._1 == PartialKeySeq)
+    case (PartialReadState(_), _) =>
       lhs
-    else
+    case _ =>
       rhs
+  }
 }

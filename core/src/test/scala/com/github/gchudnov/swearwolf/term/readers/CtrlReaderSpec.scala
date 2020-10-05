@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.term.readers
 
-import com.github.gchudnov.swearwolf.{CharKeySeq, CtrlKeySeq, KeyCode, KeyModifier, KeySeq, UnknownKeySeq}
+import com.github.gchudnov.swearwolf.term.{ParsedReadState, UnknownReadState}
+import com.github.gchudnov.swearwolf.{CharKeySeq, CtrlKeySeq, KeyCode, KeyModifier, KeySeq}
 import zio.test.Assertion.equalTo
 import zio.test._
 
@@ -15,7 +16,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s""
         val inputBytes = input.getBytes
 
-        val expected = (UnknownKeySeq, Seq.empty[Byte]): (KeySeq, Seq[Byte])
+        val expected = UnknownReadState(Seq.empty[Byte])
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))
@@ -24,7 +25,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s"${EscChar}"
         val inputBytes = input.getBytes
 
-        val expected = (CtrlKeySeq(KeyCode.Esc, Set.empty[KeyModifier]), Seq.empty[Byte]): (KeySeq, Seq[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Esc, Set.empty[KeyModifier]), Seq.empty[Byte])
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))
@@ -33,7 +34,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s"${EscChar}${EscChar}"
         val inputBytes = input.getBytes
 
-        val expected = (CtrlKeySeq(KeyCode.Esc, Set.empty[KeyModifier]), Seq(EscChar.toByte)): (KeySeq, Seq[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Esc, Set.empty[KeyModifier]), Seq(EscChar.toByte))
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))
@@ -42,7 +43,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s"${EscChar}${EscChar}a"
         val inputBytes = input.getBytes
 
-        val expected = (CtrlKeySeq(KeyCode.Esc, Set.empty[KeyModifier]), Seq(EscChar.toByte, 'a'.toByte)): (KeySeq, Seq[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Esc, Set.empty[KeyModifier]), Seq(EscChar.toByte, 'a'.toByte))
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))
@@ -51,7 +52,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s"${BackspaceChar}"
         val inputBytes = input.getBytes
 
-        val expected = (CtrlKeySeq(KeyCode.Backspace, Set.empty[KeyModifier]), Seq.empty[Byte]): (KeySeq, Seq[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Backspace, Set.empty[KeyModifier]), Seq.empty[Byte])
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))
@@ -60,7 +61,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s"${0x08.toChar}"
         val inputBytes = input.getBytes
 
-        val expected = (CtrlKeySeq(KeyCode.Backspace, Set.empty[KeyModifier]), Seq.empty[Byte]): (KeySeq, Seq[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Backspace, Set.empty[KeyModifier]), Seq.empty[Byte])
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))
@@ -69,7 +70,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s"\r"
         val inputBytes = input.getBytes
 
-        val expected = (CtrlKeySeq(KeyCode.Enter, Set.empty[KeyModifier]), Seq.empty[Byte]): (KeySeq, Seq[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Enter, Set.empty[KeyModifier]), Seq.empty[Byte])
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))
@@ -78,7 +79,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s"\n"
         val inputBytes = input.getBytes
 
-        val expected = (CtrlKeySeq(KeyCode.Enter, Set.empty[KeyModifier]), Seq.empty[Byte]): (KeySeq, Seq[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Enter, Set.empty[KeyModifier]), Seq.empty[Byte])
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))
@@ -87,7 +88,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s"\t"
         val inputBytes = input.getBytes
 
-        val expected = (CtrlKeySeq(KeyCode.Tab, Set.empty[KeyModifier]), Seq.empty[Byte]): (KeySeq, Seq[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Tab, Set.empty[KeyModifier]), Seq.empty[Byte])
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))
@@ -96,7 +97,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         val input      = s"${0x1b.toChar}${0x31.toChar}"
         val inputBytes = input.getBytes
 
-        val expected = (CharKeySeq('1', Set(KeyModifier.Alt)), Seq.empty[Byte]): (KeySeq, Seq[Byte])
+        val expected = ParsedReadState(CharKeySeq('1', Set(KeyModifier.Alt)), Seq.empty[Byte])
         val actual   = CtrlReader.read(inputBytes.toSeq)
 
         assert(actual)(equalTo(expected))

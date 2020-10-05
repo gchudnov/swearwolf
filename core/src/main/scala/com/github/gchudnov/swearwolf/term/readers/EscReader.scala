@@ -1,7 +1,8 @@
 package com.github.gchudnov.swearwolf.term.readers
 
-import com.github.gchudnov.swearwolf.{CtrlKeySeq, KeyCode, KeyModifier, KeySeq, PartialKeySeq, SizeKeySeq, UnknownKeySeq}
+import com.github.gchudnov.swearwolf.term.{ ParsedReadState, PartialReadState, ReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.util.Size
+import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeyModifier, SizeKeySeq }
 
 import scala.annotation.tailrec
 
@@ -76,17 +77,17 @@ private[term] object EscReader extends BasicKeySeqReader {
     24 -> KeyCode.F12
   )
 
-  override def read(data: Seq[Byte]): (KeySeq, Seq[Byte]) = {
+  override def read(data: Seq[Byte]): ReadState = {
 
     @tailrec
-    def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Seq[Byte]): (KeySeq, Seq[Byte]) =
+    def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Seq[Byte]): ReadState =
       state match {
         case Start =>
           xs match {
             case x +: xt if isEsc(x) =>
               iterate(Bracket, num1, num2, num3, last, xt)
             case _ =>
-              (UnknownKeySeq, data)
+              UnknownReadState(data)
           }
 
         case Bracket =>
@@ -94,9 +95,9 @@ private[term] object EscReader extends BasicKeySeqReader {
             case x +: xt if isBracket(x) =>
               iterate(Num1, num1, num2, num3, last, xt)
             case x +: xt =>
-              (UnknownKeySeq, data)
+              UnknownReadState(data)
             case _ =>
-              (PartialKeySeq, data)
+              PartialReadState(data)
           }
 
         case Num1 =>
@@ -108,7 +109,7 @@ private[term] object EscReader extends BasicKeySeqReader {
             case x +: xt =>
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
-              (PartialKeySeq, data)
+              PartialReadState(data)
           }
 
         case Num2 =>
@@ -120,7 +121,7 @@ private[term] object EscReader extends BasicKeySeqReader {
             case x +: xt =>
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
-              (PartialKeySeq, data)
+              PartialReadState(data)
           }
 
         case Num3 =>
@@ -130,7 +131,7 @@ private[term] object EscReader extends BasicKeySeqReader {
             case x +: xt =>
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
-              (PartialKeySeq, data)
+              PartialReadState(data)
           }
 
         case Finish =>
@@ -140,19 +141,19 @@ private[term] object EscReader extends BasicKeySeqReader {
     iterate(Start, num1 = 0, num2 = 0, num3 = 0, last = 0, data)
   }
 
-  private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Seq[Byte]): (KeySeq, Seq[Byte]) =
+  private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Seq[Byte]): ReadState =
     if (isLowerT(last) && num1 == 8)
-      (SizeKeySeq(Size(width = num3, height = num2)), rest)
+      ParsedReadState(SizeKeySeq(Size(width = num3, height = num2)), rest)
     else if (isTilde(last) && stdMap.contains(num1)) {
       val key  = stdMap(num1)
       val mods = toModifiers(num2)
-      (CtrlKeySeq(key, mods), rest)
+      ParsedReadState(CtrlKeySeq(key, mods), rest)
     } else if (lastMap.contains(last)) {
       val key  = lastMap(last)
       val mods = toModifiers(num1)
-      (CtrlKeySeq(key, mods), rest)
+      ParsedReadState(CtrlKeySeq(key, mods), rest)
     } else
-      (UnknownKeySeq, rest)
+      UnknownReadState(rest)
 
   private[term] def toModifiers(n: Int): Set[KeyModifier] =
     if (n == 0 || n == 1)
