@@ -45,6 +45,7 @@ object Settings {
     scalacOptions ++= sharedScalacOptions,
     scalaVersion := scalaV,
     ThisBuild / turbo := true,
+    ThisBuild / usePipelining := true,
     resolvers := Resolver.combineDefaultResolvers(sharedResolvers),
     compileOrder := CompileOrder.JavaThenScala,
     organization := "com.github.gchudnov"
