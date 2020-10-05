@@ -1,5 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
+import com.github.gchudnov.swearwolf.{KeySeq, PartialKeySeq, UnfamiliarKeySeq, UnknownKeySeq}
 import com.github.gchudnov.swearwolf.term.readers._
 
 import scala.annotation.tailrec

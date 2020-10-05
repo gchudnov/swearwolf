@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.util
 
-import com.github.gchudnov.swearwolf.term.KeySeq
+import com.github.gchudnov.swearwolf.KeySeq
 
 object EventLoop {
 

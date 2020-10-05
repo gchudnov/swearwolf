@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.readers
 
-import com.github.gchudnov.swearwolf.term._
+import com.github.gchudnov.swearwolf.{CharKeySeq, KeySeq, UnknownKeySeq}
 
 /**
  * Reads a character sequence.

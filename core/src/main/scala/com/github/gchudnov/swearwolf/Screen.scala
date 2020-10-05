@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf
 
-import com.github.gchudnov.swearwolf.term.{ KeySeq, Term, TermScreen }
+import com.github.gchudnov.swearwolf.term.{ Term, TermScreen }
 import com.github.gchudnov.swearwolf.util.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.util._
 

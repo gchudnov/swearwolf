@@ -1,8 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.term.KeySeq._
-import com.github.gchudnov.swearwolf.util.EventLoop.{ Action, KeySeqHandler }
+import com.github.gchudnov.swearwolf.{KeySeq, Screen}
+import com.github.gchudnov.swearwolf.util.EventLoop.{Action, KeySeqHandler}
 import com.github.gchudnov.swearwolf.util.Text.sanitize
 import com.github.gchudnov.swearwolf.util.TextStyle._
 import com.github.gchudnov.swearwolf.util._

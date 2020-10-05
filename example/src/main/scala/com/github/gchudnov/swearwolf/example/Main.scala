@@ -3,7 +3,6 @@ package com.github.gchudnov.swearwolf.example
 import java.io.{FileOutputStream, PrintStream}
 
 import com.github.gchudnov.swearwolf._
-import com.github.gchudnov.swearwolf.term.{KeySeq, SizeKeySeq}
 import com.github.gchudnov.swearwolf.util._
 import com.github.gchudnov.woods._
 

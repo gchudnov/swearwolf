@@ -21,12 +21,9 @@ a *box*, *graph*, *grid*, *label*, *table* and *rich-text*.
 Add the following dependency to your `build.sbt`:
 
 ```scala
-libraryDependencies += "com.github.gchudnov" %% "swearwolf" % "1.0.0"
-```
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-core" % "1.0.0"
 
-Optionally, include the library of the UI-primitives:
-
-```scala
+// Optionally, include the library of the UI-primitives:
 libraryDependencies += "com.github.gchudnov" %% "swearwolf-woods" % "1.0.0"
 ```
 
@@ -266,11 +263,17 @@ The [list of named colors](res/colors/NAMED-COLORS.md) supported by the library.
 
 ## Woods - a library with basic Primitives
 
-`Woods` library prvides basic building blocks or primitives for rendering on the screen.
+`Woods` library provides basic building blocks or primitives for rendering on the screen.
 
 The collection of available primitives includes: a *box*, *graph*, *grid*, *label*, *table* and *rich-text*.
 
 In the current implementation of the library these primitives are very basic and cannot be composed. In this way it is not possible to create a table where a cell includes a label or a box.
+
+To use the library in the application, import:
+
+```scala
+import com.github.gchudnov.woods._
+```
 
 ### Primitives Description
 
