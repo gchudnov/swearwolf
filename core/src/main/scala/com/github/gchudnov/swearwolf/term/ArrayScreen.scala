@@ -1,8 +1,8 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.{KeySeq, Screen}
+import com.github.gchudnov.swearwolf.{ KeySeq, Screen }
 import com.github.gchudnov.swearwolf.util.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.util.{Point, Size, TextStyle}
+import com.github.gchudnov.swearwolf.util.{ Point, Size, TextStyle }
 
 /**
  * Screen that is backed by the array.

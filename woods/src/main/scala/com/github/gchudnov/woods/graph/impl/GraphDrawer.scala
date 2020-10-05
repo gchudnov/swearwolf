@@ -1,11 +1,11 @@
 package com.github.gchudnov.woods.graph.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Point, Size, TextStyle, Value}
+import com.github.gchudnov.swearwolf.util.{ Point, Size, TextStyle, Value }
 import com.github.gchudnov.woods.GraphStyle._
 import com.github.gchudnov.woods.util.Symbols
 import com.github.gchudnov.woods.util.impl.Func
-import com.github.gchudnov.woods.{Graph, GraphStyle}
+import com.github.gchudnov.woods.{ Graph, GraphStyle }
 
 private[graph] object GraphDrawer {
 
@@ -18,14 +18,6 @@ private[graph] object GraphDrawer {
            })
     } yield ()
   }
-
-  /**
-   * Graph description to draw it
-   * @param sx x-steps
-   * @param sy y-steps
-   * @param symbols map to get symbol to represent a cell
-   */
-  private final case class GraphDesc(sx: Int, sy: Int, symbols: Map[String, String])
 
   def compile(sz: Size, ceilY: Double, maxY: Option[Double])(data: Seq[Double], style: GraphStyle): Seq[String] = {
     val GraphDesc(sx, sy, symbols) = getDesc(style)
@@ -80,4 +72,12 @@ private[graph] object GraphDrawer {
       case Quad =>
         GraphDesc(sx = 2, sy = 2, symbols = Symbols.quadGraphUp)
     }
+
+  /**
+   * Graph description to draw it
+   * @param sx x-steps
+   * @param sy y-steps
+   * @param symbols map to get symbol to represent a cell
+   */
+  private final case class GraphDesc(sx: Int, sy: Int, symbols: Map[String, String])
 }

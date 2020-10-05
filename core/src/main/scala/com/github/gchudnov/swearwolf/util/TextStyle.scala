@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.util
 
-sealed abstract class TextStyle extends Product with Serializable
+sealed abstract class TextStyle                       extends Product with Serializable
 final case class TextStyleSeq(styles: Seq[TextStyle]) extends TextStyle
 
 object TextStyle {

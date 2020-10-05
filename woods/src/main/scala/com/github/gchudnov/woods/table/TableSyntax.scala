@@ -1,7 +1,7 @@
 package com.github.gchudnov.woods.table
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Point, TextStyle}
+import com.github.gchudnov.swearwolf.util.{ Point, TextStyle }
 import com.github.gchudnov.woods.Table
 import com.github.gchudnov.woods.table.impl.TableDrawer
 

@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.term.readers
 
-import com.github.gchudnov.swearwolf.term.{ParsedReadState, PartialReadState, UnknownReadState}
-import com.github.gchudnov.swearwolf.{CtrlKeySeq, KeyCode, KeyModifier, KeySeq, SizeKeySeq}
+import com.github.gchudnov.swearwolf.term.{ ParsedReadState, PartialReadState, UnknownReadState }
+import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeyModifier, SizeKeySeq }
 import com.github.gchudnov.swearwolf.util.Size
 import zio.test.Assertion._
 import zio.test._

@@ -4,7 +4,7 @@ import java.io.BufferedOutputStream
 
 import com.github.gchudnov.swearwolf.KeySeq
 
-trait Term {
+private[swearwolf] trait Term {
   def write(bytes: Array[Byte]): Either[Throwable, Unit]
   def write(seq: EscSeq): Either[Throwable, Unit]
   def write(str: String): Either[Throwable, Unit]
@@ -15,7 +15,7 @@ trait Term {
   def poll(): Either[Throwable, List[KeySeq]]
 }
 
-object Term {
+private[swearwolf] object Term {
   private val OutBufferSizeBytes = 131072
 
   def default(): Term = {

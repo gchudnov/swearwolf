@@ -23,11 +23,11 @@ object Dependencies {
 
   private val fastparse = "com.lihaoyi" %% "fastparse" % versions.fastparse
 
-  private val zio               = "dev.zio" %% "zio"                 % versions.zio
-  private val zioStreams        = "dev.zio" %% "zio-streams"         % versions.zio
-  private val zioTest           = "dev.zio" %% "zio-test"            % versions.zio
-  private val zioTestMagnolia   = "dev.zio" %% "zio-test-magnolia"   % versions.zio
-  private val zioTestSbt        = "dev.zio" %% "zio-test-sbt"        % versions.zio
+  private val zio             = "dev.zio" %% "zio"               % versions.zio
+  private val zioStreams      = "dev.zio" %% "zio-streams"       % versions.zio
+  private val zioTest         = "dev.zio" %% "zio-test"          % versions.zio
+  private val zioTestMagnolia = "dev.zio" %% "zio-test-magnolia" % versions.zio
+  private val zioTestSbt      = "dev.zio" %% "zio-test-sbt"      % versions.zio
 
   val Woods: Seq[ModuleID] = {
     val compile = Seq(

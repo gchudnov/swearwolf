@@ -1,8 +1,8 @@
 package com.github.gchudnov.swearwolf.term.readers
 
 import com.github.gchudnov.swearwolf.term.ParsedReadState
-import com.github.gchudnov.swearwolf.{KeyModifier, KeySeq, MouseAction, MouseButton, MouseKeySeq}
-import com.github.gchudnov.swearwolf.util.{Bytes, Point}
+import com.github.gchudnov.swearwolf.{ KeyModifier, MouseAction, MouseButton, MouseKeySeq }
+import com.github.gchudnov.swearwolf.util.{ Bytes, Point }
 import zio.test.Assertion._
 import zio.test._
 

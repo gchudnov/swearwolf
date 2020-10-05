@@ -12,7 +12,7 @@ import scala.util.control.Exception.nonFatalCatch
 object Main extends App {
 
   private val logFilePath = "~/swearwolf-example-errors.log"
-  private val posKeqSeq = Point(32, 0)
+  private val posKeqSeq   = Point(32, 0)
 
   nonFatalCatch
     .either({
@@ -27,15 +27,38 @@ object Main extends App {
     .flatten
     .fold(writeFileLog, _ => ())
 
+  private def eventHandler(screen: Screen)(pos: Point)(ks: List[KeySeq]): Either[Throwable, EventLoop.Action] = {
+    // handle screen resize
+    val errOrResize = sequence(ks.filter(_.isInstanceOf[SizeKeySeq]).map { _ =>
+      for {
+        _ <- screen.clear()
+        _ <- render(screen)
+      } yield ()
+    })
+      .map(_ => ())
+
+    // display key codes
+    val errOrDisplay = sequence(ks.zipWithIndex.map({ case (keqSeq, i) =>
+      screen.put(pos.offset(0, i), keqSeq.toString)
+    }))
+      .map(_ => ())
+
+    for {
+      _ <- errOrResize
+      _ <- errOrDisplay
+      _ <- screen.flush()
+    } yield EventLoop.Action.Continue
+  }
+
   private def render(sc: Screen): Either[Throwable, Unit] = {
     import TextStyle._
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
     val b  = Box(Size(21, 3), BoxStyle.SingleBorder)
-    val g1  = Graph(Size(16, 1), data, GraphStyle.Dot)
-    val g2  = Graph(Size(16, 2), data, GraphStyle.Step)
-    val g3  = Graph(Size(16, 2), data, GraphStyle.Quad)
+    val g1 = Graph(Size(16, 1), data, GraphStyle.Dot)
+    val g2 = Graph(Size(16, 2), data, GraphStyle.Step)
+    val g3 = Graph(Size(16, 2), data, GraphStyle.Quad)
     val gd = Grid(Size(7, 7), Size(3, 3), GridStyle.Frame2)
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
     val l  = Label(Size(16, 4), "this is a very long text that doesnt fit in the provided area entirely", AlignStyle.Left)
@@ -56,28 +79,11 @@ object Main extends App {
     } yield ()
   }
 
-  private def eventHandler(screen: Screen)(pos: Point)(ks: List[KeySeq]): Either[Throwable, EventLoop.Action] = {
-    // handle screen resize
-    val errOrResize = sequence(ks.filter(_.isInstanceOf[SizeKeySeq]).map { _ =>
-        for {
-          _ <- screen.clear()
-          _ <- render(screen)
-        } yield ()
-      })
-      .map(_ => ())
-
-    // display key codes
-    val errOrDisplay = sequence(ks.zipWithIndex.map({ case (keqSeq, i) =>
-        screen.put(pos.offset(0, i), keqSeq.toString)
-      }))
-      .map(_ => ())
-
-    for {
-      _ <- errOrResize
-      _ <- errOrDisplay
-      _ <- screen.flush()
-    } yield EventLoop.Action.Continue
-  }
+  private def sequence[A, B](es: Seq[Either[A, B]]): Either[A, Seq[B]] =
+    es.partitionMap(identity) match {
+      case (Nil, rights) => Right[A, Seq[B]](rights)
+      case (lefts, _)    => Left[A, Seq[B]](lefts.head)
+    }
 
   private def writeStdoutLog(t: Throwable): Unit =
     writeErrorLog(System.out)(t)
@@ -92,10 +98,4 @@ object Main extends App {
     t.printStackTrace(output)
     output.flush()
   }
-
-  private def sequence[A, B](es: Seq[Either[A, B]]): Either[A, Seq[B]] =
-    es.partitionMap(identity) match {
-      case (Nil, rights) => Right[A, Seq[B]](rights)
-      case (lefts, _)    => Left[A, Seq[B]](lefts.head)
-    }
 }

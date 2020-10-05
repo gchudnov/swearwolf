@@ -32,18 +32,6 @@ private[text] object RichTextStyler {
   private val StyleStrikethroughLong  = "strikethrough"
   private val StyleStrikethroughShort = "t"
 
-  private[impl] sealed trait RichStyle
-  private[impl] final case class RichBoxStyle private (inner: Seq[RichStyle])                      extends RichStyle
-  private[impl] final case class RichTextStyle private (value: String)                             extends RichStyle
-  private[impl] final case class RichForegroundStyle private (color: Color, inner: Seq[RichStyle]) extends RichStyle
-  private[impl] final case class RichBackgroundStyle private (color: Color, inner: Seq[RichStyle]) extends RichStyle
-  private[impl] final case class RichBoldStyle private (inner: Seq[RichStyle])                     extends RichStyle
-  private[impl] final case class RichItalicStyle private (inner: Seq[RichStyle])                   extends RichStyle
-  private[impl] final case class RichUnderlineStyle private (inner: Seq[RichStyle])                extends RichStyle
-  private[impl] final case class RichBlinkStyle private (inner: Seq[RichStyle])                    extends RichStyle
-  private[impl] final case class RichInvertStyle private (inner: Seq[RichStyle])                   extends RichStyle
-  private[impl] final case class RichStrikethroughStyle private (inner: Seq[RichStyle])            extends RichStyle
-
   /**
    * Convert blocks to styles
    * During conversion, check if blocks and attributes are recognized.
@@ -109,4 +97,16 @@ private[text] object RichTextStyler {
       case (Nil, rights) => Right[Throwable, Seq[StyleMapFunc]](rights)
       case (lefts, _)    => Left[Throwable, Seq[StyleMapFunc]](lefts.head)
     }
+
+  private[impl] sealed trait RichStyle
+  private[impl] final case class RichBoxStyle private (inner: Seq[RichStyle])                      extends RichStyle
+  private[impl] final case class RichTextStyle private (value: String)                             extends RichStyle
+  private[impl] final case class RichForegroundStyle private (color: Color, inner: Seq[RichStyle]) extends RichStyle
+  private[impl] final case class RichBackgroundStyle private (color: Color, inner: Seq[RichStyle]) extends RichStyle
+  private[impl] final case class RichBoldStyle private (inner: Seq[RichStyle])                     extends RichStyle
+  private[impl] final case class RichItalicStyle private (inner: Seq[RichStyle])                   extends RichStyle
+  private[impl] final case class RichUnderlineStyle private (inner: Seq[RichStyle])                extends RichStyle
+  private[impl] final case class RichBlinkStyle private (inner: Seq[RichStyle])                    extends RichStyle
+  private[impl] final case class RichInvertStyle private (inner: Seq[RichStyle])                   extends RichStyle
+  private[impl] final case class RichStrikethroughStyle private (inner: Seq[RichStyle])            extends RichStyle
 }

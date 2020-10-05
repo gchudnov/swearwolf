@@ -1,9 +1,9 @@
 package com.github.gchudnov.woods.label
 
 import com.github.gchudnov.swearwolf.term.ArrayScreen
-import com.github.gchudnov.swearwolf.util.{Point, Size}
-import com.github.gchudnov.woods.{AlignStyle, Label, Resources}
+import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.woods.label.impl.LabelDrawer
+import com.github.gchudnov.woods.{ AlignStyle, Label, Resources }
 import zio.test.Assertion._
 import zio.test._
 

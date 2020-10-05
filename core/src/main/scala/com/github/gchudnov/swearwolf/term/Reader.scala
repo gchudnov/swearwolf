@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.{KeySeq, UnfamiliarKeySeq}
+import com.github.gchudnov.swearwolf.{ KeySeq, UnfamiliarKeySeq }
 import com.github.gchudnov.swearwolf.term.readers._
 
 import scala.annotation.tailrec
@@ -11,7 +11,7 @@ import scala.annotation.tailrec
  * https://man7.org/linux/man-pages/man4/console_codes.4.html
  * https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_sequences
  */
-object Reader {
+private[term] object Reader {
 
   private val readers = List[KeySeqReader](CharReader, CtrlReader, EscReader, MouseReader)
 
@@ -36,12 +36,11 @@ object Reader {
     iterate(Vector.empty[KeySeq], bytes)
   }
 
-  private def anyRead(bytes: Seq[Byte]): ReadState = {
+  private def anyRead(bytes: Seq[Byte]): ReadState =
     readers.foldLeft(ReadState.empty) { (acc, reader) =>
       val res = reader.read(bytes)
       mergeReadResults(acc, res)
     }
-  }
 
   private def mergeReadResults(lhs: ReadState, rhs: ReadState): ReadState = (lhs, rhs) match {
     case (ParsedReadState(_, _), _) =>

@@ -1,7 +1,7 @@
 package com.github.gchudnov.woods.text
 
-import com.github.gchudnov.woods.{RichText}
-import com.github.gchudnov.woods.text.impl.{RichTextCompiler, RichTextParser, RichTextStyler}
+import com.github.gchudnov.woods.RichText
+import com.github.gchudnov.woods.text.impl.{ RichTextCompiler, RichTextParser, RichTextStyler }
 
 private[woods] object RichTextFactory {
 

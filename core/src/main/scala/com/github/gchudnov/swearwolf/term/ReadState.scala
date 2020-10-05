@@ -8,6 +8,6 @@ private[swearwolf] final case class PartialReadState(rest: Seq[Byte])           
 private[swearwolf] final case class UnknownReadState(rest: Seq[Byte])                extends ReadState
 private[swearwolf] final case class ParsedReadState(keqSeq: KeySeq, rest: Seq[Byte]) extends ReadState
 
-object ReadState {
+private[swearwolf] object ReadState {
   val empty: ReadState = UnknownReadState(Seq.empty[Byte])
 }

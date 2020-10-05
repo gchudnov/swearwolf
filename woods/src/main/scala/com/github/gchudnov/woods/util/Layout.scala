@@ -1,6 +1,6 @@
 package com.github.gchudnov.woods.util
 
-import com.github.gchudnov.swearwolf.util.{Point, Size}
+import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.woods.AlignStyle
 
 object Layout {

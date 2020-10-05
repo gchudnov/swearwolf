@@ -11,12 +11,17 @@ import fastparse._
  */
 private[text] object RichTextParser {
 
-  sealed trait Attr
-  final case class NamedAttr(key: String, value: String) extends Attr
-
-  sealed trait Block
-  final case class TextBlock(value: String)                                                                              extends Block
-  final case class NamedBlockSeq(name: String, attrs: Seq[Attr] = Seq.empty[Attr], inner: Seq[Block] = Seq.empty[Block]) extends Block
+  /**
+   * Parse styled text and return internal representation, Block, that can be converted for the output.
+   */
+  def read(input: String): Either[Throwable, Block] = {
+    val str = s"<root>${input}</root>"
+    parse(str, rich(_))
+      .fold(
+        (msg, pos, _) => Left[RichTextException, Block](new RichTextException(s"Cannot parse rich-text: '${msg}' at position: ${pos}")),
+        (t, _) => Right[RichTextException, Block](t)
+      )
+  }
 
   private def space[_: P]: P[Unit] = P(CharsWhileIn(" \t\r\n", 1))
   private def quote[_: P]: P[Unit] = P("\"" | "'")
@@ -42,16 +47,11 @@ private[text] object RichTextParser {
 
   private def rich[_: P]: P[Block] = tag ~ End
 
-  /**
-   * Parse styled text and return internal representation, Block, that can be converted for the output.
-   */
-  def read(input: String): Either[Throwable, Block] = {
-    val str = s"<root>${input}</root>"
-    parse(str, rich(_))
-      .fold(
-        (msg, pos, _) => Left[RichTextException, Block](new RichTextException(s"Cannot parse rich-text: '${msg}' at position: ${pos}")),
-        (t, _) => Right[RichTextException, Block](t)
-      )
-  }
+  sealed trait Attr
+  final case class NamedAttr(key: String, value: String) extends Attr
+
+  sealed trait Block
+  final case class TextBlock(value: String)                                                                              extends Block
+  final case class NamedBlockSeq(name: String, attrs: Seq[Attr] = Seq.empty[Attr], inner: Seq[Block] = Seq.empty[Block]) extends Block
 
 }

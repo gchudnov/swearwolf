@@ -1,8 +1,8 @@
 package com.github.gchudnov.woods.grid
 
 import com.github.gchudnov.swearwolf.term.ArrayScreen
-import com.github.gchudnov.swearwolf.util.{Point, Size}
-import com.github.gchudnov.woods.{Grid, GridStyle, Resources}
+import com.github.gchudnov.swearwolf.util.{ Point, Size }
+import com.github.gchudnov.woods.{ Grid, GridStyle, Resources }
 import zio.test.Assertion._
 import zio.test._
 

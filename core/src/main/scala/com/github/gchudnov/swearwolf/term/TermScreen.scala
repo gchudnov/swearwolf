@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.{KeySeq, Screen}
-import com.github.gchudnov.swearwolf.util.EventLoop.{Action, KeySeqHandler}
+import com.github.gchudnov.swearwolf.{ KeySeq, Screen }
+import com.github.gchudnov.swearwolf.util.EventLoop.{ Action, KeySeqHandler }
 import com.github.gchudnov.swearwolf.util.Text.sanitize
 import com.github.gchudnov.swearwolf.util.TextStyle._
 import com.github.gchudnov.swearwolf.util._
@@ -15,7 +15,7 @@ import scala.util.control.Exception.nonFatalCatch
  *
  * NOTE: when calling methods of the class, do not forget to call flush().
  */
-final class TermScreen(term: Term) extends Screen {
+private[swearwolf] final class TermScreen(term: Term) extends Screen {
 
   @volatile
   private var szScreen: Size = Size(0, 0)

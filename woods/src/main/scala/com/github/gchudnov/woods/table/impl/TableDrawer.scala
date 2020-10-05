@@ -1,28 +1,12 @@
 package com.github.gchudnov.woods.table.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Point, Size, TextStyle}
-import com.github.gchudnov.woods.{Table, TableStyle}
+import com.github.gchudnov.swearwolf.util.{ Point, Size, TextStyle }
 import com.github.gchudnov.woods.util.Symbols
 import com.github.gchudnov.woods.util.impl.Func
+import com.github.gchudnov.woods.{ Table, TableStyle }
 
 private[table] object TableDrawer {
-
-  private final case class TableDesc(
-    topLeft: String,
-    topRight: String,
-    bottomLeft: String,
-    bottomRight: String,
-    ixTop: String,
-    ixBottom: String,
-    ixLeft: String,
-    ixRight: String,
-    ix: String,
-    horz: String,
-    vert: String,
-    empty: String,
-    pad: Int
-  )
 
   def estimateSize(data: Seq[Seq[Any]], tableStyle: TableStyle): Size =
     if (data.isEmpty) {
@@ -101,5 +85,21 @@ private[table] object TableDrawer {
         )
 
     }
+
+  private final case class TableDesc(
+    topLeft: String,
+    topRight: String,
+    bottomLeft: String,
+    bottomRight: String,
+    ixTop: String,
+    ixBottom: String,
+    ixLeft: String,
+    ixRight: String,
+    ix: String,
+    horz: String,
+    vert: String,
+    empty: String,
+    pad: Int
+  )
 
 }

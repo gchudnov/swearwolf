@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.util
 
-import com.github.gchudnov.swearwolf.util.impl.{Combinable, CombinableOps}
+import com.github.gchudnov.swearwolf.util.impl.{ Combinable, CombinableOps }
 
 private final class CombinableTextStyle extends Combinable[TextStyle] {
   override def combine(lhs: TextStyle, rhs: TextStyle): TextStyle =
@@ -17,7 +17,7 @@ private final class CombinableTextStyle extends Combinable[TextStyle] {
 }
 
 private[util] trait TextStyleSyntax {
-  private implicit val combinableTextStyle: CombinableTextStyle = new CombinableTextStyle()
+  private implicit val combinableTextStyle: CombinableTextStyle   = new CombinableTextStyle()
   implicit def styleOps(lhs: TextStyle): CombinableOps[TextStyle] = new CombinableOps[TextStyle](lhs)
 }
 

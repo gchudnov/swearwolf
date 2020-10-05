@@ -324,10 +324,10 @@ object Symbols {
     KeyCode.Control   -> "CTRL"
   )
 
-  def keyCode(key: KeyCode): String =
-    keys.getOrElse(key, NotFound)
-
   def keyCombination(ks: Seq[KeyCode]): String =
     ks.map(keyCode).mkString(" + ")
+
+  def keyCode(key: KeyCode): String =
+    keys.getOrElse(key, NotFound)
 
 }

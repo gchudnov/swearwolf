@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
-import java.io.{InputStream, OutputStream}
+import java.io.{ InputStream, OutputStream }
 
 import com.github.gchudnov.swearwolf.KeySeq
 

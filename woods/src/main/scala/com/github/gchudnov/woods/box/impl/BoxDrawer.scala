@@ -1,24 +1,13 @@
 package com.github.gchudnov.woods.box.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Point, TextStyle}
+import com.github.gchudnov.swearwolf.util.{ Point, TextStyle }
 import com.github.gchudnov.woods.BoxStyle._
 import com.github.gchudnov.woods.util.Symbols
 import com.github.gchudnov.woods.util.impl.Func
-import com.github.gchudnov.woods.{Box, BoxStyle}
+import com.github.gchudnov.woods.{ Box, BoxStyle }
 
 private[box] object BoxDrawer {
-
-  private final case class BoxDesc(
-    ht: String, // horizontal-top
-    hb: String, // horizontal-bottom
-    vl: String, // vertical-left
-    vr: String, // vertical-right
-    tl: String, // top-left
-    tr: String, // top-right
-    bl: String, // bottom-left
-    br: String  // bottom-right
-  )
 
   def draw(screen: Screen)(pt: Point, box: Box, textStyle: TextStyle): Either[Throwable, Unit] =
     if (box.size.width < 2 || box.size.height < 2)
@@ -92,4 +81,15 @@ private[box] object BoxDrawer {
           br = Symbols.Quadrant_BCD
         )
     }
+
+  private final case class BoxDesc(
+    ht: String, // horizontal-top
+    hb: String, // horizontal-bottom
+    vl: String, // vertical-left
+    vr: String, // vertical-right
+    tl: String, // top-left
+    tr: String, // top-right
+    bl: String, // bottom-left
+    br: String  // bottom-right
+  )
 }

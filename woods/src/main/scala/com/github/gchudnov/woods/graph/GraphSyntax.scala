@@ -1,7 +1,7 @@
 package com.github.gchudnov.woods.graph
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Point, TextStyle}
+import com.github.gchudnov.swearwolf.util.{ Point, TextStyle }
 import com.github.gchudnov.woods.Graph
 import com.github.gchudnov.woods.graph.impl.GraphDrawer
 

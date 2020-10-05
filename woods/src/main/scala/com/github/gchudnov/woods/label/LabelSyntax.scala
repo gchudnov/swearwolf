@@ -1,7 +1,7 @@
 package com.github.gchudnov.woods.label
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Point, TextStyle}
+import com.github.gchudnov.swearwolf.util.{ Point, TextStyle }
 import com.github.gchudnov.woods.Label
 import com.github.gchudnov.woods.label.impl.LabelDrawer
 

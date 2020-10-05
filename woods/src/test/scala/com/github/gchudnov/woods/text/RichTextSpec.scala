@@ -2,9 +2,9 @@ package com.github.gchudnov.woods.text
 
 import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.Bytes.toHexStr
-import com.github.gchudnov.swearwolf.util.{Point, Size}
-import com.github.gchudnov.woods.{Resources, RichText}
-import zio.test.Assertion.{equalTo, isLeft, isRight}
+import com.github.gchudnov.swearwolf.util.{ Point, Size }
+import com.github.gchudnov.woods.{ Resources, RichText }
+import zio.test.Assertion.{ equalTo, isLeft, isRight }
 import zio.test._
 
 object RichTextSpec extends DefaultRunnableSpec {

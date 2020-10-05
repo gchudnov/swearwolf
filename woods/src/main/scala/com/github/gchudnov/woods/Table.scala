@@ -1,7 +1,7 @@
 package com.github.gchudnov.woods
 
 import com.github.gchudnov.swearwolf.util.Size
-import com.github.gchudnov.woods.table.{BasicTable, TableFactory}
+import com.github.gchudnov.woods.table.{ BasicTable, TableFactory }
 
 trait Table {
   def data: Seq[Seq[Any]]

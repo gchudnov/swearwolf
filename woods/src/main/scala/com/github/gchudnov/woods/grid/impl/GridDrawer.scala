@@ -1,27 +1,12 @@
 package com.github.gchudnov.woods.grid.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{Point, TextStyle}
-import com.github.gchudnov.woods.{Grid, GridStyle}
+import com.github.gchudnov.swearwolf.util.{ Point, TextStyle }
 import com.github.gchudnov.woods.util.Symbols
 import com.github.gchudnov.woods.util.impl.Func
+import com.github.gchudnov.woods.{ Grid, GridStyle }
 
 private[grid] object GridDrawer {
-
-  private final case class GridDesc(
-    topLeft: String,
-    topRight: String,
-    bottomLeft: String,
-    bottomRight: String,
-    ixTop: String,
-    ixBottom: String,
-    ixLeft: String,
-    ixRight: String,
-    ix: String,
-    horz: String,
-    vert: String,
-    empty: String
-  )
 
   def draw(screen: Screen)(pt: Point, grid: Grid, textStyle: TextStyle): Either[Throwable, Unit] =
     if (grid.size.width < 2 || grid.size.height < 2)
@@ -144,5 +129,20 @@ private[grid] object GridDrawer {
           empty = Symbols.Empty
         )
     }
+
+  private final case class GridDesc(
+    topLeft: String,
+    topRight: String,
+    bottomLeft: String,
+    bottomRight: String,
+    ixTop: String,
+    ixBottom: String,
+    ixLeft: String,
+    ixRight: String,
+    ix: String,
+    horz: String,
+    vert: String,
+    empty: String
+  )
 
 }

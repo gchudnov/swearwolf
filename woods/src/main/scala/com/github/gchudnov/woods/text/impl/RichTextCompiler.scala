@@ -9,17 +9,6 @@ import com.github.gchudnov.woods.text.impl.RichTextStyler._
  */
 private[text] object RichTextCompiler {
 
-  final case class State(
-    fgColor: Vector[Color] = Vector.empty[Color],
-    bgColor: Vector[Color] = Vector.empty[Color],
-    bold: Vector[Unit] = Vector.empty[Unit],
-    italic: Vector[Unit] = Vector.empty[Unit],
-    underline: Vector[Unit] = Vector.empty[Unit],
-    blink: Vector[Unit] = Vector.empty[Unit],
-    invert: Vector[Unit] = Vector.empty[Unit],
-    strikethrough: Vector[Unit] = Vector.empty[Unit]
-  )
-
   /**
    * Compiles styles to the series of commands for the terminal.
    */
@@ -110,5 +99,16 @@ private[text] object RichTextCompiler {
 
     iterate(Array.empty[Byte], State(), root)
   }
+
+  final case class State(
+    fgColor: Vector[Color] = Vector.empty[Color],
+    bgColor: Vector[Color] = Vector.empty[Color],
+    bold: Vector[Unit] = Vector.empty[Unit],
+    italic: Vector[Unit] = Vector.empty[Unit],
+    underline: Vector[Unit] = Vector.empty[Unit],
+    blink: Vector[Unit] = Vector.empty[Unit],
+    invert: Vector[Unit] = Vector.empty[Unit],
+    strikethrough: Vector[Unit] = Vector.empty[Unit]
+  )
 
 }
