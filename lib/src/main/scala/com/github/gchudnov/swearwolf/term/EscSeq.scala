@@ -14,7 +14,6 @@ final case class EscSeq(value: String) extends KeySeq {
 }
 
 object EscSeq {
-
   private val EscChar: Char = '\u001b'
 
   private def esc(data: String): EscSeq =

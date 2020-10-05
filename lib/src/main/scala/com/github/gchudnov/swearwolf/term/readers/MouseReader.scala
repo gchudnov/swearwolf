@@ -1,5 +1,6 @@
 package com.github.gchudnov.swearwolf.term.readers
 
+import com.github.gchudnov.swearwolf.{KeyModifier, MouseAction, MouseButton}
 import com.github.gchudnov.swearwolf.term._
 import com.github.gchudnov.swearwolf.util.Point
 

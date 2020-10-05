@@ -1,5 +1,6 @@
 package com.github.gchudnov.swearwolf.term.readers
 
+import com.github.gchudnov.swearwolf.{KeyCode, KeyModifier}
 import com.github.gchudnov.swearwolf.term._
 
 /**

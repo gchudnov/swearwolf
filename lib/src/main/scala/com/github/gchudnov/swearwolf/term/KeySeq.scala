@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.util.{ Point, Size }
+import com.github.gchudnov.swearwolf.{KeyCode, KeyModifier, MouseAction, MouseButton}
+import com.github.gchudnov.swearwolf.util.{Point, Size}
 
 trait KeySeq
 

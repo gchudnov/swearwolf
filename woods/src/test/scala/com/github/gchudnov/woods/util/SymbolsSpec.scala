@@ -1,6 +1,6 @@
 package com.github.gchudnov.woods.util
 
-import com.github.gchudnov.swearwolf.term.KeyCode
+import com.github.gchudnov.swearwolf.KeyCode
 import zio.test.Assertion._
 import zio.test._
 

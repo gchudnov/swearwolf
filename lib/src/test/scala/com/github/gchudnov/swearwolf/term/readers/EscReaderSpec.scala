@@ -1,5 +1,6 @@
 package com.github.gchudnov.swearwolf.term.readers
 
+import com.github.gchudnov.swearwolf.{KeyCode, KeyModifier}
 import com.github.gchudnov.swearwolf.term._
 import com.github.gchudnov.swearwolf.util.Size
 import zio.test.Assertion._

@@ -1,5 +1,6 @@
 package com.github.gchudnov.swearwolf.term.readers
 
+import com.github.gchudnov.swearwolf.KeyCode
 import com.github.gchudnov.swearwolf.term._
 import zio.test.Assertion.equalTo
 import zio.test._

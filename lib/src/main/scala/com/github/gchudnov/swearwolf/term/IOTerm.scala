@@ -11,7 +11,7 @@ import scala.util.control.Exception.nonFatalCatch
  * @param in input stream
  * @param out output stream
  */
-class IOTerm(in: InputStream, out: OutputStream) extends Term {
+private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term {
   private val raw = new ListBuffer[Byte]
 
   override def write(bytes: Array[Byte]): Either[Throwable, Unit] =

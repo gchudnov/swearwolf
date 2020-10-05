@@ -1,9 +1,8 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf
 
-trait MouseButton
+sealed trait MouseButton
 
 object MouseButton {
-
   case object Left   extends MouseButton
   case object Middle extends MouseButton
   case object Right  extends MouseButton
