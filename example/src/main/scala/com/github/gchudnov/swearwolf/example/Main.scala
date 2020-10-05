@@ -4,8 +4,6 @@ import java.io.{FileOutputStream, PrintStream}
 
 import com.github.gchudnov.swearwolf._
 import com.github.gchudnov.swearwolf.term.{KeySeq, SizeKeySeq}
-import com.github.gchudnov.swearwolf.util.EventLoop.Action
-import com.github.gchudnov.swearwolf.util.TextStyle._
 import com.github.gchudnov.swearwolf.util._
 import com.github.gchudnov.woods._
 
@@ -31,6 +29,8 @@ object Main extends App {
     .fold(writeFileLog, _ => ())
 
   private def render(sc: Screen): Either[Throwable, Unit] = {
+    import TextStyle._
+
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
     val b  = Box(Size(21, 3), BoxStyle.SingleBorder)
@@ -77,7 +77,7 @@ object Main extends App {
       _ <- errOrResize
       _ <- errOrDisplay
       _ <- screen.flush()
-    } yield Action.Continue
+    } yield EventLoop.Action.Continue
   }
 
   private def writeStdoutLog(t: Throwable): Unit =
