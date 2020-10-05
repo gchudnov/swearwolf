@@ -4,7 +4,12 @@ import com.github.gchudnov.swearwolf.util.{Point, Size}
 
 trait KeySeq
 
-case object UnknownKeySeq extends KeySeq
+/**
+ * Marks that a KeySeq was partially parsed and no data bytes were consumed.
+ * Parsing should be resumed when new data is received.
+ */
+private[swearwolf] case object UnknownKeySeq extends KeySeq
+
 case object PartialKeySeq extends KeySeq
 
 final case class SizeKeySeq(sz: Size)                                                                                              extends KeySeq
