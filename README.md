@@ -4,6 +4,8 @@
 
 > A low level Scala library to construct text user interfaces.
 
+![Scala CI](https://github.com/gchudnov/swearwolf/workflows/Scala%20CI/badge.svg)
+
 Using this library, one can create full-screen text-based applications.
 The library sends the correct control characters to the terminal to display text in the given style.
 
