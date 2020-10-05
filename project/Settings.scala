@@ -69,8 +69,7 @@ object Settings {
   )
 
   val noPublish: Seq[Setting[_]] = Seq(
-    Test / publishArtifact := false,
-    Compile / publishArtifact := false
+    publishArtifact := false
   )
 
   val sonatype: Seq[Setting[_]] = Seq(
