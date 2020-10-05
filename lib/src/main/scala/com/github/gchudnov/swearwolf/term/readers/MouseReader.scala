@@ -33,7 +33,7 @@ import scala.annotation.tailrec
  * 1b    5b 3c 30 3b 37 35 3b 31 39 6d
  * {ESC} [  <  0  ;         ;       m
  */
-object MouseReader extends BasicKeySeqReader {
+private[term] object MouseReader extends BasicKeySeqReader {
 
   trait State
 

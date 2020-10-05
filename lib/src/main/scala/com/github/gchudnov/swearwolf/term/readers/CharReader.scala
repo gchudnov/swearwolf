@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.term._
 /**
  * Reads a character sequence.
  */
-object CharReader extends BasicKeySeqReader {
+private[term] object CharReader extends BasicKeySeqReader {
 
   override def read(data: Seq[Byte]): (KeySeq, Seq[Byte]) =
     if (data.isEmpty)

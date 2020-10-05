@@ -30,7 +30,7 @@ import scala.annotation.tailrec
  *   ESC [  8  ;  5  3  ;  2  0  4  t
  *               height     width
  */
-object EscReader extends BasicKeySeqReader {
+private[term] object EscReader extends BasicKeySeqReader {
 
   trait State
 

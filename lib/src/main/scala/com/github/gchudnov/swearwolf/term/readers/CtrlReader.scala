@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.term._
 /**
  * Reads Ctrl + {KEY} sequences.
  */
-object CtrlReader extends BasicKeySeqReader {
+private[term] object CtrlReader extends BasicKeySeqReader {
 
   val ctrlMap: Map[Byte, Byte] = Map(
     0x00.toByte -> ' '.toByte, // ^@
