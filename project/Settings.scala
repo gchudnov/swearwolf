@@ -90,8 +90,8 @@ object Settings {
       setReleaseVersion,
       commitReleaseVersion,
       tagRelease,
-      releaseStepCommandAndRemaining("+publishSigned"),
-      releaseStepCommandAndRemaining("sonatypeReleaseAll"),
+      releaseStepCommandAndRemaining("publishSigned"),
+      releaseStepCommandAndRemaining("sonatypeBundleRelease"),
       setNextVersion,
       commitNextVersion,
       pushChanges
