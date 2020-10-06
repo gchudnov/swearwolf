@@ -1,3 +1,4 @@
+import com.jsuereth.sbtpgp.PgpKeys
 import sbt.Keys._
 import sbt._
 import sbtassembly.AssemblyKeys._
@@ -56,6 +57,7 @@ object Settings {
     compileOrder := CompileOrder.JavaThenScala,
     organization := "com.github.gchudnov",
     homepage := Some(url("https://github.com/gchudnov/swearwolf")),
+    description := "A low level Scala library for creating text user interfaces.",
     licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT")),
     scmInfo := Some(
       ScmInfo(
@@ -65,7 +67,8 @@ object Settings {
     ),
     developers := List(
       Developer(id = "gchudnov", name = "Grigorii Chudnov", email = "g.chudnov@gmail.com", url = url("https://github.com/gchudnov"))
-    )
+    ),
+    publishArtifact in Test := false
   )
 
   val noPublish: Seq[Setting[_]] = Seq(
@@ -82,6 +85,7 @@ object Settings {
     publishTo := Some("Sonatype Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"),
     releaseCrossBuild := true,
     releaseIgnoreUntrackedFiles := true,
+    releasePublishArtifactsAction := PgpKeys.publishSigned.value,
     releaseProcess := Seq[ReleaseStep](
       checkSnapshotDependencies,
       inquireVersions,
@@ -90,7 +94,7 @@ object Settings {
       setReleaseVersion,
       commitReleaseVersion,
       tagRelease,
-      releaseStepCommandAndRemaining("publishSigned"),
+      releaseStepCommandAndRemaining("+publishSigned"),
       releaseStepCommandAndRemaining("sonatypeBundleRelease"),
       setNextVersion,
       commitNextVersion,

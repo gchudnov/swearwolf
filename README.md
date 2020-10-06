@@ -2,7 +2,7 @@
 
 <img src="res/images/swearwolf-256.png" width="256px" height="219px" align="right" />
 
-> A low level Scala library to construct text user interfaces.
+> A low level Scala library for creating text user interfaces.
 
 ![Scala CI](https://github.com/gchudnov/swearwolf/workflows/Scala%20CI/badge.svg)
 
