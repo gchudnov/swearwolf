@@ -82,7 +82,7 @@ object Settings {
     publishMavenStyle := true,
     Test / publishArtifact := false,
     credentials := Seq(Credentials(Path.userHome / ".sbt" / ".credentials-sonatype")),
-    usePgpKeyHex("8CA605F338C75A1312FABA494C9DC2E5DBC3BED2"),
+    usePgpKeyHex("8A64557ABEC7965C31A1DF8DE12F2C6DE96AF6D1"),
     publishTo := Some("Sonatype Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"),
     releaseCrossBuild := true,
     releaseIgnoreUntrackedFiles := true,
