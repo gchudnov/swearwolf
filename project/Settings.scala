@@ -67,8 +67,7 @@ object Settings {
     ),
     developers := List(
       Developer(id = "gchudnov", name = "Grigorii Chudnov", email = "g.chudnov@gmail.com", url = url("https://github.com/gchudnov"))
-    ),
-    publishArtifact in Test := false
+    )
   )
 
   val noPublish: Seq[Setting[_]] = Seq(
