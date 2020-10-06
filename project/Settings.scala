@@ -1,4 +1,5 @@
 import com.jsuereth.sbtpgp.PgpKeys
+import com.jsuereth.sbtpgp.SbtPgp.autoImport.usePgpKeyHex
 import sbt.Keys._
 import sbt._
 import sbtassembly.AssemblyKeys._
@@ -81,6 +82,7 @@ object Settings {
     publishMavenStyle := true,
     Test / publishArtifact := false,
     credentials := Seq(Credentials(Path.userHome / ".sbt" / ".credentials-sonatype")),
+    usePgpKeyHex("8CA605F338C75A1312FABA494C9DC2E5DBC3BED2"),
     publishTo := Some("Sonatype Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"),
     releaseCrossBuild := true,
     releaseIgnoreUntrackedFiles := true,
