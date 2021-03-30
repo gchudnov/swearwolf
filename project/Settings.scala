@@ -8,7 +8,7 @@ import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 
 object Settings {
-  private val scala213 = "2.13.3"
+  private val scala213 = "2.13.5"
   private val scalaV   = scala213
 
   private val sharedScalacOptions = Seq(
@@ -38,9 +38,9 @@ object Settings {
   val supportedScalaVersions = List(scala213)
 
   val assemblySettings: Seq[Setting[_]] = Seq(
-    test in assembly := {},
-    assemblyOutputPath in assembly := new File("./target") / (assemblyJarName in assembly).value,
-    assemblyMergeStrategy in assembly := defaultMergeStrategy((assemblyMergeStrategy in assembly).value)
+    assembly / test := {},
+    assembly / assemblyOutputPath := new File("./target") / (assembly / assemblyJarName).value,
+    assembly / assemblyMergeStrategy := defaultMergeStrategy((assembly / assemblyMergeStrategy).value)
   )
 
   val sharedResolvers: Vector[MavenRepository] = Seq(
@@ -75,7 +75,7 @@ object Settings {
     publishArtifact := false,
     publish := {},
     publishLocal := {},
-    skip in publish := true
+    publish / skip := true
   )
 
   val sonatype: Seq[Setting[_]] = Seq(

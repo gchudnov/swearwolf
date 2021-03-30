@@ -7,7 +7,7 @@ Global / cancelable := true
 def testFilter(name: String): Boolean = (name endsWith "Spec")
 
 lazy val testSettings = Seq(
-  testOptions in Test ++= Seq(Tests.Filter(testFilter))
+  Test / testOptions ++= Seq(Tests.Filter(testFilter))
 )
 
 lazy val allSettings = Settings.shared ++ testSettings
@@ -40,9 +40,9 @@ lazy val example = (project in file("example"))
   .settings(
     name := "example",
     libraryDependencies ++= Dependencies.Example,
-    mainClass in assembly := Some("com.github.gchudnov.swearwolf.example.Main"),
-    assemblyOption in assembly := (assemblyOption in assembly).value.copy(prependShellScript = Some(defaultUniversalScript(shebang = true))),
-    assemblyJarName in assembly := s"${name.value}"
+    assembly / mainClass := Some("com.github.gchudnov.swearwolf.example.Main"),
+    assembly / assemblyOption := (assembly / assemblyOption).value.copy(prependShellScript = Some(defaultUniversalScript(shebang = true))),
+    assembly / assemblyJarName := s"${name.value}"
   )
 
 lazy val root = (project in file("."))
@@ -55,3 +55,5 @@ lazy val root = (project in file("."))
 
 addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
 addCommandAlias("chk", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
+addCommandAlias("plg", "; reload plugins ; libraryDependencies ; reload return")
+addCommandAlias("upd", ";dependencyUpdates; reload plugins; dependencyUpdates; reload return") // NOTE: to use version check for plugins, add to the meta-project (/project/proect) sbt-updates.sbt with "sbt-updates" plugin as well.
