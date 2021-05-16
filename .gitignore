@@ -5,3 +5,4 @@
 .idea
 .metals
 target
+**/metals.sbt
