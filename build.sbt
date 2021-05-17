@@ -56,4 +56,4 @@ lazy val root = (project in file("."))
 addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
 addCommandAlias("chk", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")
 addCommandAlias("plg", "; reload plugins ; libraryDependencies ; reload return")
-addCommandAlias("upd", ";dependencyUpdates; reload plugins; dependencyUpdates; reload return") // NOTE: to use version check for plugins, add to the meta-project (/project/proect) sbt-updates.sbt with "sbt-updates" plugin as well.
+addCommandAlias("upd", ";dependencyUpdates; reload plugins; dependencyUpdates; reload return") // NOTE: to use version check for plugins, add to the meta-project (/project/project) sbt-updates.sbt with "sbt-updates" plugin as well.
