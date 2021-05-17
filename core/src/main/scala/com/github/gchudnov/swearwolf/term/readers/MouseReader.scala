@@ -36,7 +36,7 @@ import scala.annotation.tailrec
  */
 private[term] object MouseReader extends BasicKeySeqReader {
 
-  trait State
+  sealed trait State
 
   case object Start    extends State
   case object Bracket  extends State

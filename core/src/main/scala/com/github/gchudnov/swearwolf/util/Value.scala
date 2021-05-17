@@ -39,6 +39,8 @@ object Value {
       case _: Fractional[T] =>
         implicit val fraT: Fractional[T] = numT.asInstanceOf[Fractional[T]]
         fraT.div(a, b)
+      case _ =>
+        sys.error("unexpected data type in division")
     }
   }
 }

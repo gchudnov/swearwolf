@@ -8,6 +8,7 @@ import com.github.gchudnov.swearwolf.woods.{AlignStyle, Box, BoxStyle, Graph, Gr
 
 import scala.util.Using
 import scala.util.control.Exception.nonFatalCatch
+import scala.annotation.nowarn
 
 object Main extends App {
 
@@ -61,7 +62,7 @@ object Main extends App {
     val g3 = Graph(Size(16, 2), data, GraphStyle.Quad)
     val gd = Grid(Size(7, 7), Size(3, 3), GridStyle.Frame2)
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
-    val l  = Label(Size(16, 4), "this is a very long text that doesnt fit in the provided area entirely", AlignStyle.Left)
+    val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
     for {
       rich <- RichText.make("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
@@ -85,6 +86,7 @@ object Main extends App {
       case (lefts, _)    => Left[A, Seq[B]](lefts.head)
     }
 
+  @nowarn
   private def writeStdoutLog(t: Throwable): Unit =
     writeErrorLog(System.out)(t)
 
