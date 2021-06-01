@@ -5,11 +5,13 @@ import com.github.gchudnov.swearwolf.util.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.util.{ Point, Size, TextStyle }
 
 /**
- * Screen that is backed by the array.
- * All strings that are written to it are stored without styles.
- * @param szScreen size of the screen.
- * @param cellChar character to put in 1 cell.
- * @param borderChar character to use on the right-side of the screen as a delimiter.
+ * Screen that is backed by the array. All strings that are written to it are stored without styles.
+ * @param szScreen
+ *   size of the screen.
+ * @param cellChar
+ *   character to put in 1 cell.
+ * @param borderChar
+ *   character to use on the right-side of the screen as a delimiter.
  */
 final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends Screen {
   import ArrayScreen._

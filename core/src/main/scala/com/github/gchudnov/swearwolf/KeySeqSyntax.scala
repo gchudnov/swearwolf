@@ -6,7 +6,8 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
 
   /**
    * Get Size from the key sequence.
-   * @return Some(Size) if the key sequence is size one otherwise None.
+   * @return
+   *   Some(Size) if the key sequence is size one otherwise None.
    */
   def size: Option[Size] = keqSeq match {
     case SizeKeySeq(sz) =>
@@ -17,7 +18,8 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
 
   /**
    * Get KeyModifier out of key sequence.
-   * @return non-empty Set[KeyModifier] if key sequence defines key modifiers, otherwise - an empty set.
+   * @return
+   *   non-empty Set[KeyModifier] if key sequence defines key modifiers, otherwise - an empty set.
    */
   def mods: Set[KeyModifier] = keqSeq match {
     case CharKeySeq(_, ms) =>
@@ -30,7 +32,8 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
 
   /**
    * Get a Char out of key sequence.
-   * @return Some(Char) if the key sequence defines characters, otherwise None.
+   * @return
+   *   Some(Char) if the key sequence defines characters, otherwise None.
    */
   def char: Option[Char] = keqSeq match {
     case CharKeySeq(ch, _) =>
@@ -41,7 +44,8 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
 
   /**
    * Get KeyCode out of the key sequence.
-   * @return Some(KeyCode) if the key sequence defines KeyCode, otherwise None.
+   * @return
+   *   Some(KeyCode) if the key sequence defines KeyCode, otherwise None.
    */
   def keyCode: Option[KeyCode] = keqSeq match {
     case CtrlKeySeq(keyCode, _) =>
@@ -52,7 +56,8 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
 
   /**
    * Gets a sequence of bytes out of the key sequence.
-   * @return Some(Seq[Byte]) if the sequence provides them, otherwise None
+   * @return
+   *   Some(Seq[Byte]) if the sequence provides them, otherwise None
    */
   def bytes: Option[Seq[Byte]] = keqSeq match {
     case UnknownKeySeq(bs) =>
@@ -63,7 +68,8 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
 
   /**
    * Get point out of the key sequence.
-   * @return Some(Point) if key sequence provides point, otherwise None
+   * @return
+   *   Some(Point) if key sequence provides point, otherwise None
    */
   def point: Option[Point] = keqSeq match {
     case MouseKeySeq(pt, _, _, _) =>
@@ -74,25 +80,29 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
 
   /**
    * Checks whether key sequence is an ESC.
-   * @return True if ESC button was clicked, otherwise False.
+   * @return
+   *   True if ESC button was clicked, otherwise False.
    */
   def isEsc: Boolean = keyCode.contains(KeyCode.Esc)
 
   /**
    * Checks whether key sequence is Size-event.
-   * @return True if key sequence is size event, otherwise False.
+   * @return
+   *   True if key sequence is size event, otherwise False.
    */
   def isSize: Boolean = keqSeq.isInstanceOf[SizeKeySeq]
 
   /**
    * Checks if key sequence is a mouse action.
-   * @return True if key sequence is a mouse action, otherwise False.
+   * @return
+   *   True if key sequence is a mouse action, otherwise False.
    */
   def isMouseAction: Boolean = keqSeq.isInstanceOf[MouseKeySeq]
 
   /**
    * Checks if key sequence is a mouse press event.
-   * @return True if key sequence is a mouse press event, otherwise false.
+   * @return
+   *   True if key sequence is a mouse press event, otherwise false.
    */
   def isMousePress: Boolean = keqSeq match {
     case MouseKeySeq(_, _, action, _) =>
@@ -103,7 +113,8 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal {
 
   /**
    * Checks if key sequence is a mouse release event.
-   * @return True if key sequence is a mouse release event, otherwise false.
+   * @return
+   *   True if key sequence is a mouse release event, otherwise false.
    */
   def isMouseRelease: Boolean = keqSeq match {
     case MouseKeySeq(_, _, action, _) =>

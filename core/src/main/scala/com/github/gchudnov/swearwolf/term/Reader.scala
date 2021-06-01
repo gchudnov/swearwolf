@@ -8,7 +8,8 @@ import scala.annotation.tailrec
 /**
  * Reads bytes from buffer and returns (KeySeq, rest of the bytes that were not parsed)
  *
- * https://man7.org/linux/man-pages/man4/console_codes.4.html
+ * https://man7.org/linux/man-pages/man4/console_codes.4.html 
+ * 
  * https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_sequences
  */
 private[term] object Reader {

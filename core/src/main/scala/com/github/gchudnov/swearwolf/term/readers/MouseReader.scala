@@ -15,6 +15,8 @@ import scala.annotation.tailrec
  *
  * https://upload.wikimedia.org/wikipedia/commons/d/dd/ASCII-Table.svg
  *
+ * {{{
+ *
  * SGR 1006 example: "\e[<0;15;240M"
  * mouse release has trailing 'm' rather than 'M'.
  *
@@ -33,6 +35,8 @@ import scala.annotation.tailrec
  * Left Mouse Key Release:
  * 1b    5b 3c 30 3b 37 35 3b 31 39 6d
  * {ESC} [  <  0  ;         ;       m
+ *
+ * }}}
  */
 private[term] object MouseReader extends BasicKeySeqReader {
 

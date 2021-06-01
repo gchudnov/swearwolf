@@ -434,7 +434,7 @@ object NamedColor {
 
   def parse(name: String): Either[Throwable, Color] = {
     val sanitizedColor = name.toLowerCase.replaceAll("_", "-")
-    colors.get(sanitizedColor).fold(Left(new ColorException(s"Named color is unknown: ${name}")): Either[Throwable, Color])(c => Right(c))
+    colors.get(sanitizedColor).fold(Left(new ColorException(s"Named color is unknown: $name")): Either[Throwable, Color])(c => Right(c))
   }
 
 }

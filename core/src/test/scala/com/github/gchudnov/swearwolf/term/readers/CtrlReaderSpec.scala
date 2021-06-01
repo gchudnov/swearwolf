@@ -22,7 +22,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       },
       test(s"{ESC}") {
-        val input      = s"${EscChar}"
+        val input      = s"$EscChar"
         val inputBytes = input.getBytes
 
         val expected = ParsedReadState(CtrlKeySeq(KeyCode.Esc, Set.empty[KeyModifier]), Seq.empty[Byte])
@@ -31,7 +31,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       },
       test(s"{ESC}{ESC}") {
-        val input      = s"${EscChar}${EscChar}"
+        val input      = s"$EscChar$EscChar"
         val inputBytes = input.getBytes
 
         val expected = ParsedReadState(CtrlKeySeq(KeyCode.Esc, Set.empty[KeyModifier]), Seq(EscChar.toByte))
@@ -40,7 +40,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       },
       test(s"{ESC}{ESC}a") {
-        val input      = s"${EscChar}${EscChar}a"
+        val input      = s"$EscChar${EscChar}a"
         val inputBytes = input.getBytes
 
         val expected = ParsedReadState(CtrlKeySeq(KeyCode.Esc, Set.empty[KeyModifier]), Seq(EscChar.toByte, 'a'.toByte))
@@ -49,7 +49,7 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       },
       test(s"0x7f == Backspace") {
-        val input      = s"${BackspaceChar}"
+        val input      = s"$BackspaceChar"
         val inputBytes = input.getBytes
 
         val expected = ParsedReadState(CtrlKeySeq(KeyCode.Backspace, Set.empty[KeyModifier]), Seq.empty[Byte])

@@ -27,7 +27,7 @@ private[readers] abstract class BasicKeySeqReader extends KeySeqReader {
     else
       nonFatalCatch
         .either(Character.UnicodeBlock.of(value.toInt))
-        .flatMap(Option(_).toRight(new RuntimeException(s"${value} is not a member of a unicode block")))
+        .flatMap(Option(_).toRight(new RuntimeException(s"$value is not a member of a unicode block")))
         .forall(_ != Character.UnicodeBlock.SPECIALS)
 
   // '<'

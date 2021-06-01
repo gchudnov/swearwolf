@@ -4,7 +4,7 @@ object Dependencies {
   object versions {
     val fastparse     = "2.3.2"
     val kindProjector = "0.10.3"
-    val zio           = "1.0.5"
+    val zio           = "1.0.8"
   }
 
   private val kindProjector = compilerPlugin(

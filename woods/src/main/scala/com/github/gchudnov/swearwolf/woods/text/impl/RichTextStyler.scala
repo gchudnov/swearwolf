@@ -7,8 +7,7 @@ import RichTextParser._
 import com.github.gchudnov.swearwolf.woods.text.RichTextException
 
 /**
- * Processes parsed text and convert blocks and attributes to styles.
- * At this stage all unknown tags and attribute will trigger an error.
+ * Processes parsed text and convert blocks and attributes to styles. At this stage all unknown tags and attribute will trigger an error.
  */
 private[text] object RichTextStyler {
 
@@ -34,9 +33,7 @@ private[text] object RichTextStyler {
   private val StyleStrikethroughShort = "t"
 
   /**
-   * Convert blocks to styles
-   * During conversion, check if blocks and attributes are recognized.
-   * If not, return an error.
+   * Convert blocks to styles During conversion, check if blocks and attributes are recognized. If not, return an error.
    */
   def style(block: Block): Either[Throwable, RichStyle] = {
 
@@ -90,7 +87,7 @@ private[text] object RichTextStyler {
           case StyleBgColorLong | StyleBgColorShort =>
             Color.parse(value).map(c => ((bs: Seq[RichStyle]) => RichBackgroundStyle(c, bs)): StyleMapFunc)
           case _ =>
-            Left(new RichTextException(s"Unknown attribute in rich-text: '${key}'."))
+            Left(new RichTextException(s"Unknown attribute in rich-text: '$key'."))
         }
       case _ =>
         Left(new RichTextException(s"Unknown attribute type in rich-text."))

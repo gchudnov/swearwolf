@@ -75,9 +75,12 @@ private[graph] object GraphDrawer {
 
   /**
    * Graph description to draw it
-   * @param sx x-steps
-   * @param sy y-steps
-   * @param symbols map to get symbol to represent a cell
+   * @param sx
+   *   x-steps
+   * @param sy
+   *   y-steps
+   * @param symbols
+   *   map to get symbol to represent a cell
    */
   private final case class GraphDesc(sx: Int, sy: Int, symbols: Map[String, String])
 }

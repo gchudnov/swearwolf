@@ -6,9 +6,12 @@ object Text {
 
   /**
    * Clip string to the given size.
-   * @param width size to clip the string to
-   * @param value string value
-   * @return clipped string
+   * @param width
+   *   size to clip the string to
+   * @param value
+   *   string value
+   * @return
+   *   clipped string
    */
   def clip(width: Int)(value: String): String =
     if (value.length > width)
@@ -18,9 +21,12 @@ object Text {
 
   /**
    * Pad string to the given width on the right side.
-   * @param width width of the area
-   * @param value string value
-   * @return padded string
+   * @param width
+   *   width of the area
+   * @param value
+   *   string value
+   * @return
+   *   padded string
    */
   def padRight(width: Int)(value: String): String =
     if (value.length < width)
@@ -30,9 +36,12 @@ object Text {
 
   /**
    * Pad string to the given width on the left side.
-   * @param width width of the area
-   * @param value string value
-   * @return padded string
+   * @param width
+   *   width of the area
+   * @param value
+   *   string value
+   * @return
+   *   padded string
    */
   def padLeft(width: Int)(value: String): String =
     if (value.length < width)
@@ -42,8 +51,10 @@ object Text {
 
   /**
    * Removes non-printable characters from the string
-   * @param value String
-   * @return Possibly modified string
+   * @param value
+   *   String
+   * @return
+   *   Possibly modified string
    */
   def sanitize(value: String): String =
     if (value.exists(_ < 32))
@@ -53,9 +64,12 @@ object Text {
 
   /**
    * Wraps the text to fit the given width, producing more lines
-   * @param width available width
-   * @param value string value to wrap
-   * @return a collection of strings.
+   * @param width
+   *   available width
+   * @param value
+   *   string value to wrap
+   * @return
+   *   a collection of strings.
    */
   def wrap(width: Int)(value: String): List[String] = {
     val sepRx = "\\s"

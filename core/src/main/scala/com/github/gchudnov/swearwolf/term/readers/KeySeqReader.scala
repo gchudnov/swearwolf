@@ -6,8 +6,10 @@ private[term] trait KeySeqReader {
 
   /**
    * Reads a sequence of bytes and returns parsed key sequence and the rest of the bytes.
-   * @param data bytes to read.
-   * @return ReadState (parsed key sequence and the rest of the data)
+   * @param data
+   *   bytes to read.
+   * @return
+   *   ReadState (parsed key sequence and the rest of the data)
    */
   def read(data: Seq[Byte]): ReadState
 

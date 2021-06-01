@@ -9,8 +9,10 @@ object Bytes {
 
   /**
    * Converts an array of bytes to a string
-   * @param bytes an array of bytes
-   * @return String
+   * @param bytes
+   *   an array of bytes
+   * @return
+   *   String
    */
   def toHexStr(bytes: Seq[Byte]): String = {
     val sb = new StringBuilder

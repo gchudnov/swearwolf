@@ -10,8 +10,10 @@ import scala.util.control.Exception.nonFatalCatch
 /**
  * Terminal with basic I/O operations.
  *
- * @param in input stream
- * @param out output stream
+ * @param in
+ *   input stream
+ * @param out
+ *   output stream
  */
 private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term {
   private val raw = new ListBuffer[Byte]

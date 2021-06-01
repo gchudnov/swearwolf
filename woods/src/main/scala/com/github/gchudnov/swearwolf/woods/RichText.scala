@@ -9,6 +9,7 @@ trait RichText {
 /**
  * Style text with the additional attributes.
  *
+ * {{{
  * Allowed attributes are:
  *   color, fg
  *   bgcolor, bg
@@ -18,6 +19,7 @@ trait RichText {
  *   blink, k
  *   invert, v
  *   strikethrough, t
+ * }}}
  */
 object RichText {
 

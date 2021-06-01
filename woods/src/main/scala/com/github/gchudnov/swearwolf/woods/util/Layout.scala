@@ -6,8 +6,7 @@ import com.github.gchudnov.swearwolf.woods.AlignStyle
 object Layout {
 
   /**
-   * Align text in the given area
-   * Returns the point that text should be printed to be aligned given the top-left coordinates are (0, 0)
+   * Align text in the given area Returns the point that text should be printed to be aligned given the top-left coordinates are (0, 0)
    */
   def align(sz: Size)(str: String, style: AlignStyle): Point =
     style match {

@@ -7,8 +7,10 @@ object Color {
   /**
    * Parses color from a string
    *
-   * #RRGGBB
+   * {{{
+   * #RRGGBB 
    * RRGGBB
+   * }}}
    */
   def parse(value: String): Either[Throwable, Color] =
     if (value.isEmpty)
@@ -18,8 +20,10 @@ object Color {
 
   /**
    * converts color to a hex value
-   * @param color Color to covert
-   * @return hex value of the color with leading #
+   * @param color
+   *   Color to covert
+   * @return
+   *   hex value of the color with leading #
    */
   def toHex(color: Color): String =
     s"#${f"${color.r}%02x"}${f"${color.g}%02x"}${f"${color.b}%02x"}"

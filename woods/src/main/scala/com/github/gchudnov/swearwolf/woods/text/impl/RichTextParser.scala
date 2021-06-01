@@ -5,9 +5,7 @@ import fastparse.NoWhitespace._
 import fastparse._
 
 /**
- * Parses xml-like syntax to blocks and attributes.
- * Only the structure is parsed.
- * Tags are not being processed.
+ * Parses xml-like syntax to blocks and attributes. Only the structure is parsed. Tags are not being processed.
  */
 private[text] object RichTextParser {
 
@@ -15,10 +13,10 @@ private[text] object RichTextParser {
    * Parse styled text and return internal representation, Block, that can be converted for the output.
    */
   def read(input: String): Either[Throwable, Block] = {
-    val str = s"<root>${input}</root>"
+    val str = s"<root>$input</root>"
     parse(str, rich(_))
       .fold(
-        (msg, pos, _) => Left[RichTextException, Block](new RichTextException(s"Cannot parse rich-text: '${msg}' at position: ${pos}")),
+        (msg, pos, _) => Left[RichTextException, Block](new RichTextException(s"Cannot parse rich-text: '$msg' at position: $pos")),
         (t, _) => Right[RichTextException, Block](t)
       )
   }

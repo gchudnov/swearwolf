@@ -17,17 +17,17 @@ object EscSeq {
   private val EscChar: Char = '\u001b'
 
   private def esc(data: String): EscSeq =
-    new EscSeq(s"\u001b${data}")
+    new EscSeq(s"\u001b$data")
 
   // CSI, "Control Sequence Introducer"
   private def csi(data: String): EscSeq =
-    esc(s"[${data}")
+    esc(s"[$data")
 
   // SGR, Select Graphic Rendition
   private def sgr(code: Int, ps: List[Int] = List.empty[Int]): EscSeq = csi(s"${(code :: ps).mkString(";")}m")
 
   // CUP, Cursor Position
-  private def cup(row: Int, col: Int): EscSeq = csi(s"${row};${col}H")
+  private def cup(row: Int, col: Int): EscSeq = csi(s"$row;${col}H")
 
   // CUU, Cursor Up
   private def cuu(offset: Int): EscSeq = csi(s"${offset}A")
@@ -92,7 +92,7 @@ object EscSeq {
    * Parse bytes and extract only text, skipping esc-codes.
    */
   def textFromBytes(bytes: Array[Byte]): String = {
-    val rx = s"""${EscChar}\\[[\\d;]+\\w"""
+    val rx = s"""$EscChar\\[[\\d;]+\\w"""
 
     val str   = Bytes.toString(bytes.toSeq)
     val parts = str.split(rx)
