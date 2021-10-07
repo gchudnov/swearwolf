@@ -40,8 +40,8 @@ lazy val example = (project in file("example"))
   .settings(
     name := "example",
     libraryDependencies ++= Dependencies.Example,
-    assembly / mainClass := Some("com.github.gchudnov.swearwolf.example.Main"),
-    assembly / assemblyOption := (assembly / assemblyOption).value.copy(prependShellScript = Some(defaultUniversalScript(shebang = true))),
+    assembly / mainClass       := Some("com.github.gchudnov.swearwolf.example.Main"),
+    assembly / assemblyOption  := (assembly / assemblyOption).value.withPrependShellScript(prependShellScript = Some(defaultUniversalScript(shebang = true))),
     assembly / assemblyJarName := s"${name.value}"
   )
 

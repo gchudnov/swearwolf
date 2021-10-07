@@ -9,11 +9,11 @@ import com.github.gchudnov.swearwolf.{ CharKeySeq, CtrlKeySeq, KeyCode, KeyModif
 private[term] object CtrlReader extends BasicKeySeqReader {
 
   val ctrlMap: Map[Byte, Byte] = Map(
-    0x00.toByte -> ' '.toByte, // ^@
+    0x00.toByte -> ' '.toByte,  // ^@
     0x1c.toByte -> '\\'.toByte, // ^\
-    0x1d.toByte -> ']'.toByte, // ^]
-    0x1e.toByte -> '^'.toByte, // ^^
-    0x1f.toByte -> '_'.toByte // ^_
+    0x1d.toByte -> ']'.toByte,  // ^]
+    0x1e.toByte -> '^'.toByte,  // ^^
+    0x1f.toByte -> '_'.toByte   // ^_
   )
 
   override def read(data: Seq[Byte]): ReadState =

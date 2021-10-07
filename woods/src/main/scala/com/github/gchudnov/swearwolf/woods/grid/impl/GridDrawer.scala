@@ -40,9 +40,9 @@ private[grid] object GridDrawer {
 
       for {
         _ <- screen.put(pt, top, textStyle)
-        _ <- Func.sequence(rows.zipWithIndex.map({ case (row, i) =>
+        _ <- Func.sequence(rows.zipWithIndex.map { case (row, i) =>
                screen.put(pt.offset(0, i + 1), row, textStyle)
-             }))
+             })
         _ <- screen.put(pt.offset(0, grid.size.height - 1), bottom, textStyle)
       } yield ()
     }

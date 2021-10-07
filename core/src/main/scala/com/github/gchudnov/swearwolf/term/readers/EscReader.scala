@@ -10,7 +10,7 @@ import scala.annotation.tailrec
  * Reads an escape sequence.
  *
  * {{{
- * 
+ *
  * Up:
  *   1b  5b 41
  *   ESC [  A
@@ -32,7 +32,7 @@ import scala.annotation.tailrec
  *   1b  5b 38 3b 35 33 3b 32 30 34 74
  *   ESC [  8  ;  5  3  ;  2  0  4  t
  *               height     width
- * 
+ *
  * }}}
  */
 private[term] object EscReader extends BasicKeySeqReader {
