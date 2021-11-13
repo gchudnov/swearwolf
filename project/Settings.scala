@@ -8,7 +8,7 @@ import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 
 object Settings {
-  private val scala213 = "2.13.6"
+  private val scala213 = "2.13.7"
   private val scalaV   = scala213
 
   private val sharedScalacOptions = Seq(
