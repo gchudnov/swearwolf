@@ -1,28 +1,30 @@
 package com.github.gchudnov.swearwolf.example.zio.run
 
-import com.github.gchudnov.swearwolf.util.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.util._
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle }
 import com.github.gchudnov.swearwolf.{ KeySeq, Screen }
-import zio._
+import zio.stream.ZStream
+import zio.{ Queue, _ }
 
-final class LiveRun(screen: Screen) extends Run {
+final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run {
 
-  var lastKeqSeq: List[KeySeq] = List.empty[KeySeq]
+  val keySeqStream: ZStream[Any, Nothing, KeySeq] =
+    ZStream.fromQueue(keqSeqQueue)
 
-  override def eventHandler: ZIO[Any, Throwable, KeySeqHandler] = ZIO.attempt { (ks: List[KeySeq]) =>
-    lastKeqSeq = ks
-    Right(EventLoop.Action.Continue)
-  }
+  override def onKeySeq(ks: KeySeq): UIO[Unit] =
+    keqSeqQueue.offer(ks).unit
 
-  override def processLoop(): ZIO[Any, Throwable, Unit] =
+  def processLoop(): Task[Unit] =
+    keySeqStream
+      .mapZIO(ks => render(ks))
+      .runDrain
+
+  override def shutdown(): UIO[Unit] =
     for {
-      _ <- ZIO.fromEither(screen.clear())
-      _ <- ZIO.fromEither(render(screen))
-      _ <- ZIO.fromEither(screen.flush())
+      _ <- keqSeqQueue.shutdown
     } yield ()
 
-  private def render(sc: Screen): Either[Throwable, Unit] = {
+  private def render(ks: KeySeq): Task[Unit] = {
     import TextStyle._
 
     val keqSeqPos: Point = Point(32, 0)
@@ -37,38 +39,35 @@ final class LiveRun(screen: Screen) extends Run {
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
-    for {
+    val errOrUnit = for {
+      _    <- screen.clear()
       rich <- RichText.make("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
-      _    <- sc.put(Point(0, 0), "HELLO", Bold | Foreground(NamedColor.Blue))
-      _    <- sc.put(Point(8, 0), "WORLD!", Foreground(NamedColor.Blue) | Background(NamedColor.Yellow))
-      _    <- sc.put(Point(0, 2), rich)
-      _    <- sc.put(Point(0, 4), b, Foreground(NamedColor.Blue))
-      _    <- sc.put(Point(32, 2), g1, Foreground(NamedColor.Green))
-      _    <- sc.put(Point(32, 4), g2, Foreground(NamedColor.LimeGreen))
-      _    <- sc.put(Point(32, 7), g3, Foreground(NamedColor.Azure))
-      _    <- sc.put(Point(22, 0), gd, Foreground(NamedColor.Yellow))
-      _    <- sc.put(Point(0, 7), t, Foreground(NamedColor.White))
-      _    <- sc.put(Point(0, 13), l, Foreground(NamedColor.Red))
-      _ <- sequence(lastKeqSeq.zipWithIndex.map { case (keqSeq, i) =>
-             screen.put(keqSeqPos.offset(0, i), keqSeq.toString)
-           })
-      _ <- sc.flush()
+      _    <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(NamedColor.Blue))
+      _    <- screen.put(Point(8, 0), "WORLD!", Foreground(NamedColor.Blue) | Background(NamedColor.Yellow))
+      _    <- screen.put(Point(0, 2), rich)
+      _    <- screen.put(Point(0, 4), b, Foreground(NamedColor.Blue))
+      _    <- screen.put(Point(32, 2), g1, Foreground(NamedColor.Green))
+      _    <- screen.put(Point(32, 4), g2, Foreground(NamedColor.LimeGreen))
+      _    <- screen.put(Point(32, 7), g3, Foreground(NamedColor.Azure))
+      _    <- screen.put(Point(22, 0), gd, Foreground(NamedColor.Yellow))
+      _    <- screen.put(Point(0, 7), t, Foreground(NamedColor.White))
+      _    <- screen.put(Point(0, 13), l, Foreground(NamedColor.Red))
+      _    <- screen.put(keqSeqPos.offset(0, 0), ks.toString)
+      _    <- screen.flush()
     } yield ()
-  }
 
-  private def sequence[A, B](es: Seq[Either[A, B]]): Either[A, Seq[B]] =
-    es.partitionMap(identity) match {
-      case (Nil, rights) => Right[A, Seq[B]](rights)
-      case (lefts, _)    => Left[A, Seq[B]](lefts.head)
-    }
+    ZIO.fromEither(errOrUnit)
+  }
 }
 
 object LiveRun {
+  private val queueSize = 16
 
   def layer: ZServiceBuilder[Has[Screen], Throwable, Has[Run]] =
     (for {
-      screen <- ZIO.service[Screen]
-      service = new LiveRun(screen)
+      screen      <- ZIO.service[Screen]
+      keqSeqQueue <- Queue.bounded[KeySeq](queueSize)
+      service      = new LiveRun(screen, keqSeqQueue)
     } yield service).toServiceBuilder
 
 }

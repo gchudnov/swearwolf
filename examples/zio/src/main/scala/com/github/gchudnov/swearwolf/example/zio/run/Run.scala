@@ -1,14 +1,16 @@
 package com.github.gchudnov.swearwolf.example.zio.run
 
-import com.github.gchudnov.swearwolf.util.EventLoop.KeySeqHandler
-import zio.{Clock, Has, RIO, ZIO}
+import com.github.gchudnov.swearwolf.KeySeq
+import zio._
 
 trait Run {
-  def eventHandler: ZIO[Any, Throwable, KeySeqHandler]
-  def processLoop(): ZIO[Any, Throwable, Unit]
+  def onKeySeq(ks: KeySeq): UIO[Unit]
+  def processLoop(): Task[Unit]
+  def shutdown(): UIO[Unit]
 }
 
 object Run {
-  def eventHandler: RIO[Has[Run], KeySeqHandler]         = ZIO.serviceWith(_.eventHandler)
+  def onKeySeq(ks: KeySeq): URIO[Has[Run], Unit]         = ZIO.serviceWith(_.onKeySeq(ks))
   def processLoop(): RIO[Has[Run] with Has[Clock], Unit] = ZIO.serviceWith(_.processLoop())
+  def shutdown(): URIO[Has[Run], Any]                    = ZIO.serviceWith(_.shutdown())
 }
