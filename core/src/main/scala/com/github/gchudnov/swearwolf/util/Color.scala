@@ -8,7 +8,7 @@ object Color {
    * Parses color from a string
    *
    * {{{
-   * #RRGGBB 
+   * #RRGGBB
    * RRGGBB
    * }}}
    */

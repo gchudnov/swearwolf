@@ -15,15 +15,14 @@ private[label] object LabelDrawer {
 
     for {
       _ <- Func.sequence(
-             effectiveLines.zipWithIndex
-               .map({ case (line, y) =>
-                 val x = Layout.align(label.size)(line, label.align).x
-                 if (label.isFill) {
-                   val updLine = withFilledBackground(label.size.width)(x, line)
-                   screen.put(pt.offset(0, y), updLine, textStyle)
-                 } else
-                   screen.put(pt.offset(x, y), line, textStyle)
-               })
+             effectiveLines.zipWithIndex.map { case (line, y) =>
+               val x = Layout.align(label.size)(line, label.align).x
+               if (label.isFill) {
+                 val updLine = withFilledBackground(label.size.width)(x, line)
+                 screen.put(pt.offset(0, y), updLine, textStyle)
+               } else
+                 screen.put(pt.offset(x, y), line, textStyle)
+             }
            )
     } yield ()
   }

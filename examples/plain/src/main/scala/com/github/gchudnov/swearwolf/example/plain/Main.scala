@@ -1,18 +1,17 @@
-package com.github.gchudnov.swearwolf.example
-
-import java.io.{FileOutputStream, PrintStream}
+package com.github.gchudnov.swearwolf.example.plain
 
 import com.github.gchudnov.swearwolf._
 import com.github.gchudnov.swearwolf.util._
-import com.github.gchudnov.swearwolf.woods.{AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle}
+import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle }
 
+import java.io.{ FileOutputStream, PrintStream }
+import scala.annotation.nowarn
 import scala.util.Using
 import scala.util.control.Exception.nonFatalCatch
-import scala.annotation.nowarn
 
 object Main extends App {
 
-  private val logFilePath = "~/swearwolf-example-errors.log"
+  private val logFilePath = "~/swearwolf-plain-example-errors.log"
   private val posKeqSeq   = Point(32, 0)
 
   nonFatalCatch
@@ -39,9 +38,9 @@ object Main extends App {
       .map(_ => ())
 
     // display key codes
-    val errOrDisplay = sequence(ks.zipWithIndex.map({ case (keqSeq, i) =>
+    val errOrDisplay = sequence(ks.zipWithIndex.map { case (keqSeq, i) =>
       screen.put(pos.offset(0, i), keqSeq.toString)
-    }))
+    })
       .map(_ => ())
 
     for {

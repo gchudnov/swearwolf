@@ -38,9 +38,9 @@ private[table] object TableDrawer {
       val rs = top +: rows.head +: middle +: rows.tail :+ bottom
 
       for {
-        _ <- Func.sequence(rs.zipWithIndex.map({ case (row, i) =>
+        _ <- Func.sequence(rs.zipWithIndex.map { case (row, i) =>
                screen.put(pt.offset(0, i), row, textStyle)
-             }))
+             })
       } yield ()
     }
   }

@@ -31,22 +31,36 @@ lazy val woods = (project in file("woods"))
     libraryDependencies ++= Dependencies.Woods
   )
 
-lazy val example = (project in file("example"))
+lazy val examplePlain = (project in file("examples/plain"))
   .dependsOn(core, woods)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.assemblySettings)
   .settings(Settings.noPublish)
   .settings(
-    name := "example",
-    libraryDependencies ++= Dependencies.Example,
-    assembly / mainClass := Some("com.github.gchudnov.swearwolf.example.Main"),
-    assembly / assemblyOption := (assembly / assemblyOption).value.copy(prependShellScript = Some(defaultUniversalScript(shebang = true))),
+    name := "example-plain",
+    libraryDependencies ++= Dependencies.ExamplePlain,
+    assembly / mainClass       := Some("com.github.gchudnov.swearwolf.example.plain.Main"),
+    assembly / assemblyOption  := (assembly / assemblyOption).value.withPrependShellScript(prependShellScript = Some(defaultUniversalScript(shebang = true))),
+    assembly / assemblyJarName := s"${name.value}"
+  )
+
+lazy val exampleZio = (project in file("examples/zio"))
+  .dependsOn(core, woods)
+  .settings(allSettings: _*)
+  .settings(Settings.testZioSettings)
+  .settings(Settings.assemblySettings)
+  .settings(Settings.noPublish)
+  .settings(
+    name := "example-zio",
+    libraryDependencies ++= Dependencies.ExampleZio,
+    assembly / mainClass       := Some("com.github.gchudnov.swearwolf.example.zio.Main"),
+    assembly / assemblyOption  := (assembly / assemblyOption).value.withPrependShellScript(prependShellScript = Some(defaultUniversalScript(shebang = true))),
     assembly / assemblyJarName := s"${name.value}"
   )
 
 lazy val root = (project in file("."))
-  .aggregate(core, woods)
+  .aggregate(core, woods, examplePlain, exampleZio)
   .settings(allSettings: _*)
   .settings(Settings.noPublish)
   .settings(

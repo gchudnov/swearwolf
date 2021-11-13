@@ -79,7 +79,7 @@ private[text] object RichTextStyler {
   }
 
   private def attributes(attrs: Seq[Attr]): Either[Throwable, Seq[StyleMapFunc]] =
-    attrs.partitionMap({
+    attrs.partitionMap {
       case NamedAttr(key, value) =>
         key match {
           case StyleFgColorLong | StyleFgColorShort =>
@@ -91,7 +91,7 @@ private[text] object RichTextStyler {
         }
       case _ =>
         Left(new RichTextException(s"Unknown attribute type in rich-text."))
-    }) match {
+    } match {
       case (Nil, rights) => Right[Throwable, Seq[StyleMapFunc]](rights)
       case (lefts, _)    => Left[Throwable, Seq[StyleMapFunc]](lefts.head)
     }

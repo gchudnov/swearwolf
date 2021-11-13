@@ -422,17 +422,22 @@ Text and tags can be nested, for example:
 ```
 
 
-## Example
+## Examples
 
-The project contains an example that depicts the usage of the library with keyboard and mouse handling.
-To build an example application, invoke:
+The project contains two demo applications that demonstrate how to use the library with keyboard and mouse input.
+To build, invoke:
 
 ```sbt
-sbt example/assembly
+sbt examplePlain/assembly
+sbt exampleZio/assembly
 ```
 
-The executable file will be built and saved in */target* directory.
+Executable files will be built and saved in the `/target` directory:
 
+```bash
+./target/example-plain
+./target/example-zio
+```
 
 ## Compatibility
 

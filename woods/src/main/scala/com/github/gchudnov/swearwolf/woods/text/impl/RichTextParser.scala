@@ -37,11 +37,11 @@ private[text] object RichTextParser {
   private def end[_: P](n: String): P[String]     = P("</" ~/ n.! ~/ ">")
 
   private def tag[_: P]: P[Block] =
-    start.flatMap({ case (n, attrs) =>
+    start.flatMap { case (n, attrs) =>
       def ending = end(n)
       val x      = P((!ending ~ (tag | text)).rep(0) ~/ ending)
-      x.map({ case (bs, name) => NamedBlockSeq(name, attrs, bs) })
-    })
+      x.map { case (bs, name) => NamedBlockSeq(name, attrs, bs) }
+    }
 
   private def rich[_: P]: P[Block] = tag ~ End
 
