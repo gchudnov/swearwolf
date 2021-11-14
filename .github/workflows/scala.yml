@@ -1,23 +1,31 @@
 name: Scala CI
-
 on:
   push:
-    branches: [ master ]
+    branches:
+      - main
+    tags:
+      - '*'
   pull_request:
-    branches: [ master ]
+    branches:
+      - main
 
 jobs:
   build:
-
+    name: Test and Assembly
     runs-on: ubuntu-latest
-
+    container:
+      image: hseeberger/scala-sbt:17.0.0_1.5.5_3.0.2
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 15
-        uses: actions/setup-java@v1
+      - name: Cache SBT
+        uses: actions/cache@v1
         with:
-          java-version: '15.0.0'
-          java-package: jdk
-          architecture: x64
+          path: ~/.sbt
+          key: ${{ runner.os }}-sbt-cache-${{ hashFiles('*.sbt') }}-${{ hashFiles('project/*') }}
+      - name: Cache SBT Coursier
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/coursier/v1
+          key: ${{ runner.os }}-sbt-coursier-cache-${{ hashFiles('*.sbt') }}-${{ hashFiles('project/*') }}
       - name: Run tests
         run: sbt test
