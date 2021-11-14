@@ -22,10 +22,10 @@ a *box*, *graph*, *grid*, *label*, *table* and *rich-text*.
 Add the following dependency to your `build.sbt`:
 
 ```scala
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-core" % "1.0.1"
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-core" % "1.0.2"
 
 // Optionally, include the UI-primitives library:
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-woods" % "1.0.1"
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-woods" % "1.0.2"
 ```
 
 In the application, import:
