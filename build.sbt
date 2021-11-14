@@ -34,7 +34,6 @@ lazy val woods = (project in file("woods"))
 lazy val examplePlain = (project in file("examples/plain"))
   .dependsOn(core, woods)
   .settings(allSettings: _*)
-  .settings(Settings.testZioSettings)
   .settings(Settings.assemblySettings)
   .settings(Settings.noPublish)
   .settings(
