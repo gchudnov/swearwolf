@@ -10,7 +10,7 @@ trait Run {
 }
 
 object Run {
-  def onKeySeq(ks: KeySeq): URIO[Has[Run], Unit]         = ZIO.serviceWith(_.onKeySeq(ks))
-  def processLoop(): RIO[Has[Run] with Has[Clock], Unit] = ZIO.serviceWith(_.processLoop())
-  def shutdown(): URIO[Has[Run], Any]                    = ZIO.serviceWith(_.shutdown())
+  def onKeySeq(ks: KeySeq): URIO[Has[Run], Unit] = ZIO.serviceWith(_.onKeySeq(ks))
+  def processLoop(): RIO[Has[Run], Unit]         = ZIO.serviceWith(_.processLoop())
+  def shutdown(): URIO[Has[Run], Any]            = ZIO.serviceWith(_.shutdown())
 }
