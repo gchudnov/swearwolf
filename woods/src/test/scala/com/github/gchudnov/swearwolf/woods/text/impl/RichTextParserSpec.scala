@@ -1,10 +1,10 @@
 package com.github.gchudnov.swearwolf.woods.text.impl
 
-import RichTextParser._
+import RichTextParser.*
 import zio.test.Assertion.{ equalTo, isLeft }
-import zio.test._
+import zio.test.*
 
-object RichTextParserSpec extends DefaultRunnableSpec {
+object RichTextParserSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("RichTextParser")(
       test("empty") {
@@ -132,5 +132,3 @@ object RichTextParserSpec extends DefaultRunnableSpec {
         assert(actual)(isLeft)
       }
     )
-
-}

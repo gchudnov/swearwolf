@@ -1,9 +1,9 @@
 package com.github.gchudnov.swearwolf.util
 
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object ValueSpec extends DefaultRunnableSpec {
+object ValueSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Value")(
       test("clamp") {
@@ -89,4 +89,3 @@ object ValueSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-}

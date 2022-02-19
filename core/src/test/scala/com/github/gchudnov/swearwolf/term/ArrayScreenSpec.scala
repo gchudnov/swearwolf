@@ -2,10 +2,10 @@ package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.Resources
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object ArrayScreenSpec extends DefaultRunnableSpec {
+object ArrayScreenSpec extends DefaultRunnableSpec:
 
   override def spec: ZSpec[Environment, Failure] =
     suite("ArrayScreen")(
@@ -32,4 +32,3 @@ object ArrayScreenSpec extends DefaultRunnableSpec {
         assert(actualData)(equalTo(expectedData))
       }
     )
-}

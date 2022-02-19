@@ -2,11 +2,11 @@ package com.github.gchudnov.swearwolf.woods.text.impl
 
 import com.github.gchudnov.swearwolf.util.Bytes.toHexStr
 import com.github.gchudnov.swearwolf.util.Color
-import RichTextStyler._
+import RichTextStyler.*
 import zio.test.Assertion.equalTo
-import zio.test._
+import zio.test.*
 
-object RichTextCompilerSpec extends DefaultRunnableSpec {
+object RichTextCompilerSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("RichTextCompiler")(
       test("empty") {
@@ -82,5 +82,3 @@ object RichTextCompilerSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-
-}

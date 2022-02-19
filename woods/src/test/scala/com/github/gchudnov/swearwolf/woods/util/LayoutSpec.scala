@@ -2,10 +2,10 @@ package com.github.gchudnov.swearwolf.woods.util
 
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.AlignStyle
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object LayoutSpec extends DefaultRunnableSpec {
+object LayoutSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Layout")(
       test("align left") {
@@ -41,5 +41,3 @@ object LayoutSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-
-}

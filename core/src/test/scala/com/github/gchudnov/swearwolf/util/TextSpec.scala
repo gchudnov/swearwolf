@@ -1,9 +1,9 @@
 package com.github.gchudnov.swearwolf.util
 
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object TextSpec extends DefaultRunnableSpec {
+object TextSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Text")(
       test("empty string can be clipped to the given size") {
@@ -223,4 +223,3 @@ object TextSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-}

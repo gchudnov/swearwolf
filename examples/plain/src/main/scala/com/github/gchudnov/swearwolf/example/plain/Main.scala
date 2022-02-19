@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.example.plain
 
-import com.github.gchudnov.swearwolf._
-import com.github.gchudnov.swearwolf.util._
+import com.github.gchudnov.swearwolf.*
+import com.github.gchudnov.swearwolf.util.*
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle }
 
 import java.io.{ FileOutputStream, PrintStream }
@@ -9,7 +9,7 @@ import scala.annotation.nowarn
 import scala.util.Using
 import scala.util.control.Exception.nonFatalCatch
 
-object Main extends App {
+object Main extends App:
 
   private val logFilePath = "~/swearwolf-plain-example-errors.log"
   private val posKeqSeq   = Point(32, 0)
@@ -18,22 +18,22 @@ object Main extends App {
     .either({
       Using.resource(Screen.acquireOrThrow()) { (sc: Screen) =>
         val handler = eventHandler(sc)(posKeqSeq) _
-        for {
+        for
           _ <- render(sc)
           _ <- sc.eventLoop(EventLoop.withDefaultHandler(handler))
-        } yield ()
+        yield ()
       }
     })
     .flatten
     .fold(writeFileLog, _ => ())
 
-  private def eventHandler(screen: Screen)(pos: Point)(ks: List[KeySeq]): Either[Throwable, EventLoop.Action] = {
+  private def eventHandler(screen: Screen)(pos: Point)(ks: List[KeySeq]): Either[Throwable, EventLoop.Action] =
     // handle screen resize
     val errOrResize = sequence(ks.filter(_.isInstanceOf[SizeKeySeq]).map { _ =>
-      for {
+      for
         _ <- screen.clear()
         _ <- render(screen)
-      } yield ()
+      yield ()
     })
       .map(_ => ())
 
@@ -43,15 +43,14 @@ object Main extends App {
     })
       .map(_ => ())
 
-    for {
+    for
       _ <- errOrResize
       _ <- errOrDisplay
       _ <- screen.flush()
-    } yield EventLoop.Action.Continue
-  }
+    yield EventLoop.Action.Continue
 
-  private def render(sc: Screen): Either[Throwable, Unit] = {
-    import TextStyle._
+  private def render(sc: Screen): Either[Throwable, Unit] =
+    import TextStyle.*
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
@@ -63,40 +62,35 @@ object Main extends App {
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
-    for {
+    for
       rich <- RichText.make("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
       _    <- sc.put(Point(0, 0), "HELLO", Bold | Foreground(NamedColor.Blue))
       _    <- sc.put(Point(8, 0), "WORLD!", Foreground(NamedColor.Blue) | Background(NamedColor.Yellow))
-      _    <- sc.put(Point(0, 2), rich)
-      _    <- sc.put(Point(0, 4), b, Foreground(NamedColor.Blue))
-      _    <- sc.put(Point(32, 2), g1, Foreground(NamedColor.Green))
-      _    <- sc.put(Point(32, 4), g2, Foreground(NamedColor.LimeGreen))
-      _    <- sc.put(Point(32, 7), g3, Foreground(NamedColor.Azure))
-      _    <- sc.put(Point(22, 0), gd, Foreground(NamedColor.Yellow))
-      _    <- sc.put(Point(0, 7), t, Foreground(NamedColor.White))
-      _    <- sc.put(Point(0, 13), l, Foreground(NamedColor.Red))
+      // _    <- sc.put(Point(0, 2), rich)
+      // _    <- sc.put(Point(0, 4), b, Foreground(NamedColor.Blue))
+      // _    <- sc.put(Point(32, 2), g1, Foreground(NamedColor.Green))
+      // _    <- sc.put(Point(32, 4), g2, Foreground(NamedColor.LimeGreen))
+      // _    <- sc.put(Point(32, 7), g3, Foreground(NamedColor.Azure))
+      // _    <- sc.put(Point(22, 0), gd, Foreground(NamedColor.Yellow))
+      // _    <- sc.put(Point(0, 7), t, Foreground(NamedColor.White))
+      // _    <- sc.put(Point(0, 13), l, Foreground(NamedColor.Red))
       _    <- sc.flush()
-    } yield ()
-  }
+    yield ()
 
   private def sequence[A, B](es: Seq[Either[A, B]]): Either[A, Seq[B]] =
-    es.partitionMap(identity) match {
+    es.partitionMap(identity) match
       case (Nil, rights) => Right[A, Seq[B]](rights)
       case (lefts, _)    => Left[A, Seq[B]](lefts.head)
-    }
 
   @nowarn
   private def writeStdoutLog(t: Throwable): Unit =
     writeErrorLog(System.out)(t)
 
-  private def writeFileLog(t: Throwable): Unit = {
+  private def writeFileLog(t: Throwable): Unit =
     val output = new PrintStream(new FileOutputStream(logFilePath, true))
     writeErrorLog(output)(t)
-  }
 
-  private def writeErrorLog(output: PrintStream)(t: Throwable): Unit = {
+  private def writeErrorLog(output: PrintStream)(t: Throwable): Unit =
     output.println(t.getMessage)
     t.printStackTrace(output)
     output.flush()
-  }
-}

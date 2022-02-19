@@ -3,10 +3,10 @@ package com.github.gchudnov.swearwolf.woods.table
 import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ Resources, Table, TableStyle }
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object TableSpec extends DefaultRunnableSpec {
+object TableSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Table")(
       test("draw simple") {
@@ -85,4 +85,3 @@ object TableSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-}

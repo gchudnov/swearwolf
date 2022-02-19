@@ -3,10 +3,10 @@ package com.github.gchudnov.swearwolf.woods.grid
 import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ Grid, GridStyle, Resources }
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object GridSpec extends DefaultRunnableSpec {
+object GridSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Grid")(
       test("cell is too big for a grid") {
@@ -58,4 +58,3 @@ object GridSpec extends DefaultRunnableSpec {
         assert(actualData)(equalTo(expectedData))
       }
     )
-}

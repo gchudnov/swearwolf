@@ -6,31 +6,25 @@ import com.github.gchudnov.swearwolf.woods.Label
 import com.github.gchudnov.swearwolf.woods.util.Layout
 import com.github.gchudnov.swearwolf.woods.util.impl.Func
 
-private[label] object LabelDrawer {
+private[label] object LabelDrawer:
 
-  def draw(screen: Screen)(pt: Point, label: Label, textStyle: TextStyle): Either[Throwable, Unit] = {
+  def draw(screen: Screen)(pt: Point, label: Label, textStyle: TextStyle): Either[Throwable, Unit] =
     val lines          = Text.wrap(label.size.width)(label.value)
     val visibleLines   = lines.take(label.size.height)
-    val effectiveLines = if (lines.size > visibleLines.size) visibleLines.dropRight(1) :+ Text.forceEllipsisRight(visibleLines.last) else lines
+    val effectiveLines = if lines.size > visibleLines.size then visibleLines.dropRight(1) :+ Text.forceEllipsisRight(visibleLines.last) else lines
 
-    for {
-      _ <- Func.sequence(
-             effectiveLines.zipWithIndex.map { case (line, y) =>
-               val x = Layout.align(label.size)(line, label.align).x
-               if (label.isFill) {
-                 val updLine = withFilledBackground(label.size.width)(x, line)
-                 screen.put(pt.offset(0, y), updLine, textStyle)
-               } else
-                 screen.put(pt.offset(x, y), line, textStyle)
-             }
-           )
-    } yield ()
-  }
+    for _ <- Func.sequence(
+               effectiveLines.zipWithIndex.map { case (line, y) =>
+                 val x = Layout.align(label.size)(line, label.align).x
+                 if label.isFill then
+                   val updLine = withFilledBackground(label.size.width)(x, line)
+                   screen.put(pt.offset(0, y), updLine, textStyle)
+                 else screen.put(pt.offset(x, y), line, textStyle)
+               }
+             )
+    yield ()
 
-  private[label] def withFilledBackground(width: Int)(x: Int, value: String): String = {
+  private[label] def withFilledBackground(width: Int)(x: Int, value: String): String =
     val lp = Text.padLeft(x + value.length)(value)
     val rp = Text.padRight(width)(lp)
     rp
-  }
-
-}

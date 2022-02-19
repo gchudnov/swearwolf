@@ -3,10 +3,10 @@ package com.github.gchudnov.swearwolf.term.readers
 import com.github.gchudnov.swearwolf.term.ParsedReadState
 import com.github.gchudnov.swearwolf.{ KeyModifier, MouseAction, MouseButton, MouseKeySeq }
 import com.github.gchudnov.swearwolf.util.{ Bytes, Point }
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object MouseReaderSpec extends DefaultRunnableSpec {
+object MouseReaderSpec extends DefaultRunnableSpec:
 
   override def spec: ZSpec[Environment, Failure] =
     suite("EscReader")(
@@ -35,5 +35,3 @@ object MouseReaderSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-
-}

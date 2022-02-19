@@ -38,7 +38,7 @@ import scala.annotation.tailrec
  *
  * }}}
  */
-private[term] object MouseReader extends BasicKeySeqReader {
+private[term] object MouseReader extends BasicKeySeqReader:
 
   sealed trait State
 
@@ -58,41 +58,38 @@ private[term] object MouseReader extends BasicKeySeqReader {
     65 -> MouseButton.ScrollForward
   )
 
-  override def read(data: Seq[Byte]): ReadState = {
+  override def read(data: Seq[Byte]): ReadState =
 
     @tailrec
     def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Seq[Byte]): ReadState =
-      state match {
+      state match
         case Start =>
-          xs match {
+          xs match
             case x +: xt if isEsc(x) =>
               iterate(Bracket, num1, num2, num3, last, xt)
             case _ =>
               UnknownReadState(data)
-          }
 
         case Bracket =>
-          xs match {
+          xs match
             case x +: xt if isBracket(x) =>
               iterate(LessThan, num1, num2, num3, last, xt)
             case x +: xt =>
               UnknownReadState(data)
             case _ =>
               PartialReadState(data)
-          }
 
         case LessThan =>
-          xs match {
+          xs match
             case x +: xt if isLessThan(x) =>
               iterate(Num1, num1, num2, num3, last, xt)
             case x +: xt =>
               UnknownReadState(data)
             case _ =>
               PartialReadState(data)
-          }
 
         case Num1 =>
-          xs match {
+          xs match
             case x +: xt if isSemicolon(x) =>
               iterate(Num2, num1, num2, num3, last, xt)
             case x +: xt if isDigit(x) =>
@@ -101,10 +98,9 @@ private[term] object MouseReader extends BasicKeySeqReader {
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
               PartialReadState(data)
-          }
 
         case Num2 =>
-          xs match {
+          xs match
             case x +: xt if isSemicolon(x) =>
               iterate(Num3, num1, num2, num3, last, xt)
             case x +: xt if isDigit(x) =>
@@ -113,56 +109,45 @@ private[term] object MouseReader extends BasicKeySeqReader {
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
               PartialReadState(data)
-          }
 
         case Num3 =>
-          xs match {
+          xs match
             case x +: xt if isDigit(x) =>
               iterate(Num3, num1, num2, appendNumber(num3, x), last, xt)
             case x +: xt =>
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
               PartialReadState(data)
-          }
 
         case Finish =>
           toResult(num1, num2, num3, last, xs)
-      }
 
     iterate(Start, num1 = 0, num2 = 0, num3 = 0, last = 0, data)
-  }
 
   private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Seq[Byte]): ReadState =
-    if (isUpperM(last))
+    if isUpperM(last) then
       // press
       ParsedReadState(MouseKeySeq(toPoint(num2, num3), toMouseButton(num1), MouseAction.Press, toModifiers(num1)), rest)
-    else if (isLowerM(last))
+    else if isLowerM(last) then
       // release
       ParsedReadState(MouseKeySeq(toPoint(num2, num3), toMouseButton(num1), MouseAction.Release, toModifiers(num1)), rest)
-    else
-      UnknownReadState(rest)
+    else UnknownReadState(rest)
 
   private def toPoint(x: Int, y: Int): Point =
     Point(toPos(x), toPos(y))
 
   private def toPos(n: Int): Int =
-    if (n > 0) (n - 1) else 0
+    if n > 0 then (n - 1) else 0
 
-  private def toMouseButton(n: Int): MouseButton = {
+  private def toMouseButton(n: Int): MouseButton =
     val m = n & 67 // (bits: 1000011)
     buttonMap(m)
-  }
 
-  private[term] def toModifiers(n: Int): Set[KeyModifier] = {
+  private[term] def toModifiers(n: Int): Set[KeyModifier] =
     val m = (n >> 2) & 7 // mask only modifiers bits
-    if (n == 0)
-      Set.empty[KeyModifier]
+    if n == 0 then Set.empty[KeyModifier]
     else
       modMap.foldLeft(Set.empty[KeyModifier]) { case (acc, (mod, km)) =>
-        if ((m & mod) > 0)
-          acc + km
-        else
-          acc
+        if (m & mod) > 0 then acc + km
+        else acc
       }
-  }
-}

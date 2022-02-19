@@ -5,9 +5,9 @@ import com.github.gchudnov.swearwolf.util.Bytes.toHexStr
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ Resources, RichText }
 import zio.test.Assertion.{ equalTo, isLeft, isRight }
-import zio.test._
+import zio.test.*
 
-object RichTextSpec extends DefaultRunnableSpec {
+object RichTextSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("RichText")(
       test("empty") {
@@ -118,5 +118,3 @@ object RichTextSpec extends DefaultRunnableSpec {
         assert(actualData)(equalTo(expectedData))
       }
     )
-
-}

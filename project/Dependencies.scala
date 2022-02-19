@@ -2,20 +2,10 @@ import sbt._
 
 object Dependencies {
   object versions {
-    val fastparse     = "2.3.3"
-    val kindProjector = "0.10.3"
+    val scalaXml     = "2.0.1"
     val zio           = "2.0.0-RC2"
   }
-
-  private val kindProjector = compilerPlugin(
-    "org.typelevel" %% "kind-projector" % versions.kindProjector
-  )
-
-  private val compiler = Seq(
-    kindProjector
-  )
-
-  private val fastparse = "com.lihaoyi" %% "fastparse" % versions.fastparse
+  private val scalaXml = "org.scala-lang.modules" %% "scala-xml" % versions.scalaXml
 
   private val zio             = "dev.zio" %% "zio"               % versions.zio
   private val zioStreams      = "dev.zio" %% "zio-streams"       % versions.zio
@@ -25,14 +15,14 @@ object Dependencies {
 
   val Woods: Seq[ModuleID] = {
     val compile = Seq(
-      fastparse
+      scalaXml
     )
     val test = Seq(
       zioTest,
       zioTestMagnolia,
       zioTestSbt
     ) map (_ % "test")
-    compile ++ test ++ compiler
+    compile ++ test
   }
 
   val Swearwolf: Seq[ModuleID] = {
@@ -43,13 +33,13 @@ object Dependencies {
       zioTestMagnolia,
       zioTestSbt
     ) map (_ % "test")
-    compile ++ test ++ compiler
+    compile ++ test
   }
 
   val ExamplePlain: Seq[ModuleID] = {
     val compile = Seq.empty[ModuleID]
     val test    = Seq.empty[ModuleID] map (_ % "test")
-    compile ++ test ++ compiler
+    compile ++ test
   }
 
   val ExampleZio: Seq[ModuleID] = {
@@ -62,7 +52,7 @@ object Dependencies {
       zioTestMagnolia,
       zioTestSbt
     ) map (_ % "test")
-    compile ++ test ++ compiler
+    compile ++ test
   }
 
 }

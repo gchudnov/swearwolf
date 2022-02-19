@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.util
 
 import scala.annotation.tailrec
 
-object Text {
+object Text:
 
   /**
    * Clip string to the given size.
@@ -14,10 +14,8 @@ object Text {
    *   clipped string
    */
   def clip(width: Int)(value: String): String =
-    if (value.length > width)
-      value.substring(0, width)
-    else
-      value
+    if value.length > width then value.substring(0, width)
+    else value
 
   /**
    * Pad string to the given width on the right side.
@@ -29,10 +27,8 @@ object Text {
    *   padded string
    */
   def padRight(width: Int)(value: String): String =
-    if (value.length < width)
-      value.concat(" ".repeat(width - value.length))
-    else
-      value
+    if value.length < width then value.concat(" ".repeat(width - value.length))
+    else value
 
   /**
    * Pad string to the given width on the left side.
@@ -44,10 +40,8 @@ object Text {
    *   padded string
    */
   def padLeft(width: Int)(value: String): String =
-    if (value.length < width)
-      " ".repeat(width - value.length).concat(value)
-    else
-      value
+    if value.length < width then " ".repeat(width - value.length).concat(value)
+    else value
 
   /**
    * Removes non-printable characters from the string
@@ -57,10 +51,8 @@ object Text {
    *   Possibly modified string
    */
   def sanitize(value: String): String =
-    if (value.exists(_ < 32))
-      value.map(ch => if (ch >= 32) ch else '?')
-    else
-      value
+    if value.exists(_ < 32) then value.map(ch => if ch >= 32 then ch else '?')
+    else value
 
   /**
    * Wraps the text to fit the given width, producing more lines
@@ -71,35 +63,30 @@ object Text {
    * @return
    *   a collection of strings.
    */
-  def wrap(width: Int)(value: String): List[String] = {
+  def wrap(width: Int)(value: String): List[String] =
     val sepRx = "\\s"
     val sep   = " "
 
-    def len(ls: Vector[String]): Int = {
+    def len(ls: Vector[String]): Int =
       val sz = ls.map(_.length).sum
-      val ps = if (ls.nonEmpty) ls.size - 1 else 0
+      val ps = if ls.nonEmpty then ls.size - 1 else 0
       sz + ps
-    }
 
     type LineState = (Vector[Vector[String]], Vector[String])
 
     @tailrec
     def accumulate(acc: LineState, word: String): LineState =
-      if (word.isEmpty) {
-        acc
-      } else {
+      if word.isEmpty then acc
+      else
         val (completeLines, curLine) = acc
 
         val usedWidth      = len(curLine)
-        val availableWidth = if (usedWidth == 0) width else width - sep.length - usedWidth
+        val availableWidth = if usedWidth == 0 then width else width - sep.length - usedWidth
 
-        if (availableWidth > 0 && (word.length <= availableWidth || word.length > width)) {
+        if availableWidth > 0 && (word.length <= availableWidth || word.length > width) then
           val (headWord, restWord) = word.splitAt(availableWidth)
           accumulate((completeLines, curLine :+ headWord), restWord)
-        } else {
-          accumulate((completeLines :+ curLine, Vector.empty[String]), word)
-        }
-      }
+        else accumulate((completeLines :+ curLine, Vector.empty[String]), word)
 
     val initialState = (Vector.empty[Vector[String]], Vector.empty[String])
 
@@ -113,7 +100,6 @@ object Text {
       .filter(_.nonEmpty)
       .map(_.filter(_.nonEmpty).mkString(sep))
       .toList
-  }
 
   /**
    * Add ellipsis on the left if text doesn't fit the width
@@ -128,20 +114,16 @@ object Text {
     maybeEllipsis(width)(value, isLeft = false)
 
   private def maybeEllipsis(width: Int)(value: String, isLeft: Boolean): String =
-    if (value.length <= width)
-      value
-    else {
+    if value.length <= width then value
+    else
       val fill = "..."
       val (i0, i1) =
-        if (isLeft)
-          (value.length - width + fill.length, value.length)
-        else
-          (0, width - fill.length)
+        if isLeft then (value.length - width + fill.length, value.length)
+        else (0, width - fill.length)
 
       val clipped = value.substring(i0, i1)
 
-      if (isLeft) fill + clipped else clipped + fill
-    }
+      if isLeft then fill + clipped else clipped + fill
 
   /**
    * Add ellipsis on the left
@@ -155,11 +137,7 @@ object Text {
   def forceEllipsisRight(value: String): String =
     forceEllipsis(value, isLeft = false)
 
-  private def forceEllipsis(value: String, isLeft: Boolean): String = {
+  private def forceEllipsis(value: String, isLeft: Boolean): String =
     val fill = "..."
-    if (isLeft)
-      fill ++ value.substring(fill.length)
-    else
-      value.substring(0, value.length - fill.length) + fill
-  }
-}
+    if isLeft then fill ++ value.substring(fill.length)
+    else value.substring(0, value.length - fill.length) + fill

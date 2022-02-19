@@ -1,10 +1,10 @@
 package com.github.gchudnov.swearwolf.util
 
-import zio.test.Assertion._
-import zio.test._
-import TextStyle._
+import zio.test.Assertion.*
+import zio.test.*
+import TextStyle.*
 
-object TextStyleSpec extends DefaultRunnableSpec {
+object TextStyleSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("TextStyle")(
       test("compose two simple styles") {
@@ -38,4 +38,3 @@ object TextStyleSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-}

@@ -2,10 +2,10 @@ package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.util.Color
 import com.github.gchudnov.swearwolf.util.Bytes.{ fromHexStr, toHexStr }
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object EscSeqSpec extends DefaultRunnableSpec {
+object EscSeqSpec extends DefaultRunnableSpec:
 
   override def spec: ZSpec[Environment, Failure] =
     suite("EscSeq")(
@@ -264,4 +264,3 @@ object EscSeqSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-}

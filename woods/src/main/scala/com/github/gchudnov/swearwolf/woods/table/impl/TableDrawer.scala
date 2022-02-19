@@ -6,12 +6,11 @@ import com.github.gchudnov.swearwolf.woods.{ Table, TableStyle }
 import com.github.gchudnov.swearwolf.woods.util.Symbols
 import com.github.gchudnov.swearwolf.woods.util.impl.Func
 
-private[table] object TableDrawer {
+private[table] object TableDrawer:
 
   def estimateSize(data: Seq[Seq[Any]], tableStyle: TableStyle): Size =
-    if (data.isEmpty) {
-      Size(0, 0)
-    } else {
+    if data.isEmpty then Size(0, 0)
+    else {
       val td     = getDesc(tableStyle)
       val widths = colWidths(td, data)
       val row    = widths.map(n => "." * n).mkString(td.vert, td.vert, td.vert)
@@ -19,11 +18,10 @@ private[table] object TableDrawer {
       Size(width = row.length, height = height)
     }
 
-  def draw(screen: Screen)(pt: Point, table: Table, textStyle: TextStyle): Either[Throwable, Unit] = {
+  def draw(screen: Screen)(pt: Point, table: Table, textStyle: TextStyle): Either[Throwable, Unit] =
     val data = table.data
-    if (data.isEmpty) {
-      Right[Throwable, Unit](())
-    } else {
+    if data.isEmpty then Right[Throwable, Unit](())
+    else {
       val td = getDesc(table.style)
 
       val widths = colWidths(td, data)
@@ -37,19 +35,17 @@ private[table] object TableDrawer {
 
       val rs = top +: rows.head +: middle +: rows.tail :+ bottom
 
-      for {
-        _ <- Func.sequence(rs.zipWithIndex.map { case (row, i) =>
-               screen.put(pt.offset(0, i), row, textStyle)
-             })
-      } yield ()
+      for _ <- Func.sequence(rs.zipWithIndex.map { case (row, i) =>
+                 screen.put(pt.offset(0, i), row, textStyle)
+               })
+      yield ()
     }
-  }
 
   private def colWidths(td: TableDesc, data: Seq[Seq[Any]]) =
-    data.transpose.map(_.map(cell => if (cell == null) 0 else cell.toString.length).max + td.pad)
+    data.transpose.map(_.map(cell => if cell == null then 0 else cell.toString.length).max + td.pad)
 
   private def getDesc(style: TableStyle): TableDesc =
-    style match {
+    style match
       case TableStyle.Simple =>
         TableDesc(
           topLeft = Symbols.CharPlus,
@@ -84,8 +80,6 @@ private[table] object TableDrawer {
           pad = 2
         )
 
-    }
-
   private final case class TableDesc(
     topLeft: String,
     topRight: String,
@@ -101,5 +95,3 @@ private[table] object TableDrawer {
     empty: String,
     pad: Int
   )
-
-}

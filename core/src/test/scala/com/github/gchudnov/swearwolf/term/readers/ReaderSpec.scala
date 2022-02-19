@@ -1,11 +1,11 @@
 package com.github.gchudnov.swearwolf.term.readers
 
 import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeySeq, UnknownKeySeq }
-import com.github.gchudnov.swearwolf.term._
+import com.github.gchudnov.swearwolf.term.*
 import zio.test.Assertion.equalTo
-import zio.test._
+import zio.test.*
 
-object ReaderSpec extends DefaultRunnableSpec {
+object ReaderSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Reader")(
       test(s"empty") {
@@ -35,4 +35,3 @@ object ReaderSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-}

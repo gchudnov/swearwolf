@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf
 
 sealed trait KeyCode
 
-object KeyCode {
+object KeyCode:
 
   case object Invalid            extends KeyCode // {Key Not Found}
   case object Nul                extends KeyCode // Null
@@ -183,5 +183,3 @@ object KeyCode {
   case object F10 extends KeyCode // F10
   case object F11 extends KeyCode // F11
   case object F12 extends KeyCode // F12
-
-}

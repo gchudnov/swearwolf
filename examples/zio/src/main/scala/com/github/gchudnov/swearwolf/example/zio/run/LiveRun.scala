@@ -1,12 +1,13 @@
 package com.github.gchudnov.swearwolf.example.zio.run
 
-import com.github.gchudnov.swearwolf.util._
+import com.github.gchudnov.swearwolf.util.*
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle }
+import com.github.gchudnov.swearwolf.woods.text.RichTextSyntax.*
 import com.github.gchudnov.swearwolf.{ KeySeq, Screen }
 import zio.stream.ZStream
-import zio.{ Queue, _ }
+import zio.{ Queue, * }
 
-final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run {
+final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run:
 
   val keySeqStream: ZStream[Any, Nothing, KeySeq] =
     ZStream.fromQueue(keqSeqQueue)
@@ -20,12 +21,11 @@ final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run {
       .runDrain
 
   override def shutdown(): UIO[Unit] =
-    for {
-      _ <- keqSeqQueue.shutdown
-    } yield ()
+    for _ <- keqSeqQueue.shutdown
+    yield ()
 
-  private def render(ks: KeySeq): Task[Unit] = {
-    import TextStyle._
+  private def render(ks: KeySeq): Task[Unit] =
+    import TextStyle.*
 
     val keqSeqPos: Point = Point(32, 0)
 
@@ -39,35 +39,31 @@ final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run {
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
-    val errOrUnit = for {
+    val errOrUnit = for
       _    <- screen.clear()
       rich <- RichText.make("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
       _    <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(NamedColor.Blue))
       _    <- screen.put(Point(8, 0), "WORLD!", Foreground(NamedColor.Blue) | Background(NamedColor.Yellow))
       _    <- screen.put(Point(0, 2), rich)
-      _    <- screen.put(Point(0, 4), b, Foreground(NamedColor.Blue))
-      _    <- screen.put(Point(32, 2), g1, Foreground(NamedColor.Green))
-      _    <- screen.put(Point(32, 4), g2, Foreground(NamedColor.LimeGreen))
-      _    <- screen.put(Point(32, 7), g3, Foreground(NamedColor.Azure))
-      _    <- screen.put(Point(22, 0), gd, Foreground(NamedColor.Yellow))
-      _    <- screen.put(Point(0, 7), t, Foreground(NamedColor.White))
-      _    <- screen.put(Point(0, 13), l, Foreground(NamedColor.Red))
+      // _    <- screen.put(Point(0, 4), b, Foreground(NamedColor.Blue))
+      // _    <- screen.put(Point(32, 2), g1, Foreground(NamedColor.Green))
+      // _    <- screen.put(Point(32, 4), g2, Foreground(NamedColor.LimeGreen))
+      // _    <- screen.put(Point(32, 7), g3, Foreground(NamedColor.Azure))
+      // _    <- screen.put(Point(22, 0), gd, Foreground(NamedColor.Yellow))
+      // _    <- screen.put(Point(0, 7), t, Foreground(NamedColor.White))
+      // _    <- screen.put(Point(0, 13), l, Foreground(NamedColor.Red))
       _    <- screen.put(keqSeqPos.offset(0, 0), ks.toString)
       _    <- screen.flush()
-    } yield ()
+    yield ()
 
     ZIO.fromEither(errOrUnit)
-  }
-}
 
-object LiveRun {
+object LiveRun:
   private val queueSize = 16
 
-  def layer: ZServiceBuilder[Has[Screen], Throwable, Has[Run]] =
-    (for {
+  def layer: ZLayer[Screen, Throwable, Run] =
+    (for
       screen      <- ZIO.service[Screen]
       keqSeqQueue <- Queue.bounded[KeySeq](queueSize)
       service      = new LiveRun(screen, keqSeqQueue)
-    } yield service).toServiceBuilder
-
-}
+    yield service).toLayer

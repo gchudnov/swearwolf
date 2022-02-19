@@ -35,7 +35,7 @@ import scala.annotation.tailrec
  *
  * }}}
  */
-private[term] object EscReader extends BasicKeySeqReader {
+private[term] object EscReader extends BasicKeySeqReader:
 
   sealed trait State
 
@@ -81,31 +81,29 @@ private[term] object EscReader extends BasicKeySeqReader {
     24 -> KeyCode.F12
   )
 
-  override def read(data: Seq[Byte]): ReadState = {
+  override def read(data: Seq[Byte]): ReadState =
 
     @tailrec
     def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Seq[Byte]): ReadState =
-      state match {
+      state match
         case Start =>
-          xs match {
+          xs match
             case x +: xt if isEsc(x) =>
               iterate(Bracket, num1, num2, num3, last, xt)
             case _ =>
               UnknownReadState(data)
-          }
 
         case Bracket =>
-          xs match {
+          xs match
             case x +: xt if isBracket(x) =>
               iterate(Num1, num1, num2, num3, last, xt)
             case x +: xt =>
               UnknownReadState(data)
             case _ =>
               PartialReadState(data)
-          }
 
         case Num1 =>
-          xs match {
+          xs match
             case x +: xt if isSemicolon(x) =>
               iterate(Num2, num1, num2, num3, last, xt)
             case x +: xt if isDigit(x) =>
@@ -114,10 +112,9 @@ private[term] object EscReader extends BasicKeySeqReader {
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
               PartialReadState(data)
-          }
 
         case Num2 =>
-          xs match {
+          xs match
             case x +: xt if isSemicolon(x) =>
               iterate(Num3, num1, num2, num3, last, xt)
             case x +: xt if isDigit(x) =>
@@ -126,47 +123,37 @@ private[term] object EscReader extends BasicKeySeqReader {
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
               PartialReadState(data)
-          }
 
         case Num3 =>
-          xs match {
+          xs match
             case x +: xt if isDigit(x) =>
               iterate(Num3, num1, num2, appendNumber(num3, x), last, xt)
             case x +: xt =>
               iterate(Finish, num1, num2, num3, x, xt)
             case _ =>
               PartialReadState(data)
-          }
 
         case Finish =>
           toResult(num1, num2, num3, last, xs)
-      }
 
     iterate(Start, num1 = 0, num2 = 0, num3 = 0, last = 0, data)
-  }
 
   private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Seq[Byte]): ReadState =
-    if (isLowerT(last) && num1 == 8)
-      ParsedReadState(SizeKeySeq(Size(width = num3, height = num2)), rest)
-    else if (isTilde(last) && stdMap.contains(num1)) {
+    if isLowerT(last) && num1 == 8 then ParsedReadState(SizeKeySeq(Size(width = num3, height = num2)), rest)
+    else if isTilde(last) && stdMap.contains(num1) then
       val key  = stdMap(num1)
       val mods = toModifiers(num2)
       ParsedReadState(CtrlKeySeq(key, mods), rest)
-    } else if (lastMap.contains(last)) {
+    else if lastMap.contains(last) then
       val key  = lastMap(last)
       val mods = toModifiers(num1)
       ParsedReadState(CtrlKeySeq(key, mods), rest)
-    } else
-      UnknownReadState(rest)
+    else UnknownReadState(rest)
 
   private[term] def toModifiers(n: Int): Set[KeyModifier] =
-    if (n == 0 || n == 1)
-      Set.empty[KeyModifier]
+    if n == 0 || n == 1 then Set.empty[KeyModifier]
     else
       modMap.foldLeft(Set.empty[KeyModifier]) { case (acc, (mod, km)) =>
-        if (((n - 1) & mod) > 0)
-          acc + km
-        else
-          acc
+        if ((n - 1) & mod) > 0 then acc + km
+        else acc
       }
-}

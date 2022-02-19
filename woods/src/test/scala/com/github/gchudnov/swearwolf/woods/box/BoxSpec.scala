@@ -3,11 +3,11 @@ package com.github.gchudnov.swearwolf.woods.box
 import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ Box, BoxStyle, Resources }
-import com.github.gchudnov.swearwolf.woods._
-import zio.test.Assertion._
-import zio.test._
+import com.github.gchudnov.swearwolf.woods.*
+import zio.test.Assertion.*
+import zio.test.*
 
-object BoxSpec extends DefaultRunnableSpec {
+object BoxSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Box")(
       test("single border") {
@@ -71,5 +71,3 @@ object BoxSpec extends DefaultRunnableSpec {
         assert(actualData)(equalTo(expectedData))
       }
     )
-
-}

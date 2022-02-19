@@ -6,49 +6,42 @@ import com.github.gchudnov.swearwolf.woods.{ Grid, GridStyle }
 import com.github.gchudnov.swearwolf.woods.util.Symbols
 import com.github.gchudnov.swearwolf.woods.util.impl.Func
 
-private[grid] object GridDrawer {
+private[grid] object GridDrawer:
 
   def draw(screen: Screen)(pt: Point, grid: Grid, textStyle: TextStyle): Either[Throwable, Unit] =
-    if (grid.size.width < 2 || grid.size.height < 2)
-      Right(()) // Grid is too small to be displayed
+    if grid.size.width < 2 || grid.size.height < 2 then Right(()) // Grid is too small to be displayed
     else {
       val gd = getDesc(grid.style)
 
       val xis = Range(0, grid.size.width, grid.cell.width).toSet
       val yis = Range(0, grid.size.height, grid.cell.height).toSet
 
-      val top    = gd.topLeft + Range(1, grid.size.width - 1).map(i => if (xis.contains(i)) gd.ixTop else gd.horz).mkString + gd.topRight
-      val bottom = gd.bottomLeft + Range(1, grid.size.width - 1).map(i => if (xis.contains(i)) gd.ixBottom else gd.horz).mkString + gd.bottomRight
+      val top    = gd.topLeft + Range(1, grid.size.width - 1).map(i => if xis.contains(i) then gd.ixTop else gd.horz).mkString + gd.topRight
+      val bottom = gd.bottomLeft + Range(1, grid.size.width - 1).map(i => if xis.contains(i) then gd.ixBottom else gd.horz).mkString + gd.bottomRight
 
       val rows = Range(1, grid.size.height - 1).map { y =>
         Range(0, grid.size.width).map { x =>
-          if (yis.contains(y))
-            if (x == 0)
-              gd.ixLeft
-            else if (x == grid.size.width - 1)
-              gd.ixRight
-            else if (xis.contains(x))
-              gd.ix
-            else
-              gd.horz
-          else if (xis.contains(x) || x == grid.size.width - 1)
-            gd.vert
-          else
-            gd.empty
+          if yis.contains(y) then
+            if x == 0 then gd.ixLeft
+            else if x == grid.size.width - 1 then gd.ixRight
+            else if xis.contains(x) then gd.ix
+            else gd.horz
+          else if xis.contains(x) || x == grid.size.width - 1 then gd.vert
+          else gd.empty
         }.mkString
       }
 
-      for {
+      for
         _ <- screen.put(pt, top, textStyle)
         _ <- Func.sequence(rows.zipWithIndex.map { case (row, i) =>
                screen.put(pt.offset(0, i + 1), row, textStyle)
              })
         _ <- screen.put(pt.offset(0, grid.size.height - 1), bottom, textStyle)
-      } yield ()
+      yield ()
     }
 
   private def getDesc(style: GridStyle): GridDesc =
-    style match {
+    style match
       case GridStyle.Simple =>
         GridDesc(
           topLeft = Symbols.CharPlus,
@@ -128,7 +121,6 @@ private[grid] object GridDrawer {
           vert = Symbols.Frame_NQT,
           empty = Symbols.Empty
         )
-    }
 
   private final case class GridDesc(
     topLeft: String,
@@ -144,5 +136,3 @@ private[grid] object GridDrawer {
     vert: String,
     empty: String
   )
-
-}

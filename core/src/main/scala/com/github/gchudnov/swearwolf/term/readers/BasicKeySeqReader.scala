@@ -4,7 +4,7 @@ import com.github.gchudnov.swearwolf.KeyModifier
 
 import scala.util.control.Exception.nonFatalCatch
 
-private[readers] abstract class BasicKeySeqReader extends KeySeqReader {
+private[readers] abstract class BasicKeySeqReader extends KeySeqReader:
 
   val modMap: Map[Int, KeyModifier] = Map(
     1 -> KeyModifier.Shift,
@@ -22,8 +22,7 @@ private[readers] abstract class BasicKeySeqReader extends KeySeqReader {
     Character.isISOControl(value.toChar)
 
   def isPrintable(value: Byte): Boolean =
-    if (isControl(value))
-      false
+    if isControl(value) then false
     else
       nonFatalCatch
         .either(Character.UnicodeBlock.of(value.toInt))
@@ -73,4 +72,3 @@ private[readers] abstract class BasicKeySeqReader extends KeySeqReader {
   // \t
   def isTab(value: Byte): Boolean =
     value == 0x09.toByte
-}

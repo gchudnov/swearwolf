@@ -1,12 +1,12 @@
 package com.github.gchudnov.swearwolf.woods.text.impl
 
 import com.github.gchudnov.swearwolf.util.Color
-import RichTextParser._
-import RichTextStyler._
+import RichTextParser.*
+import RichTextStyler.*
 import zio.test.Assertion.{ equalTo, isLeft }
-import zio.test._
+import zio.test.*
 
-object RichTestStylerSpec extends DefaultRunnableSpec {
+object RichTestStylerSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("RichTestStyler")(
       test("empty") {
@@ -135,5 +135,3 @@ object RichTestStylerSpec extends DefaultRunnableSpec {
         assert(actual)(isLeft)
       }
     )
-
-}

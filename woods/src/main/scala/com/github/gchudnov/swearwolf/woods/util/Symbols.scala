@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.KeyCode
 /**
  * https://www.utf8-chartable.de/unicode-utf8-table.pl?start=9472&unicodeinhtml=dec
  */
-object Symbols {
+object Symbols:
 
   val NotFound = "?"
   val Empty    = " "
@@ -329,5 +329,3 @@ object Symbols {
 
   def keyCode(key: KeyCode): String =
     keys.getOrElse(key, NotFound)
-
-}

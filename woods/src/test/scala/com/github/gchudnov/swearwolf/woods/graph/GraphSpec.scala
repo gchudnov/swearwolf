@@ -3,10 +3,10 @@ package com.github.gchudnov.swearwolf.woods.graph
 import com.github.gchudnov.swearwolf.util.Size
 import com.github.gchudnov.swearwolf.woods.GraphStyle
 import com.github.gchudnov.swearwolf.woods.graph.impl.GraphDrawer
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object GraphSpec extends DefaultRunnableSpec {
+object GraphSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Graph")(
       test("uStep") {
@@ -310,5 +310,3 @@ object GraphSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-
-}

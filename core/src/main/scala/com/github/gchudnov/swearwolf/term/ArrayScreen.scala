@@ -13,8 +13,8 @@ import com.github.gchudnov.swearwolf.util.{ Point, Size, TextStyle }
  * @param borderChar
  *   character to use on the right-side of the screen as a delimiter.
  */
-final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends Screen {
-  import ArrayScreen._
+final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends Screen:
+  import ArrayScreen.*
 
   private var view: Array[Array[Char]] = blank(szScreen, cellChar)
 
@@ -24,9 +24,8 @@ final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]
   override def size: Size = szScreen
 
   override def put(pt: Point, value: String): Either[Throwable, Unit] =
-    if (pt.y >= szScreen.height || pt.y < 0) {
-      Right(())
-    } else {
+    if pt.y >= szScreen.height || pt.y < 0 then Right(())
+    else {
       val oldLine = view(pt.y).mkString
 
       val first = oldLine.substring(0, Math.min(pt.x, oldLine.length))
@@ -71,9 +70,8 @@ final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]
   override def shutdown(): Either[Throwable, Unit] = Right(())
 
   override def init(): Either[Throwable, Unit] = Right(())
-}
 
-object ArrayScreen {
+object ArrayScreen:
 
   private val DefaultCellChar   = '.'
   private val DefaultBorderChar = '|'
@@ -83,5 +81,3 @@ object ArrayScreen {
 
   def apply(size: Size, cellChar: Char = DefaultCellChar, borderChar: Option[Char] = Some(DefaultBorderChar)): ArrayScreen =
     new ArrayScreen(size, cellChar, borderChar)
-
-}

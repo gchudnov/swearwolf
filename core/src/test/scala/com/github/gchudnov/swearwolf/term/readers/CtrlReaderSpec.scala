@@ -3,9 +3,9 @@ package com.github.gchudnov.swearwolf.term.readers
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.{ CharKeySeq, CtrlKeySeq, KeyCode, KeyModifier }
 import zio.test.Assertion.equalTo
-import zio.test._
+import zio.test.*
 
-object CtrlReaderSpec extends DefaultRunnableSpec {
+object CtrlReaderSpec extends DefaultRunnableSpec:
 
   private val BackspaceChar = 0x7f.toChar
   private val EscChar       = 0x1b.toChar
@@ -103,4 +103,3 @@ object CtrlReaderSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-}

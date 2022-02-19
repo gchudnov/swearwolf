@@ -3,10 +3,10 @@ package com.github.gchudnov.swearwolf.term.readers
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, PartialReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeyModifier, SizeKeySeq }
 import com.github.gchudnov.swearwolf.util.Size
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object EscReaderSpec extends DefaultRunnableSpec {
+object EscReaderSpec extends DefaultRunnableSpec:
 
   private val EscChar = 0x1b.toChar
 
@@ -186,5 +186,3 @@ object EscReaderSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-
-}

@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.{ KeySeq, UnknownKeySeq }
-import com.github.gchudnov.swearwolf.term.readers._
+import com.github.gchudnov.swearwolf.term.readers.*
 
 import scala.annotation.tailrec
 
@@ -12,30 +12,27 @@ import scala.annotation.tailrec
  *
  * https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_sequences
  */
-private[term] object Reader {
+private[term] object Reader:
 
   private val readers = List[KeySeqReader](CharReader, CtrlReader, EscReader, MouseReader)
 
-  def consume(bytes: Seq[Byte]): (Vector[KeySeq], Seq[Byte]) = {
+  def consume(bytes: Seq[Byte]): (Vector[KeySeq], Seq[Byte]) =
     @tailrec
     def iterate(acc: Vector[KeySeq], xs: Seq[Byte]): (Vector[KeySeq], Seq[Byte]) =
-      xs match {
+      xs match
         case ys if ys.nonEmpty =>
           val rs = anyRead(ys)
-          rs match {
+          rs match
             case UnknownReadState(_) =>
               iterate(acc.appended(UnknownKeySeq(xs)), Seq.empty[Byte])
             case PartialReadState(_) =>
               (acc, ys)
             case ParsedReadState(keqSeq, rest) =>
               iterate(acc.appended(keqSeq), rest)
-          }
         case _ =>
           (acc, Seq.empty[Byte])
-      }
 
     iterate(Vector.empty[KeySeq], bytes)
-  }
 
   private def anyRead(bytes: Seq[Byte]): ReadState =
     readers.foldLeft(ReadState.empty) { (acc, reader) =>
@@ -43,7 +40,7 @@ private[term] object Reader {
       mergeReadResults(acc, res)
     }
 
-  private def mergeReadResults(lhs: ReadState, rhs: ReadState): ReadState = (lhs, rhs) match {
+  private def mergeReadResults(lhs: ReadState, rhs: ReadState): ReadState = (lhs, rhs) match
     case (ParsedReadState(_, _), _) =>
       lhs
     case (_, ParsedReadState(_, _)) =>
@@ -52,5 +49,3 @@ private[term] object Reader {
       lhs
     case _ =>
       rhs
-  }
-}

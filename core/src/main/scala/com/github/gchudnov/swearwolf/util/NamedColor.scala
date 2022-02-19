@@ -3,7 +3,7 @@ package com.github.gchudnov.swearwolf.util
 /**
  * A set of predefined named colors.
  */
-object NamedColor {
+object NamedColor:
 
   val AliceBlue: Color            = Color(240, 248, 255)
   val AntiqueWhite: Color         = Color(250, 235, 215)
@@ -146,7 +146,7 @@ object NamedColor {
   val Yellow: Color               = Color(255, 255, 0)
   val YellowGreen: Color          = Color(154, 205, 50)
 
-  object Name {
+  object Name:
     val AliceBlue            = "alice-blue"
     val AntiqueWhite         = "antique-white"
     val Aqua                 = "aqua"
@@ -287,7 +287,6 @@ object NamedColor {
     val WhiteSmoke           = "white-smoke"
     val Yellow               = "yellow"
     val YellowGreen          = "yellow-green"
-  }
 
   private val colors: Map[String, Color] = Map(
     Name.AliceBlue            -> AliceBlue,
@@ -432,9 +431,6 @@ object NamedColor {
     Name.YellowGreen          -> YellowGreen
   )
 
-  def parse(name: String): Either[Throwable, Color] = {
+  def parse(name: String): Either[Throwable, Color] =
     val sanitizedColor = name.toLowerCase.replaceAll("_", "-")
     colors.get(sanitizedColor).fold(Left(new ColorException(s"Named color is unknown: $name")): Either[Throwable, Color])(c => Right(c))
-  }
-
-}

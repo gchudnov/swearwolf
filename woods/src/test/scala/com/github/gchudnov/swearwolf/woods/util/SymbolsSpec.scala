@@ -1,10 +1,10 @@
 package com.github.gchudnov.swearwolf.woods.util
 
 import com.github.gchudnov.swearwolf.KeyCode
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object SymbolsSpec extends DefaultRunnableSpec {
+object SymbolsSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Symbols")(
       test("combination with unrecognized keys") {
@@ -24,5 +24,3 @@ object SymbolsSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-
-}

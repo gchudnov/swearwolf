@@ -3,9 +3,9 @@ package com.github.gchudnov.swearwolf.term.readers
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.CharKeySeq
 import zio.test.Assertion.equalTo
-import zio.test._
+import zio.test.*
 
-object CharReaderSpec extends DefaultRunnableSpec {
+object CharReaderSpec extends DefaultRunnableSpec:
 
   override def spec: ZSpec[Environment, Failure] =
     suite("CharReader")(
@@ -37,5 +37,3 @@ object CharReaderSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-
-}

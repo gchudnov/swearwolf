@@ -2,11 +2,11 @@ package com.github.gchudnov.swearwolf
 
 import com.github.gchudnov.swearwolf.term.{ Term, TermScreen }
 import com.github.gchudnov.swearwolf.util.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.util._
+import com.github.gchudnov.swearwolf.util.*
 
 import scala.util.Using.Releasable
 
-trait Screen {
+trait Screen:
   def size: Size
 
   def put(pt: Point, value: String): Either[Throwable, Unit]
@@ -36,18 +36,15 @@ trait Screen {
   def eventPoll(): Either[Throwable, List[KeySeq]]
 
   def close(): Unit = shutdown().toTry.get
-}
 
-object Screen {
+object Screen:
   implicit val releasableScreen: Releasable[Screen] = screen => screen.close()
 
-  def acquire(): Either[Throwable, Screen] = {
+  def acquire(): Either[Throwable, Screen] =
     val term   = Term.default()
     val screen = new TermScreen(term)
 
     screen.init().map(_ => screen)
-  }
 
   def acquireOrThrow(): Screen =
     acquire().toTry.get
-}

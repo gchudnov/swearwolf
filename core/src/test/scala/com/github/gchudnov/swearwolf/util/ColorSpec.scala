@@ -1,9 +1,9 @@
 package com.github.gchudnov.swearwolf.util
 
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object ColorSpec extends DefaultRunnableSpec {
+object ColorSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Color")(
       test("empty") {
@@ -45,4 +45,3 @@ object ColorSpec extends DefaultRunnableSpec {
         assert(actual)(equalTo(expected))
       }
     )
-}

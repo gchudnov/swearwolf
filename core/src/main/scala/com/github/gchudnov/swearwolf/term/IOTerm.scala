@@ -15,7 +15,7 @@ import scala.util.control.Exception.nonFatalCatch
  * @param out
  *   output stream
  */
-private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term {
+private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term:
   private val raw = new ListBuffer[Byte]
 
   override def write(bytes: Array[Byte]): Either[Throwable, Unit] =
@@ -32,20 +32,18 @@ private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term {
 
   override def blockingPoll(): Either[Throwable, List[KeySeq]] =
     nonFatalCatch.either(in.read().toByte).flatMap { n =>
-      if (n != -1) {
+      if n != -1 then
         raw.append(n)
         poll()
-      } else
-        Right(List.empty[KeySeq])
+      else Right(List.empty[KeySeq])
     }
 
   override def poll(): Either[Throwable, List[KeySeq]] =
     nonFatalCatch.either {
       val nAvail = in.available()
-      if (nAvail > 0) {
+      if nAvail > 0 then
         val bytes = in.readNBytes(nAvail)
         raw.appendAll(bytes)
-      }
 
       val (ks, rest) = Reader.consume(raw.toSeq)
       raw.clear()
@@ -53,4 +51,3 @@ private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term {
 
       ks.toList
     }
-}

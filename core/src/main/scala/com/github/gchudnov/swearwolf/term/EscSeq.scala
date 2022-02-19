@@ -9,11 +9,10 @@ import com.github.gchudnov.swearwolf.util.{ Bytes, Color, Point }
  *
  * http://rtfm.etla.org/xterm/ctlseq.html
  */
-final case class EscSeq(value: String) {
+final case class EscSeq(value: String):
   def bytes: Array[Byte] = value.getBytes()
-}
 
-object EscSeq {
+object EscSeq:
   private val EscChar: Char = '\u001b'
 
   private def esc(data: String): EscSeq =
@@ -91,12 +90,10 @@ object EscSeq {
   /**
    * Parse bytes and extract only text, skipping esc-codes.
    */
-  def textFromBytes(bytes: Array[Byte]): String = {
+  def textFromBytes(bytes: Array[Byte]): String =
     val rx = s"""$EscChar\\[[\\d;]+\\w"""
 
     val str   = Bytes.toString(bytes.toSeq)
     val parts = str.split(rx)
 
     parts.filter(_.nonEmpty).mkString
-  }
-}

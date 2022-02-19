@@ -4,10 +4,10 @@ import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Label, Resources }
 import com.github.gchudnov.swearwolf.woods.label.impl.LabelDrawer
-import zio.test.Assertion._
-import zio.test._
+import zio.test.Assertion.*
+import zio.test.*
 
-object LabelSpec extends DefaultRunnableSpec {
+object LabelSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Label")(
       test("background can be filled") {
@@ -69,4 +69,3 @@ object LabelSpec extends DefaultRunnableSpec {
         assert(actualData)(equalTo(expectedData))
       }
     )
-}
