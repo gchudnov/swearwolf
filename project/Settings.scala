@@ -35,6 +35,7 @@ object Settings {
     case x                                               => fallbackStrategy(x)
   }
 
+  val globalScalaVersion: String = scalaV
   val supportedScalaVersions = List(scala213)
 
   val assemblySettings: Seq[Setting[_]] = Seq(

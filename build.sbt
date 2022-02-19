@@ -3,6 +3,8 @@ import sbt._
 import sbtassembly.AssemblyPlugin.defaultUniversalScript
 
 Global / cancelable := true
+Global / scalaVersion := Settings.globalScalaVersion
+Global / semanticdbEnabled := true
 
 def testFilter(name: String): Boolean = (name endsWith "Spec")
 
