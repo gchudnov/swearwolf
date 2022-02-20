@@ -43,18 +43,18 @@ lazy val term = (project in file("term"))
     libraryDependencies ++= Dependencies.Term
   )
 
-lazy val woods = (project in file("woods"))
+lazy val draw = (project in file("draw"))
   .dependsOn(util, term)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "swearwolf-woods",
-    libraryDependencies ++= Dependencies.Woods
+    name := "draw",
+    libraryDependencies ++= Dependencies.Draw
   )
 
 lazy val examplePlain = (project in file("examples/plain"))
-  .dependsOn(util, term, woods)
+  .dependsOn(util, term, draw)
   .settings(allSettings: _*)
   .settings(Settings.assemblySettings)
   .settings(Settings.noPublish)
@@ -67,7 +67,7 @@ lazy val examplePlain = (project in file("examples/plain"))
   )
 
 lazy val exampleZio = (project in file("examples/zio"))
-  .dependsOn(util, term, woods)
+  .dependsOn(util, term, draw)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.assemblySettings)
@@ -81,7 +81,7 @@ lazy val exampleZio = (project in file("examples/zio"))
   )
 
 lazy val root = (project in file("."))
-  .aggregate(util, shapes, term, woods, examplePlain, exampleZio)
+  .aggregate(util, shapes, term, draw, examplePlain, exampleZio)
   .settings(allSettings: _*)
   .settings(Settings.noPublish)
   .settings(

@@ -38,7 +38,7 @@ object Dependencies {
     compile ++ test
   }
 
-  val Woods: Seq[ModuleID] = {
+  val Draw: Seq[ModuleID] = {
     val compile = Seq(
     )
     val test = Seq(
