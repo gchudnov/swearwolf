@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.woods.text
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.Point
+import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.woods.RichText
 
 private[text] trait RichTextOps:

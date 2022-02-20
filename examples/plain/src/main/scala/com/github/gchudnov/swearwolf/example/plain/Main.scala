@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.example.plain
 
 import com.github.gchudnov.swearwolf.*
-import com.github.gchudnov.swearwolf.util.*
+import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.colors.NamedColor
 import com.github.gchudnov.swearwolf.term.EventLoop

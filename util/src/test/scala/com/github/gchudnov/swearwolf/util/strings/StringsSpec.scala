@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.util.strings
 
-import com.github.gchudnov.swearwolf.util.Size
+import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.strings.Strings
 import com.github.gchudnov.swearwolf.util.strings.Strings.*
 

@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.{ KeySeq, Screen }
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.util.{ Point, Size }
+import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 /**

@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.woods.label
 
 import com.github.gchudnov.swearwolf.term.ArrayScreen
-import com.github.gchudnov.swearwolf.util.{ Point, Size }
+import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Label, Resources }
 import com.github.gchudnov.swearwolf.woods.label.impl.LabelDrawer
 import com.github.gchudnov.swearwolf.woods.label.LabelSyntax.*

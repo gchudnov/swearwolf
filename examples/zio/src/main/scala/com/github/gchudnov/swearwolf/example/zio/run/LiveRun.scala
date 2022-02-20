@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.example.zio.run
 
-import com.github.gchudnov.swearwolf.util.*
+import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle }
 import com.github.gchudnov.swearwolf.woods.text.RichTextSyntax.*
 import com.github.gchudnov.swearwolf.{ KeySeq, Screen }

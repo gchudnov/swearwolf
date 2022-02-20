@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.woods.table
 
 import com.github.gchudnov.swearwolf.term.ArrayScreen
-import com.github.gchudnov.swearwolf.util.{ Point, Size }
+import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ Resources, Table, TableStyle }
 import com.github.gchudnov.swearwolf.woods.table.TableSyntax.*
 import zio.test.Assertion.*

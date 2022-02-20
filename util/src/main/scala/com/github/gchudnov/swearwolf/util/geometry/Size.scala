@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.geometry
 
 final case class Size(width: Int, height: Int)
 

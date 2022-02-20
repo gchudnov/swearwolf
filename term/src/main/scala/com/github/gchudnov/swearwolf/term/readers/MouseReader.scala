@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.term.readers
 
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, PartialReadState, ReadState, UnknownReadState }
-import com.github.gchudnov.swearwolf.util.Point
+import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.{ KeyModifier, MouseAction, MouseButton, MouseKeySeq }
 
 import scala.annotation.tailrec

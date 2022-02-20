@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf
 
-import com.github.gchudnov.swearwolf.util.{ Point, Size }
+import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 
 class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal:
 

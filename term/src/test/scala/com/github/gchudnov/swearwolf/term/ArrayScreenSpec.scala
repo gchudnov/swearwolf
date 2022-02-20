@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.Resources
-import com.github.gchudnov.swearwolf.util.{ Point, Size }
+import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import zio.test.Assertion.*
 import zio.test.*
 

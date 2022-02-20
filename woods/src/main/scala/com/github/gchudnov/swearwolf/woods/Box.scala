@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.woods
 
-import com.github.gchudnov.swearwolf.util.Size
+import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.woods.box.BasicBox
 
 trait Box:
