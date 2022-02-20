@@ -7,10 +7,10 @@ import com.github.gchudnov.swearwolf.shapes.chart.{ Chart, ChartStyle }
 import com.github.gchudnov.swearwolf.shapes.chart.ChartStyle.{ Dot, Quad, Step }
 import com.github.gchudnov.swearwolf.shapes.styles.Symbols
 
-private[chart] object ChartDrawer:
-
-  def draw(chart: Chart): Seq[String] =
-    val ceilY = 100.0 // TODO: put to Chart
+private[chart] object ChartPresenter:
+  private val ceilY = 100.0
+  
+  def present(chart: Chart): Seq[String] =
     val lines = compile(chart.size, ceilY, None)(chart.data, chart.style)
     lines
 

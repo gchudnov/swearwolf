@@ -5,9 +5,9 @@ import com.github.gchudnov.swearwolf.shapes.box.{ Box, BoxStyle }
 import com.github.gchudnov.swearwolf.shapes.styles.Symbols
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle.*
 
-private[box] object BoxDrawer:
+private[box] object BoxPresenter:
 
-  def draw(box: Box): Seq[String] =
+  def present(box: Box): Seq[String] =
     if box.size.width < 2 || box.size.height < 2 then Seq.empty[String] // Box is too small to be displayed
     else
       val lines = compile(box)
