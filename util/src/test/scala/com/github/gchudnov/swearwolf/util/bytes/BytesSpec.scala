@@ -1,5 +1,7 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.bytes
 
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.util.bytes.Bytes.asBytes
 import zio.test.Assertion.*
 import zio.test.*
 
@@ -9,7 +11,7 @@ object BytesSpec extends DefaultRunnableSpec:
       test("bytes to string") {
         val input = Seq(10.toByte, 23.toByte, 65.toByte)
 
-        val actual   = Bytes.toHexStr(input)
+        val actual   = Bytes(input).asHexString
         val expected = "0a1741"
 
         assert(actual)(equalTo(expected))
@@ -17,8 +19,8 @@ object BytesSpec extends DefaultRunnableSpec:
       test("string to bytes") {
         val input = "0a1741"
 
-        val actual   = Bytes.fromHexStr(input)
-        val expected = Seq(10.toByte, 23.toByte, 65.toByte)
+        val actual   = input.asBytes
+        val expected = Bytes(Seq(10.toByte, 23.toByte, 65.toByte))
 
         assert(actual)(equalTo(expected))
       }

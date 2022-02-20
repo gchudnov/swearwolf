@@ -1,7 +1,8 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.util.{ Bytes, Point }
+import com.github.gchudnov.swearwolf.util.{ Point }
 import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Escape sequences
@@ -94,7 +95,7 @@ object EscSeq:
   def textFromBytes(bytes: Array[Byte]): String =
     val rx = s"""$EscChar\\[[\\d;]+\\w"""
 
-    val str   = Bytes.toString(bytes.toSeq)
+    val str   = Bytes(bytes.toSeq).asString
     val parts = str.split(rx)
 
     parts.filter(_.nonEmpty).mkString
