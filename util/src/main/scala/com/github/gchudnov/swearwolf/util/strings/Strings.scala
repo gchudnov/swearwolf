@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.util.strings
 
 import scala.annotation.tailrec
 
-object Strings:
+trait StringOps:
 
   extension (s: String)
     /**
@@ -114,3 +114,5 @@ object Strings:
       val fill = "..."
       if isLeft then fill ++ s.substring(fill.length)
       else s.substring(0, s.length - fill.length) + fill
+
+object Strings extends StringOps

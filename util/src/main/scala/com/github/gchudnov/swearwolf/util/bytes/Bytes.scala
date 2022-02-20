@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets
 
 final case class Bytes(value: Seq[Byte]) extends AnyVal
 
-object Bytes:
+trait BytesOps:
 
   extension (bytes: Bytes)
     def asString: String =
@@ -16,3 +16,5 @@ object Bytes:
   extension (str: String)
     def asBytes: Bytes =
       Bytes(str.grouped(2).map(Integer.parseInt(_, 16).toByte).toSeq)
+
+object Bytes extends BytesOps

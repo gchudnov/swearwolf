@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.util.numerics
 
-object Numerics:
+trait NumericOps:
 
   extension [T: Numeric](value: T)
     def clamp(min: T, max: T): T =
@@ -35,3 +35,5 @@ object Numerics:
         fraT.div(a, b)
       case _ =>
         sys.error("Unexpected data type in division")
+
+object Numerics extends NumericOps
