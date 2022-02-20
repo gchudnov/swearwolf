@@ -42,8 +42,8 @@ final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run:
     val errOrUnit = for
       _    <- screen.clear()
       rich <- RichText.make("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
-      _    <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(NamedColor.Blue))
-      _    <- screen.put(Point(8, 0), "WORLD!", Foreground(NamedColor.Blue) | Background(NamedColor.Yellow))
+      // _    <- screen.put(Point(0, 0), "HELLO", TextStyle.Bold | Foreground(NamedColor.Blue))
+      // _    <- screen.put(Point(8, 0), "WORLD!", Foreground(NamedColor.Blue) | Background(NamedColor.Yellow))
       _    <- screen.put(Point(0, 2), rich)
       // _    <- screen.put(Point(0, 4), b, Foreground(NamedColor.Blue))
       // _    <- screen.put(Point(32, 2), g1, Foreground(NamedColor.Green))

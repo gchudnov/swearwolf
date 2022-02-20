@@ -3,6 +3,7 @@ package com.github.gchudnov.swearwolf.woods.box
 import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ Box, BoxStyle, Resources }
+import com.github.gchudnov.swearwolf.woods.box.BoxSyntax.*
 import com.github.gchudnov.swearwolf.woods.*
 import zio.test.Assertion.*
 import zio.test.*

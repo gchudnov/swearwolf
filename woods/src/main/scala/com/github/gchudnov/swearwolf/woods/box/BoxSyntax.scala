@@ -5,11 +5,14 @@ import com.github.gchudnov.swearwolf.util.{ Point, TextStyle }
 import com.github.gchudnov.swearwolf.woods.Box
 import com.github.gchudnov.swearwolf.woods.box.impl.BoxDrawer
 
-private[box] class BoxOps(private val screen: Screen) extends AnyVal:
-  def put(pt: Point, box: Box, textStyle: TextStyle = TextStyle.Empty): Either[Throwable, Unit] =
-    BoxDrawer.draw(screen)(pt, box, textStyle)
+private[box] trait BoxOps:
+  extension (screen: Screen)
+    def put(pt: Point, box: Box, textStyle: TextStyle): Either[Throwable, Unit] =
+      BoxDrawer.draw(screen)(pt, box, textStyle)
 
-private[woods] trait BoxSyntax:
-  implicit def boxOps(screen: Screen): BoxOps = new BoxOps(screen)
+    def put(pt: Point, box: Box): Either[Throwable, Unit] =
+      put(pt, box, TextStyle.Empty)
+
+private[woods] trait BoxSyntax extends BoxOps
 
 object BoxSyntax extends BoxSyntax

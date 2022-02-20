@@ -5,11 +5,14 @@ import com.github.gchudnov.swearwolf.util.{ Point, TextStyle }
 import com.github.gchudnov.swearwolf.woods.Label
 import com.github.gchudnov.swearwolf.woods.label.impl.LabelDrawer
 
-private[label] class LabelOps(private val screen: Screen) extends AnyVal:
-  def put(pt: Point, label: Label, textStyle: TextStyle = TextStyle.Empty): Either[Throwable, Unit] =
-    LabelDrawer.draw(screen)(pt, label, textStyle)
+private[label] trait LabelOps:
+  extension (screen: Screen)
+    def put(pt: Point, label: Label, textStyle: TextStyle): Either[Throwable, Unit] =
+      LabelDrawer.draw(screen)(pt, label, textStyle)
 
-private[woods] trait LabelSyntax:
-  implicit def labelOps(screen: Screen): LabelOps = new LabelOps(screen)
+    def put(pt: Point, label: Label): Either[Throwable, Unit] =
+      put(pt, label, TextStyle.Empty)
+
+private[woods] trait LabelSyntax extends LabelOps
 
 object LabelSyntax extends LabelSyntax

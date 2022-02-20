@@ -4,6 +4,7 @@ import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Label, Resources }
 import com.github.gchudnov.swearwolf.woods.label.impl.LabelDrawer
+import com.github.gchudnov.swearwolf.woods.label.LabelSyntax.*
 import zio.test.Assertion.*
 import zio.test.*
 

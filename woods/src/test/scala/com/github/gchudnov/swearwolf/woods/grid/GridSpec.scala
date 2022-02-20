@@ -3,6 +3,7 @@ package com.github.gchudnov.swearwolf.woods.grid
 import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ Grid, GridStyle, Resources }
+import com.github.gchudnov.swearwolf.woods.grid.GridSyntax.*
 import zio.test.Assertion.*
 import zio.test.*
 

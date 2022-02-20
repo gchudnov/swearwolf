@@ -4,6 +4,7 @@ import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.Bytes.toHexStr
 import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.woods.{ Resources, RichText }
+import com.github.gchudnov.swearwolf.woods.text.RichTextSyntax.*
 import zio.test.Assertion.{ equalTo, isLeft, isRight }
 import zio.test.*
 
