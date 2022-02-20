@@ -1,8 +1,9 @@
 package com.github.gchudnov.swearwolf.woods.graph.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{ Point, Size, Value }
+import com.github.gchudnov.swearwolf.util.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import com.github.gchudnov.swearwolf.util.numerics.Numerics.*
 import com.github.gchudnov.swearwolf.woods.{ Graph, GraphStyle }
 import com.github.gchudnov.swearwolf.woods.GraphStyle.{ Dot, Quad, Step }
 import com.github.gchudnov.swearwolf.woods.util.Symbols
@@ -25,7 +26,7 @@ private[graph] object GraphDrawer:
     val curData   = data.takeRight(maxPoints)
     val pad       = maxPoints - curData.size
     val points    = if pad != 0 then Seq.fill(pad)(0.0) ++ data else curData
-    val scaled    = Value.scaleSeq(ceilY, maxY)(points)
+    val scaled    = points.scaleSeq(ceilY, maxY)
 
     val dy = ceilY / sz.height // height of one row
     val cy = dy / sy           // height of one y-step in a row

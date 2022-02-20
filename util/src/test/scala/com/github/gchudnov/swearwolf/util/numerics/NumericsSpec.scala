@@ -1,11 +1,14 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.numerics
+
+import com.github.gchudnov.swearwolf.util.numerics.Numerics
+import com.github.gchudnov.swearwolf.util.numerics.Numerics.*
 
 import zio.test.Assertion.*
 import zio.test.*
 
-object ValueSpec extends DefaultRunnableSpec:
+object NumericsSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
-    suite("Value")(
+    suite("Numerics")(
       test("clamp") {
         val min = 0.0
         val max = 4.0
@@ -24,7 +27,7 @@ object ValueSpec extends DefaultRunnableSpec:
         val input    = table.map(_._1)
         val expected = table.map(_._2)
 
-        val actual = input.map(it => Value.clamp(min, max)(it))
+        val actual = input.map(it => it.clamp(min, max))
 
         assert(actual)(equalTo(expected))
       },
@@ -33,7 +36,7 @@ object ValueSpec extends DefaultRunnableSpec:
         val ceilValue = 100.0
         val maxValue  = Option.empty[Double]
 
-        val actual   = Value.scaleSeq(ceilValue, maxValue)(points)
+        val actual   = points.scaleSeq(ceilValue, maxValue)
         val expected = Seq(0.0, 25.0, 50.0, 100.0)
 
         assert(actual)(equalTo(expected))
@@ -43,7 +46,7 @@ object ValueSpec extends DefaultRunnableSpec:
         val ceilValue = 100.0
         val maxValue  = Option.empty[Double]
 
-        val actual   = Value.scaleSeq(ceilValue, maxValue)(points)
+        val actual   = points.scaleSeq(ceilValue, maxValue)
         val expected = Seq(0.0, -25.0, -50.0, -100.0)
 
         assert(actual)(equalTo(expected))
@@ -53,7 +56,7 @@ object ValueSpec extends DefaultRunnableSpec:
         val ceilValue = 100.0
         val maxValue  = Option.empty[Double]
 
-        val actual   = Value.scaleSeq(ceilValue, maxValue)(points)
+        val actual   = points.scaleSeq(ceilValue, maxValue)
         val expected = Seq(-100.0, -50.0, 50.0, 100.0)
 
         assert(actual)(equalTo(expected))
@@ -63,7 +66,7 @@ object ValueSpec extends DefaultRunnableSpec:
         val ceilValue = 100
         val maxValue  = Option.empty[Int]
 
-        val actual   = Value.scaleSeq(ceilValue, maxValue)(points)
+        val actual   = points.scaleSeq(ceilValue, maxValue)
         val expected = Seq(0, 25, 50, 100)
 
         assert(actual)(equalTo(expected))
@@ -73,7 +76,7 @@ object ValueSpec extends DefaultRunnableSpec:
         val ceilValue = 100
         val maxValue  = Option(200)
 
-        val actual   = Value.scaleSeq(ceilValue, maxValue)(points)
+        val actual   = points.scaleSeq(ceilValue, maxValue)
         val expected = Seq(0, 25, 50, 100)
 
         assert(actual)(equalTo(expected))
@@ -83,7 +86,7 @@ object ValueSpec extends DefaultRunnableSpec:
         val ceilValue = 100
         val maxValue  = Option.empty[Int]
 
-        val actual   = Value.scaleSeq(ceilValue, maxValue)(points)
+        val actual   = points.scaleSeq(ceilValue, maxValue)
         val expected = Seq(0, 0)
 
         assert(actual)(equalTo(expected))
