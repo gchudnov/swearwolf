@@ -3,6 +3,7 @@ package com.github.gchudnov.swearwolf
 import com.github.gchudnov.swearwolf.term.{ Term, TermScreen, EventLoop }
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.util.*
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 import scala.util.Using.Releasable
 

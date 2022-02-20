@@ -1,10 +1,10 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.styles
 
 import zio.test.Assertion.*
 import zio.test.*
-import TextStyle.*
+import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
 import com.github.gchudnov.swearwolf.util.colors.NamedColor
-import com.github.gchudnov.swearwolf.util.TextStyleSyntax.styleOps
+import com.github.gchudnov.swearwolf.util.styles.TextStyleSyntax.styleOps
 
 object TextStyleSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =

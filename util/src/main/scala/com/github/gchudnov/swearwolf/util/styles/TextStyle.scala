@@ -1,8 +1,9 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.styles
 
 import com.github.gchudnov.swearwolf.util.colors.Color
 
 sealed abstract class TextStyle                       extends Product with Serializable
+
 final case class TextStyleSeq(styles: Seq[TextStyle]) extends TextStyle
 
 object TextStyle:

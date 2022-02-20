@@ -1,7 +1,8 @@
 package com.github.gchudnov.swearwolf.woods.box
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{ Point, TextStyle }
+import com.github.gchudnov.swearwolf.util.{ Point }
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.woods.Box
 import com.github.gchudnov.swearwolf.woods.box.impl.BoxDrawer
 

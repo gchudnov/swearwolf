@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.styles
 
 import com.github.gchudnov.swearwolf.util.impl.{ Combinable, CombinableOps }
 
