@@ -13,9 +13,8 @@ object Dependencies {
   private val zioTestMagnolia = "dev.zio" %% "zio-test-magnolia" % versions.zio
   private val zioTestSbt      = "dev.zio" %% "zio-test-sbt"      % versions.zio
 
-  val Woods: Seq[ModuleID] = {
+  val Term: Seq[ModuleID] = {
     val compile = Seq(
-      scalaXml
     )
     val test = Seq(
       zioTest,
@@ -25,8 +24,9 @@ object Dependencies {
     compile ++ test
   }
 
-  val Swearwolf: Seq[ModuleID] = {
+  val Woods: Seq[ModuleID] = {
     val compile = Seq(
+      scalaXml
     )
     val test = Seq(
       zioTest,

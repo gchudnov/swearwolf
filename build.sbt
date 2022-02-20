@@ -14,17 +14,17 @@ lazy val testSettings = Seq(
 
 lazy val allSettings = Settings.shared ++ testSettings
 
-lazy val core = (project in file("core"))
+lazy val term = (project in file("term"))
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "swearwolf-core",
-    libraryDependencies ++= Dependencies.Swearwolf
+    name := "term",
+    libraryDependencies ++= Dependencies.Term
   )
 
 lazy val woods = (project in file("woods"))
-  .dependsOn(core)
+  .dependsOn(term)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
@@ -34,7 +34,7 @@ lazy val woods = (project in file("woods"))
   )
 
 lazy val examplePlain = (project in file("examples/plain"))
-  .dependsOn(core, woods)
+  .dependsOn(term, woods)
   .settings(allSettings: _*)
   .settings(Settings.assemblySettings)
   .settings(Settings.noPublish)
@@ -47,7 +47,7 @@ lazy val examplePlain = (project in file("examples/plain"))
   )
 
 lazy val exampleZio = (project in file("examples/zio"))
-  .dependsOn(core, woods)
+  .dependsOn(term, woods)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.assemblySettings)
@@ -61,7 +61,7 @@ lazy val exampleZio = (project in file("examples/zio"))
   )
 
 lazy val root = (project in file("."))
-  .aggregate(core, woods, examplePlain, exampleZio)
+  .aggregate(term, woods, examplePlain, exampleZio)
   .settings(allSettings: _*)
   .settings(Settings.noPublish)
   .settings(
