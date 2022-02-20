@@ -1,11 +1,10 @@
 import sbt._
 
 object Dependencies {
+
   object versions {
-    val scalaXml     = "2.0.1"
     val zio           = "2.0.0-RC2"
   }
-  private val scalaXml = "org.scala-lang.modules" %% "scala-xml" % versions.scalaXml
 
   private val zio             = "dev.zio" %% "zio"               % versions.zio
   private val zioStreams      = "dev.zio" %% "zio-streams"       % versions.zio
@@ -26,7 +25,6 @@ object Dependencies {
 
   val Woods: Seq[ModuleID] = {
     val compile = Seq(
-      scalaXml
     )
     val test = Seq(
       zioTest,

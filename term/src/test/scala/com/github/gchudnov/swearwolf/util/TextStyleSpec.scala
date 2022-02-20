@@ -3,6 +3,7 @@ package com.github.gchudnov.swearwolf.util
 import zio.test.Assertion.*
 import zio.test.*
 import TextStyle.*
+import com.github.gchudnov.swearwolf.util.TextStyleSyntax.styleOps
 
 object TextStyleSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
