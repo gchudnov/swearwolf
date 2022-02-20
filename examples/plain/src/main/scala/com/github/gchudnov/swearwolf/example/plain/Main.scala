@@ -6,8 +6,7 @@ import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.colors.NamedColor
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle }
-import com.github.gchudnov.swearwolf.util.styles.TextStyleSyntax.styleOps
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import com.github.gchudnov.swearwolf.util.styles.{TextStyle}
 
 import java.io.{ FileOutputStream, PrintStream }
 import scala.annotation.nowarn

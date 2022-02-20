@@ -2,9 +2,9 @@ package com.github.gchudnov.swearwolf.util.styles
 
 import zio.test.Assertion.*
 import zio.test.*
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
 import com.github.gchudnov.swearwolf.util.colors.NamedColor
-import com.github.gchudnov.swearwolf.util.styles.TextStyleSyntax.styleOps
 
 object TextStyleSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
@@ -27,7 +27,7 @@ object TextStyleSpec extends DefaultRunnableSpec:
         val xs       = Bold | Italic
         val x        = Blink
         val actual   = xs | x
-        val expected = TextStyleSeq(Seq(Blink, Bold, Italic))
+        val expected = TextStyleSeq(Seq(Bold, Italic, Blink))
 
         assert(actual)(equalTo(expected))
       },
