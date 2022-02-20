@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.woods.text.impl
 
 import com.github.gchudnov.swearwolf.util.Bytes.toHexStr
-import com.github.gchudnov.swearwolf.util.Color
+import com.github.gchudnov.swearwolf.util.colors.Color
 import RichTextStyler.*
 import zio.test.Assertion.equalTo
 import zio.test.*

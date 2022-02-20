@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.colors
 
 import zio.test.Assertion.*
 import zio.test.*

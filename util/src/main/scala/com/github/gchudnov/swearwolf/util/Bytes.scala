@@ -19,5 +19,8 @@ object Bytes:
     for b <- bytes do sb.append(String.format("%02x", Byte.box(b)))
     sb.toString
 
+  /**
+   * Converts a hex-string to an array of bytes
+   */
   def fromHexStr(value: String): Seq[Byte] =
     value.grouped(2).map(Integer.parseInt(_, 16).toByte).toSeq

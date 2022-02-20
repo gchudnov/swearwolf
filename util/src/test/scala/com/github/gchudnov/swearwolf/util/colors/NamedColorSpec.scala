@@ -1,4 +1,7 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.colors
+
+import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.util.colors.NamedColor
 
 import zio.test.Assertion.*
 import zio.test.*

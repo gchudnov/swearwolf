@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.util.Color
+import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.Bytes.{ fromHexStr, toHexStr }
 import zio.test.Assertion.*
 import zio.test.*

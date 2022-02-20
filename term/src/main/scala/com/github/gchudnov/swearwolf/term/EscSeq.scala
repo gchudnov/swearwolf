@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.util.{ Bytes, Color, Point }
+import com.github.gchudnov.swearwolf.util.{ Bytes, Point }
+import com.github.gchudnov.swearwolf.util.colors.Color
 
 /**
  * Escape sequences

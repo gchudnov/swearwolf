@@ -1,8 +1,8 @@
 package com.github.gchudnov.swearwolf.woods.text.impl
 
-import com.github.gchudnov.swearwolf.util.Color
 import com.github.gchudnov.swearwolf.woods.text.impl.RichTextParser.{ Attr, Block }
 import com.github.gchudnov.swearwolf.woods.util.impl.Func
+import com.github.gchudnov.swearwolf.util.colors.Color
 import RichTextParser.*
 import com.github.gchudnov.swearwolf.woods.text.RichTextException
 

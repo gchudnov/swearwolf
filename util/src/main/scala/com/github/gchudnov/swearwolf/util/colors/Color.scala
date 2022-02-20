@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.colors
 
 final case class Color(r: Int, g: Int, b: Int)
 
