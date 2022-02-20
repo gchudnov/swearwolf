@@ -12,14 +12,21 @@ object Dependencies {
   private val zioTestMagnolia = "dev.zio" %% "zio-test-magnolia" % versions.zio
   private val zioTestSbt      = "dev.zio" %% "zio-test-sbt"      % versions.zio
 
+  private val zioTestAll = Seq(zioTest, zioTestMagnolia, zioTestSbt)
+
+  val Util: Seq[ModuleID] = {
+    val compile = Seq(
+    )
+    val test = Seq(
+    ) ++ zioTestAll map (_ % "test")
+    compile ++ test
+  }
+
   val Term: Seq[ModuleID] = {
     val compile = Seq(
     )
     val test = Seq(
-      zioTest,
-      zioTestMagnolia,
-      zioTestSbt
-    ) map (_ % "test")
+    ) ++ zioTestAll map (_ % "test")
     compile ++ test
   }
 
@@ -27,10 +34,7 @@ object Dependencies {
     val compile = Seq(
     )
     val test = Seq(
-      zioTest,
-      zioTestMagnolia,
-      zioTestSbt
-    ) map (_ % "test")
+    ) ++ zioTestAll map (_ % "test")
     compile ++ test
   }
 
@@ -46,10 +50,7 @@ object Dependencies {
       zioStreams
     )
     val test = Seq(
-      zioTest,
-      zioTestMagnolia,
-      zioTestSbt
-    ) map (_ % "test")
+    ) ++ zioTestAll map (_ % "test")
     compile ++ test
   }
 

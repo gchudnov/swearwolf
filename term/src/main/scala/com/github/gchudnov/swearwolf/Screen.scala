@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf
 
-import com.github.gchudnov.swearwolf.term.{ Term, TermScreen }
-import com.github.gchudnov.swearwolf.util.EventLoop.KeySeqHandler
+import com.github.gchudnov.swearwolf.term.{ Term, TermScreen, EventLoop }
+import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.util.*
 
 import scala.util.Using.Releasable

@@ -14,7 +14,17 @@ lazy val testSettings = Seq(
 
 lazy val allSettings = Settings.shared ++ testSettings
 
+lazy val util = (project in file("util"))
+  .settings(allSettings: _*)
+  .settings(Settings.testZioSettings)
+  .settings(Settings.sonatype)
+  .settings(
+    name := "util",
+    libraryDependencies ++= Dependencies.Util
+  )
+
 lazy val term = (project in file("term"))
+  .dependsOn(util)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
@@ -24,7 +34,7 @@ lazy val term = (project in file("term"))
   )
 
 lazy val woods = (project in file("woods"))
-  .dependsOn(term)
+  .dependsOn(util, term)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
@@ -34,7 +44,7 @@ lazy val woods = (project in file("woods"))
   )
 
 lazy val examplePlain = (project in file("examples/plain"))
-  .dependsOn(term, woods)
+  .dependsOn(util, term, woods)
   .settings(allSettings: _*)
   .settings(Settings.assemblySettings)
   .settings(Settings.noPublish)
@@ -47,7 +57,7 @@ lazy val examplePlain = (project in file("examples/plain"))
   )
 
 lazy val exampleZio = (project in file("examples/zio"))
-  .dependsOn(term, woods)
+  .dependsOn(util, term, woods)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.assemblySettings)
@@ -61,7 +71,7 @@ lazy val exampleZio = (project in file("examples/zio"))
   )
 
 lazy val root = (project in file("."))
-  .aggregate(term, woods, examplePlain, exampleZio)
+  .aggregate(util, term, woods, examplePlain, exampleZio)
   .settings(allSettings: _*)
   .settings(Settings.noPublish)
   .settings(
