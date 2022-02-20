@@ -2,7 +2,9 @@ package com.github.gchudnov.swearwolf.example.plain
 
 import com.github.gchudnov.swearwolf.*
 import com.github.gchudnov.swearwolf.util.*
+import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle }
+import com.github.gchudnov.swearwolf.util.TextStyleSyntax.styleOps
 
 import java.io.{ FileOutputStream, PrintStream }
 import scala.annotation.nowarn

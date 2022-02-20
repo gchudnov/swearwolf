@@ -4,6 +4,7 @@ import com.github.gchudnov.swearwolf.*
 import com.github.gchudnov.swearwolf.example.zio.run.{ LiveRun, Run }
 import com.github.gchudnov.swearwolf.example.zio.screens.ShellScreen
 import com.github.gchudnov.swearwolf.util.*
+import com.github.gchudnov.swearwolf.term.EventLoop
 import zio.Console.printLineError
 import zio.*
 
