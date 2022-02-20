@@ -1,8 +1,9 @@
 package com.github.gchudnov.swearwolf.woods.label.impl
 
 import com.github.gchudnov.swearwolf.Screen
-import com.github.gchudnov.swearwolf.util.{ Point, Text }
+import com.github.gchudnov.swearwolf.util.{ Point }
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import com.github.gchudnov.swearwolf.util.strings.Strings.*
 import com.github.gchudnov.swearwolf.woods.Label
 import com.github.gchudnov.swearwolf.woods.util.Layout
 import com.github.gchudnov.swearwolf.woods.util.impl.Func
@@ -10,9 +11,9 @@ import com.github.gchudnov.swearwolf.woods.util.impl.Func
 private[label] object LabelDrawer:
 
   def draw(screen: Screen)(pt: Point, label: Label, textStyle: TextStyle): Either[Throwable, Unit] =
-    val lines          = Text.wrap(label.size.width)(label.value)
+    val lines          = label.value.wrap(label.size.width)
     val visibleLines   = lines.take(label.size.height)
-    val effectiveLines = if lines.size > visibleLines.size then visibleLines.dropRight(1) :+ Text.forceEllipsisRight(visibleLines.last) else lines
+    val effectiveLines = if lines.size > visibleLines.size then visibleLines.dropRight(1) :+ visibleLines.last.forceEllipsisRight() else lines
 
     for _ <- Func.sequence(
                effectiveLines.zipWithIndex.map { case (line, y) =>
@@ -26,6 +27,6 @@ private[label] object LabelDrawer:
     yield ()
 
   private[label] def withFilledBackground(width: Int)(x: Int, value: String): String =
-    val lp = Text.padLeft(x + value.length)(value)
-    val rp = Text.padRight(width)(lp)
+    val lp = value.padLeft(x + value.length)
+    val rp = lp.padRight(width)
     rp

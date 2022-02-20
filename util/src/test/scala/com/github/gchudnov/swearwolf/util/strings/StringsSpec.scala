@@ -1,16 +1,20 @@
-package com.github.gchudnov.swearwolf.util
+package com.github.gchudnov.swearwolf.util.strings
+
+import com.github.gchudnov.swearwolf.util.Size
+import com.github.gchudnov.swearwolf.util.strings.Strings
+import com.github.gchudnov.swearwolf.util.strings.Strings.*
 
 import zio.test.Assertion.*
 import zio.test.*
 
-object TextSpec extends DefaultRunnableSpec:
+object StringsSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
-    suite("Text")(
+    suite("Strings")(
       test("empty string can be clipped to the given size") {
         val input = ""
 
         val sz       = Size(10, 10)
-        val actual   = Text.clip(sz.width)(input)
+        val actual   = input.clip(sz.width)
         val expected = ""
 
         assert(actual)(equalTo(expected))
@@ -19,7 +23,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "str-value"
 
         val sz       = Size(10, 10)
-        val actual   = Text.clip(sz.width)(input)
+        val actual   = input.clip(sz.width)
         val expected = "str-value"
 
         assert(actual)(equalTo(expected))
@@ -28,7 +32,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "str-value"
 
         val sz       = Size(input.length, 10)
-        val actual   = Text.clip(sz.width)(input)
+        val actual   = input.clip(sz.width)
         val expected = "str-value"
 
         assert(actual)(equalTo(expected))
@@ -37,7 +41,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "str-value"
 
         val sz       = Size(3, 10)
-        val actual   = Text.clip(sz.width)(input)
+        val actual   = input.clip(sz.width)
         val expected = "str"
 
         assert(actual)(equalTo(expected))
@@ -46,7 +50,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = ""
 
         val sz       = Size(10, 10)
-        val actual   = Text.padRight(sz.width)(input)
+        val actual   = input.padRight(sz.width)
         val expected = "          "
 
         assert(actual)(equalTo(expected))
@@ -55,7 +59,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "str-value"
 
         val sz       = Size(20, 10)
-        val actual   = Text.padRight(sz.width)(input)
+        val actual   = input.padRight(sz.width)
         val expected = "str-value           "
 
         assert(actual)(equalTo(expected))
@@ -64,7 +68,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "str-value"
 
         val sz       = Size(input.length, 10)
-        val actual   = Text.padRight(sz.width)(input)
+        val actual   = input.padRight(sz.width)
         val expected = "str-value"
 
         assert(actual)(equalTo(expected))
@@ -73,7 +77,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "str-value"
 
         val sz       = Size(3, 10)
-        val actual   = Text.padRight(sz.width)(input)
+        val actual   = input.padRight(sz.width)
         val expected = "str-value"
 
         assert(actual)(equalTo(expected))
@@ -82,7 +86,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "str-value"
 
         val sz       = Size(10, 10)
-        val actual   = Text.padLeft(sz.width)(input)
+        val actual   = input.padLeft(sz.width)
         val expected = " str-value"
 
         assert(actual)(equalTo(expected))
@@ -90,7 +94,7 @@ object TextSpec extends DefaultRunnableSpec:
       test("can be sanitized") {
         val input = "\u001bstr-value"
 
-        val actual   = Text.sanitize(input)
+        val actual   = input.sanitize()
         val expected = "?str-value"
 
         assert(actual)(equalTo(expected))
@@ -99,7 +103,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "this is a very long text that doesn't fit the provided width"
         val width = 16
 
-        val actual   = Text.maybeEllipsisRight(width)(input)
+        val actual   = input.maybeEllipsisRight(width)
         val expected = "this is a ver..."
 
         assert(actual)(equalTo(expected)) &&
@@ -109,7 +113,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "this is a very long text that doesn't fit the provided width"
         val width = 16
 
-        val actual   = Text.maybeEllipsisLeft(width)(input)
+        val actual   = input.maybeEllipsisLeft(width)
         val expected = "...rovided width"
 
         assert(actual)(equalTo(expected)) &&
@@ -119,7 +123,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "this is a very long text that doesn't fit the provided width"
         val width = 16
 
-        val actual = Text.wrap(width)(input)
+        val actual = input.wrap(width)
         val expected = Seq(
           "this is a very",
           "long text that",
@@ -136,7 +140,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "aaa bbb ccc abcdefghiklmnopqrstuvwxyz abcdefghiklmnopqrstuvwxyz"
         val width = 8
 
-        val actual = Text.wrap(width)(input)
+        val actual = input.wrap(width)
         val expected = Seq(
           "aaa bbb",
           "ccc abcd",
@@ -157,7 +161,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "title/some_very_long_header"
         val width = 20
 
-        val actual = Text.wrap(width)(input)
+        val actual = input.wrap(width)
         val expected = Seq(
           "title/some_very_long",
           "_header"
@@ -172,7 +176,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "abcdefgh"
         val width = 8
 
-        val actual = Text.wrap(width)(input)
+        val actual = input.wrap(width)
         val expected = Seq(
           "abcdefgh"
         )
@@ -186,7 +190,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = "abcdefgh ijklmnop"
         val width = 8
 
-        val actual = Text.wrap(width)(input)
+        val actual = input.wrap(width)
         val expected = Seq(
           "abcdefgh",
           "ijklmnop"
@@ -201,7 +205,7 @@ object TextSpec extends DefaultRunnableSpec:
         val input = ""
         val width = 8
 
-        val actual   = Text.wrap(width)(input)
+        val actual   = input.wrap(width)
         val expected = Seq.empty[String]
 
         assert(actual)(equalTo(expected))
@@ -209,7 +213,7 @@ object TextSpec extends DefaultRunnableSpec:
       test("force ellipsis left") {
         val text = "this is some text"
 
-        val actual   = Text.forceEllipsisLeft(text)
+        val actual   = text.forceEllipsisLeft()
         val expected = "...s is some text"
 
         assert(actual)(equalTo(expected))
@@ -217,7 +221,7 @@ object TextSpec extends DefaultRunnableSpec:
       test("force ellipsis right") {
         val text = "this is some text"
 
-        val actual   = Text.forceEllipsisRight(text)
+        val actual   = text.forceEllipsisRight()
         val expected = "this is some t..."
 
         assert(actual)(equalTo(expected))
