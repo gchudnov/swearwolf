@@ -23,6 +23,16 @@ lazy val util = (project in file("util"))
     libraryDependencies ++= Dependencies.Util
   )
 
+lazy val shape = (project in file("shape"))
+  .dependsOn(util)
+  .settings(allSettings: _*)
+  .settings(Settings.testZioSettings)
+  .settings(Settings.sonatype)
+  .settings(
+    name := "shape",
+    libraryDependencies ++= Dependencies.Shape
+  )
+
 lazy val term = (project in file("term"))
   .dependsOn(util)
   .settings(allSettings: _*)

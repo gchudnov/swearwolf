@@ -22,6 +22,14 @@ object Dependencies {
     compile ++ test
   }
 
+  val Shape: Seq[ModuleID] = {
+    val compile = Seq(
+    )
+    val test = Seq(
+    ) ++ zioTestAll map (_ % "test")
+    compile ++ test
+  }  
+
   val Term: Seq[ModuleID] = {
     val compile = Seq(
     )
