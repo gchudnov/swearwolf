@@ -146,7 +146,7 @@ object NamedColor:
   val Yellow: Color               = Color(255, 255, 0)
   val YellowGreen: Color          = Color(154, 205, 50)
 
-  private val colors: Map[String, Color] = Map(
+  private lazy val colors: Map[String, Color] = Map(
     Names.AliceBlue            -> AliceBlue,
     Names.AntiqueWhite         -> AntiqueWhite,
     Names.Aqua                 -> Aqua,
@@ -291,4 +291,4 @@ object NamedColor:
 
   def parse(name: String): Either[Throwable, Color] =
     val normalizedName = name.toLowerCase.replaceAll("_", "-")
-    colors.get(normalizedName).fold(Left(new ColorException(s"Named color is unknown: $name")): Either[Throwable, Color])(c => Right(c))
+    colors.get(normalizedName).fold(Left(new ColorException(s"Named Color is not found: $name")): Either[Throwable, Color])(c => Right(c))

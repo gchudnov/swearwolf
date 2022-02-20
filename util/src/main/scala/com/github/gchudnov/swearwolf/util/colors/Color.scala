@@ -8,13 +8,13 @@ object Color:
    * Parses color from a string
    *
    * {{{
-   * #RRGGBB
-   * RRGGBB
+   *   #RRGGBB
+   *    RRGGBB
    * }}}
    */
   def parse(value: String): Either[Throwable, Color] =
     if value.isEmpty then Left(new ColorException("Cannot parse the color: <empty>"))
-    else fromName(value).orElse(fromRGB(value))
+    else fromName(value).orElse(fromHex(value))
 
   /**
    * converts color to a hex value
@@ -27,12 +27,12 @@ object Color:
     s"#${f"${color.r}%02x"}${f"${color.g}%02x"}${f"${color.b}%02x"}"
 
   private def fromName(name: String): Either[Throwable, Color] =
-    require(name.nonEmpty, "color name must be non-empty")
+    require(name.nonEmpty, "Color Name must be non-empty")
     NamedColor
       .parse(name)
 
-  private def fromRGB(value: String): Either[Throwable, Color] =
-    require(value.nonEmpty, "color value must be non-empty")
+  private def fromHex(value: String): Either[Throwable, Color] =
+    require(value.nonEmpty, "Color Value must be non-empty")
     val c = if value.head == '#' then value.tail else value
     if c.length != 6 then Left(new ColorException("Cannot parse the color: invalid format. Supported formats: (#RRGGBB, RRGGBB)"))
     else {
