@@ -22,7 +22,7 @@ object Dependencies {
     compile ++ test
   }
 
-  val Shape: Seq[ModuleID] = {
+  val Shapes: Seq[ModuleID] = {
     val compile = Seq(
     )
     val test = Seq(
