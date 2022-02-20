@@ -17,6 +17,8 @@ object TextStyle:
   case object Blink                   extends TextStyle
   case object Invert                  extends TextStyle
   case object Strikethrough           extends TextStyle
+  case object Transparent             extends TextStyle // Skip whitespace on rendering
+  case object NoColor                 extends TextStyle // Skip color on rendering
 
   given textStyleMonoid: Monoid[TextStyle] with
     def empty: TextStyle = Empty

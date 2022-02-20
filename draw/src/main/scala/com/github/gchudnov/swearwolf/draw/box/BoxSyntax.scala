@@ -17,3 +17,5 @@ private[box] trait BoxOps:
 private[draw] trait BoxSyntax extends BoxOps
 
 object BoxSyntax extends BoxSyntax
+
+// TODO: change to render Seq[String] ?

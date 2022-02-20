@@ -171,62 +171,62 @@ object Symbols:
   val RectFillDiagRightDot = "▨" // U+25A8
   val RectFillCrossDiagDot = "▩" // U+25A9
 
-  val GraphUp_0_0 = " "
-  val GraphUp_0_1 = "⢀"
-  val GraphUp_0_2 = "⢠"
-  val GraphUp_0_3 = "⢰"
-  val GraphUp_0_4 = "⢸"
-  val GraphUp_1_0 = "⡀"
-  val GraphUp_1_1 = "⣀"
-  val GraphUp_1_2 = "⣠"
-  val GraphUp_1_3 = "⣰"
-  val GraphUp_1_4 = "⣸"
-  val GraphUp_2_0 = "⡄"
-  val GraphUp_2_1 = "⣄"
-  val GraphUp_2_2 = "⣤"
-  val GraphUp_2_3 = "⣴"
-  val GraphUp_2_4 = "⣼"
-  val GraphUp_3_0 = "⡆"
-  val GraphUp_3_1 = "⣆"
-  val GraphUp_3_2 = "⣦"
-  val GraphUp_3_3 = "⣶"
-  val GraphUp_3_4 = "⣾"
-  val GraphUp_4_0 = "⡇"
-  val GraphUp_4_1 = "⣇"
-  val GraphUp_4_2 = "⣧"
-  val GraphUp_4_3 = "⣷"
-  val GraphUp_4_4 = "⣿"
+  val DotsUp_0_0 = " "
+  val DotsUp_0_1 = "⢀"
+  val DotsUp_0_2 = "⢠"
+  val DotsUp_0_3 = "⢰"
+  val DotsUp_0_4 = "⢸"
+  val DotsUp_1_0 = "⡀"
+  val DotsUp_1_1 = "⣀"
+  val DotsUp_1_2 = "⣠"
+  val DotsUp_1_3 = "⣰"
+  val DotsUp_1_4 = "⣸"
+  val DotsUp_2_0 = "⡄"
+  val DotsUp_2_1 = "⣄"
+  val DotsUp_2_2 = "⣤"
+  val DotsUp_2_3 = "⣴"
+  val DotsUp_2_4 = "⣼"
+  val DotsUp_3_0 = "⡆"
+  val DotsUp_3_1 = "⣆"
+  val DotsUp_3_2 = "⣦"
+  val DotsUp_3_3 = "⣶"
+  val DotsUp_3_4 = "⣾"
+  val DotsUp_4_0 = "⡇"
+  val DotsUp_4_1 = "⣇"
+  val DotsUp_4_2 = "⣧"
+  val DotsUp_4_3 = "⣷"
+  val DotsUp_4_4 = "⣿"
 
-  val GraphDown_0_0 = " "
-  val GraphDown_0_1 = "⠈"
-  val GraphDown_0_2 = "⠘"
-  val GraphDown_0_3 = "⠸"
-  val GraphDown_0_4 = "⢸"
-  val GraphDown_1_0 = "⠁"
-  val GraphDown_1_1 = "⠉"
-  val GraphDown_1_2 = "⠙"
-  val GraphDown_1_3 = "⠹"
-  val GraphDown_1_4 = "⢹"
-  val GraphDown_2_0 = "⠃"
-  val GraphDown_2_1 = "⠋"
-  val GraphDown_2_2 = "⠛"
-  val GraphDown_2_3 = "⠻"
-  val GraphDown_2_4 = "⢻"
-  val GraphDown_3_0 = "⠇"
-  val GraphDown_3_1 = "⠏"
-  val GraphDown_3_2 = "⠟"
-  val GraphDown_3_3 = "⠿"
-  val GraphDown_3_4 = "⢿"
-  val GraphDown_4_0 = "⡇"
-  val GraphDown_4_1 = "⡏"
-  val GraphDown_4_2 = "⡟"
-  val GraphDown_4_3 = "⡿"
-  val GraphDown_4_4 = "⣿"
+  val DotsDown_0_0 = " "
+  val DotsDown_0_1 = "⠈"
+  val DotsDown_0_2 = "⠘"
+  val DotsDown_0_3 = "⠸"
+  val DotsDown_0_4 = "⢸"
+  val DotsDown_1_0 = "⠁"
+  val DotsDown_1_1 = "⠉"
+  val DotsDown_1_2 = "⠙"
+  val DotsDown_1_3 = "⠹"
+  val DotsDown_1_4 = "⢹"
+  val DotsDown_2_0 = "⠃"
+  val DotsDown_2_1 = "⠋"
+  val DotsDown_2_2 = "⠛"
+  val DotsDown_2_3 = "⠻"
+  val DotsDown_2_4 = "⢻"
+  val DotsDown_3_0 = "⠇"
+  val DotsDown_3_1 = "⠏"
+  val DotsDown_3_2 = "⠟"
+  val DotsDown_3_3 = "⠿"
+  val DotsDown_3_4 = "⢿"
+  val DotsDown_4_0 = "⡇"
+  val DotsDown_4_1 = "⡏"
+  val DotsDown_4_2 = "⡟"
+  val DotsDown_4_3 = "⡿"
+  val DotsDown_4_4 = "⣿"
 
   val ArrowMax = "⭱"
   val ArrowMin = "⭳"
 
-  val quadGraphUp: Map[String, String] = Map(
+  val quadChartUp: Map[String, String] = Map(
     "0_0" -> Empty,
     "0_1" -> Quadrant_D,
     "0_2" -> BlockRight_4_8,
@@ -238,7 +238,7 @@ object Symbols:
     "2_2" -> BlockFull_8_8
   )
 
-  val stepGraphUp: Map[String, String] = Map(
+  val stepChartUp: Map[String, String] = Map(
     "0" -> Empty,
     "1" -> BlockLower_1_8,
     "2" -> BlockLower_2_8,
@@ -250,58 +250,58 @@ object Symbols:
     "8" -> BlockFull_8_8
   )
 
-  val dotGraphUp: Map[String, String] = Map(
-    "0_0" -> GraphUp_0_0,
-    "0_1" -> GraphUp_0_1,
-    "0_2" -> GraphUp_0_2,
-    "0_3" -> GraphUp_0_3,
-    "0_4" -> GraphUp_0_4,
-    "1_0" -> GraphUp_1_0,
-    "1_1" -> GraphUp_1_1,
-    "1_2" -> GraphUp_1_2,
-    "1_3" -> GraphUp_1_3,
-    "1_4" -> GraphUp_1_4,
-    "2_0" -> GraphUp_2_0,
-    "2_1" -> GraphUp_2_1,
-    "2_2" -> GraphUp_2_2,
-    "2_3" -> GraphUp_2_3,
-    "2_4" -> GraphUp_2_4,
-    "3_0" -> GraphUp_3_0,
-    "3_1" -> GraphUp_3_1,
-    "3_2" -> GraphUp_3_2,
-    "3_3" -> GraphUp_3_3,
-    "3_4" -> GraphUp_3_4,
-    "4_0" -> GraphUp_4_0,
-    "4_1" -> GraphUp_4_1,
-    "4_2" -> GraphUp_4_2,
-    "4_3" -> GraphUp_4_3,
-    "4_4" -> GraphUp_4_4
+  val dotChartUp: Map[String, String] = Map(
+    "0_0" -> DotsUp_0_0,
+    "0_1" -> DotsUp_0_1,
+    "0_2" -> DotsUp_0_2,
+    "0_3" -> DotsUp_0_3,
+    "0_4" -> DotsUp_0_4,
+    "1_0" -> DotsUp_1_0,
+    "1_1" -> DotsUp_1_1,
+    "1_2" -> DotsUp_1_2,
+    "1_3" -> DotsUp_1_3,
+    "1_4" -> DotsUp_1_4,
+    "2_0" -> DotsUp_2_0,
+    "2_1" -> DotsUp_2_1,
+    "2_2" -> DotsUp_2_2,
+    "2_3" -> DotsUp_2_3,
+    "2_4" -> DotsUp_2_4,
+    "3_0" -> DotsUp_3_0,
+    "3_1" -> DotsUp_3_1,
+    "3_2" -> DotsUp_3_2,
+    "3_3" -> DotsUp_3_3,
+    "3_4" -> DotsUp_3_4,
+    "4_0" -> DotsUp_4_0,
+    "4_1" -> DotsUp_4_1,
+    "4_2" -> DotsUp_4_2,
+    "4_3" -> DotsUp_4_3,
+    "4_4" -> DotsUp_4_4
   )
 
-  val dotGraphDown: Map[String, String] = Map(
-    "0_0" -> GraphDown_0_0,
-    "0_1" -> GraphDown_0_1,
-    "0_2" -> GraphDown_0_2,
-    "0_3" -> GraphDown_0_3,
-    "0_4" -> GraphDown_0_4,
-    "1_0" -> GraphDown_1_0,
-    "1_1" -> GraphDown_1_1,
-    "1_2" -> GraphDown_1_2,
-    "1_3" -> GraphDown_1_3,
-    "1_4" -> GraphDown_1_4,
-    "2_0" -> GraphDown_2_0,
-    "2_1" -> GraphDown_2_1,
-    "2_2" -> GraphDown_2_2,
-    "2_3" -> GraphDown_2_3,
-    "2_4" -> GraphDown_2_4,
-    "3_0" -> GraphDown_3_0,
-    "3_1" -> GraphDown_3_1,
-    "3_2" -> GraphDown_3_2,
-    "3_3" -> GraphDown_3_3,
-    "3_4" -> GraphDown_3_4,
-    "4_0" -> GraphDown_4_0,
-    "4_1" -> GraphDown_4_1,
-    "4_2" -> GraphDown_4_2,
-    "4_3" -> GraphDown_4_3,
-    "4_4" -> GraphDown_4_4
+  val dotChartDown: Map[String, String] = Map(
+    "0_0" -> DotsDown_0_0,
+    "0_1" -> DotsDown_0_1,
+    "0_2" -> DotsDown_0_2,
+    "0_3" -> DotsDown_0_3,
+    "0_4" -> DotsDown_0_4,
+    "1_0" -> DotsDown_1_0,
+    "1_1" -> DotsDown_1_1,
+    "1_2" -> DotsDown_1_2,
+    "1_3" -> DotsDown_1_3,
+    "1_4" -> DotsDown_1_4,
+    "2_0" -> DotsDown_2_0,
+    "2_1" -> DotsDown_2_1,
+    "2_2" -> DotsDown_2_2,
+    "2_3" -> DotsDown_2_3,
+    "2_4" -> DotsDown_2_4,
+    "3_0" -> DotsDown_3_0,
+    "3_1" -> DotsDown_3_1,
+    "3_2" -> DotsDown_3_2,
+    "3_3" -> DotsDown_3_3,
+    "3_4" -> DotsDown_3_4,
+    "4_0" -> DotsDown_4_0,
+    "4_1" -> DotsDown_4_1,
+    "4_2" -> DotsDown_4_2,
+    "4_3" -> DotsDown_4_3,
+    "4_4" -> DotsDown_4_4
   )

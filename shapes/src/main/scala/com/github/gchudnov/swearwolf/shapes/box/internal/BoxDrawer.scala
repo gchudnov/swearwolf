@@ -10,17 +10,20 @@ private[box] object BoxDrawer:
   def draw(box: Box): Seq[String] =
     if box.size.width < 2 || box.size.height < 2 then Seq.empty[String] // Box is too small to be displayed
     else
-      val BoxDesc(ht, hb, vl, vr, tl, tr, bl, br) = getDesc(box.style)
+      val lines = compile(box)
+      lines
 
-      val horzTopLine    = Range(0, box.size.width - 2).map(_ => ht).mkString
-      val horzBottomLine = Range(0, box.size.width - 2).map(_ => hb).mkString
-      val topLine        = tl ++ horzTopLine ++ tr
-      val bottomLine     = bl ++ horzBottomLine ++ br
+  private def compile(box: Box): Seq[String] =
+    val BoxDesc(ht, hb, vl, vr, tl, tr, bl, br) = getDesc(box.style)
 
-      val body = Range(0, box.size.height - 2).map(_ => vl + " ".repeat(box.size.width - 2) + vr)
-      val rs   = Seq(topLine) ++ body ++ Seq(bottomLine)
+    val horzTopLine    = Range(0, box.size.width - 2).map(_ => ht).mkString
+    val horzBottomLine = Range(0, box.size.width - 2).map(_ => hb).mkString
+    val topLine        = tl ++ horzTopLine ++ tr
+    val bottomLine     = bl ++ horzBottomLine ++ br
 
-      rs
+    val body = Range(0, box.size.height - 2).map(_ => vl + " ".repeat(box.size.width - 2) + vr)
+
+    Seq(topLine) ++ body ++ Seq(bottomLine)
 
   private def getDesc(style: BoxStyle): BoxDesc =
     style match
