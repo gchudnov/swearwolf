@@ -1,8 +1,8 @@
-package com.github.gchudnov.swearwolf.util.colors
+package com.github.gchudnov.swearwolf.rich
 
 import com.github.gchudnov.swearwolf.util.SwearwolfException
 
-class ColorException(message: String) extends SwearwolfException(message):
+class RichTextException(message: String) extends RuntimeException(message):
 
   def this(message: String, cause: Throwable) =
     this(message)
@@ -14,5 +14,5 @@ class ColorException(message: String) extends SwearwolfException(message):
   def this() =
     this(null: String)
 
-object ColorException:
-  def unapply(e: ColorException): Option[(String, Throwable)] = Some((e.getMessage, e.getCause))
+object RichTextException:
+  def unapply(e: RichTextException): Option[(String, Throwable)] = Some((e.getMessage, e.getCause))

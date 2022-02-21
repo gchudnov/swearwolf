@@ -2,7 +2,7 @@
 
 <img src="res/images/swearwolf-256.png" width="256px" height="219px" align="right" />
 
-> A small Scala library to create TUI
+> A small and modular Scala library to create TUI
 
 ![Scala CI](https://github.com/gchudnov/swearwolf/workflows/Scala%20CI/badge.svg)
 
@@ -23,7 +23,8 @@ Add the following dependency to your `build.sbt`:
 ```scala
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "term" % "2.0.0"
 
-// Optionally, include shapes & draw libraries to display shapes in the terminal
+// Optionally, include rich-text, shapes & draw libraries to display shapes in the terminal
+libraryDependencies += "com.github.gchudnov.swearwolf" %% "rich" % "2.0.0"
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes" % "2.0.0"
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "draw" % "2.0.0"
 ```
@@ -36,7 +37,9 @@ libraryDependencies += "com.github.gchudnov.swearwolf" %% "draw" % "2.0.0"
 
 - [/term](term) - Enables either running a terminal application in full-screen mode or just to display styled text.
 
-- [/draw](draw) - A supporting library for `shapes` that adds convenience functions to display shapes in terminal.
+- [/rich](rich) - Allows to display rich text in the terminal.
+
+- [/draw](draw) - A library that references all other libraries and adds convenience functions to draw shapes in the terminal.
 
 ### Shapes
 
