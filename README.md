@@ -23,7 +23,7 @@ Add the following dependency to your `build.sbt`:
 ```scala
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "term" % "2.0.0"
 
-// Optionally, include the shapes & draw library to display shapes in the terminal
+// Optionally, include shapes & draw libraries to display shapes in the terminal
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes" % "2.0.0"
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "draw" % "2.0.0"
 ```
@@ -40,7 +40,60 @@ libraryDependencies += "com.github.gchudnov.swearwolf" %% "draw" % "2.0.0"
 
 ### Shapes
 
-TBD
+
+Extends the `Screen` with a draw operation to display a box:
+
+```scala
+def put(pt: Point, box: Box, textStyle: TextStyle): Either[Throwable, Unit]
+```
+
+When a *Box* is constructed, `BoxStyle` can be used to specify a border to use: `Empty`, `SingleBorder`, `DoubleBorder`, `BoldBorder`.
+
+#### Graph
+
+Extends the `Screen` with a draw operation to display a graph:
+
+```scala
+def put(pt: Point, graph: Graph, textStyle: TextStyle): Either[Throwable, Unit]
+```
+
+When a *Graph* is constructed, `GraphStyle` can be used to specify the type of the graph to use: `Dot`, `Step`, `Quad`.
+This value encodes how many points one character of the graph can contain.
+
+- **Dot** - one text character contains 2-x and 4-y points.
+- **Step** - one text character contains 1-x and 8-y points.
+- **Quad** - one text character contains 2-x and 2-y points.
+
+#### Grid
+
+Extends the `Screen` with a draw operation to display a grid:
+
+```scala
+def put(pt: Point, grid: Grid, textStyle: TextStyle): Either[Throwable, Unit]
+```
+
+`Grid` is constructed by providing a cell-size and `GridStyle` to specify borders to use.
+
+#### Label
+
+Extends the `Screen` with a draw operation to display a label:
+
+```scala
+def put(pt: Point, label: Label, textStyle: TextStyle): Either[Throwable, Unit]
+```
+
+Label provides the `AlignStyle` that can be used to specify the way the text is aligned inside of the label.
+
+#### Table
+
+Extends the `Screen` with a draw operation to display a table:
+
+```scala
+def put(pt: Point, table: Table, textStyle: TextStyle): Either[Throwable, Unit]
+```
+
+A table takes `Seq[Seq[Any]` where each cell is converted to a string and displayed. `TableStyle` can be used to style borders of a table.
+
 
 
 ---
@@ -304,60 +357,6 @@ import com.github.gchudnov.swearwolf.woods._
 
 ### Primitives Description
 
-#### Box
-
-Extends the `Screen` with a draw operation to display a box:
-
-```scala
-def put(pt: Point, box: Box, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-When a *Box* is constructed, `BoxStyle` can be used to specify a border to use: `Empty`, `SingleBorder`, `DoubleBorder`, `BoldBorder`.
-
-#### Graph
-
-Extends the `Screen` with a draw operation to display a graph:
-
-```scala
-def put(pt: Point, graph: Graph, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-When a *Graph* is constructed, `GraphStyle` can be used to specify the type of the graph to use: `Dot`, `Step`, `Quad`.
-This value encodes how many points one character of the graph can contain.
-
-- **Dot** - one text character contains 2-x and 4-y points.
-- **Step** - one text character contains 1-x and 8-y points.
-- **Quad** - one text character contains 2-x and 2-y points.
-
-#### Grid
-
-Extends the `Screen` with a draw operation to display a grid:
-
-```scala
-def put(pt: Point, grid: Grid, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-`Grid` is constructed by providing a cell-size and `GridStyle` to specify borders to use.
-
-#### Label
-
-Extends the `Screen` with a draw operation to display a label:
-
-```scala
-def put(pt: Point, label: Label, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-Label provides the `AlignStyle` that can be used to specify the way the text is aligned inside of the label.
-
-#### Table
-
-Extends the `Screen` with a draw operation to display a table:
-
-```scala
-def put(pt: Point, table: Table, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-A table takes `Seq[Seq[Any]` where each cell is converted to a string and displayed. `TableStyle` can be used to style borders of a table.
 
 #### RichText
 

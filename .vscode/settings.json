@@ -6,6 +6,7 @@
     "horz",
     "Monoid",
     "RRGGBB",
-    "Semigroup"
+    "Semigroup",
+    "swearwolf"
   ]
 }
