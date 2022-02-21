@@ -4,7 +4,10 @@ object Dependencies {
 
   object versions {
     val zio           = "2.0.0-RC2"
+    val scalaParser  = "2.1.1"
   }
+
+  private val scalaParser = "org.scala-lang.modules" %% "scala-parser-combinators" % versions.scalaParser
 
   private val zio             = "dev.zio" %% "zio"               % versions.zio
   private val zioStreams      = "dev.zio" %% "zio-streams"       % versions.zio
@@ -40,6 +43,7 @@ object Dependencies {
 
   val Rich: Seq[ModuleID] = {
     val compile = Seq(
+      scalaParser
     )
     val test = Seq(
     ) ++ zioTestAll map (_ % "test")

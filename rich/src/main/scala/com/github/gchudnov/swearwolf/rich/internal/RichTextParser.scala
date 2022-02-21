@@ -49,3 +49,6 @@ private[rich] object RichTextParser:
   sealed trait Block
   final case class TextBlock(value: String)                                                                              extends Block
   final case class NamedBlockSeq(name: String, attrs: Seq[Attr] = Seq.empty[Attr], inner: Seq[Block] = Seq.empty[Block]) extends Block
+
+  // parse xml tags and attributes from a string
+    
