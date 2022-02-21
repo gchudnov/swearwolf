@@ -2,12 +2,12 @@ package com.github.gchudnov.swearwolf.rich.internal.parser
 
 import scala.annotation.tailrec
 
+// Re, Ae, T1, T2, Be, T3, Bx, T4, Ax, Ce, T5, Cx, Rx
+
 object Parser:
   def parse(input: String): Seq[Element] =  {
     @tailrec
     def iterate(tokens: Seq[Token], stack: Stack[Token]): Seq[Element] = {
-
-      // Ae, T1, T2, Be, T3, Bx, T4, Ax
 
       def rewind(): Seq[Element] = {
         ???
