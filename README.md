@@ -2,14 +2,13 @@
 
 <img src="res/images/swearwolf-256.png" width="256px" height="219px" align="right" />
 
-> A low level Scala library for creating text user interfaces.
+> A small Scala library to create TUI
 
 ![Scala CI](https://github.com/gchudnov/swearwolf/workflows/Scala%20CI/badge.svg)
 
-The library allows to create full-screen text-based applications (TUI). It sends the correct control characters to the terminal to display text in the given style.
+Built for Scala 3.1. The [previous](https://github.com/gchudnov/swearwolf/tree/v1.0.2) version of the library works with scala 2.13.
 
-The additional library of UI-primitives, *swearwolf-woods* can be used to display basic elements on the screen:
-a *box*, *graph*, *grid*, *label*, *table* and *rich-text*.
+The library enables creation of applications with the text-user interface (TUI). It sends the correct control characters to the terminal to display text in a given style.
 
 <br clear="right" /><!-- Turn off the wrapping for the logo image. -->
 
@@ -22,11 +21,30 @@ a *box*, *graph*, *grid*, *label*, *table* and *rich-text*.
 Add the following dependency to your `build.sbt`:
 
 ```scala
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-core" % "1.0.2"
+libraryDependencies += "com.github.gchudnov.swearwolf" %% "term" % "2.0.0"
 
-// Optionally, include the UI-primitives library:
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-woods" % "1.0.2"
+// Optionally, include the shapes & draw library to display shapes in the terminal
+libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes" % "2.0.0"
+libraryDependencies += "com.github.gchudnov.swearwolf" %% "draw" % "2.0.0"
 ```
+
+### Modules
+
+- [/util](util) - A collection of utilities, other libraries in the project depend on.
+
+- [/shapes](shapes) - A small collection of shapes (box, chart, grid, label, table) that can be used either with the library or independently.
+
+- [/term](term) - Enables either running a terminal application in full-screen mode or just to display styled text.
+
+- [/draw](draw) - A supporting library for `shapes` that adds convenience functions to display shapes in terminal.
+
+### Shapes
+
+TBD
+
+
+---
+TODO:
 
 In the application, import:
 
