@@ -20,8 +20,10 @@ object Parser:
               iterate(acc.push(TagElement.empty(name)), tail)
 
             case CloseTag(name) =>
+              if acc.isEmpty then throw new ParserException(s"Unbalanced tags: Open tag for '$name' is missing")
               val (x, xs) = acc.pop()
               if (x.name != name) then throw new ParserException(s"Unbalanced tags: Open tag for '${x.name}', but Close tag for '${name}'")
+              if xs.isEmpty then throw new ParserException(s"Unbalanced tags: Open tag is missing")
               val (y, ys) = xs.pop()
               val y1      = y.copy(children = y.children :+ x)
               iterate(ys.push(y1), tail)
