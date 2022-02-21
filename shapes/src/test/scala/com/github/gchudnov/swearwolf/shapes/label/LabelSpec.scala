@@ -1,0 +1,46 @@
+package com.github.gchudnov.swearwolf.shapes.label
+
+import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
+import com.github.gchudnov.swearwolf.shapes.Resources
+import com.github.gchudnov.swearwolf.shapes.label.Label
+import com.github.gchudnov.swearwolf.shapes.styles.AlignStyle
+import com.github.gchudnov.swearwolf.shapes.label.internal.LabelPresenter
+import zio.test.Assertion.*
+import zio.test.*
+
+object LabelSpec extends DefaultRunnableSpec:
+  override def spec: ZSpec[Environment, Failure] =
+    suite("Label")(
+      test("draw with align left") {
+        val label  = Label(Size(16, 1), "test data", AlignStyle.Left)
+
+        val actual = LabelPresenter.present(label).mkString("\n")
+        val expected = Resources.string("label/label-align-left.txt").toTry.get
+
+        assert(actual)(equalTo(expected))
+      },
+      test("draw with align right") {
+        val label  = Label(Size(16, 1), "test data", AlignStyle.Right)
+
+        val actual = LabelPresenter.present(label).mkString("\n")
+        val expected = Resources.string("label/label-align-right.txt").toTry.get
+
+        assert(actual)(equalTo(expected))
+      },
+      test("draw the label partially") {
+        val label  = Label(Size(16, 2), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
+
+        val actual = LabelPresenter.present(label).mkString("\n")
+        val expected = Resources.string("label/label-draw-partial.txt").toTry.get
+
+        assert(actual)(equalTo(expected))
+      },
+      test("draw on zero-area") {
+        val label  = Label(Size(0, 0), "", AlignStyle.Left)
+
+        val actual = LabelPresenter.present(label).mkString("\n")
+        val expected = Resources.string("label/label-empty.txt").toTry.get
+
+        assert(actual)(equalTo(expected))
+      }
+    )

@@ -7,5 +7,5 @@ object Resources:
 
   def string(resourcePath: String): Either[Throwable, String] =
     Using(Source.fromResource(resourcePath)) { source =>
-      source.getLines().mkString("\n").trim()
+      source.getLines().mkString(sys.props("line.separator"))
     }.toEither
