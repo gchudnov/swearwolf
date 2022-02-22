@@ -17,7 +17,7 @@ object LexerSpec extends DefaultRunnableSpec:
       },
       test("input is whitespace") {
         val input    = "  \n\t\r"
-        val expected = List(Text("  "))
+        val expected = List(Text("  "), NewLine, Text("\t"))
         val actual   = Lexer.lex(input)
 
         assert(actual)(equalTo(expected))
@@ -38,7 +38,7 @@ object LexerSpec extends DefaultRunnableSpec:
       },
       test("input is a single word with whitespace and newline") {
         val input    = "word  \n"
-        val expected = List(Text("word  "))
+        val expected = List(Text("word  "), NewLine)
         val actual   = Lexer.lex(input)
 
         assert(actual)(equalTo(expected))
@@ -59,6 +59,13 @@ object LexerSpec extends DefaultRunnableSpec:
       },
       test("input is an opening tag with attribute enclosed in single quotes") {
         val input    = "<tag='value1'>"
+        val expected = List(OpenTag("tag", Some("value1")))
+        val actual   = Lexer.lex(input)
+
+        assert(actual)(equalTo(expected))
+      },
+      test("input is a tag where attribute is without quotes") {
+        val input    = "<tag=value1>"
         val expected = List(OpenTag("tag", Some("value1")))
         val actual   = Lexer.lex(input)
 
@@ -135,7 +142,7 @@ object LexerSpec extends DefaultRunnableSpec:
         assert(actual)(equalTo(expected))
       },
       test("input is several nested tags with attributes") {
-        val input    = "<tag1 = \"value1\">text1<tag2='value3'></tag2></tag1>"
+        val input = "<tag1 = \"value1\">text1<tag2='value3'></tag2></tag1>"
         val expected = List(
           OpenTag("tag1", Some("value1")),
           Text("text1"),
@@ -144,7 +151,7 @@ object LexerSpec extends DefaultRunnableSpec:
           CloseTag("tag1")
         )
 
-        val actual   = Lexer.lex(input)
+        val actual = Lexer.lex(input)
 
         assert(actual)(equalTo(expected))
       }

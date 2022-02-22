@@ -28,6 +28,12 @@ object Parser:
               val y1      = y.copy(children = y.children :+ x)
               iterate(ys.push(y1), tail)
 
+            case NewLine =>
+              val nl     = NewLineElement
+              val (x, xs) = acc.pop()
+              val x1      = x.copy(children = x.children :+ nl)
+              iterate(xs.push(x1), tail)
+
             case Text(text) =>
               val txt     = TextElement(text)
               val (x, xs) = acc.pop()
@@ -35,4 +41,4 @@ object Parser:
               iterate(xs.push(x1), tail)
 
     val tokens = Lexer.lex(input)
-    allCatch.either(iterate(NonEmptyStack(TagElement.empty("root")), tokens))
+    allCatch.either(iterate(NonEmptyStack(TagElement.empty("#root")), tokens))

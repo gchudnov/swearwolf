@@ -9,7 +9,7 @@ object Lexer:
   private object Grammar extends RegexParsers:
     override def skipWhitespace = false
 
-    def document = (closeTag | openTag | text) *
+    def document = (closeTag | openTag | newLine | text) *
 
     def openTag = "<" ~> tagName ~ opt("""\s*=\s*""".r ~> attrValue) <~ ">" ^^ { case tag ~ attr =>
       OpenTag(tag.toLowerCase, attr)
@@ -18,6 +18,8 @@ object Lexer:
     def closeTag = "<" ~> "/" ~> tagName <~ ">" ^^ { case tag =>
       CloseTag(tag.toLowerCase)
     }
+
+    def newLine = """\r?\n""".r ^^^ NewLine
 
     def text = ("""[^\<\n\r]+""".r | "<") ^^ { Text(_) }
 
