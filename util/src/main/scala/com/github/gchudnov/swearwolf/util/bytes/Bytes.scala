@@ -15,6 +15,10 @@ object Bytes:
   val empty: Bytes =
     Bytes(Seq.empty[Byte])
 
+  extension (bytes: Bytes)
+    def +(other: Bytes): Bytes =
+      Bytes(bytes.value ++ other.value)
+
   extension (str: String)
     def asBytes: Bytes =
       Bytes(str.grouped(2).map(Integer.parseInt(_, 16).toByte).toSeq)

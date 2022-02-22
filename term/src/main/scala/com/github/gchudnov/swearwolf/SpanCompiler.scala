@@ -16,44 +16,31 @@ object SpanCompiler:
   private case class State(
     empty: Int = 0,
     fgColor: Stack[Color] = Stack.empty[Color],
-
-    // fgColor: Vector[Color] = Vector.empty[Color],
-    // bgColor: Vector[Color] = Vector.empty[Color],
-    // bold: Vector[Unit] = Vector.empty[Unit],
-    // italic: Vector[Unit] = Vector.empty[Unit],
-    // underline: Vector[Unit] = Vector.empty[Unit],
-    // blink: Vector[Unit] = Vector.empty[Unit],
-    // invert: Vector[Unit] = Vector.empty[Unit],
-    // strikethrough: Vector[Unit] = Vector.empty[Unit]    
+    bgColor: Stack[Color] = Stack.empty[Color],
+    bold: Int = 0,
+    italic: Int = 0,
+    underline: Int = 0,
+    blink: Int = 0,
+    invert: Int = 0,
+    strikethrough: Int = 0,
+    transient: Int = 0,
+    noColor: Int = 0
   )
 
-  /*
-            case Empty                => ""
-          case Foreground(color)    => s"fg(${color.show})"
-          case Background(color)    => s"bg(${color.show})"
-          case Bold                 => "bold"
-          case Italic               => "italic"
-          case Underline            => "underline"
-          case Blink                => "blink"
-          case Invert               => "invert"
-          case Strikethrough        => "strikethrough"
-          case Transparent          => "transparent"
-          case NoColor              => "no-color"
-*/
+  private object State:
+    val empty: State =
+      State()
 
+  def compile(span: Span): Bytes =
 
-  def compile(span: Span): Bytes = {
-    span match {
-
+    def iterate(acc: Bytes, state: State, span: Span): Bytes = span match
       case StyleSpan(style, children) =>
         ???
 
       case TextSpan(text) =>
-        ???
+        acc + Bytes(text.getBytes.toSeq)
 
       case ByteSpan(bytes) =>
-        ???
-    }
+        acc + Bytes(bytes.toSeq)
 
-    ???
-  }
+    iterate(Bytes.empty, State(), span)

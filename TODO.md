@@ -7,12 +7,12 @@
 - TODO: move stack to util/data
 
 - TODO: text should support \r\n
-- https://github.com/daydev/bbcode-scala/tree/master/src/main/scala/org/daydev/scala/bb/parse
 - https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html
-- https://github.com/daydev/bbcode-scala
+
 
 - TODO: StyleSpan ? for styles only
 
-// TODO: add Compiler to term that converts a Span to Array[Byte] (Bytes)
+- TODO: add Compiler to term that converts a Span to Array[Byte] (Bytes)
 
-// TODO: package 'parser' -> tags ?
+- TODO: package 'parser' -> tags ?
+- TODO: Bytes -> do we want to store Array[Byte] inside instead of Seq ?
