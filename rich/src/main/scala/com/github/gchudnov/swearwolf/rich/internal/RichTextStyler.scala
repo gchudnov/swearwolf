@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.rich.internal
 
 import com.github.gchudnov.swearwolf.rich.internal.RichTextParser.{ Attr, Block }
-import com.github.gchudnov.swearwolf.util.internal.Transform
+import com.github.gchudnov.swearwolf.util.func.Transform
 import com.github.gchudnov.swearwolf.util.colors.Color
 import RichTextParser.*
 import com.github.gchudnov.swearwolf.rich.RichTextException
@@ -19,18 +19,18 @@ private[rich] object RichTextStyler:
   private val StyleFgColorShort       = "fg"
   private val StyleBgColorLong        = "bgcolor"
   private val StyleBgColorShort       = "bg"
-  private val StyleBoldLong           = "bold"
-  private val StyleBoldShort          = "b"
-  private val StyleItalicLong         = "italic"
-  private val StyleItalicShort        = "i"
-  private val StyleUnderlineLong      = "underline"
-  private val StyleUnderlineShort     = "u"
-  private val StyleBlinkLong          = "blink"
-  private val StyleBlinkShort         = "k"
-  private val StyleInvertLong         = "invert"
-  private val StyleInvertShort        = "v"
-  private val StyleStrikethroughLong  = "strikethrough"
-  private val StyleStrikethroughShort = "t"
+  private val StyleBoldLong           = "bold" // 
+  private val StyleBoldShort          = "b"    //
+  private val StyleItalicLong         = "italic" //
+  private val StyleItalicShort        = "i"      //
+  private val StyleUnderlineLong      = "underline"  //
+  private val StyleUnderlineShort     = "u"          //
+  private val StyleBlinkLong          = "blink"      //
+  private val StyleBlinkShort         = "k"          //
+  private val StyleInvertLong         = "invert"   //
+  private val StyleInvertShort        = "v"          ///
+  private val StyleStrikethroughLong  = "strikethrough" //
+  private val StyleStrikethroughShort = "t" //
 
   /**
    * Convert blocks to styles During conversion, check if blocks and attributes are recognized. If not, return an error.

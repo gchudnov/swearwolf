@@ -7,7 +7,7 @@ import zio.test.*
 
 object LexerSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
-    suite("LexerSpec")(
+    suite("Lexer")(
       test("input is empty") {
         val input    = ""
         val expected = List.empty[Token]

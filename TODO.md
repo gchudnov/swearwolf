@@ -10,3 +10,9 @@
 - https://github.com/daydev/bbcode-scala/tree/master/src/main/scala/org/daydev/scala/bb/parse
 - https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html
 - https://github.com/daydev/bbcode-scala
+
+- TODO: StyleSpan ? for styles only
+
+// TODO: add Compiler to term that converts a Span to Array[Byte] (Bytes)
+
+// TODO: package 'parser' -> tags ?

@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.util.internal
+package com.github.gchudnov.swearwolf.util.func
 
 object Transform:
 

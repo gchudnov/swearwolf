@@ -7,7 +7,7 @@ final case class TextElement(text: String) extends Element:
 
 case object NewLineElement extends Element
 
-final case class TagElement(name: String, value: Option[String], children: List[Element]) extends Element
+final case class TagElement(name: String, value: Option[String], children: Seq[Element]) extends Element
 
 object TagElement:
   def empty(name: String): TagElement =

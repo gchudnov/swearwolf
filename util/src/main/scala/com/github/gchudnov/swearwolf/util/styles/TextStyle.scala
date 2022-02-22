@@ -20,6 +20,9 @@ object TextStyle:
   case object Transparent             extends TextStyle // Skip whitespace on rendering
   case object NoColor                 extends TextStyle // Skip color on rendering
 
+  val empty: TextStyle =
+    Empty
+
   given textStyleMonoid: Monoid[TextStyle] with
     def empty: TextStyle = Empty
     extension (x: TextStyle)

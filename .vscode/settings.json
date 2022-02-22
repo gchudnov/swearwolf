@@ -3,7 +3,9 @@
     "**/target": true
   },
   "cSpell.words": [
+    "bgcolor",
     "combinators",
+    "fgcolor",
     "horz",
     "Monoid",
     "RRGGBB",

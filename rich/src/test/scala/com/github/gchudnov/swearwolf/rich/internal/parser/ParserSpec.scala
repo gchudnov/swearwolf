@@ -7,7 +7,7 @@ import zio.test.*
 
 object ParserSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
-    suite("ParserSpec")(
+    suite("Parser")(
       test("input is empty") {
         val input    = ""
         val expected = Right(Seq.empty[Element])
