@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.rich.internal.parser
+package com.github.gchudnov.swearwolf.util.data
 
 sealed trait Stack[+T]:
   def push[U >: T](t: U): Stack[U]

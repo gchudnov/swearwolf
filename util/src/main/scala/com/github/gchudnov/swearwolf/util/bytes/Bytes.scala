@@ -12,6 +12,9 @@ final case class Bytes(value: Seq[Byte]) extends AnyVal:
 
 object Bytes:
 
+  val empty: Bytes =
+    Bytes(Seq.empty[Byte])
+
   extension (str: String)
     def asBytes: Bytes =
       Bytes(str.grouped(2).map(Integer.parseInt(_, 16).toByte).toSeq)

@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.rich.internal.parser
 
 import scala.annotation.tailrec
+import com.github.gchudnov.swearwolf.util.data.*
 import scala.util.control.Exception.allCatch
 
 object Parser:
