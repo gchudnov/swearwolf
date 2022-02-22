@@ -2,6 +2,7 @@ package com.github.gchudnov.swearwolf.util.styles
 
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.internal.Monoid
+import com.github.gchudnov.swearwolf.util.show.Show
 
 sealed abstract class TextStyle extends Product with Serializable
 
@@ -32,3 +33,20 @@ object TextStyle:
           case (TextStyleSeq(xs), _)                => TextStyleSeq(xs :+ y)
           case (_, TextStyleSeq(ys))                => TextStyleSeq(x +: ys)
           case _                                    => TextStyleSeq(Seq(x, y))
+
+  given showTextStyle: Show[TextStyle] with
+    extension (a: TextStyle)
+      def show: String =
+        a match
+          case Empty                => ""
+          case TextStyleSeq(styles) => styles.map(_.show).mkString(",")
+          case Foreground(color)    => s"fg(${color.show})"
+          case Background(color)    => s"bg(${color.show})"
+          case Bold                 => "bold"
+          case Italic               => "italic"
+          case Underline            => "underline"
+          case Blink                => "blink"
+          case Invert               => "invert"
+          case Strikethrough        => "strikethrough"
+          case Transparent          => "transparent"
+          case NoColor              => "no-color"

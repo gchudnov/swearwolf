@@ -67,5 +67,13 @@ object ColorSpec extends DefaultRunnableSpec:
         val actual = Color.parse(input)
 
         assert(actual)(isLeft)
-      }      
+      },
+      test("show displays color") {
+        val input = Color.White
+        val actual = input.show
+
+        val expected = "#ffffff"
+
+        assert(actual)(equalTo(expected))
+      }
     )

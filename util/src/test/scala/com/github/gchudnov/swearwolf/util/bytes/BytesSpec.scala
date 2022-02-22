@@ -11,7 +11,7 @@ object BytesSpec extends DefaultRunnableSpec:
       test("bytes to string") {
         val input = Seq(10.toByte, 23.toByte, 65.toByte)
 
-        val actual   = Bytes(input).asHexString
+        val actual   = Bytes(input).asHex
         val expected = "0a1741"
 
         assert(actual)(equalTo(expected))

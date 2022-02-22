@@ -1,5 +1,7 @@
 package com.github.gchudnov.swearwolf.util.colors
 
+import com.github.gchudnov.swearwolf.util.show.Show
+
 final case class Color(r: Int, g: Int, b: Int):
   def toHex(): String =
     s"#${f"${r}%02x"}${f"${g}%02x"}${f"${b}%02x"}"
@@ -17,6 +19,11 @@ object Color:
   def parse(value: String): Either[Throwable, Color] =
     if value.isEmpty then Left(new ColorException("Cannot parse the color: <empty>"))
     else fromName(value).orElse(fromHex(value))
+
+  given Show[Color] with
+    extension (a: Color)
+      def show: String = 
+        a.toHex()
 
   private def fromName(name: String): Either[Throwable, Color] =
     require(name.nonEmpty, "Color Name must be non-empty")

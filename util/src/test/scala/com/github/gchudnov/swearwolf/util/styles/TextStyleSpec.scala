@@ -38,5 +38,13 @@ object TextStyleSpec extends DefaultRunnableSpec:
         val expected = TextStyleSeq(Seq(Bold, Italic, Blink, Foreground(Color.Black)))
 
         assert(actual)(equalTo(expected))
+      },
+      test("show displays styles as string") {
+        val xs = Bold | Italic
+        val actual = xs.show
+
+        val expected = "bold,italic"
+
+        assert(actual)(equalTo(expected))
       }
     )
