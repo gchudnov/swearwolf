@@ -17,7 +17,7 @@ object Parser:
         case head +: tail =>
           head match
             case OpenTag(name, attr) =>
-              iterate(acc.push(TagElement.empty(name)), tail)
+              iterate(acc.push(TagElement(name, attr, Nil)), tail)
 
             case CloseTag(name) =>
               if acc.isEmpty then throw new ParserException(s"Unbalanced tags: Open tag for '$name' is missing")

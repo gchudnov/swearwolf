@@ -8,4 +8,8 @@ final case class TextElement(text: String) extends Element:
 final case class TagElement(name: String, value: Option[String], children: List[Element]) extends Element
 
 object TagElement:
-  def empty(name: String): TagElement = TagElement(name, None, Nil)
+  def empty(name: String): TagElement = 
+    TagElement(name, None, Nil)
+
+  def apply(name: String, value: String): TagElement = 
+    TagElement(name, Some(value), Nil)

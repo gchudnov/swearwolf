@@ -3,7 +3,7 @@
 - TODO: update readme pages
 - TODO: replace fastparse to allow scala 3
 - TODO: add Span = text + styles, render spans
-
+- TODO: add Show that can display Span as a string
 
 - TODO: text should support \r\n
 - https://github.com/daydev/bbcode-scala/tree/master/src/main/scala/org/daydev/scala/bb/parse
