@@ -43,5 +43,29 @@ object ColorSpec extends DefaultRunnableSpec:
         val expected = Color(255, 0, 0)
 
         assert(actual)(equalTo(expected))
-      }
+      },
+      test("parse name") {
+        val input = Seq("white", "black", "red", "green", "yellow", "blue", "rosy-brown", "rosy_brown", "SILVER")
+
+        val actual = input.map(name => Color.parse(name))
+        val expected = Seq[Either[Throwable, Color]](
+          Right(Color.White),
+          Right(Color.Black),
+          Right(Color.Red),
+          Right(Color.Green),
+          Right(Color.Yellow),
+          Right(Color.Blue),
+          Right(Color.RosyBrown),
+          Right(Color.RosyBrown),
+          Right(Color.Silver)
+        )
+
+        assert(actual)(equalTo(expected))
+      },
+      test("parse unknown name") {
+        val input  = "whot"
+        val actual = Color.parse(input)
+
+        assert(actual)(isLeft)
+      }      
     )

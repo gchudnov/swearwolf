@@ -3,7 +3,6 @@ package com.github.gchudnov.swearwolf.example.plain
 import com.github.gchudnov.swearwolf.*
 import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.colors.Color
-import com.github.gchudnov.swearwolf.util.colors.NamedColor
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle }
 import com.github.gchudnov.swearwolf.util.styles.{TextStyle}
@@ -68,16 +67,16 @@ object Main extends App:
 
     for
       rich <- RichText.make("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
-      _    <- sc.put(Point(0, 0), "HELLO", Bold | Foreground(NamedColor.Blue))
-      _    <- sc.put(Point(8, 0), "WORLD!", Foreground(NamedColor.Blue) | Background(NamedColor.Yellow))
+      _    <- sc.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
+      _    <- sc.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
       // _    <- sc.put(Point(0, 2), rich)
-      // _    <- sc.put(Point(0, 4), b, Foreground(NamedColor.Blue))
-      // _    <- sc.put(Point(32, 2), g1, Foreground(NamedColor.Green))
-      // _    <- sc.put(Point(32, 4), g2, Foreground(NamedColor.LimeGreen))
-      // _    <- sc.put(Point(32, 7), g3, Foreground(NamedColor.Azure))
-      // _    <- sc.put(Point(22, 0), gd, Foreground(NamedColor.Yellow))
-      // _    <- sc.put(Point(0, 7), t, Foreground(NamedColor.White))
-      // _    <- sc.put(Point(0, 13), l, Foreground(NamedColor.Red))
+      // _    <- sc.put(Point(0, 4), b, Foreground(Color.Blue))
+      // _    <- sc.put(Point(32, 2), g1, Foreground(Color.Green))
+      // _    <- sc.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
+      // _    <- sc.put(Point(32, 7), g3, Foreground(Color.Azure))
+      // _    <- sc.put(Point(22, 0), gd, Foreground(Color.Yellow))
+      // _    <- sc.put(Point(0, 7), t, Foreground(Color.White))
+      // _    <- sc.put(Point(0, 13), l, Foreground(Color.Red))
       _    <- sc.flush()
     yield ()
 

@@ -4,7 +4,7 @@ import zio.test.Assertion.*
 import zio.test.*
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
-import com.github.gchudnov.swearwolf.util.colors.NamedColor
+import com.github.gchudnov.swearwolf.util.colors.Color
 
 object TextStyleSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
@@ -33,9 +33,9 @@ object TextStyleSpec extends DefaultRunnableSpec:
       },
       test("compose style-seq and style-seq") {
         val xs       = Bold | Italic
-        val ys       = Blink | Foreground(NamedColor.Black)
+        val ys       = Blink | Foreground(Color.Black)
         val actual   = xs | ys
-        val expected = TextStyleSeq(Seq(Bold, Italic, Blink, Foreground(NamedColor.Black)))
+        val expected = TextStyleSeq(Seq(Bold, Italic, Blink, Foreground(Color.Black)))
 
         assert(actual)(equalTo(expected))
       }
