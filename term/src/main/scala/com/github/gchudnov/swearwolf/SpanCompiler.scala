@@ -100,15 +100,18 @@ object SpanCompiler:
 
     def iterate(acc: Bytes, state: State, span: Span): Bytes = span match
       case StyleSpan(style, children) =>
-        val newState = state.withStyle(style)
-        val diff = state.diff(newState)
+        val newState               = state.withStyle(style)
+        val diff                   = state.diff(newState)
         val (setBytes, resetBytes) = diffToBytes(diff)
 
-        // val xs = acc + Bytes(setBytes)
+        val prefix = acc + Bytes(setBytes)
+        val suffix = Bytes(resetBytes)
 
-        // val newAcc = acc + Bytes(setBytes) ++ iterate(resetBytes, newState, children)
+        val childrenAcc = children.foldLeft(Bytes.empty) { case (acc, ch) => acc + iterate(acc, newState, ch) }
 
-        ???
+        val newAcc = prefix + childrenAcc + suffix
+
+        newAcc
 
       case TextSpan(text) =>
         acc + Bytes(text.getBytes)

@@ -12,10 +12,13 @@ object SpanCompilerSpec extends DefaultRunnableSpec:
     suite("SpanCompiler")(
       test("empty span") {
         val span = Span.empty
-        val actual = SpanCompiler.compile(span)
+        val actual = SpanCompiler.compile(span).asHex
 
-        val expected = Bytes.empty
+        val expected = Bytes.empty.asHex
 
         assert(actual)(equalTo(expected))
       },
     )
+
+// TODO: how to print bytes in a human readable way?
+// TODO: how to implement a custom comparison operator? since now if we compare Bytes, we get incorrect result for the same data
