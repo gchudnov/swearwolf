@@ -1,8 +1,11 @@
 package com.github.gchudnov.swearwolf.rich
 
-import com.github.gchudnov.swearwolf.rich.internal.RichTextFactory
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.rich.internal.parser.Parser
+import com.github.gchudnov.swearwolf.rich.internal.Builder
+import com.github.gchudnov.swearwolf.util.spans.Span
 
-final case class RichText(bytes: Array[Byte])
+final case class RichText(span: Span)
 
 /**
  * Style text with the additional attributes.
@@ -20,5 +23,8 @@ final case class RichText(bytes: Array[Byte])
  * }}}
  */
 object RichText:
-  def make(value: String): Either[Throwable, RichText] =
-    RichTextFactory.make(value)
+  def make(input: String): Either[Throwable, RichText] =
+    for
+      elements <- Parser.parse(input)
+      span     <- Builder.build(elements)
+    yield RichText(span)

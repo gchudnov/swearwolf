@@ -11,14 +11,14 @@ import zio.test.*
 object RichTextSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("RichText")(
-      // test("empty") {
-      //   val input = ""
+      test("empty") {
+        val input = ""
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = ""
+        val actual   = RichText.make(input)
+        val expected = "123"
 
-      //   assert(actual)(equalTo(expected))
-      // },
+        assert(actual)(equalTo(expected))
+      },
       // test("empty tag") {
       //   val input = "<bold></bold>"
 
