@@ -9,7 +9,7 @@ object BytesSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("Bytes")(
       test("bytes to string") {
-        val input = Seq(10.toByte, 23.toByte, 65.toByte)
+        val input = Array(10.toByte, 23.toByte, 65.toByte)
 
         val actual   = Bytes(input).asHex
         val expected = "0a1741"
@@ -20,7 +20,7 @@ object BytesSpec extends DefaultRunnableSpec:
         val input = "0a1741"
 
         val actual   = input.asBytes
-        val expected = Bytes(Seq(10.toByte, 23.toByte, 65.toByte))
+        val expected = Bytes(Array(10.toByte, 23.toByte, 65.toByte))
 
         assert(actual)(equalTo(expected))
       }

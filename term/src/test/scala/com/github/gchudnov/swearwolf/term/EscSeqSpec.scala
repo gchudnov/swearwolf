@@ -15,7 +15,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
 
         // ESC[ 38;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB foreground color
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b33383b323b3235353b303b306d"
 
         assert(actual)(equalTo(expected))
@@ -25,7 +25,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
 
         // ESC[ 48;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB background color
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b34383b323b3235353b303b306d"
 
         assert(actual)(equalTo(expected))
@@ -33,7 +33,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("reset foreground color") {
         val input = EscSeq.resetForeground
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b33396d"
 
         assert(actual)(equalTo(expected))
@@ -41,7 +41,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("reset background color") {
         val input = EscSeq.resetBackground
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b34396d"
 
         assert(actual)(equalTo(expected))
@@ -49,7 +49,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("screen erase") {
         val input = EscSeq.erase
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b324a"
 
         assert(actual)(equalTo(expected))
@@ -57,7 +57,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("bold") {
         val input = EscSeq.bold
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b316d"
 
         assert(actual)(equalTo(expected))
@@ -65,7 +65,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("reset bold") {
         val input = EscSeq.resetBold
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b32326d"
 
         assert(actual)(equalTo(expected))
@@ -73,7 +73,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("underline") {
         val input = EscSeq.underline
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b346d"
 
         assert(actual)(equalTo(expected))
@@ -81,7 +81,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("reset underline") {
         val input = EscSeq.resetUnderline
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b32346d"
 
         assert(actual)(equalTo(expected))
@@ -89,7 +89,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("blink") {
         val input = EscSeq.blink
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b356d"
 
         assert(actual)(equalTo(expected))
@@ -97,7 +97,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("reset blink") {
         val input = EscSeq.resetBlink
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b32356d"
 
         assert(actual)(equalTo(expected))
@@ -105,7 +105,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("invert") {
         val input = EscSeq.invert
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b376d"
 
         assert(actual)(equalTo(expected))
@@ -113,7 +113,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("reset invert") {
         val input = EscSeq.resetInvert
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b32376d"
 
         assert(actual)(equalTo(expected))
@@ -121,7 +121,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("reset all") {
         val input = EscSeq.reset
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b306d"
 
         assert(actual)(equalTo(expected))
@@ -129,7 +129,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("italic") {
         val input = EscSeq.italic
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b336d"
 
         assert(actual)(equalTo(expected))
@@ -137,7 +137,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("reset italic") {
         val input = EscSeq.resetItalic
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b32336d"
 
         assert(actual)(equalTo(expected))
@@ -145,7 +145,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("strikethrough") {
         val input = EscSeq.strikethrough
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b396d"
 
         assert(actual)(equalTo(expected))
@@ -153,7 +153,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("reset strikethrough") {
         val input = EscSeq.resetStrikethrough
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b32396d"
 
         assert(actual)(equalTo(expected))
@@ -161,7 +161,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("cursor show") {
         val input = EscSeq.cursorShow
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b3f32353b68"
 
         assert(actual)(equalTo(expected))
@@ -169,7 +169,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("cursor hide") {
         val input = EscSeq.cursorHide
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b3f32353b6c"
 
         assert(actual)(equalTo(expected))
@@ -177,7 +177,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("cursor save") {
         val input = EscSeq.cursorSave
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b37"
 
         assert(actual)(equalTo(expected))
@@ -185,7 +185,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("cursor restore") {
         val input = EscSeq.cursorRestore
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b38"
 
         assert(actual)(equalTo(expected))
@@ -193,7 +193,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("cursor up") {
         val input = EscSeq.cursorUp(1)
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b3141"
 
         assert(actual)(equalTo(expected))
@@ -201,7 +201,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("cursor down") {
         val input = EscSeq.cursorDown(1)
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b3142"
 
         assert(actual)(equalTo(expected))
@@ -209,7 +209,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("cursor right") {
         val input = EscSeq.cursorRight(1)
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b3143"
 
         assert(actual)(equalTo(expected))
@@ -217,7 +217,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("cursor left") {
         val input = EscSeq.cursorLeft(1)
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b3144"
 
         assert(actual)(equalTo(expected))
@@ -225,7 +225,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("alt buffer") {
         val input = EscSeq.altBuffer
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b3f34373b68"
 
         assert(actual)(equalTo(expected))
@@ -233,7 +233,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("normal buffer") {
         val input = EscSeq.normalBuffer
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b3f34373b6c"
 
         assert(actual)(equalTo(expected))
@@ -241,7 +241,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("device status") {
         val input = EscSeq.status
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b356e"
 
         assert(actual)(equalTo(expected))
@@ -249,7 +249,7 @@ object EscSeqSpec extends DefaultRunnableSpec:
       test("text area size") {
         val input = EscSeq.textAreaSize
 
-        val actual   = Bytes(input.bytes.toSeq).asHex
+        val actual   = Bytes(input.bytes).asHex
         val expected = "1b5b313874"
 
         assert(actual)(equalTo(expected))

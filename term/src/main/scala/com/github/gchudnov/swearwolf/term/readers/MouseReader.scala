@@ -5,6 +5,7 @@ import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.{ KeyModifier, MouseAction, MouseButton, MouseKeySeq }
 
 import scala.annotation.tailrec
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Read Mouse Events
@@ -58,10 +59,11 @@ private[term] object MouseReader extends BasicKeySeqReader:
     65 -> MouseButton.ScrollForward
   )
 
-  override def read(data: Seq[Byte]): ReadState =
+  override def read(data: Bytes): ReadState =
+    import Bytes.*
 
     @tailrec
-    def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Seq[Byte]): ReadState =
+    def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Bytes): ReadState =
       state match
         case Start =>
           xs match
@@ -124,7 +126,7 @@ private[term] object MouseReader extends BasicKeySeqReader:
 
     iterate(Start, num1 = 0, num2 = 0, num3 = 0, last = 0, data)
 
-  private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Seq[Byte]): ReadState =
+  private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Bytes): ReadState =
     if isUpperM(last) then
       // press
       ParsedReadState(MouseKeySeq(toPoint(num2, num3), toMouseButton(num1), MouseAction.Press, toModifiers(num1)), rest)

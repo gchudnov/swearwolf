@@ -5,6 +5,7 @@ import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeyModifier, SizeKey
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import zio.test.Assertion.*
 import zio.test.*
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 object EscReaderSpec extends DefaultRunnableSpec:
 
@@ -70,7 +71,7 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("empty") {
         val input      = ""
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
         val expected = UnknownReadState(inputBytes)
         val actual   = EscReader.read(inputBytes)
@@ -79,7 +80,7 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("{ESC}") {
         val input      = s"$EscChar"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
         val expected = PartialReadState(inputBytes)
         val actual   = EscReader.read(inputBytes)
@@ -88,7 +89,7 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("{ESC}[") {
         val input      = s"$EscChar["
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
         val expected = PartialReadState(inputBytes)
         val actual   = EscReader.read(inputBytes)
@@ -97,7 +98,7 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("{ESC}{0x9}") {
         val input      = s"$EscChar\t"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
         val expected = UnknownReadState(inputBytes)
         val actual   = EscReader.read(inputBytes)
@@ -106,16 +107,16 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("{ESC}[A") {
         val input      = s"$EscChar[A"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
-        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Up, Set.empty[KeyModifier]), Seq.empty[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.Up, Set.empty[KeyModifier]), Bytes.empty)
         val actual   = EscReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
       },
       test("{ESC}[8;1") {
         val input      = s"$EscChar[8;1"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
         val expected = PartialReadState(inputBytes)
         val actual   = EscReader.read(inputBytes)
@@ -124,7 +125,7 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("{ESC}[8;13") {
         val input      = s"$EscChar[8;13"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
         val expected = PartialReadState(inputBytes)
         val actual   = EscReader.read(inputBytes)
@@ -133,7 +134,7 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("{ESC}[8;25;") {
         val input      = s"$EscChar[8;25;"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
         val expected = PartialReadState(inputBytes)
         val actual   = EscReader.read(inputBytes)
@@ -142,7 +143,7 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("{ESC}[8;25;1") {
         val input      = s"$EscChar[8;25;1"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
         val expected = PartialReadState(inputBytes)
         val actual   = EscReader.read(inputBytes)
@@ -151,7 +152,7 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("{ESC}[8;25;12") {
         val input      = s"$EscChar[8;25;12"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
         val expected = PartialReadState(inputBytes)
         val actual   = EscReader.read(inputBytes)
@@ -160,27 +161,27 @@ object EscReaderSpec extends DefaultRunnableSpec:
       },
       test("{ESC}[8;25;12t") {
         val input      = s"$EscChar[8;25;12t"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
-        val expected = ParsedReadState(SizeKeySeq(Size(width = 12, height = 25)), Seq.empty[Byte])
+        val expected = ParsedReadState(SizeKeySeq(Size(width = 12, height = 25)), Bytes.empty)
         val actual   = EscReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
       },
       test("{ESC}OP == F1") {
         val input      = s"${EscChar}OP"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
-        val expected = ParsedReadState(CtrlKeySeq(KeyCode.F1, Set.empty[KeyModifier]), Seq.empty[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.F1, Set.empty[KeyModifier]), Bytes.empty)
         val actual   = EscReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
       },
       test("{ESC}[16~ == F5") {
         val input      = s"$EscChar[16~"
-        val inputBytes = input.getBytes.toSeq
+        val inputBytes = Bytes(input.getBytes)
 
-        val expected = ParsedReadState(CtrlKeySeq(KeyCode.F5, Set.empty[KeyModifier]), Seq.empty[Byte])
+        val expected = ParsedReadState(CtrlKeySeq(KeyCode.F5, Set.empty[KeyModifier]), Bytes.empty)
         val actual   = EscReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))

@@ -5,6 +5,7 @@ import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeyModifier, SizeKeySeq }
 
 import scala.annotation.tailrec
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Reads an escape sequence.
@@ -81,10 +82,11 @@ private[term] object EscReader extends BasicKeySeqReader:
     24 -> KeyCode.F12
   )
 
-  override def read(data: Seq[Byte]): ReadState =
+  override def read(data: Bytes): ReadState =
+    import Bytes.*
 
     @tailrec
-    def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Seq[Byte]): ReadState =
+    def iterate(state: State, num1: Int, num2: Int, num3: Int, last: Byte, xs: Bytes): ReadState =
       state match
         case Start =>
           xs match
@@ -138,7 +140,7 @@ private[term] object EscReader extends BasicKeySeqReader:
 
     iterate(Start, num1 = 0, num2 = 0, num3 = 0, last = 0, data)
 
-  private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Seq[Byte]): ReadState =
+  private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Bytes): ReadState =
     if isLowerT(last) && num1 == 8 then ParsedReadState(SizeKeySeq(Size(width = num3, height = num2)), rest)
     else if isTilde(last) && stdMap.contains(num1) then
       val key  = stdMap(num1)

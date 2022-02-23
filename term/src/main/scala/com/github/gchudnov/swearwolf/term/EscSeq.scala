@@ -95,7 +95,7 @@ object EscSeq:
   def textFromBytes(bytes: Array[Byte]): String =
     val rx = s"""$EscChar\\[[\\d;]+\\w"""
 
-    val str   = Bytes(bytes.toSeq).asString
+    val str   = Bytes(bytes).asString
     val parts = str.split(rx)
 
     parts.filter(_.nonEmpty).mkString

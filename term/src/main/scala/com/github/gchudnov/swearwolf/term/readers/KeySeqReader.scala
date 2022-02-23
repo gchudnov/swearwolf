@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.term.readers
 
 import com.github.gchudnov.swearwolf.term.ReadState
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 private[term] trait KeySeqReader:
 
@@ -11,4 +12,4 @@ private[term] trait KeySeqReader:
    * @return
    *   ReadState (parsed key sequence and the rest of the data)
    */
-  def read(data: Seq[Byte]): ReadState
+  def read(data: Bytes): ReadState

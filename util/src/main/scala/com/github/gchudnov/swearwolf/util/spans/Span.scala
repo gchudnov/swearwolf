@@ -24,4 +24,4 @@ object Span:
           case TextSpan(text) =>
             s"${text}"
           case ByteSpan(bytes) =>
-            Bytes(bytes.toSeq).show
+            Bytes(bytes).show

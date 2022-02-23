@@ -6,6 +6,7 @@ sealed trait Stack[+T]:
   def top: T
   def size: Int
   def isEmpty: Boolean
+  def nonEmpty: Boolean
 
 object Stack:
   def empty[T]: Stack[T] =
@@ -19,11 +20,13 @@ case object EmptyStack extends AStack[Nothing]:
   def top: Nothing                   = throw new NoSuchElementException("top of empty stack")
   def size: Int                      = 0
   def isEmpty: Boolean               = true
+  def nonEmpty: Boolean              = !isEmpty
 
 final case class NonEmptyStack[+T](top: T, rest: Stack[T]) extends AStack[T]:
   def pop(): (T, Stack[T]) = (top, rest)
   def size: Int          = 1 + rest.size
   def isEmpty: Boolean   = false
+  def nonEmpty: Boolean  = !isEmpty
 
 object NonEmptyStack:
   def apply[T](t: T): NonEmptyStack[T] = new NonEmptyStack(t, EmptyStack)

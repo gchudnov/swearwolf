@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf
 
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal:
 
@@ -53,9 +54,9 @@ class KeySeqOps(private val keqSeq: KeySeq) extends AnyVal:
   /**
    * Gets a sequence of bytes out of the key sequence.
    * @return
-   *   Some(Seq[Byte]) if the sequence provides them, otherwise None
+   *   Some(Bytes) if the sequence provides them, otherwise None
    */
-  def bytes: Option[Seq[Byte]] = keqSeq match
+  def bytes: Option[Bytes] = keqSeq match
     case UnknownKeySeq(bs) =>
       Some(bs)
     case _ =>

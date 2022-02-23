@@ -4,6 +4,7 @@ import com.github.gchudnov.swearwolf.term.{ ParsedReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.CharKeySeq
 import zio.test.Assertion.equalTo
 import zio.test.*
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 object CharReaderSpec extends DefaultRunnableSpec:
 
@@ -11,28 +12,28 @@ object CharReaderSpec extends DefaultRunnableSpec:
     suite("CharReader")(
       test(s"empty") {
         val input      = s""
-        val inputBytes = input.getBytes
+        val inputBytes = Bytes(input.getBytes)
 
-        val expected = UnknownReadState(Seq.empty[Byte])
-        val actual   = CharReader.read(inputBytes.toSeq)
+        val expected = UnknownReadState(Bytes.empty)
+        val actual   = CharReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
       },
       test(s"A") {
         val input      = s"A"
-        val inputBytes = input.getBytes
+        val inputBytes = Bytes(input.getBytes)
 
-        val expected = ParsedReadState(CharKeySeq('A'), Seq.empty[Byte])
-        val actual   = CharReader.read(inputBytes.toSeq)
+        val expected = ParsedReadState(CharKeySeq('A'), Bytes.empty)
+        val actual   = CharReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
       },
       test(s"zB") {
         val input      = s"zB"
-        val inputBytes = input.getBytes
+        val inputBytes = Bytes(input.getBytes)
 
-        val expected = ParsedReadState(CharKeySeq('z'), Seq(66.toByte))
-        val actual   = CharReader.read(inputBytes.toSeq)
+        val expected = ParsedReadState(CharKeySeq('z'), Bytes(66.toByte))
+        val actual   = CharReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
       }

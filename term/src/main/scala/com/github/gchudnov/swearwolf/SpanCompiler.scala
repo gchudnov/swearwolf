@@ -9,11 +9,36 @@ import com.github.gchudnov.swearwolf.util.data.Stack
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
+import com.github.gchudnov.swearwolf.term.EscSeq
 
 /**
  * Transforms Span to an array of Bytes that can be sent to the terminal.
  */
 object SpanCompiler:
+
+  private sealed trait Switch
+  private case object On  extends Switch
+  private case object Off extends Switch
+
+  /**
+   * {{{{ Option[Switch]: None: no changes to the effect Some(On): turn on the effect of the span Some(Off): turn off the effect of the span
+   *
+   * (Option[Color], Option[Color]) (None, None): no changes to the color (Some(c), None): change the color from c to none (None, Some(c)): change the color from none to c
+   * (Some(c1), Some(c2)): change the color from c1 to c2 }}}
+   */
+  private case class StateDiff(
+    empty: Option[Switch] = None,
+    fgColor: (Option[Color], Option[Color]) = (None, None),
+    bgColor: (Option[Color], Option[Color]) = (None, None),
+    bold: Option[Switch] = None,
+    italic: Option[Switch] = None,
+    underline: Option[Switch] = None,
+    blink: Option[Switch] = None,
+    invert: Option[Switch] = None,
+    strikethrough: Option[Switch] = None,
+    transparent: Option[Switch] = None,
+    noColor: Option[Switch] = None
+  )
 
   private case class State(
     empty: Int = 0,
@@ -42,6 +67,31 @@ object SpanCompiler:
       case TextStyle.Background(color) => copy(bgColor = bgColor.push(color))
       case TextStyleSeq(styles)        => styles.foldLeft(this)(_.withStyle(_))
 
+    def diff(that: State): StateDiff =
+      StateDiff(
+        empty = intDiff(empty, that.empty),
+        fgColor = colorDiff(fgColor, that.fgColor),
+        bgColor = colorDiff(bgColor, that.bgColor),
+        bold = intDiff(bold, that.bold),
+        italic = intDiff(italic, that.italic),
+        underline = intDiff(underline, that.underline),
+        blink = intDiff(blink, that.blink),
+        invert = intDiff(invert, that.invert),
+        strikethrough = intDiff(strikethrough, that.strikethrough),
+        transparent = intDiff(transparent, that.transparent),
+        noColor = intDiff(noColor, that.noColor)
+      )
+
+    private def intDiff(lhs: Int, rhs: Int): Option[Switch] =
+      if (rhs == lhs) then None else if (rhs > lhs) then Some(On) else Some(Off)
+
+    private def colorDiff(lhs: Stack[Color], rhs: Stack[Color]): (Option[Color], Option[Color]) =
+      (lhs.isEmpty, rhs.isEmpty) match
+        case (true, true)   => (None, None)
+        case (false, true)  => (Some(lhs.top), None)
+        case (true, false)  => (None, Some(rhs.top))
+        case (false, false) => if (rhs.top == lhs.top) then (None, None) else (Some(lhs.top), Some(rhs.top))
+
   private object State:
     val empty: State =
       State()
@@ -50,12 +100,63 @@ object SpanCompiler:
 
     def iterate(acc: Bytes, state: State, span: Span): Bytes = span match
       case StyleSpan(style, children) =>
+        val newState = state.withStyle(style)
+        val diff = state.diff(newState)
+        val (setBytes, resetBytes) = diffToBytes(diff)
+
+        // val xs = acc + Bytes(setBytes)
+
+        // val newAcc = acc + Bytes(setBytes) ++ iterate(resetBytes, newState, children)
+
         ???
 
       case TextSpan(text) =>
-        acc + Bytes(text.getBytes.toSeq)
+        acc + Bytes(text.getBytes)
 
       case ByteSpan(bytes) =>
-        acc + Bytes(bytes.toSeq)
+        acc + Bytes(bytes)
 
     iterate(Bytes.empty, State(), span)
+
+  /**
+   * Returns a pair that can be used to (SET, UNSET) the diff.
+   */
+  private def diffToBytes(diff: StateDiff): (Array[Byte], Array[Byte]) =
+    val emptyTuple = (Array.empty[Byte], Array.empty[Byte])
+
+    val (setEmpty, resetEmpty)                 = emptyTuple
+    val (setFgColor, resetFgColor)             = colorDiffToBytes(diff.fgColor)
+    val (setBgColor, resetBgColor)             = colorDiffToBytes(diff.bgColor)
+    val (setBold, resetBold)                   = switchDiffToBytes(diff.bold, EscSeq.bold.bytes, EscSeq.resetBold.bytes)
+    val (setItalic, resetItalic)               = switchDiffToBytes(diff.italic, EscSeq.italic.bytes, EscSeq.resetItalic.bytes)
+    val (setUnderline, resetUnderline)         = switchDiffToBytes(diff.underline, EscSeq.underline.bytes, EscSeq.resetUnderline.bytes)
+    val (setBlink, resetBlink)                 = switchDiffToBytes(diff.blink, EscSeq.blink.bytes, EscSeq.resetBlink.bytes)
+    val (setInvert, resetInvert)               = switchDiffToBytes(diff.invert, EscSeq.invert.bytes, EscSeq.resetInvert.bytes)
+    val (setStrikethrough, resetStrikethrough) = switchDiffToBytes(diff.strikethrough, EscSeq.strikethrough.bytes, EscSeq.resetStrikethrough.bytes)
+    val (setTransparent, resetTransparent)     = emptyTuple
+    val (setNoColor, resetNoColor)             = emptyTuple
+
+    val setBytes = setEmpty ++ setFgColor ++ setBgColor ++ setBold ++ setItalic ++ setUnderline ++ setBlink ++ setInvert ++ setStrikethrough ++ setTransparent ++ setNoColor
+    val resetBytes =
+      resetEmpty ++ resetFgColor ++ resetBgColor ++ resetBold ++ resetItalic ++ resetUnderline ++ resetBlink ++ resetInvert ++ resetStrikethrough ++ resetTransparent ++ resetNoColor
+
+    (setBytes, resetBytes)
+
+  /**
+   * Returns a pair that can be used to (SET, UNSET) the diff.
+   */
+  private def colorDiffToBytes(diff: (Option[Color], Option[Color])): (Array[Byte], Array[Byte]) =
+    diff match
+      case (None, None)         => (Array.empty[Byte], Array.empty[Byte])
+      case (None, Some(c1))     => (EscSeq.foreground(c1).bytes, EscSeq.resetForeground.bytes)
+      case (Some(c0), None)     => (EscSeq.resetForeground.bytes, EscSeq.foreground(c0).bytes)
+      case (Some(c0), Some(c1)) => (EscSeq.foreground(c1).bytes, EscSeq.foreground(c0).bytes)
+
+  /**
+   * Returns a pair that can be used to (SET, UNSET) the diff.
+   */
+  private def switchDiffToBytes(diff: Option[Switch], on: => Array[Byte], off: => Array[Byte]): (Array[Byte], Array[Byte]) =
+    diff match
+      case None      => (Array.empty[Byte], Array.empty[Byte])
+      case Some(On)  => (on, off)
+      case Some(Off) => (off, on)

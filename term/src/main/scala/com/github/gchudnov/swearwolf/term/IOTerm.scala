@@ -6,6 +6,7 @@ import com.github.gchudnov.swearwolf.KeySeq
 
 import scala.collection.mutable.ListBuffer
 import scala.util.control.Exception.nonFatalCatch
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Terminal with basic I/O operations.
@@ -45,9 +46,9 @@ private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term:
         val bytes = in.readNBytes(nAvail)
         raw.appendAll(bytes)
 
-      val (ks, rest) = Reader.consume(raw.toSeq)
+      val (ks, rest) = Reader.consume(Bytes(raw.toArray))
       raw.clear()
-      raw.appendAll(rest)
+      raw.appendAll(rest.value)
 
       ks.toList
     }

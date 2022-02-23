@@ -2,6 +2,7 @@ package com.github.gchudnov.swearwolf.term.readers
 
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, ReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.{ CharKeySeq, CtrlKeySeq, KeyCode, KeyModifier }
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Reads Ctrl + {KEY} sequences.
@@ -16,7 +17,7 @@ private[term] object CtrlReader extends BasicKeySeqReader:
     0x1f.toByte -> '_'.toByte   // ^_
   )
 
-  override def read(data: Seq[Byte]): ReadState =
+  override def read(data: Bytes): ReadState =
     if data.isEmpty then UnknownReadState(data)
     else {
       val k    = data.head

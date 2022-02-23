@@ -4,6 +4,7 @@ import com.github.gchudnov.swearwolf.{ KeySeq, UnknownKeySeq }
 import com.github.gchudnov.swearwolf.term.readers.*
 
 import scala.annotation.tailrec
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Reads bytes from buffer and returns (KeySeq, rest of the bytes that were not parsed)
@@ -16,25 +17,25 @@ private[term] object Reader:
 
   private val readers = List[KeySeqReader](CharReader, CtrlReader, EscReader, MouseReader)
 
-  def consume(bytes: Seq[Byte]): (Vector[KeySeq], Seq[Byte]) =
+  def consume(bytes: Bytes): (Vector[KeySeq], Bytes) =
     @tailrec
-    def iterate(acc: Vector[KeySeq], xs: Seq[Byte]): (Vector[KeySeq], Seq[Byte]) =
+    def iterate(acc: Vector[KeySeq], xs: Bytes): (Vector[KeySeq], Bytes) =
       xs match
         case ys if ys.nonEmpty =>
           val rs = anyRead(ys)
           rs match
             case UnknownReadState(_) =>
-              iterate(acc.appended(UnknownKeySeq(xs)), Seq.empty[Byte])
+              iterate(acc.appended(UnknownKeySeq(xs)), Bytes.empty)
             case PartialReadState(_) =>
               (acc, ys)
             case ParsedReadState(keqSeq, rest) =>
               iterate(acc.appended(keqSeq), rest)
         case _ =>
-          (acc, Seq.empty[Byte])
+          (acc, Bytes.empty)
 
     iterate(Vector.empty[KeySeq], bytes)
 
-  private def anyRead(bytes: Seq[Byte]): ReadState =
+  private def anyRead(bytes: Bytes): ReadState =
     readers.foldLeft(ReadState.empty) { (acc, reader) =>
       val res = reader.read(bytes)
       mergeReadResults(acc, res)
