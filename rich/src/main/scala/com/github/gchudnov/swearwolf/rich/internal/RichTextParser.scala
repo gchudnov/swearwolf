@@ -52,3 +52,4 @@ private[rich] object RichTextParser:
 
   // parse xml tags and attributes from a string
     
+// TODO: this and several other files here must be removed

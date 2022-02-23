@@ -22,14 +22,14 @@ object RichTextSpec extends DefaultRunnableSpec:
 
         assert(actual)(equalTo(expected))
       },
-      // test("empty tag") {
-      //   val input = "<bold></bold>"
+      test("bold tag without text") {
+        val input = "<bold></bold>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b316d1b5b32326d"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(StyleSpan(TextStyle.Bold,List.empty[Span])))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
+        assert(actual)(equalTo(expected))
+      },
       // test("text without tags") {
       //   val input = "text"
 
