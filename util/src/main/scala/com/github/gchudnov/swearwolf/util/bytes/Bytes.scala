@@ -2,8 +2,15 @@ package com.github.gchudnov.swearwolf.util.bytes
 
 import java.nio.charset.StandardCharsets
 import com.github.gchudnov.swearwolf.util.show.Show
+import scala.language.strictEquality
 
-final case class Bytes(value: Array[Byte]) extends AnyVal:
+final case class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
+
+  override def equals(other: Any): Boolean = other match
+    case that: Bytes => value.sameElements(that.value)
+    case _           => false
+
+  override def hashCode(): Int = value.hashCode()
 
   def head: Byte =
     value.head
@@ -34,13 +41,10 @@ object Bytes:
   def apply(byte: Byte): Bytes =
     Bytes(Array(byte))
 
-  object +: { 
-    def unapply(bytes: Bytes): Option[(Byte, Bytes)] = 
-      if(bytes.nonEmpty) then
-        Some(bytes.head, bytes.tail) 
-      else
-        None
-  }
+  object +: :
+    def unapply(bytes: Bytes): Option[(Byte, Bytes)] =
+      if (bytes.nonEmpty) then Some(bytes.head, bytes.tail)
+      else None
 
   extension (bytes: Bytes)
     def +(other: Bytes): Bytes =
@@ -56,4 +60,6 @@ object Bytes:
   given showBytes: Show[Bytes] with
     extension (a: Bytes)
       def show: String =
-        a.value.map(b => f"\x$b%02x").mkString("")
+        val text = a.asString.replaceAll("\\p{C}", ".");
+        val hex  = a.value.map(b => f"$b%02x").mkString(" ")
+        s"|${hex}|${text}|"

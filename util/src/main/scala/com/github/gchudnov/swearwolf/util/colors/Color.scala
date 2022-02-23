@@ -8,6 +8,12 @@ final case class Color(r: Int, g: Int, b: Int):
 
 object Color:
 
+  def apply(r: Int, g: Int, b: Int): Color =
+    new Color(r, g, b)
+
+  def apply(rgb: Int): Color =
+    new Color(rgb >> 16 & 0xFF, rgb >> 8 & 0xFF, rgb & 0xFF)
+
   /**
    * Parses color from a string
    *

@@ -23,5 +23,14 @@ object BytesSpec extends DefaultRunnableSpec:
         val expected = Bytes(Array(10.toByte, 23.toByte, 65.toByte))
 
         assert(actual)(equalTo(expected))
+      },
+      test("show bytes") {
+        val input = Array(10.toByte, 23.toByte, 65.toByte)
+
+        val actual   = Bytes(input).show
+
+        val expected = "|0a 17 41|..A|"
+
+        assert(actual)(equalTo(expected))
       }
     )
