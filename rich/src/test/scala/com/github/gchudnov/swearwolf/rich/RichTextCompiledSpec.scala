@@ -129,7 +129,7 @@ object RichTextCompiledSpec extends DefaultRunnableSpec:
           showed = compiled.show
         } yield showed
 
-        val expected = Right("|1b 5b 33 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 1b 5b 32 33 6d|.[3mAA.[1mtext.[22mAA.[1mtext.[22mB.[23m|")
+        val expected = Right("|1b 5b 33 6d 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 1b 5b 32 33 6d|.[3mA.[1mtext.[22mB.[23m|")
 
         assert(actual)(equalTo(expected))
       },
@@ -142,7 +142,7 @@ object RichTextCompiledSpec extends DefaultRunnableSpec:
           showed = compiled.show
         } yield showed
 
-        val expected = Right("|1b 5b 33 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 1b 5b 34 6d 43 1b 5b 32 34 6d 1b 5b 32 33 6d|.[3mAA.[1mtext.[22mAA.[1mtext.[22mBAA.[1mtext.[22mAA.[1mtext.[22mB.[4mC.[24m.[23m|")
+        val expected = Right("|1b 5b 33 6d 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 1b 5b 34 6d 43 1b 5b 32 34 6d 1b 5b 32 33 6d|.[3mA.[1mtext.[22mB.[4mC.[24m.[23m|")
 
         assert(actual)(equalTo(expected))
       },
@@ -155,7 +155,7 @@ object RichTextCompiledSpec extends DefaultRunnableSpec:
           showed = compiled.show
         } yield showed
 
-        val expected = Right("|1b 5b 33 6d 41 20 42 41 20 42 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 41 20 42 41 20 42 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 43 20 1b 5b 32 33 6d|.[3mA BA B.[1mtext.[22mA BA B.[1mtext.[22mC .[23m|")
+        val expected = Right("|1b 5b 33 6d 41 20 42 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 43 20 1b 5b 32 33 6d|.[3mA B.[1mtext.[22mC .[23m|")
 
         assert(actual)(equalTo(expected))
       },
@@ -175,7 +175,7 @@ object RichTextCompiledSpec extends DefaultRunnableSpec:
           showed = compiled.show
         } yield showed
 
-        val expected = "1b5b336d4120421b5b316d746578741b5b32326d43201b5b32336d"
+        val expected = Right("|1b 5b 31 6d 42 4f 4c 44 1b 5b 32 32 6d 1b 5b 33 38 3b 32 3b 31 37 30 3b 30 3b 30 6d 1b 5b 33 38 3b 32 3b 30 3b 32 35 35 3b 30 6d 4e 4f 52 1b 5b 33 39 6d 1b 5b 33 39 6d 4d 41 4c 1b 5b 33 6d 69 74 61 6c 69 63 1b 5b 32 33 6d 1b 5b 35 6d 42 4c 49 4e 4b 1b 5b 32 35 6d|.[1mBOLD.[22m.[38;2;170;0;0m.[38;2;0;255;0mNOR.[39m.[39mMAL.[3mitalic.[23m.[5mBLINK.[25m|")
 
         assert(actual)(equalTo(expected))
       }
