@@ -7,18 +7,24 @@ import com.github.gchudnov.swearwolf.rich.{ Resources}
 import com.github.gchudnov.swearwolf.rich.RichText
 import zio.test.Assertion.{ equalTo, isLeft, isRight }
 import zio.test.*
+import com.github.gchudnov.swearwolf.SpanCompiler
 
-object RichTextSyntaxSpec extends DefaultRunnableSpec:
+object RichTextCompiledSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
-    suite("RichTextSyntax")(
-      // test("empty") {
-      //   val input = ""
+    suite("RichTextCompiled")(
+      test("empty") {
+        val input = ""
+        
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
 
-      //   val actual   = RichText.make(input)
-      //   val expected = "123"
+        val expected = Right("|||")
 
-      //   assert(actual)(equalTo(expected))
-      // },
+        assert(actual)(equalTo(expected))
+      },
       // test("empty tag") {
       //   val input = "<bold></bold>"
 

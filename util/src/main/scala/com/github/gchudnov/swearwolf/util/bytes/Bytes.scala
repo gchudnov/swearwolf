@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets
 import com.github.gchudnov.swearwolf.util.show.Show
 import scala.language.strictEquality
 
+// TODO: replace with a normal class
 final case class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
 
   override def equals(other: Any): Boolean = other match
@@ -11,6 +12,10 @@ final case class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
     case _           => false
 
   override def hashCode(): Int = value.hashCode()
+
+  override def toString: String =
+    val bs = value.map(b => f"$b%02x").mkString(" ")
+    s"Bytes($bs)"
 
   def head: Byte =
     value.head
