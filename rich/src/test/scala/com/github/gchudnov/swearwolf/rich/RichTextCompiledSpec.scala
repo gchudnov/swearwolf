@@ -9,6 +9,10 @@ import zio.test.Assertion.{ equalTo, isLeft, isRight }
 import zio.test.*
 import com.github.gchudnov.swearwolf.SpanCompiler
 
+// TODO: improve tests
+// TODO: NOTE: this class should not be here at all, add these tests to SpanCompilerSpec
+// TODO: Compiler should be present only inside of term and not visible outside, outside world should operate on Spans
+
 object RichTextCompiledSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("RichTextCompiled")(
@@ -25,103 +29,154 @@ object RichTextCompiledSpec extends DefaultRunnableSpec:
 
         assert(actual)(equalTo(expected))
       },
-      // test("empty tag") {
-      //   val input = "<bold></bold>"
+      test("empty tag") {
+        val input = "<bold></bold>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b316d1b5b32326d"
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("text without tags") {
-      //   val input = "text"
+        val expected = Right("|1b 5b 31 6d 1b 5b 32 32 6d|.[1m.[22m|")
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "74657874"
+        assert(actual)(equalTo(expected))
+      },
+      test("text without tags") {
+        val input = "text"
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("tag with text") {
-      //   val input = "<i>text</i>"
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
+        
+        val expected = Right("|74 65 78 74|text|")
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d746578741b5b32336d"
+        assert(actual)(equalTo(expected))
+      },
+      test("tag with text") {
+        val input = "<i>text</i>"
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("attribute with single quotes") {
-      //   val input = "<color fg='#AABBCC'>text</color>"
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b33383b323b3137303b3138373b3230346d746578741b5b33396d"
+        val expected = Right("|1b 5b 33 6d 74 65 78 74 1b 5b 32 33 6d|.[3mtext.[23m|")
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("attribute with double quotes") {
-      //   val input = "<color fg=\"#AABBCC\" >text</color>"
+        assert(actual)(equalTo(expected))
+      },
+      test("attribute with single quotes") {
+        val input = "<fg='#AABBCC'>text</fg>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b33383b323b3137303b3138373b3230346d746578741b5b33396d"
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("multiple attributes") {
-      //   val input = "<color fg='#AABBCC'  bg=\"DDEEFF\">text</color>"
+        val expected = Right("|1b 5b 33 38 3b 32 3b 31 37 30 3b 31 38 37 3b 32 30 34 6d 74 65 78 74 1b 5b 33 39 6d|.[38;2;170;187;204mtext.[39m|")
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b33383b323b3137303b3138373b3230346d1b5b34383b323b3232313b3233383b3235356d746578741b5b34396d1b5b33396d"
+        assert(actual)(equalTo(expected))
+      },
+      test("attribute with double quotes") {
+        val input = "<fg=\"#AABBCC\">text</fg>"
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("nested tags") {
-      //   val input = "<i><b>text</b></i>"
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d1b5b316d746578741b5b32326d1b5b32336d"
+        val expected = Right("|1b 5b 33 38 3b 32 3b 31 37 30 3b 31 38 37 3b 32 30 34 6d 74 65 78 74 1b 5b 33 39 6d|.[38;2;170;187;204mtext.[39m|")
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("nested tags with text in between") {
-      //   val input = "<i>A<b>text</b>B</i>"
+        assert(actual)(equalTo(expected))
+      },
+      test("multiple attributes") {
+        val input = "<fg='#AABBCC'><bg=\"DDEEFF\">text</bg></fg>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d411b5b316d746578741b5b32326d421b5b32336d"
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("nested tags with text and tags in between") {
-      //   val input = "<i>A<b>text</b>B<u>C</u></i>"
+        val expected = Right("|1b 5b 33 38 3b 32 3b 31 37 30 3b 31 38 37 3b 32 30 34 6d 1b 5b 33 38 3b 32 3b 32 32 31 3b 32 33 38 3b 32 35 35 6d 74 65 78 74 1b 5b 33 39 6d 1b 5b 33 39 6d|.[38;2;170;187;204m.[38;2;221;238;255mtext.[39m.[39m|")
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d411b5b316d746578741b5b32326d421b5b346d431b5b32346d1b5b32336d"
+        assert(actual)(equalTo(expected))
+      },
+      test("nested tags") {
+        val input = "<i><b>text</b></i>"
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("nested tags with text with spaces") {
-      //   val input = "<i>A B<b>text</b>C </i>"
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d4120421b5b316d746578741b5b32326d43201b5b32336d"
+        val expected = Right("|1b 5b 33 6d 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 1b 5b 32 33 6d|.[3m.[1mtext.[22m.[23m|")
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("invalid document") {
-      //   val input = "<i>no closing tag"
+        assert(actual)(equalTo(expected))
+      },
+      test("nested tags with text in between") {
+        val input = "<i>A<b>text</b>B</i>"
 
-      //   val actual = RichText.make(input)
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
 
-      //   assert(actual)(isLeft)
-      // },
-      // test("rich-text can be rendered") {
-      //   val screen = ArrayScreen(Size(48, 32))
-      //   val rich   = RichText.make("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>").toTry.get
+        val expected = Right("|1b 5b 33 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 1b 5b 32 33 6d|.[3mAA.[1mtext.[22mAA.[1mtext.[22mB.[23m|")
 
-      //   val actual = screen.put(Point(0, 0), rich)
+        assert(actual)(equalTo(expected))
+      },
+      test("nested tags with text and tags in between") {
+        val input = "<i>A<b>text</b>B<u>C</u></i>"
 
-      //   val actualData   = screen.toString
-      //   val expectedData = Resources.string("text/text-rich.txt").toTry.get
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
 
-      //   assert(actual)(isRight) &&
-      //   assert(actualData)(equalTo(expectedData))
-      // }
+        val expected = Right("|1b 5b 33 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 41 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 1b 5b 34 6d 43 1b 5b 32 34 6d 1b 5b 32 33 6d|.[3mAA.[1mtext.[22mAA.[1mtext.[22mBAA.[1mtext.[22mAA.[1mtext.[22mB.[4mC.[24m.[23m|")
+
+        assert(actual)(equalTo(expected))
+      },
+      test("nested tags with text with spaces") {
+        val input = "<i>A B<b>text</b>C </i>"
+
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
+
+        val expected = Right("|1b 5b 33 6d 41 20 42 41 20 42 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 41 20 42 41 20 42 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 43 20 1b 5b 32 33 6d|.[3mA BA B.[1mtext.[22mA BA B.[1mtext.[22mC .[23m|")
+
+        assert(actual)(equalTo(expected))
+      },
+      test("invalid document") {
+        val input = "<i>no closing tag"
+
+        val actual = RichText.make(input)
+
+        assert(actual)(isLeft)
+      },
+      test("rich-text can be rendered") {
+        val input = "<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>"
+
+        val actual = for {
+          rich <- RichText.make(input)
+          compiled = SpanCompiler.compile(rich.span)
+          showed = compiled.show
+        } yield showed
+
+        val expected = "1b5b336d4120421b5b316d746578741b5b32326d43201b5b32336d"
+
+        assert(actual)(equalTo(expected))
+      }
     )

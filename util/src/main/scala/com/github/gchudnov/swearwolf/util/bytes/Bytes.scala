@@ -14,7 +14,7 @@ final case class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
   override def hashCode(): Int = value.hashCode()
 
   override def toString: String =
-    val bs = value.map(b => f"$b%02x").mkString(" ")
+    val bs = value.map(b => f"$b%02x").mkString("[", ", ", "]")
     s"Bytes($bs)"
 
   def head: Byte =
