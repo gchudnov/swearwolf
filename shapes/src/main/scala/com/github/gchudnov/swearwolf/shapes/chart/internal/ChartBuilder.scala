@@ -6,15 +6,17 @@ import com.github.gchudnov.swearwolf.util.numerics.Numerics.*
 import com.github.gchudnov.swearwolf.shapes.chart.{ Chart, ChartStyle }
 import com.github.gchudnov.swearwolf.shapes.chart.ChartStyle.{ Dot, Quad, Step }
 import com.github.gchudnov.swearwolf.shapes.styles.Symbols
+import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.spans.TextSpan
 
-private[chart] object ChartPresenter:
+private[chart] object ChartBuilder:
   private val ceilY = 100.0
   
-  def present(chart: Chart): Seq[String] =
-    val lines = compile(chart.size, ceilY, None)(chart.data, chart.style)
-    lines
+  def build(chart: Chart): Seq[Span] =
+    val lines = prepare(chart.size, ceilY, None)(chart.data, chart.style)
+    lines.map(TextSpan(_))
 
-  private[chart] def compile(sz: Size, ceilY: Double, maxY: Option[Double])(data: Seq[Double], style: ChartStyle): Seq[String] =
+  private[chart] def prepare(sz: Size, ceilY: Double, maxY: Option[Double])(data: Seq[Double], style: ChartStyle): Seq[String] =
     val ChartDesc(sx, sy, symbols) = getDesc(style)
 
     val maxPoints = sz.width * sx

@@ -3,16 +3,18 @@ package com.github.gchudnov.swearwolf.shapes.grid.internal
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.shapes.grid.{ Grid, GridStyle }
 import com.github.gchudnov.swearwolf.shapes.styles.Symbols
+import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.spans.TextSpan
 
-private[grid] object GridPresenter:
+private[grid] object GridBuilder:
 
-  def present(grid: Grid): Seq[String] =
-    if grid.size.width < 2 || grid.size.height < 2 then Seq.empty[String] // Grid is too small to be displayed
+  def build(grid: Grid): Seq[Span] =
+    if grid.size.width < 2 || grid.size.height < 2 then Seq.empty[Span] // Grid is too small to be displayed
     else
-      val lines = compile(grid)
-      lines
+      val lines = prepare(grid)
+      lines.map(TextSpan(_))
 
-  private def compile(grid: Grid): Seq[String] =
+  private def prepare(grid: Grid): Seq[String] =
     val gd = getDesc(grid.style)
 
     val xis = Range(0, grid.size.width, grid.cell.width).toSet

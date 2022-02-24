@@ -4,16 +4,18 @@ import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.shapes.box.{ Box, BoxStyle }
 import com.github.gchudnov.swearwolf.shapes.styles.Symbols
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle.*
+import com.github.gchudnov.swearwolf.util.spans.TextSpan
+import com.github.gchudnov.swearwolf.util.spans.Span
 
-private[box] object BoxPresenter:
+private[box] object BoxBuilder:
 
-  def present(box: Box): Seq[String] =
-    if box.size.width < 2 || box.size.height < 2 then Seq.empty[String] // Box is too small to be displayed
+  def build(box: Box): Seq[Span] =
+    if box.size.width < 2 || box.size.height < 2 then Seq.empty[Span] // Box is too small to be displayed
     else
-      val lines = compile(box)
-      lines
+      val lines = prepare(box)
+      lines.map(TextSpan(_))
 
-  private def compile(box: Box): Seq[String] =
+  private def prepare(box: Box): Seq[String] =
     val BoxDesc(ht, hb, vl, vr, tl, tr, bl, br) = getDesc(box.style)
 
     val horzTopLine    = Range(0, box.size.width - 2).map(_ => ht).mkString

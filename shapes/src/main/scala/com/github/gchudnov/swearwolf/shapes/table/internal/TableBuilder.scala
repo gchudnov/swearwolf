@@ -4,14 +4,16 @@ import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.shapes.table.{ Table, TableStyle }
 import com.github.gchudnov.swearwolf.shapes.styles.Symbols
+import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.spans.TextSpan
 
-private[table] object TablePresenter:
+private[table] object TableBuilder:
 
-  def present(table: Table): Seq[String] =
-    if table.isEmpty then Seq.empty[String]
+  def build(table: Table): Seq[Span] =
+    if table.isEmpty then Seq.empty[Span]
     else
-      val lines = compile(table)
-      lines
+      val lines = prepare(table)
+      lines.map(TextSpan(_))
 
   def estimateSize(table: Table): Size =
     if table.isEmpty then Size(0, 0)
@@ -22,7 +24,7 @@ private[table] object TablePresenter:
       val height = 3 + table.height
       Size(width = row.length, height = height)
 
-  private def compile(table: Table): Seq[String] =
+  private def prepare(table: Table): Seq[String] =
     val td = getDesc(table.style)
 
     val widths = colWidths(td, table.rows)

@@ -5,14 +5,16 @@ import com.github.gchudnov.swearwolf.util.strings.Strings.*
 import com.github.gchudnov.swearwolf.shapes.label.Label
 import com.github.gchudnov.swearwolf.shapes.styles.AlignStyle
 import com.github.gchudnov.swearwolf.shapes.styles.Layout
+import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.spans.TextSpan
 
-private[label] object LabelPresenter:
+private[label] object LabelBuilder:
 
-  def present(label: Label): Seq[String] =
-    val lines = compile(label)
-    lines
+  def build(label: Label): Seq[Span] =
+    val lines = prepare(label)
+    lines.map(TextSpan(_))
 
-  private def compile(label: Label): Seq[String] =
+  private def prepare(label: Label): Seq[String] =
     val lines          = label.value.wrap(label.size.width)
     val visibleLines   = lines.take(label.size.height)
     val effectiveLines = if lines.size > visibleLines.size then visibleLines.dropRight(1) :+ visibleLines.last.forceEllipsisRight() else lines

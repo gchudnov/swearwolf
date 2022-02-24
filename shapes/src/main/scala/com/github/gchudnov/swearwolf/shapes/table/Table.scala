@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.shapes.table
 
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.shapes.table.TableStyle
-import com.github.gchudnov.swearwolf.shapes.table.internal.TablePresenter
+import com.github.gchudnov.swearwolf.shapes.table.internal.TableBuilder
 
 final case class Table(rows: Seq[Seq[Any]], style: TableStyle):
   def isEmpty: Boolean =
@@ -14,4 +14,4 @@ final case class Table(rows: Seq[Seq[Any]], style: TableStyle):
 object Table:
   extension (t: Table)
     def estimateSize(): Size =
-      TablePresenter.estimateSize(t)
+      TableBuilder.estimateSize(t)
