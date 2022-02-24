@@ -1,8 +1,8 @@
-package com.github.gchudnov.swearwolf.rich.internal.parser
+package com.github.gchudnov.swearwolf.rich.internal
 
 import scala.util.parsing.combinator.*
 
-object Lexer:
+private[internal] object Lexer:
   def lex(input: String): Seq[Token] =
     Grammar.parse(Grammar.document, input).getOrElse(Nil)
 

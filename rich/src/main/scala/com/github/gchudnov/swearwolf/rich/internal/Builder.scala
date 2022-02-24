@@ -1,9 +1,9 @@
 package com.github.gchudnov.swearwolf.rich.internal
 
-import com.github.gchudnov.swearwolf.rich.internal.parser.Element
-import com.github.gchudnov.swearwolf.rich.internal.parser.TextElement
-import com.github.gchudnov.swearwolf.rich.internal.parser.NewLineElement
-import com.github.gchudnov.swearwolf.rich.internal.parser.TagElement
+import com.github.gchudnov.swearwolf.rich.internal.Element
+import com.github.gchudnov.swearwolf.rich.internal.TextElement
+import com.github.gchudnov.swearwolf.rich.internal.NewLineElement
+import com.github.gchudnov.swearwolf.rich.internal.TagElement
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.StyleSpan
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
@@ -18,7 +18,7 @@ import com.github.gchudnov.swearwolf.rich.RichTextException
 /**
  * Builds a Span from the parsed elements.
  */
-object Builder:
+private[rich] object Builder:
 
   private val lineSep = sys.props("line.separator")
 

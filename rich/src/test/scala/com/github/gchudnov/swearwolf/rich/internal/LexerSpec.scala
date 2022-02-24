@@ -1,6 +1,6 @@
-package com.github.gchudnov.swearwolf.rich.internal.parser
+package com.github.gchudnov.swearwolf.rich.internal
 
-import com.github.gchudnov.swearwolf.rich.internal.parser.Lexer
+import com.github.gchudnov.swearwolf.rich.internal.Lexer
 
 import zio.test.Assertion.{ equalTo, isLeft }
 import zio.test.*

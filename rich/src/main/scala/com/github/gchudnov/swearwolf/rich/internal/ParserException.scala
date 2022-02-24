@@ -1,8 +1,8 @@
-package com.github.gchudnov.swearwolf.rich.internal.parser
+package com.github.gchudnov.swearwolf.rich.internal
 
 import com.github.gchudnov.swearwolf.util.SwearwolfException
 
-class ParserException(message: String) extends RuntimeException(message):
+private[internal] class ParserException(message: String) extends RuntimeException(message):
 
   def this(message: String, cause: Throwable) =
     this(message)

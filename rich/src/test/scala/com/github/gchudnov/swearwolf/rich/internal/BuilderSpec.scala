@@ -2,13 +2,13 @@ package com.github.gchudnov.swearwolf.rich.internal
 
 import com.github.gchudnov.swearwolf.rich.internal.Builder
 
-import com.github.gchudnov.swearwolf.rich.internal.parser.Element
+import com.github.gchudnov.swearwolf.rich.internal.Element
 import com.github.gchudnov.swearwolf.util.spans.Span
-import com.github.gchudnov.swearwolf.rich.internal.parser.TextElement
+import com.github.gchudnov.swearwolf.rich.internal.TextElement
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
 import com.github.gchudnov.swearwolf.util.spans.StyleSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.rich.internal.parser.TagElement
+import com.github.gchudnov.swearwolf.rich.internal.TagElement
 import com.github.gchudnov.swearwolf.util.colors.Color
 
 import zio.test.Assertion.{ anything, equalTo, isLeft, isSubtype }

@@ -1,10 +1,10 @@
-package com.github.gchudnov.swearwolf.rich.internal.parser
+package com.github.gchudnov.swearwolf.rich.internal
 
 import scala.annotation.tailrec
 import com.github.gchudnov.swearwolf.util.data.*
 import scala.util.control.Exception.allCatch
 
-object Parser:
+private[rich] object Parser:
   def parse(input: String): Either[Throwable, Seq[Element]] =
     @tailrec
     def iterate(acc: Stack[TagElement], tokens: Seq[Token]): Seq[Element] =

@@ -1,6 +1,6 @@
-package com.github.gchudnov.swearwolf.rich.internal.parser
+package com.github.gchudnov.swearwolf.rich.internal
 
-import com.github.gchudnov.swearwolf.rich.internal.parser.Parser
+import com.github.gchudnov.swearwolf.rich.internal.Parser
 
 import zio.test.Assertion.{ anything, equalTo, isLeft, isSubtype }
 import zio.test.*

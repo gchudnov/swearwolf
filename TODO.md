@@ -1,3 +1,6 @@
+= TODO: extract methods and remove draw module.
+
+
 = TODO: finish shapes description
 - TODO: add chart readme page
 - TODO: update readme pages
