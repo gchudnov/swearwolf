@@ -10,6 +10,8 @@ import zio.test.*
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.StyleSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import com.github.gchudnov.swearwolf.util.spans.TextSpan
+import com.github.gchudnov.swearwolf.util.colors.Color
 
 object RichTextSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
@@ -30,95 +32,83 @@ object RichTextSpec extends DefaultRunnableSpec:
 
         assert(actual)(equalTo(expected))
       },
-      // test("text without tags") {
-      //   val input = "text"
+      test("text without tags") {
+        val input = "text"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "74657874"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(TextSpan("text")))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("tag with text") {
-      //   val input = "<i>text</i>"
+        assert(actual)(equalTo(expected))
+      },
+      test("tag with text") {
+        val input = "<i>text</i>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d746578741b5b32336d"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(StyleSpan(TextStyle.Italic,List(TextSpan("text")))))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("attribute with single quotes") {
-      //   val input = "<color fg='#AABBCC'>text</color>"
+        assert(actual)(equalTo(expected))
+      },
+      test("attribute with single quotes") {
+        val input = "<fg='#AABBCC'>text</fg>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b33383b323b3137303b3138373b3230346d746578741b5b33396d"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(StyleSpan(TextStyle.Foreground(Color(170,187,204)),List(TextSpan("text")))))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("attribute with double quotes") {
-      //   val input = "<color fg=\"#AABBCC\" >text</color>"
+        assert(actual)(equalTo(expected))
+      },
+      test("attribute with double quotes") {
+        val input = "<fg=\"#AABBCC\">text</fg>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b33383b323b3137303b3138373b3230346d746578741b5b33396d"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(StyleSpan(TextStyle.Foreground(Color(170,187,204)),List(TextSpan("text")))))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("multiple attributes") {
-      //   val input = "<color fg='#AABBCC'  bg=\"DDEEFF\">text</color>"
+        assert(actual)(equalTo(expected))
+      },
+      test("multiple attributes") {
+        val input = "<fg='#AABBCC'><bg=\"DDEEFF\">text</bg></fg>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b33383b323b3137303b3138373b3230346d1b5b34383b323b3232313b3233383b3235356d746578741b5b34396d1b5b33396d"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(StyleSpan(TextStyle.Foreground(Color(170,187,204)),List(StyleSpan(TextStyle.Background(Color(221,238,255)),List(TextSpan("text")))))))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("nested tags") {
-      //   val input = "<i><b>text</b></i>"
+        assert(actual)(equalTo(expected))
+      },
+      test("nested tags") {
+        val input = "<i><b>text</b></i>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d1b5b316d746578741b5b32326d1b5b32336d"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(StyleSpan(TextStyle.Italic,List(StyleSpan(TextStyle.Bold,List(TextSpan("text")))))))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("nested tags with text in between") {
-      //   val input = "<i>A<b>text</b>B</i>"
+        assert(actual)(equalTo(expected))
+      },
+      test("nested tags with text in between") {
+        val input = "<i>A<b>text</b>B</i>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d411b5b316d746578741b5b32326d421b5b32336d"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(StyleSpan(TextStyle.Italic,List(TextSpan("A"), StyleSpan(TextStyle.Bold,List(TextSpan("text"))), TextSpan("B")))))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("nested tags with text and tags in between") {
-      //   val input = "<i>A<b>text</b>B<u>C</u></i>"
+        assert(actual)(equalTo(expected))
+      },
+      test("nested tags with text and tags in between") {
+        val input = "<i>A<b>text</b>B<u>C</u></i>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d411b5b316d746578741b5b32326d421b5b346d431b5b32346d1b5b32336d"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(StyleSpan(TextStyle.Italic,List(TextSpan("A"), StyleSpan(TextStyle.Bold,List(TextSpan("text"))), TextSpan("B"), StyleSpan(TextStyle.Underline,List(TextSpan("C")))))))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("nested tags with text with spaces") {
-      //   val input = "<i>A B<b>text</b>C </i>"
+        assert(actual)(equalTo(expected))
+      },
+      test("nested tags with text with spaces") {
+        val input = "<i>A B<b>text</b>C </i>"
 
-      //   val actual   = toHexStr(RichText.make(input).toTry.get.bytes.toSeq)
-      //   val expected = "1b5b336d4120421b5b316d746578741b5b32326d43201b5b32336d"
+        val actual   = RichText.make(input)
+        val expected = Right(RichText(StyleSpan(TextStyle.Empty,List(StyleSpan(TextStyle.Italic,List(TextSpan("A B"), StyleSpan(TextStyle.Bold,List(TextSpan("text"))), TextSpan("C ")))))))
 
-      //   assert(actual)(equalTo(expected))
-      // },
-      // test("invalid document") {
-      //   val input = "<i>no closing tag"
+        assert(actual)(equalTo(expected))
+      },
+      test("invalid document") {
+        val input = "<i>no closing tag"
 
-      //   val actual = RichText.make(input)
+        val actual = RichText.make(input)
 
-      //   assert(actual)(isLeft)
-      // },
-      // test("rich-text can be rendered") {
-      //   val screen = ArrayScreen(Size(48, 32))
-      //   val rich   = RichText.make("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>").toTry.get
-
-      //   val actual = screen.put(Point(0, 0), rich)
-
-      //   val actualData   = screen.toString
-      //   val expectedData = Resources.string("text/text-rich.txt").toTry.get
-
-      //   assert(actual)(isRight) &&
-      //   assert(actualData)(equalTo(expectedData))
-      // }
+        assert(actual)(isLeft)
+      },
     )
