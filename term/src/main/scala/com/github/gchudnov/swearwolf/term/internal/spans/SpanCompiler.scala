@@ -1,20 +1,20 @@
-package com.github.gchudnov.swearwolf.term.internal
+package com.github.gchudnov.swearwolf.term.internal.spans
 
-import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.term.EscSeq
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.util.data.Stack
+import com.github.gchudnov.swearwolf.util.spans.ByteSpan
+import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.StyleSpan
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
-import com.github.gchudnov.swearwolf.util.spans.ByteSpan
-import com.github.gchudnov.swearwolf.util.data.Stack
-import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
-import com.github.gchudnov.swearwolf.term.EscSeq
 
 /**
  * Transforms Span to an array of Bytes that can be sent to the terminal.
  */
-object SpanCompiler:
+private[term] object SpanCompiler:
 
   private sealed trait Switch
   private case object On  extends Switch

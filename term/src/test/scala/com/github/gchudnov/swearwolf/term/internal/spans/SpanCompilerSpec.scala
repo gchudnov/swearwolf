@@ -1,14 +1,14 @@
-package com.github.gchudnov.swearwolf.term.internal
+package com.github.gchudnov.swearwolf.term.internal.spans
 
-import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.bytes.Bytes.asBytes
+import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.spans.StyleSpan
+import com.github.gchudnov.swearwolf.util.spans.TextSpan
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import zio.test.Assertion.*
 import zio.test.*
-import com.github.gchudnov.swearwolf.util.spans.StyleSpan
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.util.colors.Color
-import com.github.gchudnov.swearwolf.util.spans.TextSpan
 
 object SpanCompilerSpec extends DefaultRunnableSpec:
 

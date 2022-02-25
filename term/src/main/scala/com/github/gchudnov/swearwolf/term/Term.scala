@@ -17,7 +17,7 @@ private[swearwolf] trait Term:
 private[swearwolf] object Term:
   private val OutBufferSizeBytes = 131072
 
-  def default(): Term =
+  def make(): Term =
     val is = System.in
     val os = new BufferedOutputStream(System.out, OutBufferSizeBytes)
 

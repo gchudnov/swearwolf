@@ -42,7 +42,7 @@ object Screen:
   implicit val releasableScreen: Releasable[Screen] = screen => screen.close()
 
   def acquire(): Either[Throwable, Screen] =
-    val term   = Term.default()
+    val term   = Term.make()
     val screen = new TermScreen(term)
 
     screen.init().map(_ => screen)
