@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf
+package com.github.gchudnov.swearwolf.term
 
 import scala.io.Source
 import scala.util.Using

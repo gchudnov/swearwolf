@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.example.zio
 
-import com.github.gchudnov.swearwolf.*
+import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.example.zio.run.{ LiveRun, Run }
 import com.github.gchudnov.swearwolf.example.zio.screens.ShellScreen
 import com.github.gchudnov.swearwolf.util.*

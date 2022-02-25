@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf
+package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes

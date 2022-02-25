@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.example.zio.run
 
-import com.github.gchudnov.swearwolf.KeySeq
+import com.github.gchudnov.swearwolf.term.KeySeq
 import zio.*
 
 trait Run:

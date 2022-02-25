@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.{ KeySeq, UnknownKeySeq }
+import com.github.gchudnov.swearwolf.term.{ KeySeq, UnknownKeySeq }
 import com.github.gchudnov.swearwolf.term.internal.readers.*
 
 import scala.annotation.tailrec

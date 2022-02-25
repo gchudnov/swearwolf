@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.example.zio.screens
 
-import com.github.gchudnov.swearwolf.Screen
+import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import zio.*

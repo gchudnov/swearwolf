@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.KeySeq
-import com.github.gchudnov.swearwolf.KeySeqSyntax
+import com.github.gchudnov.swearwolf.term.KeySeq
+import com.github.gchudnov.swearwolf.term.KeySeqSyntax
 
 object EventLoop:
   import KeySeqSyntax.*

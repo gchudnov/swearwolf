@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf
+package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.{ Term, TermScreen, EventLoop }
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler

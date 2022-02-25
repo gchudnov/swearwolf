@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.term
 
 import java.io.{ InputStream, OutputStream }
 
-import com.github.gchudnov.swearwolf.KeySeq
+import com.github.gchudnov.swearwolf.term.KeySeq
 
 import scala.collection.mutable.ListBuffer
 import scala.util.control.Exception.nonFatalCatch
