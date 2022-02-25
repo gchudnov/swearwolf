@@ -23,6 +23,7 @@ import java.io.PrintStream
 import scala.annotation.nowarn
 import scala.util.Using
 import scala.util.control.Exception.nonFatalCatch
+import scala.util.Using.Releasable
 
 object Main extends App:
 
@@ -31,6 +32,8 @@ object Main extends App:
 
   nonFatalCatch
     .either({
+      implicit val releasableScreen: Releasable[Screen] = screen => screen.close()
+
       Using.resource(Screen.acquireOrThrow()) { (sc: Screen) =>
         val handler = eventHandler(sc)(posKeqSeq) _
         for

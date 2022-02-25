@@ -3,15 +3,13 @@ package com.github.gchudnov.swearwolf.term
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.term.internal.screens.TermScreen
 import com.github.gchudnov.swearwolf.term.internal.screens.ArrayScreen
+import com.github.gchudnov.swearwolf.term.internal.screens.TermScreen
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.geometry.Size
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
-
-import scala.util.Using.Releasable
 import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 trait Screen:
   def size: Size
@@ -46,7 +44,6 @@ trait Screen:
   def close(): Unit = shutdown().toTry.get
 
 object Screen:
-  implicit val releasableScreen: Releasable[Screen] = screen => screen.close()
 
   def acquire(): Either[Throwable, Screen] =
     val term   = Term.make()
