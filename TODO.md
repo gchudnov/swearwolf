@@ -1,5 +1,4 @@
 = TODO: ZIO example -- errors are not visible anyhow, the screen is black.
+- TODO: zio + arrayscreen is not working
 
-= TODO: finish shapes description
-- TODO: add chart readme page
 - TODO: update readme pages

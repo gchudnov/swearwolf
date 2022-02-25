@@ -5,10 +5,13 @@ import zio.*
 
 trait Run:
   def onKeySeq(ks: KeySeq): UIO[Unit]
-  def processLoop(): Task[Unit]
+  def onTick(): UIO[Unit]
+  def keyLoop(): Task[Unit]
   def shutdown(): UIO[Unit]
 
 object Run:
   def onKeySeq(ks: KeySeq): URIO[Run, Unit] = ZIO.serviceWith(_.onKeySeq(ks))
-  def processLoop(): RIO[Run, Unit]         = ZIO.serviceWith(_.processLoop())
+  def onTick(): URIO[Run, Unit]   = ZIO.serviceWith(_.onTick())
+  def keyLoop(): RIO[Run, Unit]             = ZIO.serviceWith(_.keyLoop())
+  def tickLoop(): RIO[Run, Unit]            = ZIO.serviceWith(_.onTick())
   def shutdown(): URIO[Run, Any]            = ZIO.serviceWith(_.shutdown())

@@ -26,7 +26,7 @@ private[term] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar
   private var view: Array[Array[Char]] = blank(szScreen, cellChar)
 
   override def toString: String =
-    view.map(_.mkString + borderChar.getOrElse("")).mkString("\n")
+    view.map(_.mkString + borderChar.getOrElse("")).mkString(sys.props("line.separator"))
 
   override def size: Size = szScreen
 

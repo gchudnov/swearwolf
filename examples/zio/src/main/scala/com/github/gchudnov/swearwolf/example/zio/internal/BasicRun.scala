@@ -20,24 +20,33 @@ import zio.Queue
 import zio.*
 import zio.stream.ZStream
 
-final class BasicRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run:
-
-  val keySeqStream: ZStream[Any, Nothing, KeySeq] =
-    ZStream.fromQueue(keqSeqQueue)
+final class BasicRun(screen: Screen, keqSeqQueue: Queue[KeySeq], tickQueue: Queue[Unit]) extends Run:
 
   override def onKeySeq(ks: KeySeq): UIO[Unit] =
     keqSeqQueue.offer(ks).unit
 
-  def processLoop(): Task[Unit] =
-    keySeqStream
-      .mapZIO(ks => render(ks))
+  override def onTick(): UIO[Unit] =
+    tickQueue.offer(()).unit
+
+  def keyLoop(): Task[Unit] =
+    ZStream
+      .fromQueue(keqSeqQueue)
+      .mapZIO(ks => render(Some(ks)))
+      .runDrain
+
+  def renderLoop(): Task[Unit] =
+    ZStream
+      .fromQueue(tickQueue)
+      .mapZIO(_ => render(None))
       .runDrain
 
   override def shutdown(): UIO[Unit] =
-    for _ <- keqSeqQueue.shutdown
+    for
+      _ <- keqSeqQueue.shutdown
+      _ <- tickQueue.shutdown
     yield ()
 
-  private def render(ks: KeySeq): Task[Unit] =
+  private def render(ks: Option[KeySeq]): Task[Unit] =
     import TextStyle.*
 
     val keqSeqPos: Point = Point(32, 0)
@@ -66,7 +75,7 @@ final class BasicRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run:
       _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
       _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
       _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
-      _ <- screen.put(keqSeqPos.offset(0, 0), ks.toString)
+      _ <- screen.put(keqSeqPos.offset(0, 0), ks.fold("")(_.toString))
       _ <- screen.flush()
     yield ()
 
@@ -79,5 +88,6 @@ object BasicRun:
     (for
       screen      <- ZIO.service[Screen]
       keqSeqQueue <- Queue.bounded[KeySeq](queueSize)
-      service      = new BasicRun(screen, keqSeqQueue)
+      tickQueue   <- Queue.bounded[Unit](queueSize)
+      service      = new BasicRun(screen, keqSeqQueue, tickQueue)
     yield service).toLayer

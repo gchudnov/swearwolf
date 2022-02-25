@@ -6,6 +6,7 @@ import com.github.gchudnov.swearwolf.example.zio.internal.ScreenFactory
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.util.*
+import com.github.gchudnov.swearwolf.util.geometry.Size
 import zio.Console.printLineError
 import zio.*
 
@@ -21,7 +22,9 @@ object Main extends ZIOAppDefault:
   private def makeProgram(): ZIO[Run with Clock with Screen, Throwable, Unit] =
     for
       screen <- ZIO.service[Screen]
-      _      <- Run.processLoop().fork
+      _      <- Run.keyLoop().fork
+      // _      <- Run.tickLoop().fork
+      // _      <- ZIO(Run.onTick()).repeat(Schedule.spaced(1000.millis)).forever.fork
       _ <- ZIO
              .iterate(EventLoop.Action.empty)(EventLoop.isContinue)({ _ =>
                for
