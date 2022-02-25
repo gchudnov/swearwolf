@@ -1,8 +1,9 @@
 package com.github.gchudnov.swearwolf.term
 
-import java.io.BufferedOutputStream
-
+import com.github.gchudnov.swearwolf.term.internal.IOTerm
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
+
+import java.io.BufferedOutputStream
 
 private[term] trait Term:
   def write(bytes: Array[Byte]): Either[Throwable, Unit]

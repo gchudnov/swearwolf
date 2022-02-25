@@ -1,12 +1,15 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.internal
 
-import java.io.{ InputStream, OutputStream }
-
+import com.github.gchudnov.swearwolf.term.EscSeq
+import com.github.gchudnov.swearwolf.term.Reader
+import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
+import java.io.InputStream
+import java.io.OutputStream
 import scala.collection.mutable.ListBuffer
 import scala.util.control.Exception.nonFatalCatch
-import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Terminal with basic I/O operations.
