@@ -18,7 +18,7 @@ import scala.util.control.Exception.nonFatalCatch
  *
  * NOTE: when calling methods of the class, do not forget to call flush().
  */
-private[swearwolf] final class TermScreen(term: Term) extends Screen:
+private[term] final class TermScreen(term: Term) extends Screen:
   import KeySeqSyntax.*
 
   @volatile
