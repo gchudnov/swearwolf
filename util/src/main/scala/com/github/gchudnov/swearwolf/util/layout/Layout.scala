@@ -1,7 +1,7 @@
-package com.github.gchudnov.swearwolf.shapes.styles
+package com.github.gchudnov.swearwolf.util.layout
 
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
-import com.github.gchudnov.swearwolf.shapes.styles.AlignStyle
+import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.strings.Strings.*
 
 object Layout:

@@ -1,16 +1,16 @@
-package com.github.gchudnov.swearwolf.draw.util
+package com.github.gchudnov.swearwolf
 
 import com.github.gchudnov.swearwolf.KeyCode
 import zio.test.Assertion.*
 import zio.test.*
 
-object SymbolsSpec extends DefaultRunnableSpec:
+object ShortcutsSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
-    suite("Symbols")(
+    suite("Shortcuts")(
       test("combination with unrecognized keys") {
         val keys = Seq(KeyCode.Space, KeyCode.Shift, KeyCode.Bell)
 
-        val actual   = Symbols.keyCombination(keys)
+        val actual   = Shortcuts.keyCombination(keys)
         val expected = "SPACE + ⇧ + ?"
 
         assert(actual)(equalTo(expected))
@@ -18,7 +18,7 @@ object SymbolsSpec extends DefaultRunnableSpec:
       test("combination") {
         val keys = Seq(KeyCode.Space, KeyCode.Shift, KeyCode.Up)
 
-        val actual   = Symbols.keyCombination(keys)
+        val actual   = Shortcuts.keyCombination(keys)
         val expected = "SPACE + ⇧ + ↑"
 
         assert(actual)(equalTo(expected))

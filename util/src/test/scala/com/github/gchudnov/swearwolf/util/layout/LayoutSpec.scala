@@ -1,7 +1,7 @@
-package com.github.gchudnov.swearwolf.draw.util
+package com.github.gchudnov.swearwolf.util.layout
 
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
-import com.github.gchudnov.swearwolf.draw.AlignStyle
+import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import zio.test.Assertion.*
 import zio.test.*
 
@@ -11,7 +11,7 @@ object LayoutSpec extends DefaultRunnableSpec:
       test("align left") {
         val sz = Size(48, 2)
 
-        val actual   = Layout.align(sz)("text", AlignStyle.Left)
+        val actual   = Layout.align("text", sz.width, AlignStyle.Left)
         val expected = Point(0, 0)
 
         assert(actual)(equalTo(expected))
@@ -19,7 +19,7 @@ object LayoutSpec extends DefaultRunnableSpec:
       test("align right if there is enough space to fix the text") {
         val sz = Size(48, 2)
 
-        val actual   = Layout.align(sz)("text", AlignStyle.Right)
+        val actual   = Layout.align("text", sz.width, AlignStyle.Right)
         val expected = Point(44, 0)
 
         assert(actual)(equalTo(expected))
@@ -27,7 +27,7 @@ object LayoutSpec extends DefaultRunnableSpec:
       test("align right if there is not enough space to fit the text") {
         val sz = Size(3, 2)
 
-        val actual   = Layout.align(sz)("text", AlignStyle.Right)
+        val actual   = Layout.align("text", sz.width, AlignStyle.Right)
         val expected = Point(0, 0)
 
         assert(actual)(equalTo(expected))
@@ -35,7 +35,7 @@ object LayoutSpec extends DefaultRunnableSpec:
       test("align center") {
         val sz = Size(48, 2)
 
-        val actual   = Layout.align(sz)("text", AlignStyle.Center)
+        val actual   = Layout.align("text", sz.width, AlignStyle.Center)
         val expected = Point(22, 0)
 
         assert(actual)(equalTo(expected))

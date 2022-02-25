@@ -11,3 +11,18 @@
 
 - TODO: Rich, Shapes -- common way to build, compile
 - TODO: term should render Spans?
+
+/*
+private[table] trait TableOps:
+  extension (screen: Screen)
+    def put(pt: Point, table: Table, textStyle: TextStyle): Either[Throwable, Unit] =
+      TableDrawer.draw(screen)(pt, table, textStyle)
+
+    def put(pt: Point, table: Table): Either[Throwable, Unit] =
+      put(pt, table, TextStyle.Empty)
+
+private[draw] trait TableSyntax extends TableOps
+
+object TableSyntax extends TableSyntax
+
+*/

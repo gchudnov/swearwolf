@@ -23,10 +23,9 @@ Add the following dependency to your `build.sbt`:
 ```scala
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "term" % "2.0.0"
 
-// Optionally, include rich-text, shapes & draw libraries to display shapes in the terminal
+// Optionally, include rich-text & shapes libraries
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "rich" % "2.0.0"
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes" % "2.0.0"
-libraryDependencies += "com.github.gchudnov.swearwolf" %% "draw" % "2.0.0"
 ```
 
 ### Modules
@@ -38,8 +37,6 @@ libraryDependencies += "com.github.gchudnov.swearwolf" %% "draw" % "2.0.0"
 - [/term](term) - Enables either running a terminal application in full-screen mode or just to display styled text.
 
 - [/rich](rich) - Allows to display rich text in the terminal.
-
-- [/draw](draw) - A library that references all other libraries and adds convenience functions to draw shapes in the terminal.
 
 ### Shapes
 

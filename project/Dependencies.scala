@@ -50,14 +50,6 @@ object Dependencies {
     compile ++ test
   }
 
-  val Draw: Seq[ModuleID] = {
-    val compile = Seq(
-    )
-    val test = Seq(
-    ) ++ zioTestAll map (_ % "test")
-    compile ++ test
-  }
-
   val ExamplePlain: Seq[ModuleID] = {
     val compile = Seq.empty[ModuleID]
     val test    = Seq.empty[ModuleID] map (_ % "test")

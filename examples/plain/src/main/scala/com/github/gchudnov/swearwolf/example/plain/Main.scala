@@ -1,13 +1,24 @@
 package com.github.gchudnov.swearwolf.example.plain
 
 import com.github.gchudnov.swearwolf.*
-import com.github.gchudnov.swearwolf.util.geometry.*
-import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.rich.RichText
+import com.github.gchudnov.swearwolf.shapes.box.Box
+import com.github.gchudnov.swearwolf.shapes.box.BoxStyle
+import com.github.gchudnov.swearwolf.shapes.chart.Chart
+import com.github.gchudnov.swearwolf.shapes.chart.ChartStyle
+import com.github.gchudnov.swearwolf.shapes.grid.Grid
+import com.github.gchudnov.swearwolf.shapes.grid.GridStyle
+import com.github.gchudnov.swearwolf.shapes.label.Label
+import com.github.gchudnov.swearwolf.shapes.table.Table
+import com.github.gchudnov.swearwolf.shapes.table.TableStyle
 import com.github.gchudnov.swearwolf.term.EventLoop
-import com.github.gchudnov.swearwolf.woods.{ AlignStyle, Box, BoxStyle, Graph, GraphStyle, Grid, GridStyle, Label, RichText, Table, TableStyle }
-import com.github.gchudnov.swearwolf.util.styles.{TextStyle}
+import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.util.geometry.*
+import com.github.gchudnov.swearwolf.util.styles.AlignStyle
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
-import java.io.{ FileOutputStream, PrintStream }
+import java.io.FileOutputStream
+import java.io.PrintStream
 import scala.annotation.nowarn
 import scala.util.Using
 import scala.util.control.Exception.nonFatalCatch
@@ -58,15 +69,16 @@ object Main extends App:
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
     val b  = Box(Size(21, 3), BoxStyle.SingleBorder)
-    val g1 = Graph(Size(16, 1), data, GraphStyle.Dot)
-    val g2 = Graph(Size(16, 2), data, GraphStyle.Step)
-    val g3 = Graph(Size(16, 2), data, GraphStyle.Quad)
+    val g1 = Chart(Size(16, 1), data, ChartStyle.Dot)
+    val g2 = Chart(Size(16, 2), data, ChartStyle.Step)
+    val g3 = Chart(Size(16, 2), data, ChartStyle.Quad)
     val gd = Grid(Size(7, 7), Size(3, 3), GridStyle.Frame2)
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
+    val rich = RichText("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
+
     for
-      rich <- RichText.make("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
       _    <- sc.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
       _    <- sc.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
       // _    <- sc.put(Point(0, 2), rich)

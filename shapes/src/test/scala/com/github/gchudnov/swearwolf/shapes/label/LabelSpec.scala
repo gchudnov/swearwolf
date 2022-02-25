@@ -3,7 +3,7 @@ package com.github.gchudnov.swearwolf.shapes.label
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.shapes.Resources
 import com.github.gchudnov.swearwolf.shapes.label.Label
-import com.github.gchudnov.swearwolf.shapes.styles.AlignStyle
+import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.shapes.label.internal.LabelBuilder
 import zio.test.Assertion.*
 import zio.test.*

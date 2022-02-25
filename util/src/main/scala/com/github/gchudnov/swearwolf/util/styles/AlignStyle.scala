@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.draw
+package com.github.gchudnov.swearwolf.util.styles
 
 sealed trait AlignStyle
 

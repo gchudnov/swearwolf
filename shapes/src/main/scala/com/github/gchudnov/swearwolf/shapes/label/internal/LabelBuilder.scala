@@ -3,10 +3,10 @@ package com.github.gchudnov.swearwolf.shapes.label.internal
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.strings.Strings.*
 import com.github.gchudnov.swearwolf.shapes.label.Label
-import com.github.gchudnov.swearwolf.shapes.styles.AlignStyle
-import com.github.gchudnov.swearwolf.shapes.styles.Layout
+import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
+import com.github.gchudnov.swearwolf.util.layout.Layout
 
 private[label] object LabelBuilder:
 
