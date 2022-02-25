@@ -1,14 +1,14 @@
 package com.github.gchudnov.swearwolf.util.bytes
 
-import java.nio.charset.StandardCharsets
 import com.github.gchudnov.swearwolf.util.show.Show
+
+import java.nio.charset.StandardCharsets
 import scala.language.strictEquality
 
-// TODO: replace with a normal class
-final case class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
+final class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
 
   override def equals(other: Any): Boolean = other match
-    case that: Bytes => value.sameElements(that.value)
+    case that: Bytes => value.sameElements(that.toArray)
     case _           => false
 
   override def hashCode(): Int = value.hashCode()
@@ -21,7 +21,7 @@ final case class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
     value.head
 
   def tail: Bytes =
-    Bytes(value.tail)
+    new Bytes(value.tail)
 
   def isEmpty: Boolean =
     value.isEmpty
@@ -44,10 +44,13 @@ final case class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
 object Bytes:
 
   val empty: Bytes =
-    Bytes(Array.empty[Byte])
+    new Bytes(Array.empty[Byte])
+
+  def apply(bytes: Array[Byte]): Bytes =
+    new Bytes(bytes)
 
   def apply(byte: Byte): Bytes =
-    Bytes(Array(byte))
+    new Bytes(Array(byte))
 
   object +: :
     def unapply(bytes: Bytes): Option[(Byte, Bytes)] =
@@ -56,10 +59,10 @@ object Bytes:
 
   extension (bytes: Bytes)
     def +(other: Bytes): Bytes =
-      Bytes(bytes.value ++ other.value)
+      new Bytes(bytes.toArray ++ other.toArray)
 
     def +:(b: Byte): Bytes =
-      Bytes(b +: bytes.value)
+      new Bytes(b +: bytes.toArray)
 
   extension (str: String)
     def asBytes: Bytes =
@@ -69,5 +72,5 @@ object Bytes:
     extension (a: Bytes)
       def show: String =
         val text = a.asString.replaceAll("\\p{C}", ".");
-        val hex  = a.value.map(b => f"$b%02x").mkString(" ")
+        val hex  = a.toArray.map(b => f"$b%02x").mkString(" ")
         s"|${hex}|${text}|"

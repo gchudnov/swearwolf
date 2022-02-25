@@ -1,8 +1,8 @@
 package com.github.gchudnov.swearwolf.term.internal
 
 import com.github.gchudnov.swearwolf.term.EscSeq
-import com.github.gchudnov.swearwolf.term.internal.Reader
 import com.github.gchudnov.swearwolf.term.Term
+import com.github.gchudnov.swearwolf.term.internal.Reader
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
@@ -51,7 +51,7 @@ private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term:
 
       val (ks, rest) = Reader.consume(Bytes(raw.toArray))
       raw.clear()
-      raw.appendAll(rest.value)
+      raw.appendAll(rest.toArray)
 
       ks.toList
     }

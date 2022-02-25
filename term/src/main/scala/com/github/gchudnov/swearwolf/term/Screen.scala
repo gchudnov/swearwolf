@@ -11,12 +11,14 @@ import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 import scala.util.Using.Releasable
+import com.github.gchudnov.swearwolf.util.spans.Span
 
 trait Screen:
   def size: Size
 
   def put(pt: Point, value: String): Either[Throwable, Unit]
   def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit]
+  def put(pt: Point, value: Span): Either[Throwable, Unit]
   def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit]
 
   def cursorHide(): Either[Throwable, Unit]

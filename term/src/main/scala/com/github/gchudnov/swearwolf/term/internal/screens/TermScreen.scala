@@ -5,10 +5,12 @@ import com.github.gchudnov.swearwolf.term.EventLoop.Action
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.Term
+import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.geometry.Size
+import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.strings.Strings.*
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
@@ -38,6 +40,10 @@ private[term] final class TermScreen(term: Term) extends Screen:
     val styleBytes = styleToEscSeq(style).map(_.bytes).reduce(_ ++ _)
     val bytes      = styleBytes ++ valueBytes(value) ++ EscSeq.reset.bytes
     put(pt, bytes)
+
+  def put(pt: Point, value: Span): Either[Throwable, Unit] =
+    val bytes = SpanCompiler.compile(value)
+    put(pt, bytes.toArray)
 
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
     if pt.y >= szScreen.height then Right(())

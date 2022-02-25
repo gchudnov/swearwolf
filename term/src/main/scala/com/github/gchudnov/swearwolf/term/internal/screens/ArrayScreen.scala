@@ -3,10 +3,12 @@ package com.github.gchudnov.swearwolf.term.internal.screens
 import com.github.gchudnov.swearwolf.term.EscSeq
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Screen
+import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.geometry.Size
+import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 /**
@@ -45,6 +47,10 @@ private[term] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar
 
   override def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit] =
     put(pt, value)
+
+  def put(pt: Point, value: Span): Either[Throwable, Unit] =
+    val bytes = SpanCompiler.compile(value)
+    put(pt, bytes.toArray)
 
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
     put(pt, viewText(value))
