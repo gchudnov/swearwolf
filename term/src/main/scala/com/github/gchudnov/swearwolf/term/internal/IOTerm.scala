@@ -10,6 +10,8 @@ import java.io.InputStream
 import java.io.OutputStream
 import scala.collection.mutable.ListBuffer
 import scala.util.control.Exception.nonFatalCatch
+import scala.jdk.CollectionConverters.*
+import java.nio.ByteBuffer
 
 /**
  * Terminal with basic I/O operations.
@@ -20,7 +22,9 @@ import scala.util.control.Exception.nonFatalCatch
  *   output stream
  */
 private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term:
-  private val raw = new ListBuffer[Byte]
+
+  @volatile
+  private val bb = ByteBuffer.allocate(1024)
 
   override def write(bytes: Array[Byte]): Either[Throwable, Unit] =
     nonFatalCatch.either(out.write(bytes))
@@ -37,7 +41,7 @@ private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term:
   override def blockingPoll(): Either[Throwable, List[KeySeq]] =
     nonFatalCatch.either(in.read().toByte).flatMap { n =>
       if n != -1 then
-        raw.append(n)
+        bb.put(n)
         poll()
       else Right(List.empty[KeySeq])
     }
@@ -47,11 +51,11 @@ private[term] class IOTerm(in: InputStream, out: OutputStream) extends Term:
       val nAvail = in.available()
       if nAvail > 0 then
         val bytes = in.readNBytes(nAvail)
-        raw.appendAll(bytes)
+        bb.put(bytes)
 
-      val (ks, rest) = Reader.consume(Bytes(raw.toArray))
-      raw.clear()
-      raw.appendAll(rest.toArray)
+      val (ks, rest) = Reader.consume(Bytes(bb.array))
+      bb.clear()
+      bb.put(rest.toArray)
 
       ks.toList
     }

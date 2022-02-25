@@ -27,6 +27,7 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
  * NOTE: when calling methods of the class, do not forget to call flush().
  */
 private[term] final class TermScreen(term: Term) extends Screen:
+  import TermScreen.*
   import KeySeqSyntax.*
 
   @volatile
@@ -165,16 +166,25 @@ private[term] final class TermScreen(term: Term) extends Screen:
         case (a: TextStyleSeq, rs) =>
           iterate(acc, a.styles.head, rs ++ a.styles.tail)
         case (x, r :: rs) =>
-          iterate(acc.appended(textStyleToEscSeq(x)), r, rs)
+          iterate(acc.appended(toEscSeq(x)), r, rs)
         case (x, Nil) =>
-          acc.appended(textStyleToEscSeq(x))
+          acc.appended(toEscSeq(x))
 
     iterate(Vector.empty[EscSeq], style, List.empty[TextStyle])
 
   private def valueBytes(value: String): Array[Byte] =
     value.sanitize().getBytes
 
-  private def textStyleToEscSeq(s: TextStyle): EscSeq =
+  private def trackScreenSize(k: KeySeq): Unit =
+    k.size.foreach { sz =>
+      szScreen = sz
+    }
+
+// TODO: refactor TermScreen, see how to make it more resilient and immutable
+
+private[term] object TermScreen:
+
+  private def toEscSeq(s: TextStyle): EscSeq =
     s match
       case Empty =>
         EscSeq.empty
@@ -197,11 +207,5 @@ private[term] final class TermScreen(term: Term) extends Screen:
       case _ =>
         EscSeq.empty
 
-  private def trackScreenSize(k: KeySeq): Unit =
-    k.size.foreach { sz =>
-      szScreen = sz
-    }
-
-private[term] object TermScreen:
   def compile(span: Span): Bytes =
     SpanCompiler.compile(span)

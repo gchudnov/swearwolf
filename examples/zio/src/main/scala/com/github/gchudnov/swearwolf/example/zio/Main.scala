@@ -23,8 +23,8 @@ object Main extends ZIOAppDefault:
     for
       screen <- ZIO.service[Screen]
       _      <- Run.keyLoop().fork
-      // _      <- Run.tickLoop().fork
-      // _      <- ZIO(Run.onTick()).repeat(Schedule.spaced(1000.millis)).forever.fork
+      _      <- Run.tickLoop().fork
+      _      <- ZIO(Run.onTick()).repeat(Schedule.spaced(1000.millis)).forever.fork
       _ <- ZIO
              .iterate(EventLoop.Action.empty)(EventLoop.isContinue)({ _ =>
                for
@@ -41,3 +41,7 @@ object Main extends ZIOAppDefault:
     val runEnv    = BasicRun.layer
 
     screenEnv ++ (screenEnv >>> runEnv)
+
+
+// 1. read keyboard
+// 2. process env-events
