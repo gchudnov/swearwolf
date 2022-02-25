@@ -20,7 +20,7 @@ private[internal] object CtrlReader extends BasicKeySeqReader:
 
   override def read(data: Bytes): ReadState =
     if data.isEmpty then UnknownReadState(data)
-    else {
+    else
       val k    = data.head
       val rest = data.tail
 
@@ -39,7 +39,6 @@ private[internal] object CtrlReader extends BasicKeySeqReader:
         else if isTab(k) then ParsedReadState(CtrlKeySeq(KeyCode.Tab, Set.empty[KeyModifier]), rest)
         else ParsedReadState(CharKeySeq(modifiedChar(k).toChar, Set(KeyModifier.Ctrl)), rest)
       else UnknownReadState(data)
-    }
 
   private def modifiedChar(k: Byte): Byte =
     val defaultValue = ('a'.toInt - 1 + k).toByte

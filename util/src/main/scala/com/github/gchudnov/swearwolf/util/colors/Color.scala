@@ -12,7 +12,7 @@ object Color:
     new Color(r, g, b)
 
   def apply(rgb: Int): Color =
-    new Color(rgb >> 16 & 0xFF, rgb >> 8 & 0xFF, rgb & 0xFF)
+    new Color(rgb >> 16 & 0xff, rgb >> 8 & 0xff, rgb & 0xff)
 
   /**
    * Parses color from a string
@@ -28,7 +28,7 @@ object Color:
 
   given Show[Color] with
     extension (a: Color)
-      def show: String = 
+      def show: String =
         a.toHex()
 
   private def fromName(name: String): Either[Throwable, Color] =

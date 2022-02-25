@@ -108,7 +108,7 @@ private[term] object SpanCompiler:
         val suffix = Bytes(resetBytes)
 
         val childrenAcc = children.foldLeft(Bytes.empty) { case (acc, ch) => acc + iterate(newState, ch) }
-        val newAcc = prefix + childrenAcc + suffix
+        val newAcc      = prefix + childrenAcc + suffix
 
         newAcc
 

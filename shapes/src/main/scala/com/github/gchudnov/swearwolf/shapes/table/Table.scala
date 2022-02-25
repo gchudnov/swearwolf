@@ -8,7 +8,7 @@ final case class Table(rows: Seq[Seq[Any]], style: TableStyle):
   def isEmpty: Boolean =
     rows.isEmpty
 
-  def height: Int = 
+  def height: Int =
     rows.size
 
 object Table:

@@ -11,10 +11,9 @@ private[internal] object CharReader extends BasicKeySeqReader:
 
   override def read(data: Bytes): ReadState =
     if data.isEmpty then UnknownReadState(data)
-    else {
+    else
       val k    = data.head
       val rest = data.tail
 
       if isPrintable(k) then ParsedReadState(CharKeySeq(k.toChar), rest)
       else UnknownReadState(data)
-    }

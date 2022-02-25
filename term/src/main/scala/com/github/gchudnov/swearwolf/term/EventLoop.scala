@@ -9,11 +9,13 @@ object EventLoop:
   type KeySeqHandler = List[KeySeq] => Either[Throwable, EventLoop.Action]
 
   sealed trait Action
+
   object Action:
     case object Continue extends Action
     case object Exit     extends Action
 
-    val empty: Action = Continue
+    val empty: Action =
+      Continue
 
   def isContinue(a: Action): Boolean =
     a == Action.Continue
@@ -27,11 +29,14 @@ object EventLoop:
       case (_, Action.Exit) => Action.Exit
       case _                => Action.Continue
 
-  def withDefaultHandler(handler: KeySeqHandler): KeySeqHandler = (ks: List[KeySeq]) =>
+  def combineHandlers(h1: KeySeqHandler, h2: KeySeqHandler): KeySeqHandler = (ks: List[KeySeq]) =>
     for
-      uRes <- handler(ks)
-      dRes <- defaultHandler(ks)
-    yield EventLoop.mergeActions(uRes, dRes)
+      r1 <- h1(ks)
+      r2 <- h2(ks)
+    yield EventLoop.mergeActions(r1, r2)
+
+  def withDefaultHandler(handler: KeySeqHandler): KeySeqHandler =
+    combineHandlers(handler, defaultHandler)
 
   val defaultHandler: KeySeqHandler = (ks: List[KeySeq]) =>
     val initialState: EventLoop.Action = Action.Continue

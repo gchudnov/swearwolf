@@ -40,7 +40,7 @@ object TextStyleSpec extends DefaultRunnableSpec:
         assert(actual)(equalTo(expected))
       },
       test("show displays styles as string") {
-        val xs = Bold | Italic
+        val xs     = Bold | Italic
         val actual = xs.show
 
         val expected = "bold,italic"

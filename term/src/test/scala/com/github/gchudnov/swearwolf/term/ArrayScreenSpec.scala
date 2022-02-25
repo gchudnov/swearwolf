@@ -42,5 +42,5 @@ object ArrayScreenSpec extends DefaultRunnableSpec:
         val expected = "BOLDNORMALitalicBLINK"
 
         assert(actual)(equalTo(expected))
-      }      
+      }
     )

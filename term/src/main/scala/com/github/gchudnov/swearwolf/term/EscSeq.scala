@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.colors.Color
-import com.github.gchudnov.swearwolf.util.geometry.{ Point }
+import com.github.gchudnov.swearwolf.util.geometry.Point
 
 /**
  * Escape sequences

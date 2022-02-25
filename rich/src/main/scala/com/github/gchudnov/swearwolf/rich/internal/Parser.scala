@@ -30,7 +30,7 @@ private[rich] object Parser:
               iterate(ys.push(y1), tail)
 
             case NewLine =>
-              val nl     = NewLineElement
+              val nl      = NewLineElement
               val (x, xs) = acc.pop()
               val x1      = x.copy(children = x.children :+ nl)
               iterate(xs.push(x1), tail)

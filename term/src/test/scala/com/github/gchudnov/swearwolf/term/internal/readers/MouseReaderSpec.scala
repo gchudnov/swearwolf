@@ -1,10 +1,10 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
 import com.github.gchudnov.swearwolf.term.internal.ParsedReadState
-import com.github.gchudnov.swearwolf.term.keys.{ KeyModifier }
-import com.github.gchudnov.swearwolf.term.keys.{ MouseKeySeq }
+import com.github.gchudnov.swearwolf.term.keys.KeyModifier
+import com.github.gchudnov.swearwolf.term.keys.MouseKeySeq
 import com.github.gchudnov.swearwolf.term.keys.{ MouseAction, MouseButton }
-import com.github.gchudnov.swearwolf.util.geometry.{ Point }
+import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.bytes.Bytes.asBytes
 import zio.test.Assertion.*

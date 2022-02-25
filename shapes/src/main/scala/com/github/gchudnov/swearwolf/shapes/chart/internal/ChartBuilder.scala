@@ -11,7 +11,7 @@ import com.github.gchudnov.swearwolf.util.spans.TextSpan
 
 private[chart] object ChartBuilder:
   private val ceilY = 100.0
-  
+
   def build(chart: Chart): Seq[Span] =
     val lines = prepare(chart.size, ceilY, None)(chart.data, chart.style)
     lines.map(TextSpan(_))

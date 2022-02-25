@@ -4,7 +4,6 @@ import com.github.gchudnov.swearwolf.term.keys.KeyModifier
 
 import scala.util.control.Exception.nonFatalCatch
 
-
 private[internal] abstract class BasicKeySeqReader extends KeySeqReader:
 
   val modMap: Map[Int, KeyModifier] = Map(

@@ -80,8 +80,8 @@ object Main extends App:
     val rich = RichText("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
 
     for
-      _    <- sc.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
-      _    <- sc.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
+      _ <- sc.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
+      _ <- sc.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
       // _    <- sc.put(Point(0, 2), rich)
       // _    <- sc.put(Point(0, 4), b, Foreground(Color.Blue))
       // _    <- sc.put(Point(32, 2), g1, Foreground(Color.Green))
@@ -90,7 +90,7 @@ object Main extends App:
       // _    <- sc.put(Point(22, 0), gd, Foreground(Color.Yellow))
       // _    <- sc.put(Point(0, 7), t, Foreground(Color.White))
       // _    <- sc.put(Point(0, 13), l, Foreground(Color.Red))
-      _    <- sc.flush()
+      _ <- sc.flush()
     yield ()
 
   private def sequence[A, B](es: Seq[Either[A, B]]): Either[A, Seq[B]] =

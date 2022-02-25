@@ -2,8 +2,11 @@ package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.keys.KeyCode
 
+/**
+ * Keyboard Shortcuts represented as a String
+ */
 object Shortcuts:
-  // Keyboard Shortcuts
+
   private val keys = Map[KeyCode, String](
     KeyCode.Tab       -> "⇥",
     KeyCode.Enter     -> "↵",

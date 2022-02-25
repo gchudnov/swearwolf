@@ -1,10 +1,10 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.term.keys.{ KeySeq }
+import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.term.{ Screen }
+import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
@@ -28,7 +28,7 @@ final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]
 
   override def put(pt: Point, value: String): Either[Throwable, Unit] =
     if pt.y >= szScreen.height || pt.y < 0 then Right(())
-    else {
+    else
       val oldLine = view(pt.y).mkString
 
       val first = oldLine.substring(0, Math.min(pt.x, oldLine.length))
@@ -40,7 +40,6 @@ final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]
 
       view = view.updated(pt.y, newLine.toCharArray)
       Right(())
-    }
 
   override def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit] =
     put(pt, value)

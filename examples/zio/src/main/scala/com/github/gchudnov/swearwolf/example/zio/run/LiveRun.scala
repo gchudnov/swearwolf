@@ -16,7 +16,7 @@ import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import zio.Queue
-import zio._
+import zio.*
 import zio.stream.ZStream
 
 final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run:

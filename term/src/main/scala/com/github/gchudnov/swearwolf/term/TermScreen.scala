@@ -1,13 +1,13 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.term.keys.{ KeySeq }
-import com.github.gchudnov.swearwolf.term.{ Screen }
+import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.EventLoop.{ Action, KeySeqHandler }
 import com.github.gchudnov.swearwolf.util.strings.Strings.*
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
-import com.github.gchudnov.swearwolf.util.geometry.{Size, Point}
+import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 import sun.misc.Signal
 
@@ -37,10 +37,9 @@ private[term] final class TermScreen(term: Term) extends Screen:
 
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
     if pt.y >= szScreen.height then Right(())
-    else {
+    else
       val bytes = EscSeq.cursorPosition(pt).bytes ++ value
       term.write(bytes)
-    }
 
   override def cursorHide(): Either[Throwable, Unit] =
     term.write(EscSeq.cursorHide)
