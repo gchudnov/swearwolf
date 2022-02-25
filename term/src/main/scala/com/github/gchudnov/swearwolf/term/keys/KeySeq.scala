@@ -3,8 +3,8 @@ package com.github.gchudnov.swearwolf.term.keys
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.term.keys.KeyCode
-import com.github.gchudnov.swearwolf.term.MouseButton
-import com.github.gchudnov.swearwolf.term.MouseAction
+import com.github.gchudnov.swearwolf.term.keys.MouseButton
+import com.github.gchudnov.swearwolf.term.keys.MouseAction
 
 sealed trait KeySeq
 

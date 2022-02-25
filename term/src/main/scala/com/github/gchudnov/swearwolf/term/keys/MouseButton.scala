@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.keys
 
 sealed trait MouseButton
 
