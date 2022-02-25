@@ -1,13 +1,18 @@
 package com.github.gchudnov.swearwolf.term.internal
 
-import com.github.gchudnov.swearwolf.term.keys.{ KeySeq, UnknownKeySeq }
 import com.github.gchudnov.swearwolf.term.internal.readers.*
+import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.term.keys.UnknownKeySeq
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 import scala.annotation.tailrec
-import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Reads bytes from buffer and returns (KeySeq + Rest of the bytes that were not parsed)
+ *
+ * {{{
+ *   (bytes: Bytes) -> (Vector[KeySeq], Bytes)
+ * }}}
  *
  * https://man7.org/linux/man-pages/man4/console_codes.4.html
  *
@@ -38,10 +43,10 @@ private[internal] object Reader:
   private def anyRead(bytes: Bytes): ReadState =
     readers.foldLeft(ReadState.empty) { (acc, reader) =>
       val res = reader.read(bytes)
-      mergeReadResults(acc, res)
+      mergeStates(acc, res)
     }
 
-  private def mergeReadResults(lhs: ReadState, rhs: ReadState): ReadState = (lhs, rhs) match
+  private def mergeStates(lhs: ReadState, rhs: ReadState): ReadState = (lhs, rhs) match
     case (ParsedReadState(_, _), _) =>
       lhs
     case (_, ParsedReadState(_, _)) =>

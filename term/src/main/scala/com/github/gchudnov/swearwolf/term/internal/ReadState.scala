@@ -10,4 +10,5 @@ private[internal] final case class UnknownReadState(rest: Bytes)                
 private[internal] final case class ParsedReadState(keqSeq: KeySeq, rest: Bytes) extends ReadState
 
 private[internal] object ReadState:
-  val empty: ReadState = UnknownReadState(Bytes.empty)
+  val empty: ReadState = 
+    UnknownReadState(Bytes.empty)
