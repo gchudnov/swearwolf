@@ -1,85 +1,62 @@
-package com.github.gchudnov.swearwolf.term.readers
+package com.github.gchudnov.swearwolf.term.internal.readers
 
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, PartialReadState, ReadState, UnknownReadState }
-import com.github.gchudnov.swearwolf.util.geometry.Size
-import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeyModifier, SizeKeySeq }
+import com.github.gchudnov.swearwolf.util.geometry.Point
+import com.github.gchudnov.swearwolf.{ KeyModifier, MouseAction, MouseButton, MouseKeySeq }
 
 import scala.annotation.tailrec
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
- * Reads an escape sequence.
+ * Read Mouse Events
+ *
+ * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+ *
+ * https://invisible-island.net/xterm/ctlseqs/ctlseqs.pdf
+ *
+ * https://upload.wikimedia.org/wikipedia/commons/d/dd/ASCII-Table.svg
  *
  * {{{
  *
- * Up:
- *   1b  5b 41
- *   ESC [  A
+ * SGR 1006 example: "\e[<0;15;240M"
+ * mouse release has trailing 'm' rather than 'M'.
  *
- * Alt-Up:
+ * Mouse event: "\E[M"
  *
- *   Esc [ 1 ; 3 A
+ * Middle Mouse Key Press:
+ * 1b    5b 3c 31 3b 39 36 3b 31 33 4d
  *
- * F1:
- *   1b 4f 50
- *   Esc O P
+ * Right Mouse Key Press:
+ * 1b    5b 3c 32 3b 35 30 3b 31 39 4d
  *
- * F5:
+ * Left Mouse Key Press:
+ * 1b    5b 3c 30 3b 39 32 3b 33 33 4d
+ * {ESC} [  <  0  ;  9  2  ;  3  3  M
  *
- * Ctrl-Shift-F6:
- *   Esc [ 1 7 ; 6 R
- *
- * Size-Report:
- *   1b  5b 38 3b 35 33 3b 32 30 34 74
- *   ESC [  8  ;  5  3  ;  2  0  4  t
- *               height     width
+ * Left Mouse Key Release:
+ * 1b    5b 3c 30 3b 37 35 3b 31 39 6d
+ * {ESC} [  <  0  ;         ;       m
  *
  * }}}
  */
-private[term] object EscReader extends BasicKeySeqReader:
+private[term] object MouseReader extends BasicKeySeqReader:
 
   sealed trait State
 
-  case object Start   extends State
-  case object Bracket extends State
-  case object Num1    extends State
-  case object Num2    extends State
-  case object Num3    extends State
-  case object Finish  extends State
+  case object Start    extends State
+  case object Bracket  extends State
+  case object LessThan extends State
+  case object Num1     extends State
+  case object Num2     extends State
+  case object Num3     extends State
+  case object Finish   extends State
 
-  private val lastMap: Map[Byte, KeyCode] = Map(
-    'A'.toByte -> KeyCode.Up,
-    'B'.toByte -> KeyCode.Down,
-    'C'.toByte -> KeyCode.Right,
-    'D'.toByte -> KeyCode.Left,
-    'F'.toByte -> KeyCode.End,
-    'H'.toByte -> KeyCode.Home,
-    'P'.toByte -> KeyCode.F1,
-    'Q'.toByte -> KeyCode.F2,
-    'R'.toByte -> KeyCode.F3,
-    'S'.toByte -> KeyCode.F4
-  )
-
-  private val stdMap: Map[Int, KeyCode] = Map(
-    1  -> KeyCode.Home,
-    2  -> KeyCode.Insert,
-    3  -> KeyCode.Delete,
-    4  -> KeyCode.End,
-    5  -> KeyCode.PageUp,
-    6  -> KeyCode.PageDown,
-    11 -> KeyCode.F1,
-    12 -> KeyCode.F2,
-    13 -> KeyCode.F3,
-    14 -> KeyCode.F4,
-    15 -> KeyCode.F5,
-    16 -> KeyCode.F5,
-    17 -> KeyCode.F6,
-    18 -> KeyCode.F7,
-    19 -> KeyCode.F8,
-    20 -> KeyCode.F9,
-    21 -> KeyCode.F10,
-    23 -> KeyCode.F11,
-    24 -> KeyCode.F12
+  private val buttonMap: Map[Int, MouseButton] = Map(
+    0  -> MouseButton.Left,
+    1  -> MouseButton.Middle,
+    2  -> MouseButton.Right,
+    64 -> MouseButton.ScrollBackward,
+    65 -> MouseButton.ScrollForward
   )
 
   override def read(data: Bytes): ReadState =
@@ -98,6 +75,15 @@ private[term] object EscReader extends BasicKeySeqReader:
         case Bracket =>
           xs match
             case x +: xt if isBracket(x) =>
+              iterate(LessThan, num1, num2, num3, last, xt)
+            case x +: xt =>
+              UnknownReadState(data)
+            case _ =>
+              PartialReadState(data)
+
+        case LessThan =>
+          xs match
+            case x +: xt if isLessThan(x) =>
               iterate(Num1, num1, num2, num3, last, xt)
             case x +: xt =>
               UnknownReadState(data)
@@ -141,21 +127,29 @@ private[term] object EscReader extends BasicKeySeqReader:
     iterate(Start, num1 = 0, num2 = 0, num3 = 0, last = 0, data)
 
   private def toResult(num1: Int, num2: Int, num3: Int, last: Byte, rest: Bytes): ReadState =
-    if isLowerT(last) && num1 == 8 then ParsedReadState(SizeKeySeq(Size(width = num3, height = num2)), rest)
-    else if isTilde(last) && stdMap.contains(num1) then
-      val key  = stdMap(num1)
-      val mods = toModifiers(num2)
-      ParsedReadState(CtrlKeySeq(key, mods), rest)
-    else if lastMap.contains(last) then
-      val key  = lastMap(last)
-      val mods = toModifiers(num1)
-      ParsedReadState(CtrlKeySeq(key, mods), rest)
+    if isUpperM(last) then
+      // press
+      ParsedReadState(MouseKeySeq(toPoint(num2, num3), toMouseButton(num1), MouseAction.Press, toModifiers(num1)), rest)
+    else if isLowerM(last) then
+      // release
+      ParsedReadState(MouseKeySeq(toPoint(num2, num3), toMouseButton(num1), MouseAction.Release, toModifiers(num1)), rest)
     else UnknownReadState(rest)
 
+  private def toPoint(x: Int, y: Int): Point =
+    Point(toPos(x), toPos(y))
+
+  private def toPos(n: Int): Int =
+    if n > 0 then (n - 1) else 0
+
+  private def toMouseButton(n: Int): MouseButton =
+    val m = n & 67 // (bits: 1000011)
+    buttonMap(m)
+
   private[term] def toModifiers(n: Int): Set[KeyModifier] =
-    if n == 0 || n == 1 then Set.empty[KeyModifier]
+    val m = (n >> 2) & 7 // mask only modifiers bits
+    if n == 0 then Set.empty[KeyModifier]
     else
       modMap.foldLeft(Set.empty[KeyModifier]) { case (acc, (mod, km)) =>
-        if ((n - 1) & mod) > 0 then acc + km
+        if (m & mod) > 0 then acc + km
         else acc
       }
