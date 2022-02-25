@@ -1,11 +1,13 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.internal.screens
 
-import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.term.EscSeq
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.term.Screen
+import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.util.geometry.Point
+import com.github.gchudnov.swearwolf.util.geometry.Size
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 /**
  * Screen that is backed by the array. All strings that are written to it are stored without styles.
@@ -16,7 +18,7 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
  * @param borderChar
  *   character to use on the right-side of the screen as a delimiter.
  */
-final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends Screen:
+private[term] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends Screen:
   import ArrayScreen.*
 
   private var view: Array[Array[Char]] = blank(szScreen, cellChar)
@@ -73,10 +75,10 @@ final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]
 
   override def init(): Either[Throwable, Unit] = Right(())
 
-object ArrayScreen:
+private[term] object ArrayScreen:
 
-  private val DefaultCellChar   = '.'
-  private val DefaultBorderChar = '|'
+  private[term] val DefaultCellChar   = '.'
+  private[term] val DefaultBorderChar = '|'
 
   private def blank(sz: Size, ch: Char): Array[Array[Char]] =
     Array.fill(sz.height, sz.width)(ch)

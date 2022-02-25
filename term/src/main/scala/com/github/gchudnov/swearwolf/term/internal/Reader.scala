@@ -8,7 +8,7 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import scala.annotation.tailrec
 
 /**
- * Reads bytes from buffer and returns (KeySeq + Rest of the bytes that were not parsed)
+ * Reads Bytes and returns parsed KeySeq + Rest of the Bytes that were not parsed.
  *
  * {{{
  *   (bytes: Bytes) -> (Vector[KeySeq], Bytes)

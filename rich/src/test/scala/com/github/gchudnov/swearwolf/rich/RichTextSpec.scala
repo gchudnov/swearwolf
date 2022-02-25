@@ -1,6 +1,5 @@
 package com.github.gchudnov.swearwolf.rich
 
-import com.github.gchudnov.swearwolf.term.ArrayScreen
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.rich.Resources

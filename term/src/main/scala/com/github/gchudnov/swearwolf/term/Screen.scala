@@ -1,9 +1,13 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.term.{ EventLoop, Term, TermScreen }
-import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
+import com.github.gchudnov.swearwolf.term.Term
+import com.github.gchudnov.swearwolf.term.internal.screens.TermScreen
+import com.github.gchudnov.swearwolf.term.internal.screens.ArrayScreen
+import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.util.geometry.Point
+import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 import scala.util.Using.Releasable
@@ -50,3 +54,6 @@ object Screen:
 
   def acquireOrThrow(): Screen =
     acquire().toTry.get
+
+  def array(size: Size, cellChar: Char = ArrayScreen.DefaultCellChar, borderChar: Option[Char] = Some(ArrayScreen.DefaultBorderChar)): ArrayScreen =
+    new ArrayScreen(size, cellChar, borderChar)

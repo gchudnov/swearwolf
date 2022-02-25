@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.internal.screens
 
 import com.github.gchudnov.swearwolf.term.Resources
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
