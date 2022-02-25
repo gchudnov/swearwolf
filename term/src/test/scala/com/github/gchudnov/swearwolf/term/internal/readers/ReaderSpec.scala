@@ -1,6 +1,7 @@
-package com.github.gchudnov.swearwolf.term.readers
+package com.github.gchudnov.swearwolf.term.internal.readers
 
-import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeySeq, UnknownKeySeq }
+import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeySeq, UnknownKeySeq }
+import com.github.gchudnov.swearwolf.term.KeyCode
 import com.github.gchudnov.swearwolf.term.*
 import zio.test.Assertion.equalTo
 import zio.test.*

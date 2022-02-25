@@ -1,6 +1,6 @@
-package com.github.gchudnov.swearwolf
+package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.KeyCode
+import com.github.gchudnov.swearwolf.term.KeyCode
 import zio.test.Assertion.*
 import zio.test.*
 

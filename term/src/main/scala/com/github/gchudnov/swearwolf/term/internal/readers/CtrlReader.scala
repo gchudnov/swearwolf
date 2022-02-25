@@ -1,8 +1,9 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, ReadState, UnknownReadState }
-import com.github.gchudnov.swearwolf.{ CharKeySeq, CtrlKeySeq, KeyCode, KeyModifier }
+import com.github.gchudnov.swearwolf.{ CharKeySeq, CtrlKeySeq, KeyModifier }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.term.KeyCode
 
 /**
  * Reads Ctrl + {KEY} sequences.

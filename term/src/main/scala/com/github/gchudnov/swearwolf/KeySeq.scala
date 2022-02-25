@@ -2,6 +2,7 @@ package com.github.gchudnov.swearwolf
 
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.term.KeyCode
 
 sealed trait KeySeq
 

@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf
+package com.github.gchudnov.swearwolf.term.internal
 
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.bytes.Bytes

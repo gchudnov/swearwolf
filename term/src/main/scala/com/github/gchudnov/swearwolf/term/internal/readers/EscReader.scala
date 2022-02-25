@@ -2,7 +2,8 @@ package com.github.gchudnov.swearwolf.term.internal.readers
 
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, PartialReadState, ReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.util.geometry.Size
-import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyCode, KeyModifier, SizeKeySeq }
+import com.github.gchudnov.swearwolf.{ CtrlKeySeq, KeyModifier, SizeKeySeq }
+import com.github.gchudnov.swearwolf.term.KeyCode
 
 import scala.annotation.tailrec
 import com.github.gchudnov.swearwolf.util.bytes.Bytes

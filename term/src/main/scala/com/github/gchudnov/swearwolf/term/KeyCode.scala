@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf
+package com.github.gchudnov.swearwolf.term
 
 sealed trait KeyCode
 
