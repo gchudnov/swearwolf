@@ -1,8 +1,8 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.util.geometry.{ Point }
-import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.util.geometry.{ Point }
 
 /**
  * Escape sequences
@@ -15,10 +15,10 @@ final case class EscSeq(value: String):
   def bytes: Array[Byte] = value.getBytes()
 
 object EscSeq:
-  private val EscChar: Char = '\u001b'
+  val escChar: Char = '\u001b'
 
   private def esc(data: String): EscSeq =
-    new EscSeq(s"\u001b$data")
+    new EscSeq(s"${escChar}${data}")
 
   // CSI, "Control Sequence Introducer"
   private def csi(data: String): EscSeq =
@@ -88,14 +88,3 @@ object EscSeq:
   // mouse
   val mouseTracking: EscSeq      = csi("?1002;1006h")
   val resetMouseTracking: EscSeq = csi("?1002;1006l")
-
-  /**
-   * Parse bytes and extract only text, skipping esc-codes.
-   */
-  def textFromBytes(bytes: Array[Byte]): String =
-    val rx = s"""$EscChar\\[[\\d;]+\\w"""
-
-    val str   = Bytes(bytes).asString
-    val parts = str.split(rx)
-
-    parts.filter(_.nonEmpty).mkString

@@ -253,15 +253,5 @@ object EscSeqSpec extends DefaultRunnableSpec:
         val expected = "1b5b313874"
 
         assert(actual)(equalTo(expected))
-      },
-      test("bytes parsed into a string") {
-        val input =
-          "1b5b316d424f4c441b5b32326d1b5b33383b323b3137303b303b306d1b5b34383b323b303b3235353b306d4e4f521b5b34396d1b5b33396d4d414c1b5b336d6974616c69631b5b32336d1b5b356d424c494e4b1b5b32356d"
-        val bytes = input.asBytes.value.toArray
-
-        val actual   = EscSeq.textFromBytes(bytes)
-        val expected = "BOLDNORMALitalicBLINK"
-
-        assert(actual)(equalTo(expected))
       }
     )

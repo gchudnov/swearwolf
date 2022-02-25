@@ -32,6 +32,9 @@ final case class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
   def size: Int =
     value.size
 
+  def toArray: Array[Byte] =
+    value.clone()
+
   def asString: String =
     new String(value, StandardCharsets.UTF_8)
 

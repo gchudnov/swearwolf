@@ -5,6 +5,7 @@ import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.term.{ Screen }
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Screen that is backed by the array. All strings that are written to it are stored without styles.
@@ -45,7 +46,7 @@ final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]
     put(pt, value)
 
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
-    put(pt, EscSeq.textFromBytes(value))
+    put(pt, viewText(value))
 
   override def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit] = Right(())
 
@@ -83,3 +84,15 @@ object ArrayScreen:
 
   def apply(size: Size, cellChar: Char = DefaultCellChar, borderChar: Option[Char] = Some(DefaultBorderChar)): ArrayScreen =
     new ArrayScreen(size, cellChar, borderChar)
+
+  /**
+   * View Text without Escape or Control Character
+   */
+  def viewText(bytes: Array[Byte]): String =
+    val rxEsc = s"""${EscSeq.escChar}\\[[\\d;]+\\w"""
+    val rxCtl = "\\p{C}"
+
+    val str   = Bytes(bytes).asString
+    val parts = str.split(rxEsc)
+
+    parts.filter(_.nonEmpty).mkString.replaceAll(rxCtl, "");
