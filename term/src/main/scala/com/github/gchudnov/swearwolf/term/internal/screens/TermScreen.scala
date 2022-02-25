@@ -19,6 +19,7 @@ import sun.misc.Signal
 
 import scala.annotation.tailrec
 import scala.util.control.Exception.nonFatalCatch
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Default Screen implementation.
@@ -42,7 +43,7 @@ private[term] final class TermScreen(term: Term) extends Screen:
     put(pt, bytes)
 
   def put(pt: Point, value: Span): Either[Throwable, Unit] =
-    val bytes = SpanCompiler.compile(value)
+    val bytes = TermScreen.compile(value)
     put(pt, bytes.toArray)
 
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
@@ -200,3 +201,7 @@ private[term] final class TermScreen(term: Term) extends Screen:
     k.size.foreach { sz =>
       szScreen = sz
     }
+
+private[term] object TermScreen:
+  def compile(span: Span): Bytes =
+    SpanCompiler.compile(span)

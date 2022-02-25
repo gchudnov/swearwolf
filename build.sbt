@@ -24,7 +24,7 @@ lazy val util = (project in file("util"))
   )
 
 lazy val shapes = (project in file("shapes"))
-  .dependsOn(util)
+  .dependsOn(util, term)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)

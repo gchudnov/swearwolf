@@ -1,7 +1,5 @@
 package com.github.gchudnov.swearwolf.example.zio.run
 
-import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.shapes.box.Box
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle
@@ -12,6 +10,9 @@ import com.github.gchudnov.swearwolf.shapes.grid.GridStyle
 import com.github.gchudnov.swearwolf.shapes.label.Label
 import com.github.gchudnov.swearwolf.shapes.table.Table
 import com.github.gchudnov.swearwolf.shapes.table.TableStyle
+import com.github.gchudnov.swearwolf.term.Screen
+import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
@@ -55,16 +56,16 @@ final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run:
 
     val errOrUnit = for
       _ <- screen.clear()
-      // _    <- screen.put(Point(0, 0), "HELLO", TextStyle.Bold | Foreground(Color.Blue))
-      // _    <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
-      // _    <- screen.put(Point(0, 2), rich)
-      // _    <- screen.put(Point(0, 4), b, Foreground(Color.Blue))
-      // _    <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
-      // _    <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
-      // _    <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))
-      // _    <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
-      // _    <- screen.put(Point(0, 7), t, Foreground(Color.White))
-      // _    <- screen.put(Point(0, 13), l, Foreground(Color.Red))
+      _ <- screen.put(Point(0, 0), "HELLO", TextStyle.Bold | Foreground(Color.Blue))
+      _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
+      _ <- screen.put(Point(0, 2), rich)
+      _ <- screen.put(Point(0, 4), b, Foreground(Color.Blue))
+      _ <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
+      _ <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
+      _ <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))
+      _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
+      _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
+      _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
       _ <- screen.put(keqSeqPos.offset(0, 0), ks.toString)
       _ <- screen.flush()
     yield ()

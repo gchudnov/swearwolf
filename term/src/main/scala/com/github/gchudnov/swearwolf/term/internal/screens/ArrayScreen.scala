@@ -49,7 +49,7 @@ private[term] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar
     put(pt, value)
 
   def put(pt: Point, value: Span): Either[Throwable, Unit] =
-    val bytes = SpanCompiler.compile(value)
+    val bytes = ArrayScreen.compile(value)
     put(pt, bytes.toArray)
 
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
@@ -91,6 +91,9 @@ private[term] object ArrayScreen:
 
   def apply(size: Size, cellChar: Char = DefaultCellChar, borderChar: Option[Char] = Some(DefaultBorderChar)): ArrayScreen =
     new ArrayScreen(size, cellChar, borderChar)
+
+  def compile(span: Span): Bytes =
+    SpanCompiler.compile(span)
 
   /**
    * View Text without Escape or Control Character

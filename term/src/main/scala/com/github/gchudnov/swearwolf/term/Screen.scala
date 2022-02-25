@@ -10,6 +10,7 @@ import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 trait Screen:
   def size: Size
@@ -56,3 +57,6 @@ object Screen:
 
   def array(size: Size, cellChar: Char = ArrayScreen.DefaultCellChar, borderChar: Option[Char] = Some(ArrayScreen.DefaultBorderChar)): ArrayScreen =
     new ArrayScreen(size, cellChar, borderChar)
+
+  def compile(span: Span): Bytes =
+    TermScreen.compile(span)
