@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.example.plain
 
 import com.github.gchudnov.swearwolf.term.*
+import com.github.gchudnov.swearwolf.term.keys.*
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.shapes.box.Box
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle

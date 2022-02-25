@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
-import com.github.gchudnov.swearwolf.term.CharKeySeq
+import com.github.gchudnov.swearwolf.term.keys.CharKeySeq
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, ReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 

@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
 import com.github.gchudnov.swearwolf.term.{ ParsedReadState, UnknownReadState }
-import com.github.gchudnov.swearwolf.term.CharKeySeq
+import com.github.gchudnov.swearwolf.term.keys.CharKeySeq
 import zio.test.Assertion.equalTo
 import zio.test.*
 import com.github.gchudnov.swearwolf.util.bytes.Bytes

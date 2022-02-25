@@ -1,9 +1,10 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.term.{ KeySeq, Screen }
+import com.github.gchudnov.swearwolf.term.keys.{ KeySeq }
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import com.github.gchudnov.swearwolf.term.{ Screen }
 
 /**
  * Screen that is backed by the array. All strings that are written to it are stored without styles.

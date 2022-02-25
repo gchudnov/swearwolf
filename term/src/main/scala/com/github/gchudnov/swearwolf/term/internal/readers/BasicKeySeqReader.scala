@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
-import com.github.gchudnov.swearwolf.term.KeyModifier
+import com.github.gchudnov.swearwolf.term.keys.KeyModifier
 
 import scala.util.control.Exception.nonFatalCatch
 

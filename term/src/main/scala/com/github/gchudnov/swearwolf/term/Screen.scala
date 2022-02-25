@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.{ Term, TermScreen, EventLoop }
+import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
 import com.github.gchudnov.swearwolf.util.styles.TextStyle

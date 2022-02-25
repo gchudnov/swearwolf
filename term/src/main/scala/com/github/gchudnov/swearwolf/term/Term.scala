@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.term
 
 import java.io.BufferedOutputStream
 
-import com.github.gchudnov.swearwolf.term.KeySeq
+import com.github.gchudnov.swearwolf.term.keys.KeySeq
 
 private[term] trait Term:
   def write(bytes: Array[Byte]): Either[Throwable, Unit]

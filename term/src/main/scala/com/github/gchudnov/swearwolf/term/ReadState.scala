@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.term.KeySeq
+import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 private[term] sealed trait ReadState
