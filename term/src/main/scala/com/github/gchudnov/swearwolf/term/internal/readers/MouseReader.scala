@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
-import com.github.gchudnov.swearwolf.term.{ ParsedReadState, PartialReadState, ReadState, UnknownReadState }
+import com.github.gchudnov.swearwolf.term.internal.{ ParsedReadState, PartialReadState, ReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.term.keys.{ MouseKeySeq }
 import com.github.gchudnov.swearwolf.term.keys.{ MouseAction, MouseButton }

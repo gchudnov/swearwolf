@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.term.internal.readers
 
 import com.github.gchudnov.swearwolf.term.keys.{ CtrlKeySeq, KeySeq, UnknownKeySeq }
 import com.github.gchudnov.swearwolf.term.keys.KeyCode
-import com.github.gchudnov.swearwolf.term.*
+import com.github.gchudnov.swearwolf.term.internal.Reader
 import zio.test.Assertion.equalTo
 import zio.test.*
 import com.github.gchudnov.swearwolf.util.bytes.Bytes

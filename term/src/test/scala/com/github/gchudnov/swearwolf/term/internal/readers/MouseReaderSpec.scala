@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
-import com.github.gchudnov.swearwolf.term.ParsedReadState
+import com.github.gchudnov.swearwolf.term.internal.ParsedReadState
 import com.github.gchudnov.swearwolf.term.keys.{ KeyModifier }
 import com.github.gchudnov.swearwolf.term.keys.{ MouseKeySeq }
 import com.github.gchudnov.swearwolf.term.keys.{ MouseAction, MouseButton }

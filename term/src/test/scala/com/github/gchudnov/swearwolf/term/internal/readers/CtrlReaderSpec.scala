@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
-import com.github.gchudnov.swearwolf.term.{ ParsedReadState, UnknownReadState }
+import com.github.gchudnov.swearwolf.term.internal.{ ParsedReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.term.keys.{ CharKeySeq, CtrlKeySeq, KeyModifier }
 import com.github.gchudnov.swearwolf.term.keys.KeyCode
 import zio.test.Assertion.equalTo

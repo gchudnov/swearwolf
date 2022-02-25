@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
-import com.github.gchudnov.swearwolf.term.{ ParsedReadState, ReadState, UnknownReadState }
+import com.github.gchudnov.swearwolf.term.internal.{ ParsedReadState, ReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.term.keys.{ CharKeySeq, CtrlKeySeq, KeyModifier }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.term.keys.KeyCode
@@ -8,7 +8,7 @@ import com.github.gchudnov.swearwolf.term.keys.KeyCode
 /**
  * Reads Ctrl + {KEY} sequences.
  */
-private[term] object CtrlReader extends BasicKeySeqReader:
+private[internal] object CtrlReader extends BasicKeySeqReader:
 
   val ctrlMap: Map[Byte, Byte] = Map(
     0x00.toByte -> ' '.toByte,  // ^@

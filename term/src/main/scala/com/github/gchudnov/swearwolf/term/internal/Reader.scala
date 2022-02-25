@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.internal
 
 import com.github.gchudnov.swearwolf.term.keys.{ KeySeq, UnknownKeySeq }
 import com.github.gchudnov.swearwolf.term.internal.readers.*
@@ -7,13 +7,13 @@ import scala.annotation.tailrec
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
- * Reads bytes from buffer and returns (KeySeq, rest of the bytes that were not parsed)
+ * Reads bytes from buffer and returns (KeySeq + Rest of the bytes that were not parsed)
  *
  * https://man7.org/linux/man-pages/man4/console_codes.4.html
  *
  * https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_sequences
  */
-private[term] object Reader:
+private[internal] object Reader:
 
   private val readers = List[KeySeqReader](CharReader, CtrlReader, EscReader, MouseReader)
 

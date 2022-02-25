@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.term.internal
 
 import com.github.gchudnov.swearwolf.term.EscSeq
-import com.github.gchudnov.swearwolf.term.Reader
+import com.github.gchudnov.swearwolf.term.internal.Reader
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.bytes.Bytes

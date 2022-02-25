@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
-import com.github.gchudnov.swearwolf.term.{ ParsedReadState, PartialReadState, ReadState, UnknownReadState }
+import com.github.gchudnov.swearwolf.term.internal.{ ParsedReadState, PartialReadState, ReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.term.keys.{ CtrlKeySeq, KeyModifier, SizeKeySeq }
 import com.github.gchudnov.swearwolf.term.keys.KeyCode
@@ -37,7 +37,7 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
  *
  * }}}
  */
-private[term] object EscReader extends BasicKeySeqReader:
+private[internal] object EscReader extends BasicKeySeqReader:
 
   sealed trait State
 

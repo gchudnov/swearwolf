@@ -1,13 +1,13 @@
 package com.github.gchudnov.swearwolf.term.internal.readers
 
 import com.github.gchudnov.swearwolf.term.keys.CharKeySeq
-import com.github.gchudnov.swearwolf.term.{ ParsedReadState, ReadState, UnknownReadState }
+import com.github.gchudnov.swearwolf.term.internal.{ ParsedReadState, ReadState, UnknownReadState }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Reads a character sequence.
  */
-private[term] object CharReader extends BasicKeySeqReader:
+private[internal] object CharReader extends BasicKeySeqReader:
 
   override def read(data: Bytes): ReadState =
     if data.isEmpty then UnknownReadState(data)
