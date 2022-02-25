@@ -11,32 +11,32 @@ object LayoutSpec extends DefaultRunnableSpec:
       test("align left") {
         val sz = Size(48, 2)
 
-        val actual   = Layout.align("text", sz.width, AlignStyle.Left)
-        val expected = Point(0, 0)
+        val actual   = Layout.align("text", sz.width, AlignStyle.Left).replace(" ", ".")
+        val expected = "text............................................"
 
         assert(actual)(equalTo(expected))
       },
       test("align right if there is enough space to fix the text") {
         val sz = Size(48, 2)
 
-        val actual   = Layout.align("text", sz.width, AlignStyle.Right)
-        val expected = Point(44, 0)
+        val actual   = Layout.align("text", sz.width, AlignStyle.Right).replace(" ", ".")
+        val expected = "............................................text"
 
         assert(actual)(equalTo(expected))
       },
       test("align right if there is not enough space to fit the text") {
         val sz = Size(3, 2)
 
-        val actual   = Layout.align("text", sz.width, AlignStyle.Right)
-        val expected = Point(0, 0)
+        val actual   = Layout.align("text", sz.width, AlignStyle.Right).replace(" ", ".")
+        val expected = "text"
 
         assert(actual)(equalTo(expected))
       },
       test("align center") {
         val sz = Size(48, 2)
 
-        val actual   = Layout.align("text", sz.width, AlignStyle.Center)
-        val expected = Point(22, 0)
+        val actual   = Layout.align("text", sz.width, AlignStyle.Center).replace(" ", ".")
+        val expected = "......................text......................"
 
         assert(actual)(equalTo(expected))
       }

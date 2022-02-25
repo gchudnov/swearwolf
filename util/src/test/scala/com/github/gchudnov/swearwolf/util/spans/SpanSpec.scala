@@ -13,7 +13,7 @@ object SpanSpec extends DefaultRunnableSpec:
       test("show is called on a nested span") {
         val span     = StyleSpan(Bold | Italic, Seq(TextSpan("nested"), ByteSpan(Array[Byte](1, 2, 3))))
         val actual   = span.show
-        val expected = "[bold,italic](nested\\x01\\x02\\x03)"
+        val expected = "[bold,italic](nested|01 02 03|...|)"
 
         assert(actual)(equalTo(expected))
       }
