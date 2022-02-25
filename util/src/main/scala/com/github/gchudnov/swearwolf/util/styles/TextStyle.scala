@@ -24,8 +24,21 @@ object TextStyle:
   val empty: TextStyle =
     Empty
 
+  extension (style: TextStyle)
+    /**
+     * Checks whether a style contains the other style
+     */
+    def contains(needle: TextStyle): Boolean =
+      style match
+        case TextStyleSeq(styles) =>
+          styles.exists(s => s.contains(needle))
+        case _ =>
+          style == needle
+
   given textStyleMonoid: Monoid[TextStyle] with
-    def empty: TextStyle = Empty
+    def empty: TextStyle = 
+      Empty
+
     extension (x: TextStyle)
       infix def combine(y: TextStyle): TextStyle =
         (x, y) match

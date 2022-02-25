@@ -46,5 +46,37 @@ object TextStyleSpec extends DefaultRunnableSpec:
         val expected = "bold,italic"
 
         assert(actual)(equalTo(expected))
-      }
+      },
+      test("contains in composite style on top-level") {
+        val xs = TextStyleSeq(Seq(Bold, Italic, TextStyleSeq(Seq(Blink, Foreground(Color.Black)))))
+
+        val actual   = xs.contains(Bold)
+        val expected = true
+
+        assert(actual)(equalTo(expected))
+      },
+      test("contains in composite style on low-level") {
+        val xs = TextStyleSeq(Seq(Bold, Italic, TextStyleSeq(Seq(Blink, Foreground(Color.Black)))))
+
+        val actual   = xs.contains(Foreground(Color.Black))
+        val expected = true
+
+        assert(actual)(equalTo(expected))
+      },
+      test("contains in simple style") {
+        val xs = Bold
+
+        val actual   = xs.contains(Bold)
+        val expected = true
+
+        assert(actual)(equalTo(expected))
+      },
+      test("contains if style not found") {
+        val xs = Bold
+
+        val actual   = xs.contains(Italic)
+        val expected = false
+
+        assert(actual)(equalTo(expected))
+      },      
     )

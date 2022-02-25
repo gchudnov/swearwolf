@@ -39,7 +39,7 @@ private[term] final class TermScreen(term: Term) extends Screen:
     put(pt, valueBytes(value))
 
   override def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit] =
-    val styleBytes = styleToEscSeq(style).map(_.bytes).reduce(_ ++ _)
+    val styleBytes = toEscSeq(style).map(_.bytes).reduce(_ ++ _)
     val bytes      = styleBytes ++ valueBytes(value) ++ EscSeq.reset.bytes
     put(pt, bytes)
 
@@ -134,7 +134,7 @@ private[term] final class TermScreen(term: Term) extends Screen:
   private def resetTerm(): Either[Throwable, Unit] =
     exec(Array("sh", "-c", "stty sane < /dev/tty"))
 
-  /**
+  /**        
    * Execute the given array of arguments.
    */
   private def exec(as: Array[String]): Either[Throwable, Unit] =
@@ -159,19 +159,6 @@ private[term] final class TermScreen(term: Term) extends Screen:
         yield ()
     )
 
-  private def styleToEscSeq(style: TextStyle): Seq[EscSeq] =
-    @tailrec
-    def iterate(acc: Vector[EscSeq], s: TextStyle, rest: List[TextStyle]): Vector[EscSeq] =
-      (s, rest) match
-        case (a: TextStyleSeq, rs) =>
-          iterate(acc, a.styles.head, rs ++ a.styles.tail)
-        case (x, r :: rs) =>
-          iterate(acc.appended(toEscSeq(x)), r, rs)
-        case (x, Nil) =>
-          acc.appended(toEscSeq(x))
-
-    iterate(Vector.empty[EscSeq], style, List.empty[TextStyle])
-
   private def valueBytes(value: String): Array[Byte] =
     value.sanitize().getBytes
 
@@ -184,28 +171,32 @@ private[term] final class TermScreen(term: Term) extends Screen:
 
 private[term] object TermScreen:
 
-  private def toEscSeq(s: TextStyle): EscSeq =
-    s match
-      case Empty =>
-        EscSeq.empty
-      case Foreground(color) =>
-        EscSeq.foreground(color)
-      case Background(color) =>
-        EscSeq.background(color)
-      case Bold =>
-        EscSeq.bold
-      case Italic =>
-        EscSeq.italic
-      case Underline =>
-        EscSeq.underline
-      case Blink =>
-        EscSeq.blink
-      case Invert =>
-        EscSeq.invert
-      case Strikethrough =>
-        EscSeq.strikethrough
-      case _ =>
-        EscSeq.empty
+  private def toEscSeq(style: TextStyle): Seq[EscSeq] =
+    style match
+      case a: TextStyleSeq =>
+        a.styles.flatMap(toEscSeq)
+      case TextStyle.Empty =>
+        Seq(EscSeq.empty)
+      case TextStyle.Foreground(color) =>
+        Seq(EscSeq.foreground(color))
+      case TextStyle.Background(color) =>
+        Seq(EscSeq.background(color))
+      case TextStyle.Bold =>
+        Seq(EscSeq.bold)
+      case TextStyle.Italic =>
+        Seq(EscSeq.italic)
+      case TextStyle.Underline =>
+        Seq(EscSeq.underline)
+      case TextStyle.Blink =>
+        Seq(EscSeq.blink)
+      case TextStyle.Invert =>
+        Seq(EscSeq.invert)
+      case TextStyle.Strikethrough =>
+        Seq(EscSeq.strikethrough)
+      case TextStyle.Transparent =>
+        Seq.empty[EscSeq]
+      case TextStyle.NoColor =>
+        Seq.empty[EscSeq]
 
   def compile(span: Span): Bytes =
     SpanCompiler.compile(span)
