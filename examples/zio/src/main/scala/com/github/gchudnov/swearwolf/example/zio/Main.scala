@@ -1,10 +1,11 @@
 package com.github.gchudnov.swearwolf.example.zio
 
-import com.github.gchudnov.swearwolf.term.*
-import com.github.gchudnov.swearwolf.example.zio.run.{ LiveRun, Run }
-import com.github.gchudnov.swearwolf.example.zio.screens.ShellScreen
-import com.github.gchudnov.swearwolf.util.*
+import com.github.gchudnov.swearwolf.example.zio.internal.LiveRun
+import com.github.gchudnov.swearwolf.example.zio.internal.Run
+import com.github.gchudnov.swearwolf.example.zio.internal.ScreenFactory
 import com.github.gchudnov.swearwolf.term.EventLoop
+import com.github.gchudnov.swearwolf.term.*
+import com.github.gchudnov.swearwolf.util.*
 import zio.Console.printLineError
 import zio.*
 
@@ -33,7 +34,7 @@ object Main extends ZIOAppDefault:
     yield ()
 
   private def makeEnv(): ZLayer[Any, Throwable, Screen with Run] =
-    val screenEnv = ShellScreen.liveLayer // ShellScreen.testLayer(Size(80, 56))
+    val screenEnv = ScreenFactory.term // ScreenFactory.array(Size(80, 56))
     val runEnv    = LiveRun.layer
 
     screenEnv ++ (screenEnv >>> runEnv)

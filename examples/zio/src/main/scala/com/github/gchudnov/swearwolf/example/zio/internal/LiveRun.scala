@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.example.zio.run
+package com.github.gchudnov.swearwolf.example.zio.internal
 
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.shapes.box.Box
