@@ -27,6 +27,14 @@ object LabelSpec extends DefaultRunnableSpec:
 
         assert(actual)(equalTo(expected))
       },
+      test("draw with align center") {
+        val label = Label(Size(16, 1), "test data", AlignStyle.Center)
+
+        val actual   = LabelBuilder.build(label).map(_.show).mkString("\n")
+        val expected = Resources.string("label/label-align-center.txt").toTry.get
+
+        assert(actual)(equalTo(expected))
+      },      
       test("draw the label partially") {
         val label = Label(Size(16, 2), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 

@@ -33,10 +33,10 @@ val label  = Label(Size(16, 1), "test data", AlignStyle.Right)
 
 ## AlignStyle.Center
 
-TBD
-
 ```scala
+val label = Label(Size(16, 1), "test data", AlignStyle.Center)
 ```
 
 ```text
+|   test data    |
 ```

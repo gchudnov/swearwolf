@@ -82,9 +82,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option.empty[Double]
 
-        val input = List(0.0, 24.0, 25.0, 50.0, 74.0, 75.0, 100.0)
+        val data = List(0.0, 24.0, 25.0, 50.0, 74.0, 75.0, 100.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq("     ⣠⣶⣿")
 
         assert(actual)(equalTo(expected))
@@ -94,9 +94,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option.empty[Double]
 
-        val input = List(0.0 * 2, 24.0 * 2, 25.0 * 2, 50.0 * 2, 74.0 * 2, 75.0 * 2, 100.0 * 2)
+        val data = List(0.0 * 2, 24.0 * 2, 25.0 * 2, 50.0 * 2, 74.0 * 2, 75.0 * 2, 100.0 * 2)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq(" ⣠⣶⣿")
 
         assert(actual)(equalTo(expected))
@@ -106,9 +106,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option.empty[Double]
 
-        val input = List(0.0, 24.0, 25.0, 50.0, 74.0, 75.0, 100.0)
+        val data = List(0.0, 24.0, 25.0, 50.0, 74.0, 75.0, 100.0)
 
-        val actual = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq(
           "  ⢠⣾",
           " ⣴⣿⣿"
@@ -121,9 +121,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option(100.0)
 
-        val input = List(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        val data = List(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq("    ")
 
         assert(actual)(equalTo(expected))
@@ -133,9 +133,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option.empty[Double]
 
-        val input = List(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        val data = List(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq("    ")
 
         assert(actual)(equalTo(expected))
@@ -145,9 +145,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option.empty[Double]
 
-        val input = List(24.0, 24.0, 24.0, 24.0, 24.0, 24.0)
+        val data = List(24.0, 24.0, 24.0, 24.0, 24.0, 24.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq(" ⣿⣿⣿")
 
         assert(actual)(equalTo(expected))
@@ -157,9 +157,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option(ceilY)
 
-        val input = List(24.0, 24.0, 24.0, 24.0, 24.0, 24.0)
+        val data = List(24.0, 24.0, 24.0, 24.0, 24.0, 24.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq("⣀⣀⣀")
 
         assert(actual)(equalTo(expected))
@@ -169,9 +169,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option.empty[Double]
 
-        val input = List(49.0, 49.0, 49.0, 49.0, 49.0, 49.0)
+        val data = List(49.0, 49.0, 49.0, 49.0, 49.0, 49.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq("⣿⣿⣿")
 
         assert(actual)(equalTo(expected))
@@ -181,9 +181,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option(ceilY)
 
-        val input = List(49.0, 49.0, 49.0, 49.0, 49.0, 49.0)
+        val data = List(49.0, 49.0, 49.0, 49.0, 49.0, 49.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq("⣤⣤⣤")
 
         assert(actual)(equalTo(expected))
@@ -193,9 +193,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option.empty[Double]
 
-        val input = List(0.0, 24.0, 25.0, 50.0, 75.0, 50.0, 25.0, 10.0)
+        val data = List(0.0, 24.0, 25.0, 50.0, 75.0, 50.0, 25.0, 10.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq("⢠⣴⣷⣄")
 
         assert(actual)(equalTo(expected))
@@ -205,9 +205,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val ceilY = 100.0
         val maxY  = Option(ceilY)
 
-        val input = List(0.0, 24.0, 25.0, 50.0, 75.0, 50.0, 25.0, 10.0)
+        val data = List(0.0, 24.0, 25.0, 50.0, 75.0, 50.0, 25.0, 10.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Dot)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq("⢀⣴⣷⣄")
 
         assert(actual)(equalTo(expected))
@@ -218,9 +218,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val maxY  = Option.empty[Double]
 
         // step = 12.5
-        val input = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
+        val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Step)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Step)
         val expected = Seq(" ▁▂▃▄▅▆▇██")
 
         assert(actual)(equalTo(expected))
@@ -231,9 +231,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val maxY  = Option.empty[Double]
 
         // 12.5
-        val input = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0, 87.5, 75.0, 62.5, 50.0, 37.5, 25.0, 12.5, 0.1)
+        val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0, 87.5, 75.0, 62.5, 50.0, 37.5, 25.0, 12.5, 0.1)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Step)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Step)
         val expected = Seq(" ▁▂▃▄▅▆▇███▇▆▅▄▃▂▁")
 
         assert(actual)(equalTo(expected))
@@ -244,9 +244,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val maxY  = Option.empty[Double]
 
         // step = 12.5
-        val input = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
+        val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Step)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Step)
         val expected = Seq("▆▇██")
 
         assert(actual)(equalTo(expected))
@@ -257,9 +257,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val maxY  = Option.empty[Double]
 
         // step = 12.5
-        val input = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
+        val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Step)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Step)
         val expected = Seq(" ▁▂▃▄▅▆▇██")
 
         assert(actual)(equalTo(expected))
@@ -270,9 +270,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val maxY  = Option.empty[Double]
 
         // step = 12.5
-        val input = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
+        val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
 
-        val actual   = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Quad)
+        val actual   = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Quad)
         val expected = Seq("▗▄▟██")
 
         assert(actual)(equalTo(expected))
@@ -283,9 +283,9 @@ object ChartSpec extends DefaultRunnableSpec:
         val maxY  = Option.empty[Double]
 
         // step = 12.5
-        val input = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
+        val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
 
-        val actual = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Quad)
+        val actual = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Quad)
         val expected = Seq(
           "   ▟█",
           "▗▟███"
@@ -299,14 +299,47 @@ object ChartSpec extends DefaultRunnableSpec:
         val maxY  = Option.empty[Double]
 
         // step = 12.5
-        val input = List.empty[Double]
+        val data = List.empty[Double]
 
-        val actual = ChartBuilder.prepare(sz, ceilY, maxY)(input, ChartStyle.Quad)
+        val actual = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Quad)
         val expected = Seq(
           "     ",
           "     "
         )
 
         assert(actual)(equalTo(expected))
-      }
+      },
+      test("dot - one line chart") {
+        val sz    = Size(8, 1)
+        val data = List(0.0, 24.0, 25.0, 50.0, 74.0, 75.0, 100.0)
+
+        val chart = Chart(sz, data, ChartStyle.Dot)
+
+        val actual   = ChartBuilder.build(chart).map(_.show)
+        val expected = Seq("     ⣠⣶⣿")
+
+        assert(actual)(equalTo(expected))
+      },
+      test("step - one line up chart") {
+        val sz    = Size(10, 1)
+        val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
+
+        val chart = Chart(sz, data, ChartStyle.Step)
+
+        val actual   = ChartBuilder.build(chart).map(_.show)
+        val expected = Seq(" ▁▂▃▄▅▆▇██")
+
+        assert(actual)(equalTo(expected))
+      },
+      test("quad - one line up chart") {
+        val sz    = Size(5, 1)
+        val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
+
+        val chart = Chart(sz, data, ChartStyle.Quad)
+
+        val actual   = ChartBuilder.build(chart).map(_.show)
+        val expected = Seq("▗▄▟██")
+
+        assert(actual)(equalTo(expected))
+      },      
     )

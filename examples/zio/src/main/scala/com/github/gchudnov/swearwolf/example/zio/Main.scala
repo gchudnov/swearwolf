@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.example.zio
 
-import com.github.gchudnov.swearwolf.example.zio.internal.LiveRun
+import com.github.gchudnov.swearwolf.example.zio.internal.BasicRun
 import com.github.gchudnov.swearwolf.example.zio.internal.Run
 import com.github.gchudnov.swearwolf.example.zio.internal.ScreenFactory
 import com.github.gchudnov.swearwolf.term.EventLoop
@@ -35,6 +35,6 @@ object Main extends ZIOAppDefault:
 
   private def makeEnv(): ZLayer[Any, Throwable, Screen with Run] =
     val screenEnv = ScreenFactory.term // ScreenFactory.array(Size(80, 56))
-    val runEnv    = LiveRun.layer
+    val runEnv    = BasicRun.layer
 
     screenEnv ++ (screenEnv >>> runEnv)

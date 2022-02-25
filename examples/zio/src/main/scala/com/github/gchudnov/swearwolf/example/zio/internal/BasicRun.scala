@@ -20,7 +20,7 @@ import zio.Queue
 import zio.*
 import zio.stream.ZStream
 
-final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run:
+final class BasicRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run:
 
   val keySeqStream: ZStream[Any, Nothing, KeySeq] =
     ZStream.fromQueue(keqSeqQueue)
@@ -72,12 +72,12 @@ final class LiveRun(screen: Screen, keqSeqQueue: Queue[KeySeq]) extends Run:
 
     ZIO.fromEither(errOrUnit)
 
-object LiveRun:
+object BasicRun:
   private val queueSize = 16
 
   def layer: ZLayer[Screen, Throwable, Run] =
     (for
       screen      <- ZIO.service[Screen]
       keqSeqQueue <- Queue.bounded[KeySeq](queueSize)
-      service      = new LiveRun(screen, keqSeqQueue)
+      service      = new BasicRun(screen, keqSeqQueue)
     yield service).toLayer

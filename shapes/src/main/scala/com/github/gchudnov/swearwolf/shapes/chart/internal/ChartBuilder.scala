@@ -1,22 +1,26 @@
 package com.github.gchudnov.swearwolf.shapes.chart.internal
 
-import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.util.numerics.Numerics.*
-import com.github.gchudnov.swearwolf.shapes.chart.{ Chart, ChartStyle }
-import com.github.gchudnov.swearwolf.shapes.chart.ChartStyle.{ Dot, Quad, Step }
+import com.github.gchudnov.swearwolf.shapes.chart.Chart
+import com.github.gchudnov.swearwolf.shapes.chart.ChartStyle
+import com.github.gchudnov.swearwolf.shapes.chart.ChartStyle.Dot
+import com.github.gchudnov.swearwolf.shapes.chart.ChartStyle.Quad
+import com.github.gchudnov.swearwolf.shapes.chart.ChartStyle.Step
 import com.github.gchudnov.swearwolf.shapes.styles.Symbols
+import com.github.gchudnov.swearwolf.util.geometry.Point
+import com.github.gchudnov.swearwolf.util.geometry.Size
+import com.github.gchudnov.swearwolf.util.numerics.Numerics.*
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 private[chart] object ChartBuilder:
   private val ceilY = 100.0
 
   def build(chart: Chart): Seq[Span] =
-    val lines = prepare(chart.size, ceilY, None)(chart.data, chart.style)
+    val lines = prepare(chart.size, ceilY, None, chart.data, chart.style)
     lines.map(TextSpan(_))
 
-  private[chart] def prepare(sz: Size, ceilY: Double, maxY: Option[Double])(data: Seq[Double], style: ChartStyle): Seq[String] =
+  private[chart] def prepare(sz: Size, ceilY: Double, maxY: Option[Double], data: Seq[Double], style: ChartStyle): Seq[String] =
     val ChartDesc(sx, sy, symbols) = getDesc(style)
 
     val maxPoints = sz.width * sx
