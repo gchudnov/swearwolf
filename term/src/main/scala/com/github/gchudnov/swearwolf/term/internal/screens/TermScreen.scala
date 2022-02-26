@@ -63,10 +63,10 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
     TermScreen.bufferAlt(term)
 
   override def clear(): Either[Throwable, Unit] =
-    term.write(EscSeq.erase)
+    TermScreen.clear(term)
 
   override def flush(): Either[Throwable, Unit] =
-    term.flush()
+    TermScreen.flush(term)
 
   override def close(): Unit =
     val err = Transform.sequence(rollback.map(_.apply(term)))
@@ -213,6 +213,12 @@ private[term] object TermScreen:
    */
   private def flush(term: Term): Either[Throwable, Unit] =
     term.flush()
+
+  /**
+   * Clear the Terminal
+   */
+  private def clear(term: Term): Either[Throwable, Unit] =
+    term.write(EscSeq.erase)
 
   /**
    * No-Op

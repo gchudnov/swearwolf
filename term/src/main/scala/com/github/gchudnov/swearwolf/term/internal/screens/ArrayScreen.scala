@@ -23,7 +23,8 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends BasicScreen:
   import ArrayScreen.*
 
-  private var view: Array[Array[Char]] = blankArray(szScreen, cellChar)
+  private var view: Array[Array[Char]] = 
+    blankArray(szScreen, cellChar)
 
   override def toString: String =
     view
