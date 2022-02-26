@@ -15,6 +15,7 @@ import com.github.gchudnov.swearwolf.util.strings.Strings.*
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
 import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
+import com.github.gchudnov.swearwolf.util.exec.Exec
 import sun.misc.Signal
 
 import scala.annotation.tailrec
@@ -36,11 +37,11 @@ private[term] final class TermScreen(term: Term) extends Screen:
   override def size: Size = szScreen
 
   override def put(pt: Point, value: String): Either[Throwable, Unit] =
-    put(pt, valueBytes(value))
+    put(pt, value.getBytes)
 
   override def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit] =
     val styleBytes = toEscSeq(style).map(_.bytes).reduce(_ ++ _)
-    val bytes      = styleBytes ++ valueBytes(value) ++ EscSeq.reset.bytes
+    val bytes      = styleBytes ++ value.getBytes ++ EscSeq.reset.bytes
     put(pt, bytes)
 
   def put(pt: Point, value: Span): Either[Throwable, Unit] =
@@ -54,22 +55,22 @@ private[term] final class TermScreen(term: Term) extends Screen:
       term.write(bytes)
 
   override def cursorHide(): Either[Throwable, Unit] =
-    term.write(EscSeq.cursorHide)
+    TermScreen.cursorHide(term)
 
   override def cursorShow(): Either[Throwable, Unit] =
-    term.write(EscSeq.cursorShow)
+    TermScreen.cursorShow(term)
 
   override def mouseTrack(): Either[Throwable, Unit] =
-    term.write(EscSeq.mouseTracking)
+    TermScreen.mouseTrack(term)
 
   override def mouseUntrack(): Either[Throwable, Unit] =
-    term.write(EscSeq.resetMouseTracking)
+    TermScreen.mouseUntrack(term)
 
   override def bufferNormal(): Either[Throwable, Unit] =
-    term.write(EscSeq.normalBuffer)
+    TermScreen.bufferNormal(term)
 
   override def bufferAlt(): Either[Throwable, Unit] =
-    term.write(EscSeq.altBuffer)
+    TermScreen.bufferAlt(term)
 
   override def clear(): Either[Throwable, Unit] =
     term.write(EscSeq.erase)
@@ -79,12 +80,12 @@ private[term] final class TermScreen(term: Term) extends Screen:
 
   override def init(): Either[Throwable, Unit] =
     for
-      _ <- headless()
-      _ <- rawTerm()
-      _ <- bufferAlt()
-      _ <- clear()
-      _ <- cursorHide()
-      _ <- mouseTrack()
+      _ <- TermScreen.headless(true) //
+      _ <- sttyRaw()                 //
+      _ <- bufferAlt()               //
+      _ <- clear()                   //
+      _ <- cursorHide()              //
+      _ <- mouseTrack()              //
       _ <- fetchSize()
       _ <- flush()
       _  = handleWinch()
@@ -92,12 +93,12 @@ private[term] final class TermScreen(term: Term) extends Screen:
 
   override def shutdown(): Either[Throwable, Unit] =
     for
-      _ <- clear()
-      _ <- cursorShow()
-      _ <- mouseUntrack()
-      _ <- bufferNormal()
+      _ <- clear()        //
+      _ <- cursorShow()   //
+      _ <- mouseUntrack() //
+      _ <- bufferNormal() //
       _ <- flush()
-      _ <- resetTerm()
+      _ <- sttySane()     //
     yield ()
 
   @tailrec
@@ -125,27 +126,6 @@ private[term] final class TermScreen(term: Term) extends Screen:
   private def fetchSize(): Either[Throwable, Unit] =
     term.write(EscSeq.textAreaSize)
 
-  private def rawTerm(): Either[Throwable, Unit] =
-    exec(Array("sh", "-c", "stty raw -echo < /dev/tty"))
-
-  /**
-   * Reset all terminal settings to "sane" values.
-   */
-  private def resetTerm(): Either[Throwable, Unit] =
-    exec(Array("sh", "-c", "stty sane < /dev/tty"))
-
-  /**        
-   * Execute the given array of arguments.
-   */
-  private def exec(as: Array[String]): Either[Throwable, Unit] =
-    nonFatalCatch.either(Runtime.getRuntime.exec(as))
-
-  /**
-   * Set headless setting.
-   */
-  private def headless(): Either[Throwable, Unit] =
-    nonFatalCatch.either(System.setProperty("java.awt.headless", "true"))
-
   /**
    * Handle window resize.
    */
@@ -159,9 +139,6 @@ private[term] final class TermScreen(term: Term) extends Screen:
         yield ()
     )
 
-  private def valueBytes(value: String): Array[Byte] =
-    value.sanitize().getBytes
-
   private def trackScreenSize(k: KeySeq): Unit =
     k.size.foreach { sz =>
       szScreen = sz
@@ -170,6 +147,22 @@ private[term] final class TermScreen(term: Term) extends Screen:
 // TODO: refactor TermScreen, see how to make it more resilient and immutable
 
 private[term] object TermScreen:
+
+  type TermEffect = (Term) => Either[Throwable, Unit]
+
+  private val initEffects: List[(TermEffect, TermEffect)] = List(
+    (t => headless(true), t => headless(false)),
+    (t => sttyRaw(), t => sttySane()),
+    (bufferAlt, bufferNormal),
+    (cursorHide, cursorShow),
+    (mouseTrack, mouseUntrack)
+  )
+
+  def acquire(term: Term): TermScreen =
+    ???
+    // new TermScreen(term)
+
+  // def release
 
   private def toEscSeq(style: TextStyle): Seq[EscSeq] =
     style match
@@ -198,5 +191,62 @@ private[term] object TermScreen:
       case TextStyle.NoColor =>
         Seq.empty[EscSeq]
 
+  /**
+   * Compile span to bytes
+   */
   def compile(span: Span): Bytes =
     SpanCompiler.compile(span)
+
+  /**
+   * Set terminal to raw mode.
+   */
+  private def sttyRaw(): Either[Throwable, Unit] =
+    Exec.exec(Array("sh", "-c", "stty raw -echo < /dev/tty"))
+
+  /**
+   * Reset all terminal settings to "sane" values.
+   */
+  private def sttySane(): Either[Throwable, Unit] =
+    Exec.exec(Array("sh", "-c", "stty sane < /dev/tty"))
+
+  /**
+   * Set Alt buffer.
+   */
+  private def bufferAlt(term: Term): Either[Throwable, Unit] =
+    term.write(EscSeq.altBuffer)
+
+  /**
+   * Set Normal buffer.
+   */
+  private def bufferNormal(term: Term): Either[Throwable, Unit] =
+    term.write(EscSeq.normalBuffer)
+
+  /**
+   * Hide cursor.
+   */
+  private def cursorHide(term: Term): Either[Throwable, Unit] =
+    term.write(EscSeq.cursorHide)
+
+  /**
+   * Show cursor.
+   */
+  private def cursorShow(term: Term): Either[Throwable, Unit] =
+    term.write(EscSeq.cursorShow)
+
+  /**
+   * Mouse tracking.
+   */
+  private def mouseTrack(term: Term): Either[Throwable, Unit] =
+    term.write(EscSeq.mouseTracking)
+
+  /**
+   * Mouse stop tracking.
+   */
+  private def mouseUntrack(term: Term): Either[Throwable, Unit] =
+    term.write(EscSeq.resetMouseTracking)
+
+  /**
+   * Set headless setting.
+   */
+  private def headless(flag: Boolean): Either[Throwable, Unit] =
+    nonFatalCatch.either(System.setProperty("java.awt.headless", flag.toString))

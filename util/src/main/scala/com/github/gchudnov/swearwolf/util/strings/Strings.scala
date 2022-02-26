@@ -27,13 +27,6 @@ trait StringOps:
       else s
 
     /**
-     * Removes non-printable characters from the string
-     */
-    def sanitize(): String =
-      if s.exists(_ < 32) then s.map(ch => if ch >= 32 then ch else '?')
-      else s
-
-    /**
      * Wraps the text to fit the given width, producing more lines
      */
     def wrap(width: Int): List[String] =

@@ -91,14 +91,6 @@ object StringsSpec extends DefaultRunnableSpec:
 
         assert(actual)(equalTo(expected))
       },
-      test("can be sanitized") {
-        val input = "\u001bstr-value"
-
-        val actual   = input.sanitize()
-        val expected = "?str-value"
-
-        assert(actual)(equalTo(expected))
-      },
       test("ellipsis on the right") {
         val input = "this is a very long text that doesn't fit the provided width"
         val width = 16
