@@ -39,12 +39,6 @@ private[screens] final class LogScreen(output: OutputStream) extends Screen:
 
   override def flush(): Either[Throwable, Unit] = ???
 
-  override def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit] = ???
-  override def eventLoop(): Either[Throwable, Unit] =
-    eventLoop(EventLoop.defaultHandler)
-
-  override def eventPoll(): Either[Throwable, List[KeySeq]] = ???
-
   override def close(): Unit = ???
 
 object LogScreen:

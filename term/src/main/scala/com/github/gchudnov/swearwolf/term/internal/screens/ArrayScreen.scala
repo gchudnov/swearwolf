@@ -36,10 +36,6 @@ private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderC
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
     putText(pt, viewText(value))
 
-  override def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit] = Right(())
-
-  override def eventPoll(): Either[Throwable, List[KeySeq]] = Right(List.empty[KeySeq])
-
   override def cursorHide(): Either[Throwable, Unit] = Right(())
 
   override def cursorShow(): Either[Throwable, Unit] = Right(())

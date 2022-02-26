@@ -33,12 +33,12 @@ trait Screen:
 
   def flush(): Either[Throwable, Unit]
 
-  // TODO: remove loop here
-  def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit]
-  def eventLoop(): Either[Throwable, Unit] =
-    eventLoop(EventLoop.defaultHandler)
+  // // TODO: remove loop here
+  // def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit]
+  // def eventLoop(): Either[Throwable, Unit] =
+  //   eventLoop(EventLoop.defaultHandler)
 
-  def eventPoll(): Either[Throwable, List[KeySeq]]
+  // def eventPoll(): Either[Throwable, List[KeySeq]]
 
   def close(): Unit
 

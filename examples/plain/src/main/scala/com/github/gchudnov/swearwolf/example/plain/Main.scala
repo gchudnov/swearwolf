@@ -34,13 +34,14 @@ object Main extends App:
     .either({
       implicit val releasableScreen: Releasable[Screen] = screen => screen.close()
 
-      Using.resource(Screen.term().toTry.get) { (sc: Screen) =>
-        val handler = eventHandler(sc)(posKeqSeq) _
-        for
-          _ <- render(sc)
-          _ <- sc.eventLoop(EventLoop.withDefaultHandler(handler))
-        yield ()
-      }
+      // Using.resource(Screen.term().toTry.get) { (sc: Screen) =>
+      //   val handler = eventHandler(sc)(posKeqSeq) _
+      //   for
+      //     _ <- render(sc)
+      //     _ <- sc.eventLoop(EventLoop.withDefaultHandler(handler))
+      //   yield ()
+      // }
+      ???
     })
     .flatten
     .fold(writeStdoutLog, _ => ())

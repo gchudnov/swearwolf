@@ -14,11 +14,23 @@ trait EventLoop:
 object EventLoop:
   import KeySeqSyntax.*
 
-  type KeySeqHandler = List[KeySeq] => Either[Throwable, EventLoop.Action]
+  type KeySeqHandler = KeySeq => Either[Throwable, EventLoop.Action]
 
+  given keySeqHandlerMonoid: Monoid[KeySeqHandler] with
+    def empty: KeySeqHandler =
+      (ks: KeySeq) => Right(Action.Continue)
 
+    extension (x: KeySeqHandler)
+      infix def combine(y: KeySeqHandler): KeySeqHandler =
+        (ks: KeySeq) =>
+          val w1 = x(ks)
+          val w2 = y(ks)
+          (w1, w2) match
+            case (Left(e1), Left(e2))   => Left(e1)
+            case (Left(e1), Right(_))   => Left(e1)
+            case (Right(_), Left(e2))   => Left(e2)
+            case (Right(a1), Right(a2)) => Right(a1 | a2)
 
-  
   sealed trait Action
   object Action:
     case object Continue extends Action
@@ -35,33 +47,19 @@ object EventLoop:
         action == Exit
 
     given actionMonoid: Monoid[Action] with
-      def empty: Action = 
+      def empty: Action =
         Continue
 
       extension (x: Action)
-        infix def combine(y: Action): Action = 
+        infix def combine(y: Action): Action =
           (x, y) match
             case (Action.Exit, _) => Action.Exit
             case (_, Action.Exit) => Action.Exit
             case _                => Action.Continue
 
-  // TODO: use monoid here
-  def combineHandlers(h1: KeySeqHandler, h2: KeySeqHandler): KeySeqHandler = (ks: List[KeySeq]) =>
-    for
-      r1 <- h1(ks)
-      r2 <- h2(ks)
-    yield r1 | r2
-
   def withDefaultHandler(handler: KeySeqHandler): KeySeqHandler =
-    combineHandlers(handler, defaultHandler)
+    handler | defaultHandler
 
-  val defaultHandler: KeySeqHandler = (ks: List[KeySeq]) =>
-    val initialState: EventLoop.Action = Action.Continue
-    val res = ks.foldLeft(initialState) { (acc, k) =>
-      val act =
-        if k.isEsc then Action.Exit
-        else Action.Continue
-
-      act | acc
-    }
-    Right(res)
+  val defaultHandler: KeySeqHandler = (ks: KeySeq) =>
+    if ks.isEsc then Right(Action.Exit)
+    else Right(Action.Continue)
