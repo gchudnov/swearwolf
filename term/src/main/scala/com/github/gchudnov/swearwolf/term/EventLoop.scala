@@ -3,7 +3,12 @@ package com.github.gchudnov.swearwolf.term
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 
-// TODO: trait with methods???
+/**
+ * Event-Loop Interface
+ */
+trait EventLoop:
+  def run(): Unit
+  def poll(): Option[KeySeq]
 
 object EventLoop:
   import KeySeqSyntax.*
@@ -18,11 +23,12 @@ object EventLoop:
     val empty: Action =
       Continue
 
-  def isContinue(a: Action): Boolean =
-    a == Action.Continue
+    extension (action: Action)
+      def isContinue: Boolean =
+        action == Continue
 
-  def isExit(a: Action): Boolean =
-    a == Action.Exit
+      def isExit: Boolean =
+        action == Exit      
 
   // TODO: use monoid here
   def mergeActions(lhs: Action, rhs: Action): Action =
@@ -51,29 +57,3 @@ object EventLoop:
       EventLoop.mergeActions(act, acc)
     }
     Right(res)
-
-
-/*
-
-  @tailrec
-  override def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit] =
-    val errOrAction = for
-      ks     <- eventPoll()
-      action <- handler(ks)
-    yield action
-
-    errOrAction match
-      case Left(err)                                  => Left(err)
-      case Right(action) if action == Action.Continue => eventLoop(handler)
-      case _                                          => Right(())
-
-  override def eventPoll(): Either[Throwable, List[KeySeq]] =
-    for
-      ks <- term.blockingPoll()
-      _  <- internalStateHandler(ks)
-    yield ks
-
-  private def internalStateHandler(ks: List[KeySeq]): Either[Throwable, Unit] =
-    for _ <- Right[Throwable, Unit](ks.foreach(trackScreenSize))
-    yield ()
-*/

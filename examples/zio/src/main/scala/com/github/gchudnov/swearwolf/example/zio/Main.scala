@@ -26,7 +26,7 @@ object Main extends ZIOAppDefault:
       _      <- Run.tickLoop().fork
       _      <- ZIO(Run.onTick()).repeat(Schedule.spaced(1000.millis)).forever.fork
       _ <- ZIO
-             .iterate(EventLoop.Action.empty)(EventLoop.isContinue)({ _ =>
+             .iterate(EventLoop.Action.empty)(_.isContinue)({ _ =>
                for
                  ks <- ZIO.fromEither(screen.eventPoll())
                  _  <- ZIO.foreachDiscard(ks)(Run.onKeySeq)
