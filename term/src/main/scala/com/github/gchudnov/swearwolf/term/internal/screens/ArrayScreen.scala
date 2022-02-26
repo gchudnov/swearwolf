@@ -20,10 +20,12 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
  * @param borderChar
  *   character to use on the right-side of the screen as a delimiter.
  */
-private[term] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends Screen:
+private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends Screen:
   import ArrayScreen.*
 
-  private var view: Array[Array[Char]] = blank(szScreen, cellChar)
+  // TODO: replace Char -> Byte
+  // TODO: add a parameter that gets an array on flush
+  private var view: Array[Array[Char]] = blankArray(szScreen, cellChar)
 
   override def toString: String =
     view.map(_.mkString + borderChar.getOrElse("")).mkString(sys.props("line.separator"))
@@ -72,33 +74,31 @@ private[term] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar
   override def bufferAlt(): Either[Throwable, Unit] = Right(())
 
   override def clear(): Either[Throwable, Unit] = Right({
-    view = blank(szScreen, cellChar)
+    view = blankArray(szScreen, cellChar)
   })
 
   override def flush(): Either[Throwable, Unit] = Right(())
 
-  override def shutdown(): Either[Throwable, Unit] = Right(())
-
-  override def init(): Either[Throwable, Unit] = Right(())
+  override def close(): Unit = ()
 
 private[term] object ArrayScreen:
 
   private[term] val DefaultCellChar   = '.'
   private[term] val DefaultBorderChar = '|'
 
-  private def blank(sz: Size, ch: Char): Array[Array[Char]] =
-    Array.fill(sz.height, sz.width)(ch)
-
-  def apply(size: Size, cellChar: Char = DefaultCellChar, borderChar: Option[Char] = Some(DefaultBorderChar)): ArrayScreen =
+  def make(size: Size, cellChar: Char = DefaultCellChar, borderChar: Option[Char] = Some(DefaultBorderChar)): ArrayScreen =
     new ArrayScreen(size, cellChar, borderChar)
 
   def compile(span: Span): Bytes =
     SpanCompiler.compile(span)
 
+  private def blankArray(sz: Size, ch: Char): Array[Array[Char]] =
+    Array.fill(sz.height, sz.width)(ch)
+
   /**
    * View Text without Escape or Control Character
    */
-  def viewText(bytes: Array[Byte]): String =
+  private[screens] def viewText(bytes: Array[Byte]): String =
     val rxEsc = s"""${EscSeq.escChar}\\[[\\d;]+\\w"""
     val rxCtl = "\\p{C}"
 

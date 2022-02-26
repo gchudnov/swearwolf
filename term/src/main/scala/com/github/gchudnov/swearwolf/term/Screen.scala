@@ -6,11 +6,11 @@ import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.internal.screens.ArrayScreen
 import com.github.gchudnov.swearwolf.term.internal.screens.TermScreen
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 trait Screen:
   def size: Size
@@ -33,30 +33,22 @@ trait Screen:
 
   def flush(): Either[Throwable, Unit]
 
-  def init(): Either[Throwable, Unit]
-  def shutdown(): Either[Throwable, Unit]
-
   def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit]
   def eventLoop(): Either[Throwable, Unit] =
     eventLoop(EventLoop.defaultHandler)
 
   def eventPoll(): Either[Throwable, List[KeySeq]]
 
-  def close(): Unit = shutdown().toTry.get
+  def close(): Unit
 
 object Screen:
 
-  def acquire(): Either[Throwable, Screen] =
-    val term   = Term.make()
-    val screen = new TermScreen(term)
+  def term(): Either[Throwable, Screen] =
+    val term = Term.make()
+    TermScreen.make(term)
 
-    screen.init().map(_ => screen)
-
-  def acquireOrThrow(): Screen =
-    acquire().toTry.get
-
-  def array(size: Size, cellChar: Char = ArrayScreen.DefaultCellChar, borderChar: Option[Char] = Some(ArrayScreen.DefaultBorderChar)): ArrayScreen =
-    new ArrayScreen(size, cellChar, borderChar)
+  def array(size: Size, cellChar: Char = ArrayScreen.DefaultCellChar, borderChar: Option[Char] = Some(ArrayScreen.DefaultBorderChar)): Either[Throwable, Screen] =
+    Right(ArrayScreen.make(size, cellChar, borderChar))
 
   def compile(span: Span): Bytes =
     TermScreen.compile(span)

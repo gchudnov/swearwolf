@@ -5,9 +5,12 @@ import com.github.gchudnov.swearwolf.term.EventLoop.Action
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.Term
+import com.github.gchudnov.swearwolf.term.internal.screens.TermScreen.TermEffect
 import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.util.exec.Exec
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.spans.Span
@@ -15,24 +18,23 @@ import com.github.gchudnov.swearwolf.util.strings.Strings.*
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
 import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
-import com.github.gchudnov.swearwolf.util.exec.Exec
 import sun.misc.Signal
 
 import scala.annotation.tailrec
 import scala.util.control.Exception.nonFatalCatch
-import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.util.func.Transform
 
 /**
  * Default Screen implementation.
  *
  * NOTE: when calling methods of the class, do not forget to call flush().
  */
-private[term] final class TermScreen(term: Term) extends Screen:
+private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) extends Screen:
   import TermScreen.*
   import KeySeqSyntax.*
 
   @volatile
-  private var szScreen: Size = Size(0, 0)
+  private var szScreen: Size = Size(1024, 1024)
 
   override def size: Size = szScreen
 
@@ -78,28 +80,11 @@ private[term] final class TermScreen(term: Term) extends Screen:
   override def flush(): Either[Throwable, Unit] =
     term.flush()
 
-  override def init(): Either[Throwable, Unit] =
-    for
-      _ <- TermScreen.headless(true) //
-      _ <- sttyRaw()                 //
-      _ <- bufferAlt()               //
-      _ <- clear()                   //
-      _ <- cursorHide()              //
-      _ <- mouseTrack()              //
-      _ <- fetchSize()
-      _ <- flush()
-      _  = handleWinch()
-    yield ()
+  override def close(): Unit =
+    val err = Transform.sequence(rollback.map(_.apply(term)))
+    err.toTry.get
 
-  override def shutdown(): Either[Throwable, Unit] =
-    for
-      _ <- clear()        //
-      _ <- cursorShow()   //
-      _ <- mouseUntrack() //
-      _ <- bufferNormal() //
-      _ <- flush()
-      _ <- sttySane()     //
-    yield ()
+  // TODO: probably we want to extract eventLoop out of screen
 
   @tailrec
   override def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit] =
@@ -112,7 +97,7 @@ private[term] final class TermScreen(term: Term) extends Screen:
       case Left(err)                                  => Left(err)
       case Right(action) if action == Action.Continue => eventLoop(handler)
       case _                                          => Right(())
-
+  
   override def eventPoll(): Either[Throwable, List[KeySeq]] =
     for
       ks <- term.blockingPoll()
@@ -123,46 +108,63 @@ private[term] final class TermScreen(term: Term) extends Screen:
     for _ <- Right[Throwable, Unit](ks.foreach(trackScreenSize))
     yield ()
 
+  // TODO: extract ^^ out of the screen, eventLoop must be separate
+
   private def fetchSize(): Either[Throwable, Unit] =
     term.write(EscSeq.textAreaSize)
 
-  /**
-   * Handle window resize.
-   */
-  private def handleWinch(): Unit =
-    Signal.handle(
-      new Signal("WINCH"),
-      (_: Signal) =>
-        for
-          _ <- fetchSize()
-          _ <- flush()
-        yield ()
-    )
+  private def onWinch(): Either[Throwable, Unit] =
+    for
+      _ <- fetchSize()
+      _ <- flush()
+    yield ()
 
   private def trackScreenSize(k: KeySeq): Unit =
     k.size.foreach { sz =>
       szScreen = sz
     }
 
-// TODO: refactor TermScreen, see how to make it more resilient and immutable
-
 private[term] object TermScreen:
 
   type TermEffect = (Term) => Either[Throwable, Unit]
 
-  private val initEffects: List[(TermEffect, TermEffect)] = List(
-    (t => headless(true), t => headless(false)),
-    (t => sttyRaw(), t => sttySane()),
-    (bufferAlt, bufferNormal),
-    (cursorHide, cursorShow),
-    (mouseTrack, mouseUntrack)
-  )
+    // TODO: winch
+    // TODO: store cursor pos?
 
-  def acquire(term: Term): TermScreen =
-    ???
-    // new TermScreen(term)
+  /**
+   * Effect -> Fallback mapping.
+   */ 
+  private val initEffects: List[(TermEffect, TermEffect)] =
+    List(
+      (t => headless(true), t => headless(false)),
+      (t => sttyRaw(), t => sttySane()),
+      (noOp, flush),
+      (bufferAlt, bufferNormal),
+      (cursorHide, cursorShow),
+      (mouseTrack, mouseUntrack),
+      (flush, noOp)
+    )
 
-  // def release
+  /**
+   * Makes a new TermScreen.
+   */
+  def make(term: Term): Either[Throwable, TermScreen] =
+    val (err, rollback) = initEffects.foldLeft((Right(()): Either[Throwable, Unit], List.empty[TermEffect])) { case ((err, acc), eff) =>
+      err match
+        case Left(t) => (Left(t), acc)
+        case Right(_) =>
+          val (effect, rollback) = eff
+          effect(term) match
+            case Left(t)  => (Left(t), acc)
+            case Right(_) => (Right(()), rollback :: acc)
+    }
+    err match
+      case Left(t) =>
+        rollback.foreach(_(term)) // NOTE: we roll-back and ignore the errors to avoid error in the error
+        Left(t)
+      case Right(_) =>
+        val screen = new TermScreen(term, rollback)
+        Right(screen)
 
   private def toEscSeq(style: TextStyle): Seq[EscSeq] =
     style match
@@ -246,7 +248,34 @@ private[term] object TermScreen:
     term.write(EscSeq.resetMouseTracking)
 
   /**
+   * Flush terminal.
+   */
+  private def flush(term: Term): Either[Throwable, Unit] =
+    term.flush()
+
+  /**
+   * No-Op
+   */
+  private def noOp(term: Term): Either[Throwable, Unit] =
+    Right(())
+
+  /**
    * Set headless setting.
    */
   private def headless(flag: Boolean): Either[Throwable, Unit] =
     nonFatalCatch.either(System.setProperty("java.awt.headless", flag.toString))
+
+  /**
+   * Listen to window size change.
+   */
+  private def setWinchListener(cb: () => Unit): Unit =
+    Signal.handle(
+      new Signal("WINCH"),
+      (_: Signal) => cb()
+    )
+
+  /**
+   * Remove window-size-change listener
+   */
+  private def unsetWinchListener(): Unit =
+    ()

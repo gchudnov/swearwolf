@@ -16,7 +16,7 @@ import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
  * 
  * val outStream = new FileOutputStream("/some/path/log.txt", true)
  */
-private[term] final class LogScreen(output: OutputStream) extends Screen:
+private[screens] final class LogScreen(output: OutputStream) extends Screen:
   private val pw = new PrintWriter(new OutputStreamWriter(output, UTF_8))
 
   override def size: Size = ???
@@ -39,16 +39,13 @@ private[term] final class LogScreen(output: OutputStream) extends Screen:
 
   override def flush(): Either[Throwable, Unit] = ???
 
-  override def init(): Either[Throwable, Unit]     = ???
-  override def shutdown(): Either[Throwable, Unit] = ???
-
   override def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit] = ???
   override def eventLoop(): Either[Throwable, Unit] =
     eventLoop(EventLoop.defaultHandler)
 
   override def eventPoll(): Either[Throwable, List[KeySeq]] = ???
 
-  override def close(): Unit = shutdown().toTry.get
+  override def close(): Unit = ???
 
 object LogScreen:
   def apply(output: OutputStream): LogScreen =

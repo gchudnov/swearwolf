@@ -12,7 +12,7 @@ object ArrayScreenSpec extends DefaultRunnableSpec:
   override def spec: ZSpec[Environment, Failure] =
     suite("ArrayScreen")(
       test("text is drawn below the screen") {
-        val screen = ArrayScreen(Size(32, 32))
+        val screen = ArrayScreen.make(Size(32, 32))
 
         val actual = screen.put(Point(0, 40), "TEXT")
 
@@ -23,7 +23,7 @@ object ArrayScreenSpec extends DefaultRunnableSpec:
         assert(actualData)(equalTo(expectedData))
       },
       test("text is drawn on the right edge of the screen") {
-        val screen = ArrayScreen(Size(32, 32))
+        val screen = ArrayScreen.make(Size(32, 32))
 
         val actual = screen.put(Point(30, 0), "TEXT")
 

@@ -7,7 +7,7 @@ import zio.*
 object ScreenFactory:
 
   val term: ZLayer[Any, Throwable, Screen] =
-    ZLayer.fromAcquireRelease(ZIO.fromEither(Screen.acquire()))(sc => ZIO.fromEither(sc.shutdown()).orDie)
+    ZLayer.fromAcquireRelease(ZIO.fromEither(Screen.term()))(sc => ZIO.attempt(sc.close()).orDie)
 
   def array(sz: Size): ZLayer[Any, Throwable, Screen] =
-    ZLayer.fromAcquireRelease(ZIO.attempt[Screen](Screen.array(sz)))(sc => ZIO.fromEither(sc.shutdown()).orDie)
+    ZLayer.fromAcquireRelease(ZIO.fromEither(Screen.array(sz)))(sc => ZIO.attempt(sc.close()).orDie)

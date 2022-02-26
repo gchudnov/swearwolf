@@ -34,7 +34,7 @@ object Main extends App:
     .either({
       implicit val releasableScreen: Releasable[Screen] = screen => screen.close()
 
-      Using.resource(Screen.acquireOrThrow()) { (sc: Screen) =>
+      Using.resource(Screen.term().toTry.get) { (sc: Screen) =>
         val handler = eventHandler(sc)(posKeqSeq) _
         for
           _ <- render(sc)
