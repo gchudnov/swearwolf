@@ -111,18 +111,11 @@ private[term] object TermScreen:
    * Makes a new TermScreen.
    */
   def make(term: Term): Either[Throwable, TermScreen] =
-    val (err, rollback) = initEffects.foldLeft((Right(()): Either[Throwable, Unit], List.empty[TermEffect])) { case ((err, acc), eff) =>
-      err match
-        case Left(t) => (Left(t), acc)
-        case Right(_) =>
-          val (effect, rollback) = eff
-          effect(term) match
-            case Left(t)  => (Left(t), acc)
-            case Right(_) => (Right(()), rollback :: acc)
-    }
-    err match
+    val (errOrOk, rollback) = initialize(term)
+    errOrOk match
       case Left(t) =>
-        rollback.foreach(_(term)) // NOTE: we roll-back and ignore the errors to avoid error in the error
+        // NOTE: we roll-back and ignore the errors to avoid error in the error
+        rollback.foreach(_(term))
         Left(t)
       case Right(_) =>
         val screen = new TermScreen(term, rollback)
@@ -133,6 +126,17 @@ private[term] object TermScreen:
    */
   def compile(span: Span): Bytes =
     SpanCompiler.compile(span)
+
+  private def initialize(term: Term): (Either[Throwable, Unit], List[TermEffect]) =
+    initEffects.foldLeft((Right(()): Either[Throwable, Unit], List.empty[TermEffect])) { case ((err, acc), eff) =>
+      err match
+        case Left(t) => (Left(t), acc)
+        case Right(_) =>
+          val (effect, rollback) = eff
+          effect(term) match
+            case Left(t)  => (Left(t), acc)
+            case Right(_) => (Right(()), rollback :: acc)
+    }
 
   /**
    * Set terminal to raw mode.
