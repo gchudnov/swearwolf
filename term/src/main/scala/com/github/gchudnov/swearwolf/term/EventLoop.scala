@@ -2,6 +2,7 @@ package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
+import com.github.gchudnov.swearwolf.util.internal.Monoid
 
 /**
  * Event-Loop Interface
@@ -15,6 +16,9 @@ object EventLoop:
 
   type KeySeqHandler = List[KeySeq] => Either[Throwable, EventLoop.Action]
 
+
+
+  
   sealed trait Action
   object Action:
     case object Continue extends Action
@@ -28,21 +32,25 @@ object EventLoop:
         action == Continue
 
       def isExit: Boolean =
-        action == Exit      
+        action == Exit
 
-  // TODO: use monoid here
-  def mergeActions(lhs: Action, rhs: Action): Action =
-    (lhs, rhs) match
-      case (Action.Exit, _) => Action.Exit
-      case (_, Action.Exit) => Action.Exit
-      case _                => Action.Continue
+    given actionMonoid: Monoid[Action] with
+      def empty: Action = 
+        Continue
+
+      extension (x: Action)
+        infix def combine(y: Action): Action = 
+          (x, y) match
+            case (Action.Exit, _) => Action.Exit
+            case (_, Action.Exit) => Action.Exit
+            case _                => Action.Continue
 
   // TODO: use monoid here
   def combineHandlers(h1: KeySeqHandler, h2: KeySeqHandler): KeySeqHandler = (ks: List[KeySeq]) =>
     for
       r1 <- h1(ks)
       r2 <- h2(ks)
-    yield EventLoop.mergeActions(r1, r2)
+    yield r1 | r2
 
   def withDefaultHandler(handler: KeySeqHandler): KeySeqHandler =
     combineHandlers(handler, defaultHandler)
@@ -54,6 +62,6 @@ object EventLoop:
         if k.isEsc then Action.Exit
         else Action.Continue
 
-      EventLoop.mergeActions(act, acc)
+      act | acc
     }
     Right(res)
