@@ -29,7 +29,7 @@ import com.github.gchudnov.swearwolf.util.func.Transform
  *
  * NOTE: when calling methods of the class, do not forget to call flush().
  */
-private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) extends Screen:
+private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) extends BasicScreen:
   import TermScreen.*
   import KeySeqSyntax.*
 
@@ -38,20 +38,8 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
 
   override def size: Size = szScreen
 
-  override def put(pt: Point, value: String): Either[Throwable, Unit] =
-    put(pt, value.getBytes)
-
-  override def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit] =
-    val styleBytes = toEscSeq(style).map(_.bytes).reduce(_ ++ _)
-    val bytes      = styleBytes ++ value.getBytes ++ EscSeq.reset.bytes
-    put(pt, bytes)
-
-  def put(pt: Point, value: Span): Either[Throwable, Unit] =
-    val bytes = TermScreen.compile(value)
-    put(pt, bytes.toArray)
-
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
-    if pt.y >= szScreen.height then Right(())
+    if pt.y >= szScreen.height || pt.y < 0 then Right(())
     else
       val bytes = EscSeq.cursorPosition(pt).bytes ++ value
       term.write(bytes)
@@ -97,7 +85,7 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
       case Left(err)                                  => Left(err)
       case Right(action) if action == Action.Continue => eventLoop(handler)
       case _                                          => Right(())
-  
+
   override def eventPoll(): Either[Throwable, List[KeySeq]] =
     for
       ks <- term.blockingPoll()
@@ -128,12 +116,12 @@ private[term] object TermScreen:
 
   type TermEffect = (Term) => Either[Throwable, Unit]
 
-    // TODO: winch
-    // TODO: store cursor pos?
+  // TODO: winch
+  // TODO: store cursor pos?
 
   /**
    * Effect -> Fallback mapping.
-   */ 
+   */
   private val initEffects: List[(TermEffect, TermEffect)] =
     List(
       (t => headless(true), t => headless(false)),
@@ -165,33 +153,6 @@ private[term] object TermScreen:
       case Right(_) =>
         val screen = new TermScreen(term, rollback)
         Right(screen)
-
-  private def toEscSeq(style: TextStyle): Seq[EscSeq] =
-    style match
-      case a: TextStyleSeq =>
-        a.styles.flatMap(toEscSeq)
-      case TextStyle.Empty =>
-        Seq(EscSeq.empty)
-      case TextStyle.Foreground(color) =>
-        Seq(EscSeq.foreground(color))
-      case TextStyle.Background(color) =>
-        Seq(EscSeq.background(color))
-      case TextStyle.Bold =>
-        Seq(EscSeq.bold)
-      case TextStyle.Italic =>
-        Seq(EscSeq.italic)
-      case TextStyle.Underline =>
-        Seq(EscSeq.underline)
-      case TextStyle.Blink =>
-        Seq(EscSeq.blink)
-      case TextStyle.Invert =>
-        Seq(EscSeq.invert)
-      case TextStyle.Strikethrough =>
-        Seq(EscSeq.strikethrough)
-      case TextStyle.Transparent =>
-        Seq.empty[EscSeq]
-      case TextStyle.NoColor =>
-        Seq.empty[EscSeq]
 
   /**
    * Compile span to bytes

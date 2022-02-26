@@ -20,42 +20,20 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
  * @param borderChar
  *   character to use on the right-side of the screen as a delimiter.
  */
-private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends Screen:
+private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends BasicScreen:
   import ArrayScreen.*
 
-  // TODO: replace Char -> Byte
-  // TODO: add a parameter that gets an array on flush
   private var view: Array[Array[Char]] = blankArray(szScreen, cellChar)
 
   override def toString: String =
-    view.map(_.mkString + borderChar.getOrElse("")).mkString(sys.props("line.separator"))
+    view
+      .map(_.mkString + borderChar.getOrElse(""))
+      .mkString(sys.props("line.separator"))
 
   override def size: Size = szScreen
 
-  override def put(pt: Point, value: String): Either[Throwable, Unit] =
-    if pt.y >= szScreen.height || pt.y < 0 then Right(())
-    else
-      val oldLine = view(pt.y).mkString
-
-      val first = oldLine.substring(0, Math.min(pt.x, oldLine.length))
-      val last  = oldLine.substring(Math.min(pt.x + value.length, oldLine.length))
-
-      val newLine = (first + value + last).take(szScreen.width)
-
-      require(oldLine.length == newLine.length, "new-line length should be equal to old-line length")
-
-      view = view.updated(pt.y, newLine.toCharArray)
-      Right(())
-
-  override def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit] =
-    put(pt, value)
-
-  def put(pt: Point, value: Span): Either[Throwable, Unit] =
-    val bytes = ArrayScreen.compile(value)
-    put(pt, bytes.toArray)
-
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
-    put(pt, viewText(value))
+    putText(pt, viewText(value))
 
   override def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit] = Right(())
 
@@ -80,6 +58,21 @@ private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderC
   override def flush(): Either[Throwable, Unit] = Right(())
 
   override def close(): Unit = ()
+
+  private def putText(pt: Point, value: String): Either[Throwable, Unit] =
+    if pt.y >= szScreen.height || pt.y < 0 then Right(())
+    else
+      val oldLine = view(pt.y).mkString
+
+      val first = oldLine.substring(0, Math.min(pt.x, oldLine.length))
+      val last  = oldLine.substring(Math.min(pt.x + value.length, oldLine.length))
+
+      val newLine = (first + value + last).take(szScreen.width)
+
+      require(oldLine.length == newLine.length, "new-line length should be equal to old-line length")
+
+      view = view.updated(pt.y, newLine.toCharArray)
+      Right(())
 
 private[term] object ArrayScreen:
 
