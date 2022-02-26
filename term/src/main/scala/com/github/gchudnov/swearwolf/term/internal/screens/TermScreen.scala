@@ -72,32 +72,6 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
     val err = Transform.sequence(rollback.map(_.apply(term)))
     err.toTry.get
 
-  // // TODO: probably we want to extract eventLoop out of screen
-
-  // @tailrec
-  // override def eventLoop(handler: KeySeqHandler): Either[Throwable, Unit] =
-  //   val errOrAction = for
-  //     ks     <- eventPoll()
-  //     action <- handler(ks)
-  //   yield action
-
-  //   errOrAction match
-  //     case Left(err)                                  => Left(err)
-  //     case Right(action) if action == Action.Continue => eventLoop(handler)
-  //     case _                                          => Right(())
-
-  // override def eventPoll(): Either[Throwable, List[KeySeq]] =
-  //   for
-  //     ks <- term.blockingPoll()
-  //     _  <- internalStateHandler(ks)
-  //   yield ks
-
-  // private def internalStateHandler(ks: List[KeySeq]): Either[Throwable, Unit] =
-  //   for _ <- Right[Throwable, Unit](ks.foreach(trackScreenSize))
-  //   yield ()
-
-  // // TODO: extract ^^ out of the screen, eventLoop must be separate
-
   private def fetchSize(): Either[Throwable, Unit] =
     term.write(EscSeq.textAreaSize)
 

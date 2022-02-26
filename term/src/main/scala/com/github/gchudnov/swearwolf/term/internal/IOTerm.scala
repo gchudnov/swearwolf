@@ -8,10 +8,10 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 import java.io.InputStream
 import java.io.OutputStream
-import scala.collection.mutable.ListBuffer
-import scala.util.control.Exception.nonFatalCatch
-import scala.jdk.CollectionConverters.*
 import java.util.concurrent.ConcurrentLinkedQueue
+import scala.collection.mutable.ListBuffer
+import scala.jdk.CollectionConverters.*
+import scala.util.control.Exception.nonFatalCatch
 
 /**
  * Terminal with basic I/O operations.

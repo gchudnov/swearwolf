@@ -8,8 +8,8 @@ import com.github.gchudnov.swearwolf.util.internal.Monoid
  * Event-Loop Interface
  */
 trait EventLoop:
-  def run(): Unit
-  def poll(): Option[KeySeq]
+  def run(): Either[Throwable, Unit]
+  def poll(): Either[Throwable, Option[KeySeq]]
 
 object EventLoop:
   import KeySeqSyntax.*
@@ -56,10 +56,3 @@ object EventLoop:
             case (Action.Exit, _) => Action.Exit
             case (_, Action.Exit) => Action.Exit
             case _                => Action.Continue
-
-  def withDefaultHandler(handler: KeySeqHandler): KeySeqHandler =
-    handler | defaultHandler
-
-  val defaultHandler: KeySeqHandler = (ks: KeySeq) =>
-    if ks.isEsc then Right(Action.Exit)
-    else Right(Action.Continue)
