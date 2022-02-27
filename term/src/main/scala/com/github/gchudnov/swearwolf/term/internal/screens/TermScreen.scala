@@ -11,6 +11,7 @@ import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.exec.Exec
+import com.github.gchudnov.swearwolf.util.func.Transform
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.spans.Span
@@ -22,7 +23,7 @@ import sun.misc.Signal
 
 import scala.annotation.tailrec
 import scala.util.control.Exception.nonFatalCatch
-import com.github.gchudnov.swearwolf.util.func.Transform
+import com.github.gchudnov.swearwolf.term.EventLoop
 
 /**
  * Default Screen implementation.
@@ -73,25 +74,25 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
     err.toTry.get
 
   private def fetchSize(): Either[Throwable, Unit] =
-    term.write(EscSeq.textAreaSize)
+    TermScreen.fetchSize(term)
 
-  private def onWinch(): Either[Throwable, Unit] =
+  private def handleWinch(s: Signal): Either[Throwable, Unit] =
     for
       _ <- fetchSize()
       _ <- flush()
     yield ()
 
-  private def trackScreenSize(k: KeySeq): Unit =
-    k.size.foreach { sz =>
-      szScreen = sz
-    }
+  private def handleKeySeq(ks: KeySeq): Either[Throwable, EventLoop.Action] =
+    ks.size match
+      case None =>
+        Right(Action.Continue)
+      case Some(sz) =>
+        szScreen = sz
+        Right(Action.Continue)
 
 private[term] object TermScreen:
 
   type TermEffect = (Term) => Either[Throwable, Unit]
-
-  // TODO: winch
-  // TODO: store cursor pos?
 
   /**
    * Effect -> Fallback mapping.
@@ -119,7 +120,10 @@ private[term] object TermScreen:
         Left(t)
       case Right(_) =>
         val screen = new TermScreen(term, rollback)
+        setWinchListener(screen.handleWinch)
         Right(screen)
+
+  // TODO: bind to event-loop
 
   /**
    * Compile span to bytes
@@ -187,6 +191,12 @@ private[term] object TermScreen:
     term.write(EscSeq.resetMouseTracking)
 
   /**
+   * Get the size of the terminal
+   */
+  private def fetchSize(term: Term): Either[Throwable, Unit] =
+    term.write(EscSeq.textAreaSize)
+
+  /**
    * Flush terminal.
    */
   private def flush(term: Term): Either[Throwable, Unit] =
@@ -213,14 +223,10 @@ private[term] object TermScreen:
   /**
    * Listen to window size change.
    */
-  private def setWinchListener(cb: () => Unit): Unit =
-    Signal.handle(
-      new Signal("WINCH"),
-      (_: Signal) => cb()
+  private def setWinchListener(cb: (Signal) => Unit): Either[Throwable, Unit] =
+    nonFatalCatch.either(
+      Signal.handle(
+        new Signal("WINCH"),
+        (s: Signal) => cb(s)
+      )
     )
-
-  /**
-   * Remove window-size-change listener
-   */
-  private def unsetWinchListener(): Unit =
-    ()

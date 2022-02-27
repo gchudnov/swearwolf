@@ -15,6 +15,8 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 trait Screen:
   def size: Size
 
+  // TODO: add `put` without a point, add putLn as well
+
   def put(pt: Point, value: String): Either[Throwable, Unit]
   def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit]
   def put(pt: Point, value: Span): Either[Throwable, Unit]

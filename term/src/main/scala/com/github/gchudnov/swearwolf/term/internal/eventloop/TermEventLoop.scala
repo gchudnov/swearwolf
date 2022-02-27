@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import scala.annotation.tailrec
 import scala.jdk.CollectionConverters.*
 
-private[term] final class TermEventLoop(term: Term, handler: KeySeqHandler) extends EventLoop:
+private[eventloop] final class TermEventLoop(term: Term, handler: KeySeqHandler) extends EventLoop:
   import TermEventLoop.*
 
   private val ks          = ConcurrentLinkedQueue[KeySeq]
@@ -58,9 +58,12 @@ private[term] final class TermEventLoop(term: Term, handler: KeySeqHandler) exte
     if (ks.isEmpty) then None
     else Some(ks.poll())
 
-object TermEventLoop:
+private[term] object TermEventLoop:
   import KeySeqSyntax.*
 
   val exitHandler: KeySeqHandler = (ks: KeySeq) =>
     if ks.isEsc then Right(EventLoop.Action.Exit)
     else Right(EventLoop.Action.Continue)
+
+  def make(term: Term, handler: KeySeqHandler): TermEventLoop =
+    new TermEventLoop(term, handler)

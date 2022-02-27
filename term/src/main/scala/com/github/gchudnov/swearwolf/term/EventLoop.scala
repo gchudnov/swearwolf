@@ -1,5 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
+import com.github.gchudnov.swearwolf.term.internal.eventloop.TermEventLoop
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 import com.github.gchudnov.swearwolf.util.internal.Monoid
@@ -56,3 +57,6 @@ object EventLoop:
             case (Action.Exit, _) => Action.Exit
             case (_, Action.Exit) => Action.Exit
             case _                => Action.Continue
+
+  def term(term: Term, handler: KeySeqHandler): EventLoop =
+    TermEventLoop.make(term, handler)

@@ -1,3 +1,4 @@
+- TODO: add a CompositeScreen, that allows to wrap screens (e.g. to add logging to a normal screen)
 = TODO: add LogScreen that logs execution
 
 
