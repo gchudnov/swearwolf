@@ -37,7 +37,7 @@ object Main extends App:
     eventLoop     = EventLoop.make(term)
     keySeqHandler = makeKeySeqHandler(screen)
     _            <- eventLoop.run(keySeqHandler)
-    _            <- nonFatalCatch.either(screen.close())
+    _            <- nonFatalCatch.either(screen.close()) // TODO: if there is an error, it won't be called
   yield ()
 
   resF.fold(t => writeToStdout, identity)

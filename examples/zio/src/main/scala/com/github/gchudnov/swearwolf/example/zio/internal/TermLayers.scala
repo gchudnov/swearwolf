@@ -8,9 +8,15 @@ import zio.*
 
 object TermLayers:
 
+  /**
+   * Low-Level Terminal
+   */
   val termLayer: ZLayer[Any, Throwable, Term] =
     (() => Term.make()).toLayer
 
+  /**
+   * High-Level Screen
+   */
   val screenLayer: ZLayer[Term, Throwable, Screen] =
     def acquire = for
       term   <- ZIO.service[Term]
@@ -21,7 +27,10 @@ object TermLayers:
 
     ZLayer.fromAcquireRelease(acquire)(release)
 
-  def eventLoopLayer(): ZLayer[Term, Throwable, EventLoop] =
+  /**
+   * Event-Loop to process KeySeq events
+   */ 
+  val eventLoopLayer: ZLayer[Term, Throwable, EventLoop] =
     (for
       term     <- ZIO.service[Term]
       eventLoop = EventLoop.make(term)
