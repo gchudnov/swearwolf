@@ -34,11 +34,11 @@ object Main extends ZIOAppDefault:
               .runDrain
               .fork
       f1 <- run.onTick().repeat(Schedule.spaced(tickDuration)).forever.fork
-      f2 <- run.messagePump().runDrain.fork.ensuring(f1.interrupt)
+      f2 <- run.messagePump().runDrain.fork
       _  <- f0.join
     yield ()
 
-  private def fromCallback(cb: Emit[Any, Throwable, KeySeq, Unit], eventLoop: EventLoop) =
+  private def fromCallback(cb: Emit[Any, Throwable, KeySeq, Unit], eventLoop: EventLoop): Unit =
     def handler(keySeq: KeySeq) =
       cb(ZIO.succeed(Chunk(keySeq)))
       Right(EventLoop.Action.Continue)
