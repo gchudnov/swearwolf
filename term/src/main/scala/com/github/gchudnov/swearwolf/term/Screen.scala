@@ -15,6 +15,8 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 trait Screen:
   def size: Size
 
+  def onSize(sz: Size): Either[Throwable, Unit]
+
   // TODO: add `put` without a point, add putLn as well
 
   def put(pt: Point, value: String): Either[Throwable, Unit]
@@ -32,15 +34,13 @@ trait Screen:
   def bufferAlt(): Either[Throwable, Unit]
 
   def clear(): Either[Throwable, Unit]
-
   def flush(): Either[Throwable, Unit]
 
   def close(): Unit
 
 object Screen:
 
-  def term(): Either[Throwable, Screen] =
-    val term = Term.make()
+  def make(term: Term): Either[Throwable, Screen] =
     TermScreen.make(term)
 
   def array(size: Size, cellChar: Char = ArrayScreen.DefaultCellChar, borderChar: Option[Char] = Some(ArrayScreen.DefaultBorderChar)): Either[Throwable, Screen] =

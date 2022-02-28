@@ -11,6 +11,8 @@ import com.github.gchudnov.swearwolf.shapes.label.Label
 import com.github.gchudnov.swearwolf.shapes.table.Table
 import com.github.gchudnov.swearwolf.shapes.table.TableStyle
 import com.github.gchudnov.swearwolf.term.EventLoop
+import com.github.gchudnov.swearwolf.term.EventLoop.Action
+import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.keys.*
 import com.github.gchudnov.swearwolf.util.colors.Color
@@ -28,47 +30,35 @@ import scala.util.control.Exception.nonFatalCatch
 object Main extends App:
 
   private val logFilePath = "~/swearwolf-plain-example-errors.log"
-  private val posKeqSeq   = Point(32, 0)
 
-  nonFatalCatch
-    .either({
-      implicit val releasableScreen: Releasable[Screen] = screen => screen.close()
+  val term = Term.make()
+  val resF = for
+    screen       <- Screen.make(term)
+    keySeqHandler = makeKeySeqHandler(screen)
+    eventLoop     = EventLoop.make(term, keySeqHandler)
+    _            <- eventLoop.run()
+    _            <- nonFatalCatch.either(screen.close())
+  yield ()
 
-      // Using.resource(Screen.term().toTry.get) { (sc: Screen) =>
-      //   val handler = eventHandler(sc)(posKeqSeq) _
-      //   for
-      //     _ <- render(sc)
-      //     _ <- sc.eventLoop(EventLoop.withDefaultHandler(handler))
-      //   yield ()
-      // }
-      ???
-    })
-    .flatten
-    .fold(writeStdoutLog, _ => ())
+  resF.fold(t => writeToStdout, identity)
 
-  private def eventHandler(screen: Screen)(pos: Point)(ks: List[KeySeq]): Either[Throwable, EventLoop.Action] =
-    // handle screen resize
-    val errOrResize = sequence(ks.filter(_.isInstanceOf[SizeKeySeq]).map { _ =>
-      for
-        _ <- screen.clear()
-        _ <- render(screen)
-      yield ()
-    })
-      .map(_ => ())
+  // TODO: print the size of the screen
+  // TODO: need an initial event to draw the screen (fetch size?)
 
-    // display key codes
-    val errOrDisplay = sequence(ks.zipWithIndex.map { case (keqSeq, i) =>
-      screen.put(pos.offset(0, i), keqSeq.toString)
-    })
-      .map(_ => ())
+  private def makeKeySeqHandler(screen: Screen): KeySeqHandler =
+    (ks: KeySeq) =>
+      ks match
+        case SizeKeySeq(sz) =>
+          for
+            _ <- screen.onSize(sz)
+            _ <- screen.clear()
+            _ <- render(screen, "")
+          yield Action.Continue
+        case _ =>
+          for _ <- render(screen, ks.toString)
+          yield Action.Continue
 
-    for
-      _ <- errOrResize
-      _ <- errOrDisplay
-      _ <- screen.flush()
-    yield EventLoop.Action.Continue
-
-  private def render(sc: Screen): Either[Throwable, Unit] =
+  private def render(screen: Screen, text: String): Either[Throwable, Unit] =
     import TextStyle.*
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
@@ -84,17 +74,18 @@ object Main extends App:
     val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
     for
-      _ <- sc.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
-      _ <- sc.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
-      _ <- sc.put(Point(0, 2), rich)
-      _ <- sc.put(Point(0, 4), b, Foreground(Color.Blue))
-      _ <- sc.put(Point(32, 2), g1, Foreground(Color.Green))
-      _ <- sc.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
-      _ <- sc.put(Point(32, 7), g3, Foreground(Color.Azure))
-      _ <- sc.put(Point(22, 0), gd, Foreground(Color.Yellow))
-      _ <- sc.put(Point(0, 7), t, Foreground(Color.White))
-      _ <- sc.put(Point(0, 13), l, Foreground(Color.Red))
-      _ <- sc.flush()
+      _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
+      _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
+      _ <- screen.put(Point(0, 2), rich)
+      _ <- screen.put(Point(0, 4), b, Foreground(Color.Blue))
+      _ <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
+      _ <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
+      _ <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))
+      _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
+      _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
+      _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
+      _ <- screen.put(Point(32, 0), text)
+      _ <- screen.flush()
     yield ()
 
   private def sequence[A, B](es: Seq[Either[A, B]]): Either[A, Seq[B]] =
@@ -103,11 +94,11 @@ object Main extends App:
       case (lefts, _)    => Left[A, Seq[B]](lefts.head)
 
   @nowarn
-  private def writeStdoutLog(t: Throwable): Unit =
+  private def writeToStdout(t: Throwable): Unit =
     writeErrorLog(System.out)(t)
 
   @nowarn
-  private def writeFileLog(t: Throwable): Unit =
+  private def writeToFile(t: Throwable): Unit =
     val output = new PrintStream(new FileOutputStream(logFilePath, true))
     writeErrorLog(output)(t)
 

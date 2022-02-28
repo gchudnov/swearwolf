@@ -1,7 +1,9 @@
 package com.github.gchudnov.swearwolf.term.internal.screens
 
 import com.github.gchudnov.swearwolf.term.EscSeq
+import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
+import com.github.gchudnov.swearwolf.term.EventLoop.Action
 import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
@@ -32,6 +34,9 @@ private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderC
       .mkString(sys.props("line.separator"))
 
   override def size: Size = szScreen
+
+  override def onSize(sz: Size): Either[Throwable, Unit] =
+    Right(())
 
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
     putText(pt, viewText(value))

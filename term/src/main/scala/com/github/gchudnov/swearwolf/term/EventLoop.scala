@@ -58,5 +58,5 @@ object EventLoop:
             case (_, Action.Exit) => Action.Exit
             case _                => Action.Continue
 
-  def term(term: Term, handler: KeySeqHandler): EventLoop =
+  def make(term: Term, handler: KeySeqHandler): EventLoop =
     TermEventLoop.make(term, handler)

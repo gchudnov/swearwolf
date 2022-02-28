@@ -39,6 +39,10 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
 
   override def size: Size = szScreen
 
+  override def onSize(sz: Size): Either[Throwable, Unit] =
+    szScreen = sz
+    Right(())
+
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
     if pt.y >= szScreen.height || pt.y < 0 then Right(())
     else
@@ -79,16 +83,8 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
   private def handleWinch(s: Signal): Either[Throwable, Unit] =
     for
       _ <- fetchSize()
-      _ <- flush()
+      _ <- flush() // TODO: move to fetchSize
     yield ()
-
-  private def handleKeySeq(ks: KeySeq): Either[Throwable, EventLoop.Action] =
-    ks.size match
-      case None =>
-        Right(Action.Continue)
-      case Some(sz) =>
-        szScreen = sz
-        Right(Action.Continue)
 
 private[term] object TermScreen:
 
@@ -122,8 +118,6 @@ private[term] object TermScreen:
         val screen = new TermScreen(term, rollback)
         setWinchListener(screen.handleWinch)
         Right(screen)
-
-  // TODO: bind to event-loop
 
   /**
    * Compile span to bytes
