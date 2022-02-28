@@ -38,6 +38,14 @@ private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderC
   override def onSize(sz: Size): Either[Throwable, Unit] =
     Right(())
 
+  override def put(value: String): Either[Throwable, Unit] = ???
+
+  override def put(value: String, style: TextStyle): Either[Throwable, Unit] = ???
+  
+  override def put(value: Span): Either[Throwable, Unit] = ???
+  
+  override def put(value: Array[Byte]): Either[Throwable, Unit] = ???
+
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
     putText(pt, viewText(value))
 

@@ -12,17 +12,26 @@ import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
+// TODO: add writer trait so we can implement it as an object and make a passive screen ? Add an example
+
 trait Screen:
   def size: Size
 
   def onSize(sz: Size): Either[Throwable, Unit]
 
-  // TODO: add `put` without a point, add putLn as well
+  // TODO: extract to writer
+
+  def put(value: String): Either[Throwable, Unit]
+  def put(value: String, style: TextStyle): Either[Throwable, Unit]
+  def put(value: Span): Either[Throwable, Unit]
+  def put(value: Array[Byte]): Either[Throwable, Unit]
 
   def put(pt: Point, value: String): Either[Throwable, Unit]
   def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit]
   def put(pt: Point, value: Span): Either[Throwable, Unit]
   def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit]
+
+  // TODO: ^^^ extract to writer
 
   def cursorHide(): Either[Throwable, Unit]
   def cursorShow(): Either[Throwable, Unit]

@@ -17,7 +17,7 @@ import com.github.gchudnov.swearwolf.term.keys.KeySeq
  * 
  * val outStream = new FileOutputStream("/some/path/log.txt", true)
  */
-private[screens] final class LogScreen(output: OutputStream) extends Screen:
+private[screens] final class LogScreen(output: OutputStream) extends BasicScreen:
   private val pw = new PrintWriter(new OutputStreamWriter(output, UTF_8))
 
   override def size: Size = ???
@@ -25,10 +25,7 @@ private[screens] final class LogScreen(output: OutputStream) extends Screen:
   override def onSize(sz: Size): Either[Throwable, Unit] =
     Right(())
 
-  override def put(pt: Point, value: String): Either[Throwable, Unit]                   = ???
-  override def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit] = ???
-  override def put(pt: Point, value: Span): Either[Throwable, Unit]                     = ???
-  override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit]              = ???
+  def put(value: Array[Byte]): Either[Throwable, Unit] = ???
 
   override def cursorHide(): Either[Throwable, Unit] = ???
   override def cursorShow(): Either[Throwable, Unit] = ???

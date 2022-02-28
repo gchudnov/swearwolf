@@ -43,11 +43,8 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
     szScreen = sz
     Right(())
 
-  override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
-    if pt.y >= szScreen.height || pt.y < 0 then Right(())
-    else
-      val bytes = EscSeq.cursorPosition(pt).bytes ++ value
-      term.write(bytes)
+  override def put(value: Array[Byte]): Either[Throwable, Unit] =
+    term.write(value)
 
   override def cursorHide(): Either[Throwable, Unit] =
     TermScreen.cursorHide(term)
@@ -83,9 +80,9 @@ private[term] object TermScreen:
 
   /**
    * Effect -> Rollback function mapping.
-   * 
+   *
    * Used to initialize the terminal screen and shut it down later.
-   * 
+   *
    * NOTE: the rollback functions are called in the reverse order of the effects.
    */
   private val initEffects: List[(TermEffect, TermEffect)] =
@@ -190,11 +187,11 @@ private[term] object TermScreen:
    * Issue fetch size command and flush it immediately.
    */
   private def fetchSizeAndFlush(term: Term): Either[Throwable, Unit] =
-    for {
+    for
       _ <- fetchSize(term)
       _ <- flush(term)
-    } yield ()
-    
+    yield ()
+
   /**
    * Flush terminal.
    */
