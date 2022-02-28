@@ -32,6 +32,10 @@ object Main extends App:
   private val logFilePath = "~/swearwolf-plain-example-errors.log"
 
   val term = Term.make()
+
+  // TODO: add Using
+
+
   val resF = for
     screen       <- Screen.make(term)
     eventLoop     = EventLoop.make(term)

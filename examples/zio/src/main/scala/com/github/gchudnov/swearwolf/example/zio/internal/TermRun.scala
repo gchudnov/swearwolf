@@ -28,71 +28,65 @@ final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) exten
   override def onTick(): UIO[Unit] =
     msgQueue.offer(Left(())).unit
 
-  // def keyLoop(): Task[Unit] =
-  //   ZStream
-  //     .fromQueue(keqSeqQueue)
-  //     .mapZIO(ks => render(Some(ks)))
-  //     .runDrain
-
-  // def tickLoop(): Task[Unit] =
-  //   ZStream
-  //     .fromQueue(tickQueue)
-  //     .mapZIO(_ => render(None))
-  //     .runDrain
+  override def messagePump(): ZStream[Any, Throwable, Unit] =
+    ZStream
+      .fromQueue(msgQueue)
+      .mapZIO(msg => render(msg))
 
   override def close(): UIO[Unit] =
-    for
-      _ <- msgQueue.shutdown
+    for _ <- msgQueue.shutdown
     yield ()
 
-//   private def render(ks: Option[KeySeq]): Task[Unit] =
-//     import TextStyle.*
+  private def render(msg: Either[Unit, KeySeq]): Task[Unit] =
+    import TextStyle.*
 
-//     // val keqSeqPos: Point = Point(32, 0)
+    val sz = screen.size
 
-//     // val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
+    val text = msg.fold(_ => "Tick", ks => ks.toString)
 
-//     // val b  = Box(Size(21, 3), BoxStyle.SingleBorder)
-//     // val g1 = Chart(Size(16, 1), data, ChartStyle.Dot)
-//     // val g2 = Chart(Size(16, 2), data, ChartStyle.Step)
-//     // val g3 = Chart(Size(16, 2), data, ChartStyle.Quad)
-//     // val gd = Grid(Size(7, 7), Size(3, 3), GridStyle.Frame2)
-//     // val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
-//     // val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
+    val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
-//     // val rich = RichText("<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>")
+    val b  = Box(Size(21, 3), BoxStyle.SingleBorder)
+    val g1 = Chart(Size(16, 1), data, ChartStyle.Dot)
+    val g2 = Chart(Size(16, 2), data, ChartStyle.Step)
+    val g3 = Chart(Size(16, 2), data, ChartStyle.Quad)
+    val gd = Grid(Size(7, 7), Size(3, 3), GridStyle.Frame2)
+    val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
+    val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
-//     val errOrUnit = for
-//       _ <- screen.clear()
-//       _ <- screen.put(Point(0, 0), "HELLO", TextStyle.Bold | TextStyle.Foreground(Color.Blue))
-//       // _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | TextStyle.Background(Color.Yellow))
-//       // _ <- screen.put(Point(0, 2), rich)
-//       // _ <- screen.put(Point(0, 4), b, TextStyle.Foreground(Color.Blue))
-//       // _ <- screen.put(Point(32, 2), g1, TextStyle.Foreground(Color.Green))
-//       // _ <- screen.put(Point(32, 4), g2, TextStyle.Foreground(Color.LimeGreen))
-//       // _ <- screen.put(Point(32, 7), g3, TextStyle.Foreground(Color.Azure))
-//       // _ <- screen.put(Point(22, 0), gd, TextStyle.Foreground(Color.Yellow))
-//       // _ <- screen.put(Point(0, 7), t, TextStyle.Foreground(Color.White))
-//       // _ <- screen.put(Point(0, 13), l, TextStyle.Foreground(Color.Red))
-//       // _ <- screen.put(keqSeqPos.offset(0, 0), ks.fold("")(_.toString))
-//       _ <- screen.flush()
-//     yield ()
+    val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
-//     ZIO.fromEither(errOrUnit)
-//       .catchAll(e => renderError(e))
+    val errOrUnit = for
+      _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
+      _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
+      _ <- screen.put(Point(0, 2), rich)
+      _ <- screen.put(Point(0, 4), b, Foreground(Color.Blue))
+      _ <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
+      _ <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
+      _ <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))
+      _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
+      _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
+      _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
+      _ <- screen.put(Point(32, 0), text)
+      _ <- screen.put(Point(22, 13), s"window size: ${sz.width}x${sz.height}", Foreground(Color.GhostWhite))
+      _ <- screen.flush()
+    yield ()
 
-//   private def renderError(e: Throwable): Task[Unit] =
-//     val errOrUnit = for
-//       _ <- screen.clear()
-//       _ <- screen.put(Point(0, 0), "ERROR", TextStyle.Bold | TextStyle.Foreground(Color.Red))
-//       _ <- screen.put(Point(0, 2), e.getMessage)
-//       _ <- screen.flush()
-//     yield ()
+    ZIO
+      .fromEither(errOrUnit)
+      .catchAll(e => renderError(e))
 
-//     ZIO.fromEither(errOrUnit)
+  private def renderError(e: Throwable): Task[Unit] =
+    val errOrUnit = for
+      _ <- screen.clear()
+      _ <- screen.put(Point(0, 0), "ERROR", TextStyle.Bold | TextStyle.Foreground(Color.Red))
+      _ <- screen.put(Point(0, 2), throwableToString(e))
+      _ <- screen.flush()
+    yield ()
+    ZIO.fromEither(errOrUnit)
 
-//   private def throwableToString(t: Throwable): String =
-//     t.getStackTrace.map(ste => ste.toString).mkString(TermRun.lineSep)
+  private def throwableToString(t: Throwable): String =
+    t.getStackTrace.map(ste => ste.toString).mkString(TermRun.lineSep)
 
 object TermRun:
   private val lineSep   = sys.props("line.separator")
@@ -100,7 +94,7 @@ object TermRun:
 
   def layer: ZLayer[Screen, Throwable, Run] =
     (for
-      screen      <- ZIO.service[Screen]
+      screen   <- ZIO.service[Screen]
       msgQueue <- Queue.bounded[Either[Unit, KeySeq]](queueSize)
-      service      = new TermRun(screen, msgQueue)
+      service   = new TermRun(screen, msgQueue)
     yield service).toLayer
