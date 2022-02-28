@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.example.zio
 
 import com.github.gchudnov.swearwolf.example.zio.internal.BasicRun
 import com.github.gchudnov.swearwolf.example.zio.internal.Run
-import com.github.gchudnov.swearwolf.example.zio.internal.ScreenFactory
+import com.github.gchudnov.swearwolf.example.zio.internal.TermLayers
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.util.*
@@ -37,10 +37,16 @@ object Main extends ZIOAppDefault:
     yield ()
 
   private def makeEnv(): ZLayer[Any, Throwable, Screen with Run] =
-    val screenEnv = ScreenFactory.term // ScreenFactory.array(Size(80, 56))
-    val runEnv    = BasicRun.layer
+    val termLayer = TermLayers.termLayer
+    val screenLayer = termLayer >>> TermLayers.screenLayer
+    // val screen = ???
 
-    screenEnv ++ (screenEnv >>> runEnv)
+    // val screenEnv = ScreenFactory.term // ScreenFactory.array(Size(80, 56))
+    // val runEnv    = BasicRun.layer
+
+    // screenEnv ++ (screenEnv >>> runEnv)
+
+    ???
 
 
 // 1. read keyboard

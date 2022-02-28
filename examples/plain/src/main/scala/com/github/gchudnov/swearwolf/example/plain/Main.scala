@@ -34,9 +34,9 @@ object Main extends App:
   val term = Term.make()
   val resF = for
     screen       <- Screen.make(term)
+    eventLoop     = EventLoop.make(term)
     keySeqHandler = makeKeySeqHandler(screen)
-    eventLoop     = EventLoop.make(term, keySeqHandler)
-    _            <- eventLoop.run()
+    _            <- eventLoop.run(keySeqHandler)
     _            <- nonFatalCatch.either(screen.close())
   yield ()
 

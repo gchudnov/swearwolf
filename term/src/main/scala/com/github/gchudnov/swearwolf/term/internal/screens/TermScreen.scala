@@ -34,6 +34,7 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
   import TermScreen.*
   import KeySeqSyntax.*
 
+  // TODO: change it to allow concurrent access
   @volatile
   private var szScreen: Size = Size(1024, 1024)
 

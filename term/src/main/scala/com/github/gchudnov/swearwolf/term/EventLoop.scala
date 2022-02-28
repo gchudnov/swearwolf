@@ -1,5 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
+import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.internal.eventloop.TermEventLoop
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
@@ -9,7 +10,7 @@ import com.github.gchudnov.swearwolf.util.internal.Monoid
  * Event-Loop Interface
  */
 trait EventLoop:
-  def run(): Either[Throwable, Unit]
+  def run(handler: KeySeqHandler): Either[Throwable, Unit]
   def poll(): Either[Throwable, Option[KeySeq]]
 
 object EventLoop:
@@ -58,5 +59,5 @@ object EventLoop:
             case (_, Action.Exit) => Action.Exit
             case _                => Action.Continue
 
-  def make(term: Term, handler: KeySeqHandler): EventLoop =
-    TermEventLoop.make(term, handler)
+  def make(term: Term): EventLoop =
+    TermEventLoop.make(term)
