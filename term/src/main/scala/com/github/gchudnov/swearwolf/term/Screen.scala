@@ -14,7 +14,7 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 // TODO: add writer trait so we can implement it as an object and make a passive screen ? Add an example
 
-trait Screen extends AutoCloseable:
+trait Screen:
   def size: Size
 
   def onSize(sz: Size): Either[Throwable, Unit]

@@ -20,7 +20,13 @@ import zio.Queue
 import zio.*
 import zio.stream.ZStream
 
+import java.io.FileOutputStream
+import java.io.PrintStream
+import scala.annotation.nowarn
+
 final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) extends Run:
+
+  private val logFilePath = "~/swearwolf-zio-example-errors.log"
 
   override def onKeySeq(ks: KeySeq): UIO[Unit] =
     msgQueue.offer(Right(ks)).unit
@@ -55,6 +61,7 @@ final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) exten
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
     val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
+    // val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
     val errOrUnit = for
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
@@ -76,11 +83,11 @@ final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) exten
       .fromEither(errOrUnit)
       .catchAll(e => renderError(e))
 
-  private def renderError(e: Throwable): Task[Unit] =
+  private def renderError(t: Throwable): Task[Unit] =
     val errOrUnit = for
       _ <- screen.clear()
       _ <- screen.put(Point(0, 0), "ERROR", TextStyle.Bold | TextStyle.Foreground(Color.Red))
-      _ <- screen.put(Point(0, 2), throwableToString(e))
+      _ <- screen.put(Point(0, 2), throwableToString(t))
       _ <- screen.flush()
     yield ()
     ZIO.fromEither(errOrUnit)
@@ -88,13 +95,28 @@ final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) exten
   private def throwableToString(t: Throwable): String =
     t.getStackTrace.map(ste => ste.toString).mkString(TermRun.lineSep)
 
+  @nowarn
+  private def writeToFile(t: Throwable): Unit =
+    val output = new PrintStream(new FileOutputStream(logFilePath, true))
+    writeErrorLog(output)(t)
+
+  @nowarn
+  private def writeErrorLog(output: PrintStream)(t: Throwable): Unit =
+    output.println(t.getMessage)
+    t.printStackTrace(output)
+    output.flush()
+
 object TermRun:
   private val lineSep   = sys.props("line.separator")
   private val queueSize = 128
 
   def layer: ZLayer[Screen, Throwable, Run] =
-    (for
+    def acquire = for
       screen   <- ZIO.service[Screen]
       msgQueue <- Queue.bounded[Either[Unit, KeySeq]](queueSize)
-      service   = new TermRun(screen, msgQueue)
-    yield service).toLayer
+      run       = new TermRun(screen, msgQueue)
+    yield run
+
+    def release(r: Run) = ZIO.attempt(r.close()).orDie
+
+    ZLayer.fromAcquireRelease(acquire)(release)
