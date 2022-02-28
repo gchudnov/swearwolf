@@ -33,15 +33,12 @@ object Main extends App:
 
   val term = Term.make()
 
-  // TODO: add Using
-
-
   val resF = for
     screen       <- Screen.make(term)
     eventLoop     = EventLoop.make(term)
     keySeqHandler = makeKeySeqHandler(screen)
     _            <- eventLoop.run(keySeqHandler)
-    _            <- nonFatalCatch.either(screen.close()) // TODO: if there is an error, it won't be called
+    _            <- nonFatalCatch.either(screen.close())
   yield ()
 
   resF.fold(t => writeToStdout, identity)
