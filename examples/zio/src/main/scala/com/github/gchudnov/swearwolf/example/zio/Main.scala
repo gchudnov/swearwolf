@@ -11,8 +11,11 @@ import com.github.gchudnov.swearwolf.util.geometry.Size
 import zio.Console.printLineError
 import zio.*
 import zio.stream.ZStream
+import zio.stream.ZStream.Emit
 
 object Main extends ZIOAppDefault:
+
+  private val tickDuration = 1000.millis
 
   override def run: ZIO[Environment with ZEnv with ZIOAppArgs, Any, Any] =
     val env     = makeEnv()
@@ -23,20 +26,26 @@ object Main extends ZIOAppDefault:
 
   private def makeProgram(): ZIO[Run with Clock with Screen with EventLoop, Throwable, Unit] =
     for
-      screen      <- ZIO.service[Screen]
-      eventLoop   <- ZIO.service[EventLoop]
-      run         <- ZIO.service[Run]
-      keySeqStream = ZStream.async[Any, Throwable, KeySeq]({ cb =>
-          val errOrRes = eventLoop.run(keySeq => { 
-            cb(ZIO.succeed(Chunk(keySeq)))
-            Right(EventLoop.Action.Continue) 
-          })
-          errOrRes.fold(err => cb(ZIO.fail(err).mapError(Some(_))), _ => cb(ZIO.fail(None)))
-        })
-      _           <- ZIO(run.onTick()).repeat(Schedule.spaced(1000.millis)).forever.fork
-      _           <- run.messagePump().runDrain.fork
-      _           <- keySeqStream.map(keySeq => run.onKeySeq(keySeq)).runDrain
+      eventLoop <- ZIO.service[EventLoop]
+      run       <- ZIO.service[Run]
+      f0 <- ZStream
+              .async[Any, Throwable, KeySeq](cb => fromCallback(cb, eventLoop))
+              .mapZIO(keySeq => run.onKeySeq(keySeq))
+              .runDrain
+              .fork
+      f1 <- run.onTick().repeat(Schedule.spaced(tickDuration)).forever.fork
+      f2 <- run.messagePump().runDrain.fork.ensuring(f1.interrupt)
+      _  <- f0.join
     yield ()
+
+  private def fromCallback(cb: Emit[Any, Throwable, KeySeq, Unit], eventLoop: EventLoop) =
+    def handler(keySeq: KeySeq) =
+      cb(ZIO.succeed(Chunk(keySeq)))
+      Right(EventLoop.Action.Continue)
+
+    eventLoop
+      .run(handler)
+      .fold(err => cb(ZIO.fail(err).mapError(Some(_))), _ => cb(ZIO.fail(None)))
 
   private def makeEnv(): ZLayer[Any, Throwable, Term with Screen with EventLoop with Run] =
     val termLayer      = TermLayers.termLayer

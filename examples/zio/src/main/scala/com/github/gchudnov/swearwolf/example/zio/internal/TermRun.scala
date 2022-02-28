@@ -37,6 +37,7 @@ final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) exten
   override def messagePump(): ZStream[Any, Throwable, Unit] =
     ZStream
       .fromQueue(msgQueue)
+      .rechunk(1)
       .mapZIO(msg => render(msg))
 
   override def close(): UIO[Unit] =
