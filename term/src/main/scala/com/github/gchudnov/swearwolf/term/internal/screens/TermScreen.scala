@@ -77,21 +77,16 @@ private[screens] final class TermScreen(term: Term, rollback: List[TermEffect]) 
     val err = Transform.sequence(rollback.map(_.apply(term)))
     err.toTry.get
 
-  private def fetchSize(): Either[Throwable, Unit] =
-    TermScreen.fetchSize(term)
-
-  private def handleWinch(s: Signal): Either[Throwable, Unit] =
-    for
-      _ <- fetchSize()
-      _ <- flush() // TODO: move to fetchSize
-    yield ()
-
 private[term] object TermScreen:
 
   type TermEffect = (Term) => Either[Throwable, Unit]
 
   /**
-   * Effect -> Fallback mapping.
+   * Effect -> Rollback function mapping.
+   * 
+   * Used to initialize the terminal screen and shut it down later.
+   * 
+   * NOTE: the rollback functions are called in the reverse order of the effects.
    */
   private val initEffects: List[(TermEffect, TermEffect)] =
     List(
@@ -101,6 +96,8 @@ private[term] object TermScreen:
       (bufferAlt, bufferNormal),
       (cursorHide, cursorShow),
       (mouseTrack, mouseUntrack),
+      (t => setWinchListener((_) => fetchSizeAndFlush(t)), noOp),
+      (fetchSize, noOp),
       (flush, noOp)
     )
 
@@ -116,7 +113,6 @@ private[term] object TermScreen:
         Left(t)
       case Right(_) =>
         val screen = new TermScreen(term, rollback)
-        setWinchListener(screen.handleWinch)
         Right(screen)
 
   /**
@@ -190,6 +186,15 @@ private[term] object TermScreen:
   private def fetchSize(term: Term): Either[Throwable, Unit] =
     term.write(EscSeq.textAreaSize)
 
+  /**
+   * Issue fetch size command and flush it immediately.
+   */
+  private def fetchSizeAndFlush(term: Term): Either[Throwable, Unit] =
+    for {
+      _ <- fetchSize(term)
+      _ <- flush(term)
+    } yield ()
+    
   /**
    * Flush terminal.
    */

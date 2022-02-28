@@ -42,9 +42,6 @@ object Main extends App:
 
   resF.fold(t => writeToStdout, identity)
 
-  // TODO: print the size of the screen
-  // TODO: need an initial event to draw the screen (fetch size?)
-
   private def makeKeySeqHandler(screen: Screen): KeySeqHandler =
     (ks: KeySeq) =>
       ks match
@@ -60,6 +57,8 @@ object Main extends App:
 
   private def render(screen: Screen, text: String): Either[Throwable, Unit] =
     import TextStyle.*
+
+    val sz = screen.size
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
@@ -85,6 +84,7 @@ object Main extends App:
       _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
       _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
       _ <- screen.put(Point(32, 0), text)
+      _ <- screen.put(Point(22, 13), s"window size: ${sz.width}x${sz.height}", Foreground(Color.GhostWhite))
       _ <- screen.flush()
     yield ()
 
