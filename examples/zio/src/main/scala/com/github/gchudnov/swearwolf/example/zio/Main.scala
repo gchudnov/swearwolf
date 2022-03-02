@@ -12,6 +12,7 @@ import zio.Console.printLineError
 import zio.*
 import zio.stream.ZStream
 import zio.stream.ZStream.Emit
+import com.github.gchudnov.swearwolf.example.zio.internal.console.TermConsole
 
 object Main extends ZIOAppDefault:
 
@@ -47,13 +48,12 @@ object Main extends ZIOAppDefault:
       .run(handler)
       .fold(err => cb(ZIO.fail(err).mapError(Some(_))), _ => cb(ZIO.fail(None)))
 
-  private def makeEnv(): ZLayer[Any, Throwable, Term with Screen with EventLoop with Run] =
+  private def makeEnv(): ZLayer[Any, Throwable, Term with Screen with EventLoop with Run with Console] =
     val termLayer      = TermLayers.termLayer
+    val consoleLayer   = termLayer >>> TermConsole.layer
     val screenLayer    = termLayer >>> TermLayers.screenLayer
     val eventLoopLayer = termLayer >>> TermLayers.eventLoopLayer
 
     val runLayer = screenLayer >>> TermRun.layer
 
-    termLayer ++ screenLayer ++ eventLoopLayer ++ runLayer
-
-    // TODO: replace Console with the one that prints data to the terminal
+    termLayer ++ screenLayer ++ eventLoopLayer ++ runLayer ++ consoleLayer

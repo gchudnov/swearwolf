@@ -19,7 +19,10 @@ object Term:
   private val OutBufferSizeBytes = 131072
 
   def make(): Term =
-    val is = System.in
-    val os = new BufferedOutputStream(System.out, OutBufferSizeBytes)
+    val is  = System.in
+    val out = System.out
+    val os  = new BufferedOutputStream(out, OutBufferSizeBytes)
 
     new IOTerm(is, os)
+
+    // TODO: should we add read / readLn ??
