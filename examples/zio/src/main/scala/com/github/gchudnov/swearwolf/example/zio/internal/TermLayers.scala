@@ -1,10 +1,12 @@
 package com.github.gchudnov.swearwolf.example.zio.internal
 
+import com.github.gchudnov.swearwolf.term.internal.terminals.LogTerm
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.Term
 import zio.*
+import java.nio.file.Paths
 
 object TermLayers:
 
@@ -12,7 +14,7 @@ object TermLayers:
    * Low-Level Terminal
    */
   val termLayer: ZLayer[Any, Throwable, Term] =
-    (() => Term.make()).toLayer
+    (() => LogTerm.make(Paths.get("/home/gchudnov/Projects/swearwolf/target/log.txt"), Term.make())).toLayer
 
   /**
    * High-Level Screen

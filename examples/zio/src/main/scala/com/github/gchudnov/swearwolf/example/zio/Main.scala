@@ -34,7 +34,7 @@ object Main extends ZIOAppDefault:
               .mapZIO(keySeq => run.onKeySeq(keySeq))
               .runDrain
               .fork
-      f1 <- run.onTick().repeat(Schedule.spaced(tickDuration)).forever.fork
+//      f1 <- run.onTick().repeat(Schedule.spaced(tickDuration)).forever.fork
       f2 <- run.messagePump().runDrain.fork
       _  <- f0.join
     yield ()
