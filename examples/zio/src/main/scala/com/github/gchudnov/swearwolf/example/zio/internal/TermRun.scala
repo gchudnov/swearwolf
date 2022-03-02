@@ -61,6 +61,8 @@ final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) exten
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
+    val ksLabel = Label(Size(sz.width - 32, 1), text, AlignStyle.Left)
+
     val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
     // val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
@@ -75,7 +77,7 @@ final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) exten
       _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
       _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
       _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
-      _ <- screen.put(Point(32, 0), text)
+      _ <- screen.put(Point(32, 0), ksLabel)
       _ <- screen.put(Point(22, 13), s"window size: ${sz.width}x${sz.height}", Foreground(Color.GhostWhite))
       _ <- screen.flush()
     yield ()

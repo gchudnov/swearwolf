@@ -42,16 +42,19 @@ private[eventloop] final class TermEventLoop(term: Term) extends EventLoop:
 
   override def poll(): Either[Throwable, Option[KeySeq]] =
 
+    @tailrec
     def iterate(): Either[Throwable, Option[KeySeq]] =
-      readTermAndOffer().flatMap(maybeOk =>
-        maybeOk match
-          case Some(n) if n > 0 =>
-            Right(Some(q.poll()))
-          case Some(n) if n == 0 =>
-            iterate()
-          case _ =>
-            Right(None)
-      )
+      readTermAndOffer() match
+        case Left(ex) =>
+          Left(ex)
+        case Right(maybeN) =>
+          maybeN match
+            case Some(n) if n > 0 =>
+              Right(Some(q.poll()))
+            case Some(n) if n == 0 =>
+              iterate()
+            case _ =>
+              Right(None)
 
     if q.isEmpty then iterate()
     else Right(Some(q.poll()))
