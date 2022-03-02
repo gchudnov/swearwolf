@@ -55,3 +55,5 @@ object Main extends ZIOAppDefault:
     val runLayer = screenLayer >>> TermRun.layer
 
     termLayer ++ screenLayer ++ eventLoopLayer ++ runLayer
+
+    // TODO: replace Console with the one that prints data to the terminal
