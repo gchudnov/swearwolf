@@ -78,5 +78,5 @@ object TextStyleSpec extends DefaultRunnableSpec:
         val expected = false
 
         assert(actual)(equalTo(expected))
-      },      
+      }
     )

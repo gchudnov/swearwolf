@@ -6,6 +6,7 @@
     "bgcolor",
     "Charsets",
     "combinators",
+    "Deque",
     "fgcolor",
     "horz",
     "Monoid",

@@ -310,7 +310,7 @@ object ChartSpec extends DefaultRunnableSpec:
         assert(actual)(equalTo(expected))
       },
       test("dot - one line chart") {
-        val sz    = Size(8, 1)
+        val sz   = Size(8, 1)
         val data = List(0.0, 24.0, 25.0, 50.0, 74.0, 75.0, 100.0)
 
         val chart = Chart(sz, data, ChartStyle.Dot)
@@ -321,7 +321,7 @@ object ChartSpec extends DefaultRunnableSpec:
         assert(actual)(equalTo(expected))
       },
       test("step - one line up chart") {
-        val sz    = Size(10, 1)
+        val sz   = Size(10, 1)
         val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
 
         val chart = Chart(sz, data, ChartStyle.Step)
@@ -332,7 +332,7 @@ object ChartSpec extends DefaultRunnableSpec:
         assert(actual)(equalTo(expected))
       },
       test("quad - one line up chart") {
-        val sz    = Size(5, 1)
+        val sz   = Size(5, 1)
         val data = List(0.1, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
 
         val chart = Chart(sz, data, ChartStyle.Quad)
@@ -341,5 +341,5 @@ object ChartSpec extends DefaultRunnableSpec:
         val expected = Seq("▗▄▟██")
 
         assert(actual)(equalTo(expected))
-      },      
+      }
     )

@@ -12,8 +12,8 @@ trait Term:
 
   def flush(): Either[Throwable, Unit]
 
-  def blockingPoll(): Either[Throwable, List[KeySeq]]
-  def poll(): Either[Throwable, List[KeySeq]]
+  def blockingPoll(): Either[Throwable, Option[List[KeySeq]]]
+  def poll(): Either[Throwable, Option[List[KeySeq]]]
 
 object Term:
   private val OutBufferSizeBytes = 131072

@@ -13,7 +13,7 @@ import scala.jdk.CollectionConverters.*
 private[eventloop] final class TermEventLoop(term: Term) extends EventLoop:
   import TermEventLoop.*
 
-  private val ks = ConcurrentLinkedQueue[KeySeq]
+  private val q = ConcurrentLinkedQueue[KeySeq]
 
   override def run(handler: KeySeqHandler): Either[Throwable, Unit] =
     val loopHandler = exitHandler | handler
@@ -24,40 +24,51 @@ private[eventloop] final class TermEventLoop(term: Term) extends EventLoop:
       errOrKeySeq match
         case Left(err) =>
           Left(err)
-        case Right(keqSeq) =>
-          keqSeq match
-            case Some(keq) =>
-              val errOrAction = loopHandler(keq)
+        case Right(maybeKeySeq) =>
+          maybeKeySeq match
+            case Some(keySeq) =>
+              val errOrAction = loopHandler(keySeq)
               errOrAction match
                 case Left(err) =>
                   Left(err)
                 case Right(a) if a.isContinue =>
                   iterate()
                 case _ =>
-                  Right(())
+                  Right(()) // Quit signal from the loopHandler
             case None =>
-              iterate()
+              Right(()) // EOF is reached
 
     iterate()
 
   override def poll(): Either[Throwable, Option[KeySeq]] =
-    if (ks.isEmpty) then consumeAndEnqueue().map(_ => dequeue())
-    else Right(dequeue())
+
+    def iterate(): Either[Throwable, Option[KeySeq]] =
+      readTermAndOffer().flatMap(maybeOk =>
+        maybeOk match
+          case Some(n) if n > 0 =>
+            Right(Some(q.poll()))
+          case Some(n) if n == 0 =>
+            iterate()
+          case _ =>
+            Right(None)
+      )
+
+    if q.isEmpty then iterate()
+    else Right(Some(q.poll()))
 
   /**
-   * Consume KeySeq from the terminal and put them to the queue
+   * Read KeySeq from the Terminal and put them to the Event-Loop queue
+   *
+   * returns None, if EOF is reached
    */
-  private def consumeAndEnqueue(): Either[Throwable, Unit] =
-    term.blockingPoll() match
-      case Left(err) =>
-        Left(err)
-      case Right(keys) =>
-        ks.addAll(keys.asJava)
-        Right(())
-
-  private def dequeue(): Option[KeySeq] =
-    if (ks.isEmpty) then None
-    else Some(ks.poll())
+  private def readTermAndOffer(): Either[Throwable, Option[Int]] =
+    for
+      maybeKs <- term.blockingPoll()
+      maybeN = maybeKs.map(ks =>
+                 q.addAll(ks.asJava)
+                 ks.size
+               )
+    yield maybeN
 
 private[term] object TermEventLoop:
   import KeySeqSyntax.*

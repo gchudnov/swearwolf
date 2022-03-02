@@ -14,7 +14,7 @@ import com.github.gchudnov.swearwolf.term.keys.KeySeq
 
 /**
  * Log operations to an output stream.
- * 
+ *
  * val outStream = new FileOutputStream("/some/path/log.txt", true)
  */
 private[screens] final class LogScreen(output: OutputStream) extends BasicScreen:

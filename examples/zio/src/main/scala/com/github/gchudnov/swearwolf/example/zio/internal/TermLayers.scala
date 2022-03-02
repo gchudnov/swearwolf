@@ -29,7 +29,7 @@ object TermLayers:
 
   /**
    * Event-Loop to process KeySeq events
-   */ 
+   */
   val eventLoopLayer: ZLayer[Term, Throwable, EventLoop] =
     (for
       term     <- ZIO.service[Term]

@@ -25,7 +25,7 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends BasicScreen:
   import ArrayScreen.*
 
-  private var view: Array[Array[Char]] = 
+  private var view: Array[Array[Char]] =
     blankArray(szScreen, cellChar)
 
   override def toString: String =
@@ -41,9 +41,9 @@ private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderC
   override def put(value: String): Either[Throwable, Unit] = ???
 
   override def put(value: String, style: TextStyle): Either[Throwable, Unit] = ???
-  
+
   override def put(value: Span): Either[Throwable, Unit] = ???
-  
+
   override def put(value: Array[Byte]): Either[Throwable, Unit] = ???
 
   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =

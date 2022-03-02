@@ -36,7 +36,7 @@ object TextStyle:
           style == needle
 
   given textStyleMonoid: Monoid[TextStyle] with
-    def empty: TextStyle = 
+    def empty: TextStyle =
       Empty
 
     extension (x: TextStyle)
