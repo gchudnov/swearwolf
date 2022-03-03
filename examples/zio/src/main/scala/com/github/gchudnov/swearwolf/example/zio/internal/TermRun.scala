@@ -16,6 +16,8 @@ import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import com.github.gchudnov.swearwolf.term.EventLoop
+import com.github.gchudnov.swearwolf.term.EventLoop.Action
 import zio.Queue
 import zio.*
 import zio.stream.ZStream
@@ -23,6 +25,7 @@ import zio.stream.ZStream
 import java.io.FileOutputStream
 import java.io.PrintStream
 import scala.annotation.nowarn
+import com.github.gchudnov.swearwolf.term.keys.SizeKeySeq
 
 final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) extends Run:
 
@@ -38,11 +41,28 @@ final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) exten
     ZStream
       .fromQueue(msgQueue)
       .rechunk(1)
-      .mapZIO(msg => render(msg))
+      .mapZIO(msg => msg match {
+        case Left(_) =>
+          render(msg)
+        case Right(ks) =>
+          handleKeySeq(ks).map(_ => ())
+      })
 
   override def close(): UIO[Unit] =
     for _ <- msgQueue.shutdown
     yield ()
+
+  private def handleKeySeq(ks: KeySeq): Task[EventLoop.Action] =
+    ks match
+      case SizeKeySeq(sz) =>
+        for
+          _ <- Task.fromEither(screen.onSize(sz))
+          _ <- Task.fromEither(screen.clear())
+          _ <- render(Left(()))
+        yield Action.Continue
+      case _ =>
+        for _ <- render(Right(ks))
+        yield Action.Continue
 
   private def render(msg: Either[Unit, KeySeq]): Task[Unit] =
     import TextStyle.*

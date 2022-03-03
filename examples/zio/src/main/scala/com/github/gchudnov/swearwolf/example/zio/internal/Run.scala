@@ -5,8 +5,8 @@ import zio.*
 import zio.stream.ZStream
 
 trait Run:
-  def onKeySeq(ks: KeySeq): UIO[Unit]
-  def onTick(): UIO[Unit]
+  def onKeySeq(ks: KeySeq): UIO[Unit] // TODO: probably we don't need that
+  def onTick(): UIO[Unit]             // TODO: probably we do not need that
 
   def messagePump(): ZStream[Any, Throwable, Unit]
 

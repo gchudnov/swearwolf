@@ -13,6 +13,7 @@ import zio.*
 import zio.stream.ZStream
 import zio.stream.ZStream.Emit
 import com.github.gchudnov.swearwolf.example.zio.internal.console.TermConsole
+import com.github.gchudnov.swearwolf.example.zio.internal.Logger
 
 object Main extends ZIOAppDefault:
 
@@ -22,6 +23,8 @@ object Main extends ZIOAppDefault:
     val env     = makeEnv()
     val program = makeProgram().provideSome[Clock](env)
 
+    Logger.logLn(s"run");
+
     program
       .tapError(t => printLineError(s"Error: ${t.getMessage}"))
 
@@ -30,7 +33,7 @@ object Main extends ZIOAppDefault:
       eventLoop <- ZIO.service[EventLoop]
       run       <- ZIO.service[Run]
       f0 <- ZStream
-              .async[Any, Throwable, KeySeq](cb => fromCallback(cb, eventLoop))
+              .asyncZIO[Any, Throwable, KeySeq](cb => ZIO(fromCallback(cb, eventLoop)).fork)
               .mapZIO(keySeq => run.onKeySeq(keySeq))
               .runDrain
               .fork
@@ -39,8 +42,13 @@ object Main extends ZIOAppDefault:
       _  <- f0.join
     yield ()
 
+    // NOTE: the size of the screen is not being handled correctly
+
+  // TODO: is it possible to make the event-loop async ?
+
   private def fromCallback(cb: Emit[Any, Throwable, KeySeq, Unit], eventLoop: EventLoop): Unit =
-    def handler(keySeq: KeySeq) =
+    def handler(keySeq: KeySeq): Either[Throwable, EventLoop.Action] =
+      // TODO: how to make async ?
       cb(ZIO.succeed(Chunk(keySeq)))
       Right(EventLoop.Action.Continue)
 
