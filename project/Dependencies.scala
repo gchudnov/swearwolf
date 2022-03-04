@@ -3,7 +3,7 @@ import sbt._
 object Dependencies {
 
   object versions {
-    val zio           = "2.0.0-RC2"
+    val zio          = "2.0.0-RC2"
     val scalaParser  = "2.1.1"
   }
 
@@ -44,6 +44,16 @@ object Dependencies {
   val Rich: Seq[ModuleID] = {
     val compile = Seq(
       scalaParser
+    )
+    val test = Seq(
+    ) ++ zioTestAll map (_ % "test")
+    compile ++ test
+  }
+
+  val Zio: Seq[ModuleID] = {
+    val compile = Seq(
+      zio,
+      zioStreams
     )
     val test = Seq(
     ) ++ zioTestAll map (_ % "test")

@@ -36,10 +36,10 @@ object MonadError:
   def apply[F[_]: MonadError]: MonadError[F] = implicitly[MonadError[F]]
 
   implicit final class MonadErrorOps[F[_], A](r: => F[A]):
-    def map[B](f: A => B)(implicit ME: MonadError[F]): F[B]                                   = ME.map(r)(f)
-    def flatMap[B](f: A => F[B])(implicit ME: MonadError[F]): F[B]                            = ME.flatMap(r)(f)
+    def map[B](f: A => B)(implicit ME: MonadError[F]): F[B]                                = ME.map(r)(f)
+    def flatMap[B](f: A => F[B])(implicit ME: MonadError[F]): F[B]                         = ME.flatMap(r)(f)
     def handleError(h: PartialFunction[Throwable, F[A]])(implicit ME: MonadError[F]): F[A] = ME.handleErrorWith(r)(h)
-    def ensure(e: => F[Unit])(implicit ME: MonadError[F]): F[A]                               = ME.ensure(r, e)
+    def ensure(e: => F[Unit])(implicit ME: MonadError[F]): F[A]                            = ME.ensure(r, e)
 
   implicit final class MonadErrorValueOps[F[_], A](private val a: A) extends AnyVal:
     def unit(implicit ME: MonadError[F]): F[A] = ME.unit(a)

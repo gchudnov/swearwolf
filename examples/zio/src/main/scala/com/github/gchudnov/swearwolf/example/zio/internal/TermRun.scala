@@ -41,12 +41,13 @@ final class TermRun(screen: Screen, msgQueue: Queue[Either[Unit, KeySeq]]) exten
     ZStream
       .fromQueue(msgQueue)
       .rechunk(1)
-      .mapZIO(msg => msg match {
-        case Left(_) =>
-          render(msg)
-        case Right(ks) =>
-          handleKeySeq(ks).map(_ => ())
-      })
+      .mapZIO(msg =>
+        msg match
+          case Left(_) =>
+            render(msg)
+          case Right(ks) =>
+            handleKeySeq(ks).map(_ => ())
+      )
 
   override def close(): UIO[Unit] =
     for _ <- msgQueue.shutdown

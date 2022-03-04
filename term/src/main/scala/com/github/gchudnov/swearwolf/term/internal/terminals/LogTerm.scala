@@ -53,7 +53,6 @@ final class LogTerm(output: OutputStream, inner: Term) extends Term:
         pw.flush()
         Right(a)
 
-
 object LogTerm:
 
   def make(path: Path, inner: Term): LogTerm =

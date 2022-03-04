@@ -53,6 +53,16 @@ lazy val rich = (project in file("rich"))
     libraryDependencies ++= Dependencies.Rich
   )
 
+lazy val zio = (project in file("zio"))
+  .dependsOn(util, term)
+  .settings(allSettings: _*)
+  .settings(Settings.testZioSettings)
+  .settings(Settings.sonatype)
+  .settings(
+    name := "zio",
+    libraryDependencies ++= Dependencies.Zio
+  )
+
 lazy val examplePlain = (project in file("examples/plain"))
   .dependsOn(util, term, rich, shapes)
   .settings(allSettings: _*)
@@ -81,7 +91,7 @@ lazy val exampleZio = (project in file("examples/zio"))
   )
 
 lazy val root = (project in file("."))
-  .aggregate(util, term, shapes, rich, examplePlain, exampleZio)
+  .aggregate(util, term, shapes, rich, zio, examplePlain, exampleZio)
   .settings(allSettings: _*)
   .settings(Settings.noPublish)
   .settings(
