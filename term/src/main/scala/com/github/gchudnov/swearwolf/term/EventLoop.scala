@@ -55,8 +55,8 @@ object EventLoop:
             case (_, Action.Exit) => Action.Exit
             case _                => Action.Continue
 
-  def make(term: Term): EventLoop =
-    TermEventLoop.make(term)
+  // def make(term: Term): EventLoop =
+  //   TermEventLoop.make(term)
 
 
 //   def poll(): F[Option[List[KeySeq]]] -- move here?

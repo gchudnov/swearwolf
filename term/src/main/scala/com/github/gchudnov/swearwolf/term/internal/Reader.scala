@@ -8,12 +8,8 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import scala.annotation.tailrec
 
 /**
- * Reads Bytes and returns parsed KeySeq + Rest of the Bytes that were not parsed.
- *
- * {{{
- *   (bytes: Bytes) -> (Vector[KeySeq], Bytes)
- * }}}
- *
+ * Reader
+ * 
  * https://man7.org/linux/man-pages/man4/console_codes.4.html
  *
  * https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_sequences
@@ -22,7 +18,14 @@ private[internal] object Reader:
 
   private val readers = List[KeySeqReader](CharReader, CtrlReader, EscReader, MouseReader)
 
-  def consume(bytes: Bytes): (Vector[KeySeq], Bytes) =
+  /**
+   * Reads Bytes and returns parsed KeySeq + Rest of the Bytes that were not parsed.
+   * 
+   * {{{
+   *   (bytes: Bytes) -> (Vector[KeySeq], Bytes)
+   * }}}
+   */
+  def parseBytes(bytes: Bytes): (Vector[KeySeq], Bytes) =
     @tailrec
     def iterate(acc: Vector[KeySeq], xs: Bytes): (Vector[KeySeq], Bytes) =
       xs match
@@ -43,10 +46,10 @@ private[internal] object Reader:
   private def anyRead(bytes: Bytes): ReadState =
     readers.foldLeft(ReadState.empty) { (acc, reader) =>
       val res = reader.read(bytes)
-      mergeStates(acc, res)
+      selectReadState(acc, res)
     }
 
-  private def mergeStates(lhs: ReadState, rhs: ReadState): ReadState = (lhs, rhs) match
+  private def selectReadState(lhs: ReadState, rhs: ReadState): ReadState = (lhs, rhs) match
     case (ParsedReadState(_, _), _) =>
       lhs
     case (_, ParsedReadState(_, _)) =>

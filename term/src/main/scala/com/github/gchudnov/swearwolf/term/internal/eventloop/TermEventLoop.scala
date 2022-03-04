@@ -5,23 +5,38 @@ import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
+import com.github.gchudnov.swearwolf.util.func.MonadError
 
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentLinkedQueue
 import scala.annotation.tailrec
 import scala.jdk.CollectionConverters.*
+import com.github.gchudnov.swearwolf.util.func.Monoid
 
-private[eventloop] final class TermEventLoop(term: Term) extends EventLoop:
+private[eventloop] final class TermEventLoop[F[_]: MonadError](term: Term[F]) extends EventLoop[F]:
   import TermEventLoop.*
+  import EventLoop.*
+  import KeySeqSyntax.*
+  import MonadError.*
 
   private val bytes = ConcurrentLinkedDeque[Byte]
   private val keys = ConcurrentLinkedQueue[KeySeq]
 
-  override def run(handler: KeySeqHandler): Either[Throwable, Unit] =
+  private val exitHandler: KeySeqHandler[F] = (ks: KeySeq) =>
+    val action = if ks.isEsc then 
+      EventLoop.Action.Exit
+    else 
+      EventLoop.Action.Continue
+      
+    summon[MonadError[F]].unit(action)
+
+  override def run(handler: KeySeqHandler[F]): F[Unit] =
     val loopHandler = exitHandler | handler
 
+    // summon[Monoid[KeySeqHandler[F]]].combine(loopHandler, loopHandler)
+
     @tailrec
-    def iterate(): Either[Throwable, Unit] =
+    def iterate(): F[Unit] =
       val errOrKeySeq = poll()
       errOrKeySeq match
         case Left(err) =>
@@ -42,10 +57,10 @@ private[eventloop] final class TermEventLoop(term: Term) extends EventLoop:
 
     iterate()
 
-  override def poll(): Either[Throwable, Option[KeySeq]] =
+  private def poll(): F[Option[KeySeq]] =
 
     @tailrec
-    def iterate(): Either[Throwable, Option[KeySeq]] =
+    def iterate(): F[Option[KeySeq]] =
       readTermAndOffer() match
         case Left(ex) =>
           Left(ex)
@@ -66,21 +81,33 @@ private[eventloop] final class TermEventLoop(term: Term) extends EventLoop:
    *
    * returns None, if EOF is reached
    */
-  private def readTermAndOffer(): Either[Throwable, Option[Int]] =
-    for
-      maybeKs <- term.blockingPoll()
-      maybeN = maybeKs.map(ks =>
-                 keys.addAll(ks.asJava)
-                 ks.size
-               )
-    yield maybeN
+  private def readTermAndOffer(): F[Option[Int]] =
+    for {
+      maybeBytes <- term.read()
+      keySeqs <- maybeBytes match {
+        case Some(bytes) =>
+          ???
+        case None =>
+          ???
+      }
+    } yield ()
+
+    ???
+
+
+    // for
+    //   maybeKs <- term.blockingPoll()
+    //   maybeN = maybeKs.map(ks =>
+    //              keys.addAll(ks.asJava)
+    //              ks.size
+    //            )
+    // yield maybeN
+
+  private def bytesToKeySeqs(bytes: Array[Byte]): Array[KeySeq] =
+    ???
 
 private[term] object TermEventLoop:
   import KeySeqSyntax.*
 
-  val exitHandler: KeySeqHandler = (ks: KeySeq) =>
-    if ks.isEsc then Right(EventLoop.Action.Exit)
-    else Right(EventLoop.Action.Continue)
-
-  def make(term: Term): TermEventLoop =
-    new TermEventLoop(term)
+  // def make(term: Term): TermEventLoop =
+  //   new TermEventLoop(term)

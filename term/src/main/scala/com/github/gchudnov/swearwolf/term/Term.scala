@@ -5,8 +5,6 @@ import com.github.gchudnov.swearwolf.term.keys.KeySeq
 
 import java.io.BufferedOutputStream
 
-// TODO: is it worth to move poll to the Screen and instead operate with Bytes here?
-
 trait Term[F[_]]:
   def read(): F[Option[Array[Byte]]]
   def write(bytes: Array[Byte]): F[Unit]
@@ -16,12 +14,12 @@ trait Term[F[_]]:
 object Term:
   private val OutBufferSizeBytes = 4096
 
-  def make(): Term =
-    val is  = System.in
-    val out = System.out
-    val os  = new BufferedOutputStream(out, OutBufferSizeBytes)
+  // def make(): Term =
+  //   val is  = System.in
+  //   val out = System.out
+  //   val os  = new BufferedOutputStream(out, OutBufferSizeBytes)
 
-    new IOTerm(is, os)
+  //   new IOTerm(is, os)
 
     // TODO: should we add read / readLn ??
 
