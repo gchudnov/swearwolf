@@ -9,7 +9,7 @@ import scala.annotation.tailrec
 
 /**
  * Reader
- * 
+ *
  * https://man7.org/linux/man-pages/man4/console_codes.4.html
  *
  * https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_sequences
@@ -20,7 +20,7 @@ private[internal] object Reader:
 
   /**
    * Reads Bytes and returns parsed KeySeq + Rest of the Bytes that were not parsed.
-   * 
+   *
    * {{{
    *   (bytes: Bytes) -> (Vector[KeySeq], Bytes)
    * }}}
@@ -28,18 +28,16 @@ private[internal] object Reader:
   def parseBytes(bytes: Bytes): (Vector[KeySeq], Bytes) =
     @tailrec
     def iterate(acc: Vector[KeySeq], xs: Bytes): (Vector[KeySeq], Bytes) =
-      xs match
-        case ys if ys.nonEmpty =>
-          val rs = anyRead(ys)
-          rs match
-            case UnknownReadState(_) =>
-              iterate(acc.appended(UnknownKeySeq(xs)), Bytes.empty)
-            case PartialReadState(_) =>
-              (acc, ys)
-            case ParsedReadState(keqSeq, rest) =>
-              iterate(acc.appended(keqSeq), rest)
-        case _ =>
-          (acc, Bytes.empty)
+      if xs.nonEmpty then
+        val rs = anyRead(xs)
+        rs match
+          case UnknownReadState(_) =>
+            iterate(acc.appended(UnknownKeySeq(xs)), Bytes.empty)
+          case PartialReadState(_) =>
+            (acc, xs)
+          case ParsedReadState(keqSeq, rest) =>
+            iterate(acc.appended(keqSeq), rest)
+      else (acc, Bytes.empty)
 
     iterate(Vector.empty[KeySeq], bytes)
 
