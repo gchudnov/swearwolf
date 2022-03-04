@@ -4,7 +4,7 @@ import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.internal.eventloop.TermEventLoop
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
-import com.github.gchudnov.swearwolf.util.internal.Monoid
+import com.github.gchudnov.swearwolf.util.func.Monoid
 
 /**
  * Event-Loop Interface

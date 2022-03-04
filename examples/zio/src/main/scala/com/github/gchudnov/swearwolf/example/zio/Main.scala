@@ -45,12 +45,15 @@ object Main extends ZIOAppDefault:
     // NOTE: the size of the screen is not being handled correctly
 
   // TODO: is it possible to make the event-loop async ?
+  // TODO: how to handle the key async and report the result so the event-loop can stop?
+
+  // TODO: make an EventLoop as F[_] ??? so that ZIo can be natively used, check sttp?
 
   private def fromCallback(cb: Emit[Any, Throwable, KeySeq, Unit], eventLoop: EventLoop): Unit =
     def handler(keySeq: KeySeq): Either[Throwable, EventLoop.Action] =
       // TODO: how to make async ?
       cb(ZIO.succeed(Chunk(keySeq)))
-      Right(EventLoop.Action.Continue)
+      Right(EventLoop.Action.Continue) // TODO: sync / async?
 
     eventLoop
       .run(handler)
