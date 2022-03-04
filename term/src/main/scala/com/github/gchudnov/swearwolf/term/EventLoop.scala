@@ -5,33 +5,29 @@ import com.github.gchudnov.swearwolf.term.internal.eventloop.TermEventLoop
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 import com.github.gchudnov.swearwolf.util.func.Monoid
+import com.github.gchudnov.swearwolf.util.func.MonadError
 
 /**
  * Event-Loop Interface
  */
-trait EventLoop:
-  def run(handler: KeySeqHandler): Either[Throwable, Unit]
-  def poll(): Either[Throwable, Option[KeySeq]]
+trait EventLoop[F[_]]:
+  def run(handler: KeySeqHandler[F]): F[Unit]
 
 object EventLoop:
   import KeySeqSyntax.*
+  import MonadError.*
 
-  type KeySeqHandler = KeySeq => Either[Throwable, EventLoop.Action]
+  type KeySeqHandler[F[_]] = KeySeq => F[EventLoop.Action]
 
-  given keySeqHandlerMonoid: Monoid[KeySeqHandler] with
-    def empty: KeySeqHandler =
-      (ks: KeySeq) => Right(Action.Continue)
+  given keySeqHandlerMonoid[F[_]: MonadError]: Monoid[KeySeqHandler[F]] with
+    def empty: KeySeqHandler[F] =
+      (ks: KeySeq) => summon[MonadError[F]].unit(Action.Continue)
 
-    extension (x: KeySeqHandler)
-      infix def combine(y: KeySeqHandler): KeySeqHandler =
+    extension (x: KeySeqHandler[F])
+      infix def combine(y: KeySeqHandler[F]): KeySeqHandler[F] =
         (ks: KeySeq) =>
-          val w1 = x(ks)
-          val w2 = y(ks)
-          (w1, w2) match
-            case (Left(e1), Left(e2))   => Left(e1)
-            case (Left(e1), Right(_))   => Left(e1)
-            case (Right(_), Left(e2))   => Left(e2)
-            case (Right(a1), Right(a2)) => Right(a1 | a2)
+          x(ks).flatMap(a1 => y(ks).map(a2 => a1 | a2))
+
 
   sealed trait Action
   object Action:

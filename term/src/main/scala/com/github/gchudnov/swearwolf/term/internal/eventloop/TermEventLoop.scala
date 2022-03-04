@@ -6,6 +6,7 @@ import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentLinkedQueue
 import scala.annotation.tailrec
 import scala.jdk.CollectionConverters.*
@@ -13,7 +14,8 @@ import scala.jdk.CollectionConverters.*
 private[eventloop] final class TermEventLoop(term: Term) extends EventLoop:
   import TermEventLoop.*
 
-  private val q = ConcurrentLinkedQueue[KeySeq]
+  private val bytes = ConcurrentLinkedDeque[Byte]
+  private val keys = ConcurrentLinkedQueue[KeySeq]
 
   override def run(handler: KeySeqHandler): Either[Throwable, Unit] =
     val loopHandler = exitHandler | handler
@@ -50,14 +52,14 @@ private[eventloop] final class TermEventLoop(term: Term) extends EventLoop:
         case Right(maybeN) =>
           maybeN match
             case Some(n) if n > 0 =>
-              Right(Some(q.poll()))
+              Right(Some(keys.poll()))
             case Some(n) if n == 0 =>
               iterate()
             case _ =>
               Right(None)
 
-    if q.isEmpty then iterate()
-    else Right(Some(q.poll()))
+    if keys.isEmpty then iterate()
+    else Right(Some(keys.poll()))
 
   /**
    * Read KeySeq from the Terminal and put them to the Event-Loop queue
@@ -68,7 +70,7 @@ private[eventloop] final class TermEventLoop(term: Term) extends EventLoop:
     for
       maybeKs <- term.blockingPoll()
       maybeN = maybeKs.map(ks =>
-                 q.addAll(ks.asJava)
+                 keys.addAll(ks.asJava)
                  ks.size
                )
     yield maybeN
