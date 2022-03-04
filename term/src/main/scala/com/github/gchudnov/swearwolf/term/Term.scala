@@ -5,18 +5,23 @@ import com.github.gchudnov.swearwolf.term.keys.KeySeq
 
 import java.io.BufferedOutputStream
 
-trait Term:
-  def write(bytes: Array[Byte]): Either[Throwable, Unit]
-  def write(seq: EscSeq): Either[Throwable, Unit]
-  def write(str: String): Either[Throwable, Unit]
+// TODO: is it worth to move poll to the Screen and instead operate with Bytes here?
 
-  def flush(): Either[Throwable, Unit]
+trait Term[F[_]]:
+  def write(bytes: Array[Byte]): F[Unit]
 
-  def blockingPoll(): Either[Throwable, Option[List[KeySeq]]]
-  def poll(): Either[Throwable, Option[List[KeySeq]]]
+  def write(seq: EscSeq): F[Unit] =
+    write(seq.bytes)
+
+  def write(str: String): F[Unit] =
+    write(str.getBytes())
+
+  def flush(): F[Unit]
+
+  def poll(): F[Option[List[KeySeq]]]
 
 object Term:
-  private val OutBufferSizeBytes = 131072
+  private val OutBufferSizeBytes = 4096
 
   def make(): Term =
     val is  = System.in
