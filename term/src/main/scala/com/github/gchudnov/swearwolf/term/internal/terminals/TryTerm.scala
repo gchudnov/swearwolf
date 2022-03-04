@@ -11,14 +11,17 @@ import com.github.gchudnov.swearwolf.util.func.FunctionK
  */
 final class TryTerm(delegate: Term[Identity]) extends Term[Try]:
 
+  override def read(): Try[Option[Array[Byte]]] =
+    Try(delegate.read())
+
   override def write(bytes: Array[Byte]): Try[Unit] =
     Try(delegate.write(bytes))
 
   override def flush(): Try[Unit] =
     Try(delegate.flush())
 
-  override def poll(): Try[Option[List[KeySeq]]] =
-    Try(delegate.poll())
+  override def close(): Try[Unit] =
+    Try(delegate.close())
 
   private val tryToId: FunctionK[Try, Identity] =
     new FunctionK[Try, Identity]:

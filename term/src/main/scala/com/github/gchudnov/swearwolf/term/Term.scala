@@ -8,17 +8,10 @@ import java.io.BufferedOutputStream
 // TODO: is it worth to move poll to the Screen and instead operate with Bytes here?
 
 trait Term[F[_]]:
+  def read(): F[Option[Array[Byte]]]
   def write(bytes: Array[Byte]): F[Unit]
-
-  def write(seq: EscSeq): F[Unit] =
-    write(seq.bytes)
-
-  def write(str: String): F[Unit] =
-    write(str.getBytes())
-
   def flush(): F[Unit]
-
-  def poll(): F[Option[List[KeySeq]]]
+  def close(): F[Unit]
 
 object Term:
   private val OutBufferSizeBytes = 4096
@@ -31,3 +24,6 @@ object Term:
     new IOTerm(is, os)
 
     // TODO: should we add read / readLn ??
+
+
+//   def poll(): F[Option[List[KeySeq]]] -- move somewhere else

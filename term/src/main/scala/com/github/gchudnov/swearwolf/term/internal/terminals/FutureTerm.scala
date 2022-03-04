@@ -7,6 +7,8 @@ import scala.util.Future
 import com.github.gchudnov.swearwolf.util.func.FunctionK
 import scala.concurrent.Future
 
+// TODO: impl it
+
 final class FutureTerm {
 
 }

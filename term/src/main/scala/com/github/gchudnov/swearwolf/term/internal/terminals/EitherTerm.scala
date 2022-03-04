@@ -11,14 +11,17 @@ import scala.util.control.Exception.allCatch
  */
 final class EitherTerm(delegate: Term[Identity]) extends Term[Either[Throwable, *]]:
 
+  override def read(): Either[Throwable, Option[Array[Byte]]] =
+    allCatch.either(delegate.read())
+
   override def write(bytes: Array[Byte]): Either[Throwable, Unit] =
     allCatch.either(delegate.write(bytes))
 
-  override def flush(): Either[Throwable, Unit] =
+  override def flush(): Either[Throwable, Unit] = 
     allCatch.either(delegate.flush())
 
-  override def poll(): Either[Throwable, Option[List[KeySeq]]] =
-    allCatch.either(delegate.poll())
+  override def close(): Either[Throwable, Unit] =
+    allCatch.either(delegate.close())
 
   private val eitherToId: FunctionK[Either[Throwable, *], Identity] =
     new FunctionK[Either[Throwable, *], Identity]:

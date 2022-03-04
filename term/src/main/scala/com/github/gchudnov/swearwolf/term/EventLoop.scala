@@ -61,3 +61,6 @@ object EventLoop:
 
   def make(term: Term): EventLoop =
     TermEventLoop.make(term)
+
+
+//   def poll(): F[Option[List[KeySeq]]] -- move here?
