@@ -7,8 +7,10 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.term.EscSeq
 import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
 
-abstract class AnyScreen[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends Screen[F] {
+abstract class AnyScreen[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends Screen[F]:
+  import AnyScreen.*
 
   override def put(value: String): F[Unit] =
     put(value.getBytes)
@@ -17,8 +19,8 @@ abstract class AnyScreen[F[_]](term: Term[F])(implicit val ME: MonadError[F]) ex
     put(toBytes(value, style))
 
   override def put(value: Span): F[Unit] =
-    val bytes = TermScreen.compile(value)
-    put(bytes.toArray)
+    val bytes = SpanCompiler.compile(value)
+    put(bytes.asArray)
 
   override def put(pt: Point, value: String): F[Unit] =
     put(pt, value.getBytes)
@@ -27,17 +29,14 @@ abstract class AnyScreen[F[_]](term: Term[F])(implicit val ME: MonadError[F]) ex
     put(pt, toBytes(value, style))
 
   override def put(pt: Point, value: Span): F[Unit] =
-    val bytes = TermScreen.compile(value)
-    put(pt, bytes.toArray)
+    val bytes = SpanCompiler.compile(value)
+    put(pt, bytes.asArray)
 
   override def put(pt: Point, value: Array[Byte]): F[Unit] =
-    if pt.y >= size.height || pt.y < 0 then Right(())
+    if pt.y >= size.height || pt.y < 0 then ME.pure(())
     else
       val bytes = EscSeq.cursorPosition(pt).bytes ++ value
       put(bytes)
-
-}
-
 
 object AnyScreen:
   def toEscSeq(style: TextStyle): Seq[EscSeq] =

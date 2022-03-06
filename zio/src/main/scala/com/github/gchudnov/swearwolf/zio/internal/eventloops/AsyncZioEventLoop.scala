@@ -11,3 +11,5 @@ final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends AsyncEventLoop[Task
 
   override def run(handler: KeySeqHandler[Task]): Task[Unit] =
     pollOnce().mapZIO(handler).doWhile(_ == EventLoop.Action.Continue)
+
+    // TODO: see if we can use iterate ??? try to unify code to make it simple

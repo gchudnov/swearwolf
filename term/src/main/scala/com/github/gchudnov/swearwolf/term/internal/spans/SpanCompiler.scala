@@ -14,7 +14,7 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 /**
  * Transforms Span to an array of Bytes that can be sent to the terminal.
  */
-private[internal] object SpanCompiler:
+private[term] object SpanCompiler:
 
   private sealed trait Switch
   private case object On  extends Switch
