@@ -1,7 +1,6 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.term.internal.eventloop.TermEventLoop
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 import com.github.gchudnov.swearwolf.util.func.Monoid
@@ -18,6 +17,12 @@ object EventLoop:
   import MonadError.*
 
   type KeySeqHandler[F[_]] = KeySeq => F[EventLoop.Action]
+
+  def defaultExitKeySeqAction = (ks: KeySeq) => 
+    if (ks.isEsc) then 
+      EventLoop.Action.Exit 
+    else
+      EventLoop.Action.Continue
 
   given keySeqHandlerMonoid[F[_]: MonadError]: Monoid[KeySeqHandler[F]] with
     def empty: KeySeqHandler[F] =
@@ -57,6 +62,3 @@ object EventLoop:
 
   // def make(term: Term): EventLoop =
   //   TermEventLoop.make(term)
-
-
-//   def poll(): F[Option[List[KeySeq]]] -- move here?

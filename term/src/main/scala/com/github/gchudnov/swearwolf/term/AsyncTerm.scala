@@ -10,7 +10,7 @@ import java.io.BufferedOutputStream
 /**
  * Base Asynchronous Terminal
  */
-abstract class AsyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(implicit val monad: MonadAsyncError[F]) extends Term[F]:
+abstract class AsyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(implicit val ME: MonadAsyncError[F]) extends Term[F]:
   import MonadError.*
 
   private val bufOutSize: Int = 4096
@@ -18,30 +18,30 @@ abstract class AsyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Bool
 
   override def read(): F[Option[Array[Byte]]] =
     for
-      maybeFirstByte <- monad.blocking(IOTerm.nextChunk(in, 1))
+      maybeFirstByte <- ME.blocking(IOTerm.nextChunk(in, 1))
       allBytes <- maybeFirstByte match
                     case Some(first) =>
                       for
-                        maybeLastBytes <- monad.blocking(IOTerm.nextAvailableChunk(in))
+                        maybeLastBytes <- ME.blocking(IOTerm.nextAvailableChunk(in))
                         allBytes <- maybeLastBytes match
                                       case Some(last) =>
-                                        monad.eval(Some(first ++ last))
+                                        ME.eval(Some(first ++ last))
                                       case None =>
-                                        monad.eval(Some(first))
+                                        ME.eval(Some(first))
                       yield allBytes
                     case None =>
-                      monad.eval(None)
+                      ME.eval(None)
     yield allBytes
 
   override def write(bytes: Array[Byte]): F[Unit] =
-    monad.eval(out.write(bytes))
+    ME.eval(out.write(bytes))
 
   override def flush(): F[Unit] =
-    monad.eval(out.flush())
+    ME.eval(out.flush())
 
   override def close(): F[Unit] =
     if (isClose) then
-      val inF  = monad.eval(in.close())
-      val outF = monad.eval(out.close())
-      monad.ensure(inF, outF)
-    else monad.unit(())
+      val inF  = ME.eval(in.close())
+      val outF = ME.eval(out.close())
+      ME.ensure(inF, outF)
+    else ME.unit(())

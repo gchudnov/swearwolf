@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.term.internal.eventloop
+package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
@@ -18,7 +18,7 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 // TODO: make MonadError as implicit | NOTE: this class is Async
 
-abstract class SyncEventLoop[F[_]](term: Term[F])(implicit val monad: MonadError[F]) extends EventLoop[F]:
+abstract class SyncEventLoop[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends EventLoop[F]:
   ???
 //   import SyncEventLoop.*
 //   import EventLoop.*
@@ -33,7 +33,7 @@ abstract class SyncEventLoop[F[_]](term: Term[F])(implicit val monad: MonadError
 //       EventLoop.Action.Exit
 //     else 
 //       EventLoop.Action.Continue
-//     monad.unit(action)
+//     ME.unit(action)
 
 //   // type KeySeqHandler[F[_]] = KeySeq => F[EventLoop.Action]
 
@@ -117,7 +117,7 @@ abstract class SyncEventLoop[F[_]](term: Term[F])(implicit val monad: MonadError
 //     val (ks, rest) = Reader.parseBytes(Bytes(bytes.toArray))
 //     prepend(byteQueue, rest.toArray)
 //     // TODO: impl, no return here
-//     monad.unit(ks.toList)
+//     ME.unit(ks.toList)
 
 //   private def dequeue[T](q: ConcurrentLinkedDeque[T]): List[T] =
 //     @tailrec

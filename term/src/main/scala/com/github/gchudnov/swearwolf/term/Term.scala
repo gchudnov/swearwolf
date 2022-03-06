@@ -1,6 +1,5 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.term.internal.IOTerm
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 
 import java.io.BufferedOutputStream
@@ -12,7 +11,7 @@ trait Term[F[_]]:
   def close(): F[Unit]
 
 object Term:
-  private val OutBufferSizeBytes = 4096
+  // private val OutBufferSizeBytes = 4096
 
   // def make(): Term =
   //   val is  = System.in

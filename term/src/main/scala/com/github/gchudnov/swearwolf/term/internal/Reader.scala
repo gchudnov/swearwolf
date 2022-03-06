@@ -14,7 +14,7 @@ import scala.annotation.tailrec
  *
  * https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_sequences
  */
-private[internal] object Reader:
+private[term] object Reader:
 
   private val readers = List[KeySeqReader](CharReader, CtrlReader, EscReader, MouseReader)
 
