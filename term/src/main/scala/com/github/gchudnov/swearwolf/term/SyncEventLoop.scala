@@ -13,41 +13,5 @@ import com.github.gchudnov.swearwolf.util.func.Monoid
 import com.github.gchudnov.swearwolf.term.internal.Reader
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
-abstract class SyncEventLoop[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends EventLoop[F]:
-  import SyncEventLoop.*
-  import EventLoop.*
-  import KeySeqSyntax.*
-  import MonadError.*
+abstract class SyncEventLoop[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends AnyEventLoop[F](term)(ME) {}
 
-  /**
-   * Reads the next KeySeq.
-   *
-   * A Blocking operation.
-   *
-   * Returns None if the input is closed, otherwise Some(KeySeq) and the accumulator that can be used to read the next KeySeq.
-   */
-  protected def iterate(acc: Acc): F[(Option[KeySeq], Acc)] =
-    acc match
-      case Acc(ks, rest) if ks.nonEmpty =>
-        ME.pure((Some(ks.head), Acc(ks.tail, rest)))
-      case Acc(ks, rest) if ks.isEmpty =>
-        val (xKs, xRest) = Reader.parseBytes(Bytes(rest))
-        if (xKs.nonEmpty) then iterate(Acc(xKs, xRest.asArray))
-        else
-          term.read().flatMap {
-            case Some(bytes) =>
-              val (yKs, yRest) = Reader.parseBytes(Bytes(bytes))
-              iterate(Acc(yKs, yRest.asArray))
-            case None =>
-              ME.pure((None, Acc(Nil, xRest.asArray)))
-          }
-
-private[term] object SyncEventLoop:
-  import KeySeqSyntax.*
-
-  final case class Acc(ks: Seq[KeySeq], rest: Seq[Byte])
-
-  object Acc:
-    val empty = Acc(Seq.empty[KeySeq], Seq.empty[Byte])
-
-// TODO: extract to AnyEventLoop

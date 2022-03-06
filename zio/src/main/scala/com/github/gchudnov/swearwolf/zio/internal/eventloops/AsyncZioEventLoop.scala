@@ -13,3 +13,9 @@ final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends AsyncEventLoop[Task
     pollOnce().mapZIO(handler).doWhile(_ == EventLoop.Action.Continue)
 
     // TODO: see if we can use iterate ??? try to unify code to make it simple
+
+
+    // TODO: use ZIO.iterate, OR probably ZStream.unfold, since it can be cancelled
+
+    // TODO: async + cancelable ??
+    
