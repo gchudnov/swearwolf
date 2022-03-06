@@ -8,7 +8,7 @@ import com.github.gchudnov.swearwolf.term.EscSeq
 import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 
 private[screens] abstract class BasicScreen extends Screen:
-  import BasicScreen.*
+  // import BasicScreen.*
 
   override def put(value: String): Either[Throwable, Unit] =
     put(value.getBytes)
@@ -36,35 +36,35 @@ private[screens] abstract class BasicScreen extends Screen:
       val bytes = EscSeq.cursorPosition(pt).bytes ++ value
       put(bytes)
 
-  private def toBytes(value: String, style: TextStyle): Array[Byte] =
-    val styleBytes = toEscSeq(style).map(_.bytes).reduce(_ ++ _)
-    val bytes      = styleBytes ++ value.getBytes ++ EscSeq.reset.bytes
-    bytes
+  // private def toBytes(value: String, style: TextStyle): Array[Byte] =
+  //   val styleBytes = toEscSeq(style).map(_.bytes).reduce(_ ++ _)
+  //   val bytes      = styleBytes ++ value.getBytes ++ EscSeq.reset.bytes
+  //   bytes
 
-object BasicScreen:
-  private def toEscSeq(style: TextStyle): Seq[EscSeq] =
-    style match
-      case a: TextStyleSeq =>
-        a.styles.flatMap(toEscSeq)
-      case TextStyle.Empty =>
-        Seq(EscSeq.empty)
-      case TextStyle.Foreground(color) =>
-        Seq(EscSeq.foreground(color))
-      case TextStyle.Background(color) =>
-        Seq(EscSeq.background(color))
-      case TextStyle.Bold =>
-        Seq(EscSeq.bold)
-      case TextStyle.Italic =>
-        Seq(EscSeq.italic)
-      case TextStyle.Underline =>
-        Seq(EscSeq.underline)
-      case TextStyle.Blink =>
-        Seq(EscSeq.blink)
-      case TextStyle.Invert =>
-        Seq(EscSeq.invert)
-      case TextStyle.Strikethrough =>
-        Seq(EscSeq.strikethrough)
-      case TextStyle.Transparent =>
-        Seq.empty[EscSeq]
-      case TextStyle.NoColor =>
-        Seq.empty[EscSeq]
+// object BasicScreen:
+  // private def toEscSeq(style: TextStyle): Seq[EscSeq] =
+  //   style match
+  //     case a: TextStyleSeq =>
+  //       a.styles.flatMap(toEscSeq)
+  //     case TextStyle.Empty =>
+  //       Seq(EscSeq.empty)
+  //     case TextStyle.Foreground(color) =>
+  //       Seq(EscSeq.foreground(color))
+  //     case TextStyle.Background(color) =>
+  //       Seq(EscSeq.background(color))
+  //     case TextStyle.Bold =>
+  //       Seq(EscSeq.bold)
+  //     case TextStyle.Italic =>
+  //       Seq(EscSeq.italic)
+  //     case TextStyle.Underline =>
+  //       Seq(EscSeq.underline)
+  //     case TextStyle.Blink =>
+  //       Seq(EscSeq.blink)
+  //     case TextStyle.Invert =>
+  //       Seq(EscSeq.invert)
+  //     case TextStyle.Strikethrough =>
+  //       Seq(EscSeq.strikethrough)
+  //     case TextStyle.Transparent =>
+  //       Seq.empty[EscSeq]
+  //     case TextStyle.NoColor =>
+  //       Seq.empty[EscSeq]
