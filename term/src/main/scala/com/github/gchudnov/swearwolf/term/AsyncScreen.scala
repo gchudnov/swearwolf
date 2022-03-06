@@ -10,4 +10,5 @@ abstract class AsyncScreen[F[_]]()(implicit val ME: MonadAsyncError[F]) extends 
 
 }
 
-// TODO: add AnyScreen instead of BasicScreen ??? that is generic.
+// TODO: add AnyScreen instead of BasicScreen ??? that is generic. OR instead on AnyScreen, make AsyncScreen inherit from SyncScreen??
+// TODO: probably add AnyTerm as well.

@@ -49,3 +49,5 @@ private[term] object SyncEventLoop:
 
   object Acc:
     val empty = Acc(Seq.empty[KeySeq], Seq.empty[Byte])
+
+// TODO: extract to AnyEventLoop
