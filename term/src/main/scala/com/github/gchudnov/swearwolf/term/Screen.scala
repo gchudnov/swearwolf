@@ -45,7 +45,7 @@ trait Screen[F[_]]:
   def clear(): F[Unit]
   def flush(): F[Unit]
 
-  def close(): Unit
+  def close(): F[Unit]
 
 // object Screen:
 

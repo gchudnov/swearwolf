@@ -49,6 +49,3 @@ private[term] object SyncEventLoop:
 
   object Acc:
     val empty = Acc(Seq.empty[KeySeq], Seq.empty[Byte])
-
-  // def make(term: Term): TermEventLoop =
-  //   new TermEventLoop(term)

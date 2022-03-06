@@ -108,6 +108,3 @@ abstract class AsyncEventLoop[F[_]](term: Term[F])(implicit val ME: MonadAsyncEr
 
 private[term] object AsyncEventLoop:
   import KeySeqSyntax.*
-
-  // def make(term: Term): TermEventLoop =
-  //   new TermEventLoop(term)
