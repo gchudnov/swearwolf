@@ -9,7 +9,7 @@ import scala.util.Success
 
 class FutureMonad(implicit ec: ExecutionContext) extends MonadAsyncError[Future]:
 
-  override def unit[A](a: A): Future[A] =
+  override def pure[A](a: A): Future[A] =
     Future.successful(a)
 
   override def map[A, B](fa: Future[A])(f: (A) => B): Future[B] =

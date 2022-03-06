@@ -5,7 +5,7 @@ import scala.util.Failure
 import scala.util.Try
 
 trait MonadError[F[_]]:
-  def unit[A](a: A): F[A]
+  def pure[A](a: A): F[A]
   def map[A, B](fa: F[A])(f: A => B): F[B]
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
 
@@ -19,13 +19,13 @@ trait MonadError[F[_]]:
 
   protected def handleErrorWith_[A](fa: F[A])(f: PartialFunction[Throwable, F[A]]): F[A]
 
-  def eval[A](a: => A): F[A]         = map(unit(()))(_ => a)
+  def eval[A](a: => A): F[A]         = map(pure(()))(_ => a)
   def suspend[A](fa: => F[A]): F[A]  = flatten(eval(fa))
   def flatten[A](ffa: F[F[A]]): F[A] = flatMap[F[A], A](ffa)(identity)
 
   def fromTry[A](ta: Try[A]): F[A] =
     ta match
-      case Success(x) => unit(x)
+      case Success(x) => pure(x)
       case Failure(e) => error(e)
 
   def ensure[A](f: F[A], e: => F[Unit]): F[A]
@@ -42,4 +42,4 @@ object MonadError:
     def ensure(e: => F[Unit])(implicit ME: MonadError[F]): F[A]                            = ME.ensure(r, e)
 
   implicit final class MonadErrorValueOps[F[_], A](private val a: A) extends AnyVal:
-    def unit(implicit ME: MonadError[F]): F[A] = ME.unit(a)
+    def pure(implicit ME: MonadError[F]): F[A] = ME.pure(a)

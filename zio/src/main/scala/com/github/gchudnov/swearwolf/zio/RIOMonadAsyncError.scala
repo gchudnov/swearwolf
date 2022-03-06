@@ -6,7 +6,7 @@ import zio.{ RIO, UIO, ZIO }
 
 class RIOMonadAsyncError[R] extends MonadAsyncError[RIO[R, *]]:
 
-  override def unit[A](a: A): RIO[R, A] =
+  override def pure[A](a: A): RIO[R, A] =
     RIO.succeed(a)
 
   override def map[A, B](fa: RIO[R, A])(f: A => B): RIO[R, B] =

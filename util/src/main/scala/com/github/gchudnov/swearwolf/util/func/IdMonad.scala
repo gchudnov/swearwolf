@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.util.func
 
 object IdMonad extends MonadError[Identity]:
 
-  override def unit[A](a: A): Identity[A] =
+  override def pure[A](a: A): Identity[A] =
     a
 
   override def map[A, B](fa: Identity[A])(f: (A) => B): Identity[B] =

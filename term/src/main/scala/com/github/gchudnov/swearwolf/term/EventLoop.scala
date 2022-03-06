@@ -12,6 +12,7 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 trait EventLoop[F[_]]:
   def run(handler: KeySeqHandler[F]): F[Unit]
 
+
 object EventLoop:
   import KeySeqSyntax.*
   import MonadError.*
@@ -26,7 +27,7 @@ object EventLoop:
 
   given keySeqHandlerMonoid[F[_]: MonadError]: Monoid[KeySeqHandler[F]] with
     def empty: KeySeqHandler[F] =
-      (ks: KeySeq) => summon[MonadError[F]].unit(Action.Continue)
+      (ks: KeySeq) => summon[MonadError[F]].pure(Action.Continue)
 
     extension (x: KeySeqHandler[F])
       infix def combine(y: KeySeqHandler[F]): KeySeqHandler[F] =

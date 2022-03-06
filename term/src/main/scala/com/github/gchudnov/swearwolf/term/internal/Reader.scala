@@ -39,7 +39,8 @@ private[term] object Reader:
             iterate(acc.appended(keqSeq), rest)
       else (acc, Bytes.empty)
 
-    iterate(Vector.empty[KeySeq], bytes)
+    if bytes.nonEmpty then iterate(Vector.empty[KeySeq], bytes)
+    else (Vector.empty[KeySeq], Bytes.empty)
 
   private def anyRead(bytes: Bytes): ReadState =
     readers.foldLeft(ReadState.empty) { (acc, reader) =>

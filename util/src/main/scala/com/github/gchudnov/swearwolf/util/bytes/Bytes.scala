@@ -8,7 +8,7 @@ import scala.language.strictEquality
 final class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
 
   override def equals(other: Any): Boolean = other match
-    case that: Bytes => value.sameElements(that.toArray)
+    case that: Bytes => value.sameElements(that.asArray)
     case _           => false
 
   override def hashCode(): Int = value.hashCode()
@@ -32,7 +32,7 @@ final class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
   def size: Int =
     value.size
 
-  def toArray: Array[Byte] =
+  def asArray: Array[Byte] =
     value.clone()
 
   def asString: String =
@@ -49,6 +49,9 @@ object Bytes:
   def apply(bytes: Array[Byte]): Bytes =
     new Bytes(bytes)
 
+  def apply(bytes: Seq[Byte]): Bytes =
+    new Bytes(bytes.toArray)    
+
   def apply(byte: Byte): Bytes =
     new Bytes(Array(byte))
 
@@ -59,10 +62,10 @@ object Bytes:
 
   extension (bytes: Bytes)
     def +(other: Bytes): Bytes =
-      new Bytes(bytes.toArray ++ other.toArray)
+      new Bytes(bytes.asArray ++ other.asArray)
 
     def +:(b: Byte): Bytes =
-      new Bytes(b +: bytes.toArray)
+      new Bytes(b +: bytes.asArray)
 
   extension (str: String)
     def asBytes: Bytes =
@@ -72,5 +75,5 @@ object Bytes:
     extension (a: Bytes)
       def show: String =
         val text = a.asString.replaceAll("\\p{C}", ".");
-        val hex  = a.toArray.map(b => f"$b%02x").mkString(" ")
+        val hex  = a.asArray.map(b => f"$b%02x").mkString(" ")
         s"|${hex}|${text}|"

@@ -6,7 +6,7 @@ import scala.util.Failure
 
 object TryMonad extends MonadError[Try]:
 
-  override def unit[A](a: A): Try[A] =
+  override def pure[A](a: A): Try[A] =
     Success(a)
 
   override def map[A, B](ta: Try[A])(f: (A) => B): Try[B] =

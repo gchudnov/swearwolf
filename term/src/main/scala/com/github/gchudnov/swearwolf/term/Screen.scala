@@ -14,46 +14,46 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 // TODO: add writer trait so we can implement it as an object and make a passive screen ? Add an example
 
-trait Screen:
+trait Screen[F[_]]:
   def size: Size
 
-  def onSize(sz: Size): Either[Throwable, Unit]
+  def onSize(sz: Size): F[Unit]
 
   // TODO: extract to writer
 
-  def put(value: String): Either[Throwable, Unit]
-  def put(value: String, style: TextStyle): Either[Throwable, Unit]
-  def put(value: Span): Either[Throwable, Unit]
-  def put(value: Array[Byte]): Either[Throwable, Unit]
+  def put(value: String): F[Unit]
+  def put(value: String, style: TextStyle): F[Unit]
+  def put(value: Span): F[Unit]
+  def put(value: Array[Byte]): F[Unit]
 
-  def put(pt: Point, value: String): Either[Throwable, Unit]
-  def put(pt: Point, value: String, style: TextStyle): Either[Throwable, Unit]
-  def put(pt: Point, value: Span): Either[Throwable, Unit]
-  def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit]
+  def put(pt: Point, value: String): F[Unit]
+  def put(pt: Point, value: String, style: TextStyle): F[Unit]
+  def put(pt: Point, value: Span): F[Unit]
+  def put(pt: Point, value: Array[Byte]): F[Unit]
 
   // TODO: ^^^ extract to writer
 
-  def cursorHide(): Either[Throwable, Unit]
-  def cursorShow(): Either[Throwable, Unit]
+  def cursorHide(): F[Unit]
+  def cursorShow(): F[Unit]
 
-  def mouseTrack(): Either[Throwable, Unit]
-  def mouseUntrack(): Either[Throwable, Unit]
+  def mouseTrack(): F[Unit]
+  def mouseUntrack(): F[Unit]
 
-  def bufferNormal(): Either[Throwable, Unit]
-  def bufferAlt(): Either[Throwable, Unit]
+  def bufferNormal(): F[Unit]
+  def bufferAlt(): F[Unit]
 
-  def clear(): Either[Throwable, Unit]
-  def flush(): Either[Throwable, Unit]
+  def clear(): F[Unit]
+  def flush(): F[Unit]
 
   def close(): Unit
 
-object Screen:
+// object Screen:
 
-  def make(term: Term): Either[Throwable, Screen] =
-    TermScreen.make(term)
+//   def make(term: Term): Either[Throwable, Screen] =
+//     TermScreen.make(term)
 
-  def array(size: Size, cellChar: Char = ArrayScreen.DefaultCellChar, borderChar: Option[Char] = Some(ArrayScreen.DefaultBorderChar)): Either[Throwable, Screen] =
-    Right(ArrayScreen.make(size, cellChar, borderChar))
+//   def array(size: Size, cellChar: Char = ArrayScreen.DefaultCellChar, borderChar: Option[Char] = Some(ArrayScreen.DefaultBorderChar)): Either[Throwable, Screen] =
+//     Right(ArrayScreen.make(size, cellChar, borderChar))
 
-  def compile(span: Span): Bytes =
-    TermScreen.compile(span)
+//   def compile(span: Span): Bytes =
+//     TermScreen.compile(span)

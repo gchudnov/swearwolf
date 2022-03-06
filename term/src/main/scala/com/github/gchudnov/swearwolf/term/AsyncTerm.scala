@@ -44,4 +44,4 @@ abstract class AsyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Bool
       val inF  = ME.eval(in.close())
       val outF = ME.eval(out.close())
       ME.ensure(inF, outF)
-    else ME.unit(())
+    else ME.pure(())

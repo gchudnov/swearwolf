@@ -43,4 +43,4 @@ abstract class SyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boole
       val inF  = ME.eval(in.close())
       val outF = ME.eval(out.close())
       ME.ensure(inF, outF)
-    else ME.unit(())
+    else ME.pure(())

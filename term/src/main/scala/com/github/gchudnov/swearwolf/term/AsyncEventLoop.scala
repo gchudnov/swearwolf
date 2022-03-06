@@ -26,9 +26,6 @@ abstract class AsyncEventLoop[F[_]](term: Term[F])(implicit val ME: MonadAsyncEr
   private val byteQueue = ConcurrentLinkedDeque[Byte]
   private val keyQueue = ConcurrentLinkedQueue[KeySeq]
 
-  val exitHandler: KeySeqHandler[F] = (ks: KeySeq) =>
-    ME.unit(defaultExitKeySeqAction(ks))
-
   /**
    * Returns the next KeySeq either from the queue or by reading from the terminal.
    * 
@@ -45,17 +42,17 @@ abstract class AsyncEventLoop[F[_]](term: Term[F])(implicit val ME: MonadAsyncEr
             if nKeySeq == 0 then
               iterate()
             else
-              ME.unit(Some(keyQueue.poll()))
-          case Some(nBytes) if nBytes == 0 =>
+              ME.pure(Some(keyQueue.poll()))
+          case Some(nBytes) =>
             iterate()
           case None =>
-            ME.unit(None)
+            ME.pure(None)
         }
 
     if keyQueue.isEmpty then 
       iterate()
     else 
-      ME.unit(Some(keyQueue.poll()))
+      ME.pure(Some(keyQueue.poll()))
 
   /**
    * Read next chunk of Bytes from the Term and insert them into the Bytes Queue.
@@ -84,7 +81,7 @@ abstract class AsyncEventLoop[F[_]](term: Term[F])(implicit val ME: MonadAsyncEr
   private def pumpBytesToKeySeq(): Int =
     val bytes = dequeue(byteQueue)
     val (ks, rest) = Reader.parseBytes(Bytes(bytes.toArray))
-    prepend(byteQueue, rest.toArray)
+    prepend(byteQueue, rest.asArray)
     append(keyQueue, ks)
     ks.size
 

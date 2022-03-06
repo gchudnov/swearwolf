@@ -7,7 +7,7 @@ import scala.util.Success
 object EitherMonad extends MonadError[Either[Throwable, *]]:
   type R[+A] = Either[Throwable, A]
 
-  override def unit[A](a: A): R[A] =
+  override def pure[A](a: A): R[A] =
     Right(a)
 
   override def map[A, B](ra: R[A])(f: A => B): R[B] =

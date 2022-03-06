@@ -11,50 +11,52 @@ import java.nio.file.Path
 import java.io.FileOutputStream
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
-final class LogTerm(output: OutputStream, inner: Term) extends Term:
+final class LogTerm()
 
-  private val pw = new PrintWriter(new OutputStreamWriter(output, UTF_8))
+// final class LogTerm(output: OutputStream, inner: Term) extends Term:
 
-  override def write(bytes: Array[Byte]): Either[Throwable, Unit] =
-    val data = Bytes(bytes)
-    pw.print(s"write(Array[Byte]): ${data.show} ...")
-    withLogResult(inner.write(bytes))
+//   private val pw = new PrintWriter(new OutputStreamWriter(output, UTF_8))
 
-  override def write(seq: EscSeq): Either[Throwable, Unit] =
-    val data = Bytes(seq.value.getBytes)
-    pw.print(s"write(EscSeq): ${data.show} ...")
-    withLogResult(inner.write(seq))
+//   override def write(bytes: Array[Byte]): Either[Throwable, Unit] =
+//     val data = Bytes(bytes)
+//     pw.print(s"write(Array[Byte]): ${data.show} ...")
+//     withLogResult(inner.write(bytes))
 
-  override def write(str: String): Either[Throwable, Unit] =
-    val data = str
-    pw.print(s"write(String): ${data} ...")
-    withLogResult(inner.write(str))
+//   override def write(seq: EscSeq): Either[Throwable, Unit] =
+//     val data = Bytes(seq.value.getBytes)
+//     pw.print(s"write(EscSeq): ${data.show} ...")
+//     withLogResult(inner.write(seq))
 
-  override def flush(): Either[Throwable, Unit] =
-    pw.print("flush() ...")
-    withLogResult(inner.flush())
+//   override def write(str: String): Either[Throwable, Unit] =
+//     val data = str
+//     pw.print(s"write(String): ${data} ...")
+//     withLogResult(inner.write(str))
 
-  override def blockingPoll(): Either[Throwable, Option[List[KeySeq]]] =
-    pw.print("blockingPoll() ...")
-    withLogResult(inner.blockingPoll())
+//   override def flush(): Either[Throwable, Unit] =
+//     pw.print("flush() ...")
+//     withLogResult(inner.flush())
 
-  override def poll(): Either[Throwable, Option[List[KeySeq]]] =
-    pw.print("poll() ...")
-    withLogResult(inner.poll())
+//   override def blockingPoll(): Either[Throwable, Option[List[KeySeq]]] =
+//     pw.print("blockingPoll() ...")
+//     withLogResult(inner.blockingPoll())
 
-  private def withLogResult[A](e: Either[Throwable, A]): Either[Throwable, A] =
-    e match
-      case Left(e) =>
-        pw.println("ERR: " + e.getMessage)
-        pw.flush()
-        Left(e)
-      case Right(a) =>
-        pw.println("OK: " + a)
-        pw.flush()
-        Right(a)
+//   override def poll(): Either[Throwable, Option[List[KeySeq]]] =
+//     pw.print("poll() ...")
+//     withLogResult(inner.poll())
 
-object LogTerm:
+//   private def withLogResult[A](e: Either[Throwable, A]): Either[Throwable, A] =
+//     e match
+//       case Left(e) =>
+//         pw.println("ERR: " + e.getMessage)
+//         pw.flush()
+//         Left(e)
+//       case Right(a) =>
+//         pw.println("OK: " + a)
+//         pw.flush()
+//         Right(a)
 
-  def make(path: Path, inner: Term): LogTerm =
-    val outStream = new FileOutputStream(path.toFile)
-    new LogTerm(outStream, inner)
+// object LogTerm:
+
+//   def make(path: Path, inner: Term): LogTerm =
+//     val outStream = new FileOutputStream(path.toFile)
+//     new LogTerm(outStream, inner)
