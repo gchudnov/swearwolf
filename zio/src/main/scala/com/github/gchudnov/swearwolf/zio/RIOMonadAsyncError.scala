@@ -18,7 +18,7 @@ class RIOMonadAsyncError[R] extends MonadAsyncError[RIO[R, *]]:
   override def async[A](register: (Either[Throwable, A] => Unit) => Canceler): RIO[R, A] =
     RIO.asyncInterrupt { cb =>
       val canceler = register {
-        case Left(a)  => cb(RIO.fail(a))
+        case Left(t)  => cb(RIO.fail(t))
         case Right(a) => cb(RIO.succeed(a))
       }
 
