@@ -9,7 +9,7 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
 
-abstract class AnyWriter[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends Writer[F]:
+abstract class AnyWriter[F[_]](term: Term[F])(implicit ME: MonadError[F]) extends Writer[F]:
   import AnyWriter.*
 
   override def put(value: String): F[Unit] =
@@ -21,6 +21,9 @@ abstract class AnyWriter[F[_]](term: Term[F])(implicit val ME: MonadError[F]) ex
   override def put(value: Span): F[Unit] =
     val bytes = SpanCompiler.compile(value)
     put(bytes.asArray)
+
+  override def put(value: Array[Byte]): F[Unit] =
+    term.write(value)
 
 object AnyWriter:
   def toEscSeq(style: TextStyle): Seq[EscSeq] =

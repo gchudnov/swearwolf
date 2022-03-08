@@ -17,7 +17,7 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
 /**
  * Any EventLoop
  */
-abstract class AnyEventLoop[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends EventLoop[F]:
+abstract class AnyEventLoop[F[_]](term: Term[F])(implicit ME: MonadError[F]) extends EventLoop[F]:
   import AnyEventLoop.*
   import EventLoop.*
   import KeySeqSyntax.*

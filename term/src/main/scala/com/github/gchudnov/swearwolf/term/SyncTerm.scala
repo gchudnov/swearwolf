@@ -8,4 +8,4 @@ import java.io.BufferedOutputStream
 /**
  * Synchronous Terminal
  */
-abstract class SyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(implicit val ME: MonadError[F]) extends AnyTerm[F](in, out, isClose)(ME) {}
+abstract class SyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(implicit ME: MonadError[F]) extends AnyTerm[F](in, out, isClose)(ME) {}

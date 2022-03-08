@@ -8,7 +8,7 @@ import java.io.BufferedOutputStream
 /**
  * Any Terminal
  */
-abstract class AnyTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(implicit val ME: MonadError[F]) extends Term[F]:
+abstract class AnyTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(implicit ME: MonadError[F]) extends Term[F]:
   import MonadError.*
 
   private val bufOutSize: Int = 4096

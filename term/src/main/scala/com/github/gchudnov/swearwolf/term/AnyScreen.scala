@@ -10,7 +10,7 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
 
-abstract class AnyScreen[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends AnyWriter[F](term)(ME) with Screen[F]:
+abstract class AnyScreen[F[_]](term: Term[F])(implicit ME: MonadError[F]) extends AnyWriter[F](term)(ME) with Screen[F]:
   import AnyWriter.*
 
   override def put(pt: Point, value: String): F[Unit] =

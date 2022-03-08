@@ -6,8 +6,13 @@ import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen
 import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen.TermEffect
+import com.github.gchudnov.swearwolf.util.geometry.Size
 
 final class EitherShellScreen(term: Term[Either[Throwable, *]], rollback: List[TermEffect[Either[Throwable, *]]]) extends SyncScreen(term)(EitherMonad) {
+
+  override def size: Either[Throwable, Option[Size]] = ???
+
+  override def close(): F[Unit] = ???
 
 }
 
