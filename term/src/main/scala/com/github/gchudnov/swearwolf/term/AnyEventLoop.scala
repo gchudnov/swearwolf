@@ -36,12 +36,12 @@ abstract class AnyEventLoop[F[_]](term: Term[F])(implicit ME: MonadError[F]) ext
         ME.pure(Some(ks.head, Acc(ks.tail, rest)))
       case Acc(ks, rest) if ks.isEmpty =>
         val (xKs, xRest) = Reader.parseBytes(Bytes(rest))
-        if (xKs.nonEmpty) then iterate(Acc(xKs, xRest.asArray))
+        if (xKs.nonEmpty) then iterate(Acc(xKs, xRest.asSeq))
         else
           term.read().flatMap {
             case Some(bytes) =>
               val (yKs, yRest) = Reader.parseBytes(Bytes(bytes))
-              iterate(Acc(yKs, yRest.asArray))
+              iterate(Acc(yKs, yRest.asSeq))
             case None =>
               ME.pure(None)
           }

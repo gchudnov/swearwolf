@@ -35,6 +35,9 @@ final class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
   def asArray: Array[Byte] =
     value.clone()
 
+  def asSeq: IndexedSeq[Byte] =
+    value.toIndexedSeq
+
   def asString: String =
     new String(value, StandardCharsets.UTF_8)
 
