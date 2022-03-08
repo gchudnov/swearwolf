@@ -22,17 +22,15 @@ final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventL
     def loop(acc: Acc): Either[Throwable, Unit] =
       iterate(acc) match
         case Left(t) => Left(t)
-        case Right((maybeKeySeq: Option[KeySeq], xAcc: Acc)) =>
-          maybeKeySeq match
-            case Some(ks) =>
-              handler(ks) match
-                case Left(t) => Left(t)
-                case Right(action) if action == EventLoop.Action.Continue =>
-                  loop(xAcc)
-                case _ =>
-                  Right(())
-            case None =>
+        case Right(Some(ks: KeySeq, xAcc: Acc)) =>
+          handler(ks) match
+            case Left(t) => Left(t)
+            case Right(action) if action == EventLoop.Action.Continue =>
+              loop(xAcc)
+            case _ =>
               Right(())
+        case Right(None) =>
+          Right(())
 
           loop(acc)
 

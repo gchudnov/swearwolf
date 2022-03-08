@@ -12,7 +12,7 @@ final class EitherShellScreen(term: Term[Either[Throwable, *]], rollback: List[T
 
   override def size: Either[Throwable, Option[Size]] = ???
 
-  override def close(): F[Unit] = ???
+  override def close(): Either[Throwable, Unit] = ???
 
 }
 
