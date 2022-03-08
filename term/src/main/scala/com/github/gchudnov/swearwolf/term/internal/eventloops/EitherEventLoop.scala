@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.term.internal.eventloops
 
 import com.github.gchudnov.swearwolf.term.SyncEventLoop
+import com.github.gchudnov.swearwolf.term.AnyEventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
@@ -13,7 +14,7 @@ import scala.annotation.tailrec
  * Synchronous EventLoop.
  */
 final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventLoop[Either[Throwable, *]](term)(EitherMonad):
-  import SyncEventLoop.*
+  import AnyEventLoop.*
 
   override def run(handler: KeySeqHandler[Either[Throwable, *]]): Either[Throwable, Unit] =
 

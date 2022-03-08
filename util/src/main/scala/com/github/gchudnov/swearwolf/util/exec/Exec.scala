@@ -1,10 +1,10 @@
 package com.github.gchudnov.swearwolf.util.exec
 
-import scala.util.control.Exception.nonFatalCatch
+import com.github.gchudnov.swearwolf.util.func.MonadError
 
 object Exec:
   /**
    * Execute the given array of arguments.
    */
-  def exec(as: Array[String]): Either[Throwable, Unit] =
-    nonFatalCatch.either(Runtime.getRuntime.exec(as))
+  def exec[F[_]](as: Array[String])(implicit ME: MonadError[F]): F[Unit] =
+    ME.attempt(Runtime.getRuntime.exec(as))

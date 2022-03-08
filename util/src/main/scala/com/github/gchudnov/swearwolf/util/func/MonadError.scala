@@ -28,6 +28,8 @@ trait MonadError[F[_]]:
       case Success(x) => pure(x)
       case Failure(e) => error(e)
 
+  def attempt[A](a: => A): F[A] = eval(a)
+
   def ensure[A](f: F[A], e: => F[Unit]): F[A]
 
   def blocking[A](a: => A): F[A] = eval(a)

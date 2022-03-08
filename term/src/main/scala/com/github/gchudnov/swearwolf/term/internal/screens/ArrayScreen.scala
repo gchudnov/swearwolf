@@ -13,99 +13,101 @@ import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
-/**
- * Screen that is backed by the array. All strings that are written to it are stored without styles.
- * @param szScreen
- *   size of the screen.
- * @param cellChar
- *   character to put in 1 cell.
- * @param borderChar
- *   character to use on the right-side of the screen as a delimiter.
- */
-private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends BasicScreen:
-  import ArrayScreen.*
+final class ArrayScreen()
 
-  private var view: Array[Array[Char]] =
-    blankArray(szScreen, cellChar)
+// /**
+//  * Screen that is backed by the array. All strings that are written to it are stored without styles.
+//  * @param szScreen
+//  *   size of the screen.
+//  * @param cellChar
+//  *   character to put in 1 cell.
+//  * @param borderChar
+//  *   character to use on the right-side of the screen as a delimiter.
+//  */
+// private[screens] final class ArrayScreen(szScreen: Size, cellChar: Char, borderChar: Option[Char]) extends BasicScreen:
+//   import ArrayScreen.*
 
-  override def toString: String =
-    view
-      .map(_.mkString + borderChar.getOrElse(""))
-      .mkString(sys.props("line.separator"))
+//   private var view: Array[Array[Char]] =
+//     blankArray(szScreen, cellChar)
 
-  override def size: Size = szScreen
+//   override def toString: String =
+//     view
+//       .map(_.mkString + borderChar.getOrElse(""))
+//       .mkString(sys.props("line.separator"))
 
-  override def onSize(sz: Size): Either[Throwable, Unit] =
-    Right(())
+//   override def size: Size = szScreen
 
-  override def put(value: String): Either[Throwable, Unit] = ???
+//   override def onSize(sz: Size): Either[Throwable, Unit] =
+//     Right(())
 
-  override def put(value: String, style: TextStyle): Either[Throwable, Unit] = ???
+//   override def put(value: String): Either[Throwable, Unit] = ???
 
-  override def put(value: Span): Either[Throwable, Unit] = ???
+//   override def put(value: String, style: TextStyle): Either[Throwable, Unit] = ???
 
-  override def put(value: Array[Byte]): Either[Throwable, Unit] = ???
+//   override def put(value: Span): Either[Throwable, Unit] = ???
 
-  override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
-    putText(pt, viewText(value))
+//   override def put(value: Array[Byte]): Either[Throwable, Unit] = ???
 
-  override def cursorHide(): Either[Throwable, Unit] = Right(())
+//   override def put(pt: Point, value: Array[Byte]): Either[Throwable, Unit] =
+//     putText(pt, viewText(value))
 
-  override def cursorShow(): Either[Throwable, Unit] = Right(())
+//   override def cursorHide(): Either[Throwable, Unit] = Right(())
 
-  override def mouseTrack(): Either[Throwable, Unit] = Right(())
+//   override def cursorShow(): Either[Throwable, Unit] = Right(())
 
-  override def mouseUntrack(): Either[Throwable, Unit] = Right(())
+//   override def mouseTrack(): Either[Throwable, Unit] = Right(())
 
-  override def bufferNormal(): Either[Throwable, Unit] = Right(())
+//   override def mouseUntrack(): Either[Throwable, Unit] = Right(())
 
-  override def bufferAlt(): Either[Throwable, Unit] = Right(())
+//   override def bufferNormal(): Either[Throwable, Unit] = Right(())
 
-  override def clear(): Either[Throwable, Unit] = Right({
-    view = blankArray(szScreen, cellChar)
-  })
+//   override def bufferAlt(): Either[Throwable, Unit] = Right(())
 
-  override def flush(): Either[Throwable, Unit] = Right(())
+//   override def clear(): Either[Throwable, Unit] = Right({
+//     view = blankArray(szScreen, cellChar)
+//   })
 
-  override def close(): Unit = ()
+//   override def flush(): Either[Throwable, Unit] = Right(())
 
-  private def putText(pt: Point, value: String): Either[Throwable, Unit] =
-    if pt.y >= szScreen.height || pt.y < 0 then Right(())
-    else
-      val oldLine = view(pt.y).mkString
+//   override def close(): Unit = ()
 
-      val first = oldLine.substring(0, Math.min(pt.x, oldLine.length))
-      val last  = oldLine.substring(Math.min(pt.x + value.length, oldLine.length))
+//   private def putText(pt: Point, value: String): Either[Throwable, Unit] =
+//     if pt.y >= szScreen.height || pt.y < 0 then Right(())
+//     else
+//       val oldLine = view(pt.y).mkString
 
-      val newLine = (first + value + last).take(szScreen.width)
+//       val first = oldLine.substring(0, Math.min(pt.x, oldLine.length))
+//       val last  = oldLine.substring(Math.min(pt.x + value.length, oldLine.length))
 
-      require(oldLine.length == newLine.length, "new-line length should be equal to old-line length")
+//       val newLine = (first + value + last).take(szScreen.width)
 
-      view = view.updated(pt.y, newLine.toCharArray)
-      Right(())
+//       require(oldLine.length == newLine.length, "new-line length should be equal to old-line length")
 
-private[term] object ArrayScreen:
+//       view = view.updated(pt.y, newLine.toCharArray)
+//       Right(())
 
-  private[term] val DefaultCellChar   = '.'
-  private[term] val DefaultBorderChar = '|'
+// private[term] object ArrayScreen:
 
-  def make(size: Size, cellChar: Char = DefaultCellChar, borderChar: Option[Char] = Some(DefaultBorderChar)): ArrayScreen =
-    new ArrayScreen(size, cellChar, borderChar)
+//   private[term] val DefaultCellChar   = '.'
+//   private[term] val DefaultBorderChar = '|'
 
-  def compile(span: Span): Bytes =
-    SpanCompiler.compile(span)
+//   def make(size: Size, cellChar: Char = DefaultCellChar, borderChar: Option[Char] = Some(DefaultBorderChar)): ArrayScreen =
+//     new ArrayScreen(size, cellChar, borderChar)
 
-  private def blankArray(sz: Size, ch: Char): Array[Array[Char]] =
-    Array.fill(sz.height, sz.width)(ch)
+//   def compile(span: Span): Bytes =
+//     SpanCompiler.compile(span)
 
-  /**
-   * View Text without Escape or Control Character
-   */
-  private[screens] def viewText(bytes: Array[Byte]): String =
-    val rxEsc = s"""${EscSeq.escChar}\\[[\\d;]+\\w"""
-    val rxCtl = "\\p{C}"
+//   private def blankArray(sz: Size, ch: Char): Array[Array[Char]] =
+//     Array.fill(sz.height, sz.width)(ch)
 
-    val str   = Bytes(bytes).asString
-    val parts = str.split(rxEsc)
+//   /**
+//    * View Text without Escape or Control Character
+//    */
+//   private[screens] def viewText(bytes: Array[Byte]): String =
+//     val rxEsc = s"""${EscSeq.escChar}\\[[\\d;]+\\w"""
+//     val rxCtl = "\\p{C}"
 
-    parts.filter(_.nonEmpty).mkString.replaceAll(rxCtl, "");
+//     val str   = Bytes(bytes).asString
+//     val parts = str.split(rxEsc)
+
+//     parts.filter(_.nonEmpty).mkString.replaceAll(rxCtl, "");
