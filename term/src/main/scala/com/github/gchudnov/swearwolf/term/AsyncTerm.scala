@@ -1,6 +1,5 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.term.internal.terminals.IOTerm
 import com.github.gchudnov.swearwolf.util.func.MonadAsyncError
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import java.io.InputStream

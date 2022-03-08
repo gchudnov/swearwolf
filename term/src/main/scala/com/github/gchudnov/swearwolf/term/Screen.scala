@@ -4,8 +4,6 @@ import com.github.gchudnov.swearwolf.term.EscSeq
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.term.internal.screens.ArrayScreen
-import com.github.gchudnov.swearwolf.term.internal.screens.TermScreen
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.geometry.Point
