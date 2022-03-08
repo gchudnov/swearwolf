@@ -6,9 +6,4 @@ import com.github.gchudnov.swearwolf.util.func.MonadAsyncError
 /**
  * Async Screen
  */
-abstract class AsyncScreen[F[_]]()(implicit val ME: MonadAsyncError[F]) extends Screen[F] {
-
-}
-
-// TODO: add AnyScreen instead of BasicScreen ??? that is generic. OR instead on AnyScreen, make AsyncScreen inherit from SyncScreen??
-// TODO: probably add AnyTerm as well.
+abstract class AsyncScreen[F[_]](term: Term[F])(implicit val ME: MonadAsyncError[F]) extends AnyScreen[F](term)(ME) {}

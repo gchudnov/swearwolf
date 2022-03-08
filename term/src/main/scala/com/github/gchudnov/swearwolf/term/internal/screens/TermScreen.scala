@@ -142,47 +142,47 @@ private[term] object TermScreen:
   private def sttySane(): Either[Throwable, Unit] =
     Exec.exec(Array("sh", "-c", "stty sane < /dev/tty"))
 
-  /**
-   * Set Alt buffer.
-   */
-  private def bufferAlt(term: Term): Either[Throwable, Unit] =
-    term.write(EscSeq.altBuffer)
+  // /**
+  //  * Set Alt buffer.
+  //  */
+  // private def bufferAlt(term: Term): Either[Throwable, Unit] =
+  //   term.write(EscSeq.altBuffer)
 
-  /**
-   * Set Normal buffer.
-   */
-  private def bufferNormal(term: Term): Either[Throwable, Unit] =
-    term.write(EscSeq.normalBuffer)
+  // /**
+  //  * Set Normal buffer.
+  //  */
+  // private def bufferNormal(term: Term): Either[Throwable, Unit] =
+  //   term.write(EscSeq.normalBuffer)
 
-  /**
-   * Hide cursor.
-   */
-  private def cursorHide(term: Term): Either[Throwable, Unit] =
-    term.write(EscSeq.cursorHide)
+  // /**
+  //  * Hide cursor.
+  //  */
+  // private def cursorHide(term: Term): Either[Throwable, Unit] =
+  //   term.write(EscSeq.cursorHide)
 
-  /**
-   * Show cursor.
-   */
-  private def cursorShow(term: Term): Either[Throwable, Unit] =
-    term.write(EscSeq.cursorShow)
+  // /**
+  //  * Show cursor.
+  //  */
+  // private def cursorShow(term: Term): Either[Throwable, Unit] =
+  //   term.write(EscSeq.cursorShow)
 
-  /**
-   * Mouse tracking.
-   */
-  private def mouseTrack(term: Term): Either[Throwable, Unit] =
-    term.write(EscSeq.mouseTracking)
+  // /**
+  //  * Mouse tracking.
+  //  */
+  // private def mouseTrack(term: Term): Either[Throwable, Unit] =
+  //   term.write(EscSeq.mouseTracking)
 
-  /**
-   * Mouse stop tracking.
-   */
-  private def mouseUntrack(term: Term): Either[Throwable, Unit] =
-    term.write(EscSeq.resetMouseTracking)
+  // /**
+  //  * Mouse stop tracking.
+  //  */
+  // private def mouseUntrack(term: Term): Either[Throwable, Unit] =
+  //   term.write(EscSeq.resetMouseTracking)
 
-  /**
-   * Get the size of the terminal
-   */
-  private def fetchSize(term: Term): Either[Throwable, Unit] =
-    term.write(EscSeq.textAreaSize)
+  // /**
+  //  * Get the size of the terminal
+  //  */
+  // private def fetchSize(term: Term): Either[Throwable, Unit] =
+  //   term.write(EscSeq.textAreaSize)
 
   /**
    * Issue fetch size command and flush it immediately.
@@ -193,23 +193,23 @@ private[term] object TermScreen:
       _ <- flush(term)
     yield ()
 
-  /**
-   * Flush terminal.
-   */
-  private def flush(term: Term): Either[Throwable, Unit] =
-    term.flush()
+  // /**
+  //  * Flush terminal.
+  //  */
+  // private def flush(term: Term): Either[Throwable, Unit] =
+  //   term.flush()
 
-  /**
-   * Clear the Terminal
-   */
-  private def clear(term: Term): Either[Throwable, Unit] =
-    term.write(EscSeq.erase)
+  // /**
+  //  * Clear the Terminal
+  //  */
+  // private def clear(term: Term): Either[Throwable, Unit] =
+  //   term.write(EscSeq.erase)
 
-  /**
-   * No-Op
-   */
-  private def noOp(term: Term): Either[Throwable, Unit] =
-    Right(())
+  // /**
+  //  * No-Op
+  //  */
+  // private def noOp(term: Term): Either[Throwable, Unit] =
+  //   Right(())
 
   /**
    * Set headless setting.
