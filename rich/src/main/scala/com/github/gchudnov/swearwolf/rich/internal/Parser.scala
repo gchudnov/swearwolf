@@ -3,9 +3,10 @@ package com.github.gchudnov.swearwolf.rich.internal
 import scala.annotation.tailrec
 import com.github.gchudnov.swearwolf.util.data.*
 import scala.util.control.Exception.allCatch
+import com.github.gchudnov.swearwolf.util.func.MonadError
 
 private[rich] object Parser:
-  def parse(input: String): Either[Throwable, Seq[Element]] =
+  def parse[F[_]: MonadError](input: String): F[Seq[Element]] =
     @tailrec
     def iterate(acc: Stack[TagElement], tokens: Seq[Token]): Seq[Element] =
       tokens match
@@ -42,4 +43,4 @@ private[rich] object Parser:
               iterate(xs.push(x1), tail)
 
     val tokens = Lexer.lex(input)
-    allCatch.either(iterate(NonEmptyStack(TagElement.empty("#root")), tokens))
+    summon[MonadError[F]].attempt(iterate(NonEmptyStack(TagElement.empty("#root")), tokens))
