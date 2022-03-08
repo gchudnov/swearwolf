@@ -2,8 +2,12 @@ package com.github.gchudnov.swearwolf.util.colors
 
 import zio.test.Assertion.*
 import zio.test.*
+import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.util.func.EitherMonad
 
 object ColorSpec extends DefaultRunnableSpec:
+  given ME: MonadError[Either[Throwable, *]] = EitherMonad
+
   override def spec: ZSpec[Environment, Failure] =
     suite("Color")(
       test("empty") {
