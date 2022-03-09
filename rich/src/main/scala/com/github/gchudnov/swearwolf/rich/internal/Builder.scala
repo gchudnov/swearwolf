@@ -10,7 +10,6 @@ import com.github.gchudnov.swearwolf.util.spans.TextSpan
 import com.github.gchudnov.swearwolf.util.spans.ByteSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
-import com.github.gchudnov.swearwolf.util.func.Transform
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.rich.RichTextException
 import com.github.gchudnov.swearwolf.util.func.MonadError
@@ -23,7 +22,11 @@ private[rich] object Builder:
   private val lineSep = sys.props("line.separator")
 
   def build[F[_]: MonadError](elements: Seq[Element]): F[Span] =
-    for spans <- Transform.sequence(elements.map(buildSpan))
+    import MonadError.*
+        
+    given ME: MonadError[F] = summon[MonadError[F]]
+
+    for spans <- ME.sequence(elements.map(buildSpan))
     yield StyleSpan(TextStyle.empty, spans)
 
   private def buildSpan[F[_]: MonadError](e: Element): F[Span] =
@@ -38,7 +41,7 @@ private[rich] object Builder:
         ME.pure(TextSpan(lineSep))
       case TagElement(name, value, children) =>
         for
-          cs    <- Transform.sequence(children.map(buildSpan))
+          cs    <- ME.sequence(children.map(buildSpan))
           style <- toTextStyle(name, value)
         yield StyleSpan(style, cs)
 
