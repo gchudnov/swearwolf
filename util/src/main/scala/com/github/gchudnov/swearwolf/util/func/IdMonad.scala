@@ -1,5 +1,7 @@
 package com.github.gchudnov.swearwolf.util.func
 
+import scala.collection.BuildFrom
+
 object IdMonad extends MonadError[Identity]:
 
   override def pure[A](a: A): Identity[A] =
@@ -23,3 +25,7 @@ object IdMonad extends MonadError[Identity]:
   override def ensure[A](f: Identity[A], e: => Identity[Unit]): Identity[A] =
     try f
     finally e
+
+  override def sequence[A, CC[A] <: Iterable[A]](xs: CC[Identity[A]])(implicit bf: BuildFrom[CC[Identity[A]], A, CC[A]]): Identity[CC[A]] =
+    val cbf = bf.toFactory(xs)
+    cbf.fromSpecific(xs)
