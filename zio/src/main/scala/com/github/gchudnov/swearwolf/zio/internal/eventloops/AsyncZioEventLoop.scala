@@ -1,12 +1,13 @@
 package com.github.gchudnov.swearwolf.zio.internal.eventloops
 
-import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.term.AsyncTerm
 import com.github.gchudnov.swearwolf.term.AnyEventLoop
 import com.github.gchudnov.swearwolf.term.AsyncEventLoop
+import com.github.gchudnov.swearwolf.term.AsyncTerm
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
+import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.zio.RIOMonadAsyncError
 import zio.*
 import zio.stream.*
 
@@ -29,9 +30,9 @@ final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends AsyncEventLoop[Task
           case Some((key, value)) =>
             handler(key).map {
               case EventLoop.Action.Continue =>
-                ZIO.succeed(Some((key, value)))
+                Some((key, value))
               case Some(value) =>
-                ZIO.succeed(None)
+                None
             }
         })
       })
