@@ -40,8 +40,17 @@ object EitherMonad extends MonadError[Either[Throwable, *]]:
       case Left(t)  => cleanup.flatMap(_ => Left(t))
       case Right(a) => cleanup.map(_ => a)
 
-  override def sequence[A, CC[A] <: Iterable[A]](xs: CC[Either[Throwable, A]])(implicit bf: BuildFrom[CC[Either[Throwable, A]], A, CC[A]]): Either[Throwable, CC[A]] =
+  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Either[Throwable, A]])(implicit bf: BuildFrom[CC[Either[Throwable, A]], A, CC[A]]): Either[Throwable, CC[A]] =
     val cbf = bf.toFactory(xs)
     xs.partitionMap(identity) match
       case (Nil, rights) => Right[Throwable, CC[A]](cbf.fromSpecific(rights))
       case (lefts, _)    => Left[Throwable, CC[A]](lefts.head)
+
+  def traverse[A, CC[+A] <: Iterable[A], E, B](xs: CC[A])(f: A => Either[E, B])(implicit bf: BuildFrom[CC[A], B, CC[B]]): Either[E, CC[B]] =
+    val builder = bf.newBuilder(xs)
+    val i       = xs.iterator
+    while i.hasNext do
+      f(i.next) match
+        case Right(b) => builder += b
+        case Left(e)  => return Left(e)
+    Right(builder.result)

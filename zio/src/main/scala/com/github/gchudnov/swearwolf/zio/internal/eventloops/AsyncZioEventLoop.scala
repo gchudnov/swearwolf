@@ -31,7 +31,7 @@ final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends AsyncEventLoop[Task
             handler(key).map {
               case EventLoop.Action.Continue =>
                 Some((key, value))
-              case Some(value) =>
+              case _ =>
                 None
             }
         })

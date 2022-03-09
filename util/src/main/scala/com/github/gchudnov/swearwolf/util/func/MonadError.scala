@@ -37,7 +37,7 @@ trait MonadError[F[_]]:
 
   def blocking[A](a: => A): F[A] = eval(a)
 
-  def sequence[A, CC[A] <: Iterable[A]](xs: CC[F[A]])(implicit bf: BuildFrom[CC[F[A]], A, CC[A]]): F[CC[A]]
+  def sequence[A, CC[+A] <: Iterable[A]](xs: CC[F[A]])(implicit bf: BuildFrom[CC[F[A]], A, CC[A]]): F[CC[A]]
 
 
 object MonadError:

@@ -26,6 +26,6 @@ object IdMonad extends MonadError[Identity]:
     try f
     finally e
 
-  override def sequence[A, CC[A] <: Iterable[A]](xs: CC[Identity[A]])(implicit bf: BuildFrom[CC[Identity[A]], A, CC[A]]): Identity[CC[A]] =
+  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Identity[A]])(implicit bf: BuildFrom[CC[Identity[A]], A, CC[A]]): Identity[CC[A]] =
     val cbf = bf.toFactory(xs)
     cbf.fromSpecific(xs)
