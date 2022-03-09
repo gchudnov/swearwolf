@@ -41,15 +41,7 @@ object EitherMonad extends MonadError[Either[Throwable, *]]:
       case Right(a) => cleanup.map(_ => a)
 
   override def sequence[A, CC[A] <: Iterable[A]](xs: CC[Either[Throwable, A]])(implicit bf: BuildFrom[CC[Either[Throwable, A]], A, CC[A]]): Either[Throwable, CC[A]] =
-    ???
-    // xs.partitionMap(identity) match
-    //   case (Nil, rights) => Right[Throwable, CC[A]](cbf.fromSpecific(rights))
-    //   case (lefts, _)    => Left[Throwable, CC[A]](lefts.head)
-
-/*
-  override def sequence[A, CC[A] <: Iterable[A]](xs: CC[Future[A]])(implicit bf: BuildFrom[CC[Future[A]], A, CC[A]]): Future[CC[A]] =
-    Future.sequence(xs)
-
-*/
-
-// TODO: ^^^ impl it
+    val cbf = bf.toFactory(xs)
+    xs.partitionMap(identity) match
+      case (Nil, rights) => Right[Throwable, CC[A]](cbf.fromSpecific(rights))
+      case (lefts, _)    => Left[Throwable, CC[A]](lefts.head)
