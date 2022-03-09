@@ -23,7 +23,6 @@ private[rich] object Builder:
 
   def build[F[_]: MonadError](elements: Seq[Element]): F[Span] =
     import MonadError.*
-        
     given ME: MonadError[F] = summon[MonadError[F]]
 
     for spans <- ME.sequence(elements.map(buildSpan))
@@ -31,7 +30,6 @@ private[rich] object Builder:
 
   private def buildSpan[F[_]: MonadError](e: Element): F[Span] =
     import MonadError.*
-
     given ME: MonadError[F] = summon[MonadError[F]]
 
     e match
@@ -47,7 +45,6 @@ private[rich] object Builder:
 
   private def toTextStyle[F[_]: MonadError](name: String, value: Option[String]): F[TextStyle] =
     import MonadError.*
-
     given ME: MonadError[F] = summon[MonadError[F]]
 
     (name, value) match
