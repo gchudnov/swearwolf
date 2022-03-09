@@ -4,6 +4,7 @@ import scala.util.Success
 import scala.util.Failure
 import scala.util.Try
 import scala.collection.Factory
+import scala.collection.BuildFrom
 
 
 trait MonadError[F[_]]:
@@ -36,7 +37,7 @@ trait MonadError[F[_]]:
 
   def blocking[A](a: => A): F[A] = eval(a)
 
-  def sequence[A, CC[A] <: Iterable[A]](xs: CC[F[A]])(implicit cbf: Factory[A, CC[A]]): F[CC[A]]
+  def sequence[A, CC[A] <: Iterable[A]](xs: CC[F[A]])(implicit bf: BuildFrom[CC[F[A]], A, CC[A]]): F[CC[A]]
 
 
 object MonadError:
@@ -50,13 +51,3 @@ object MonadError:
 
   implicit final class MonadErrorValueOps[F[_], A](private val a: A) extends AnyVal:
     def pure(implicit ME: MonadError[F]): F[A] = ME.pure(a)
-
-
-/*
-  def collectAll[R, E, A, Collection[+Element] <: Iterable[Element]](
-    in: Collection[ZIO[R, E, A]]
-  )(implicit
-    bf: BuildFrom[Collection[ZIO[R, E, A]], A, Collection[A]],
-    trace: ZTraceElement
-  )
-*/

@@ -43,13 +43,5 @@ class RIOMonadAsyncError[R] extends MonadAsyncError[RIO[R, *]]:
   override def ensure[A](f: RIO[R, A], e: => RIO[R, Unit]): RIO[R, A] =
     f.ensuring(e.catchAll(_ => ZIO.unit))
 
-
-/*
-  def collectAll[R, E, A, Collection[+Element] <: Iterable[Element]](
-    in: Collection[ZIO[R, E, A]]
-  )(implicit
-    bf: BuildFrom[Collection[ZIO[R, E, A]], A, Collection[A]],
-    trace: ZTraceElement
-  ): ZIO[R, E, Collection[A]] =
-    foreach(in)(ZIO.identityFn)
-*/
+  override def sequence[A, CC[A] <: Iterable[A]](xs: CC[RIO[R, A]])(implicit bf: BuildFrom[CC[RIO[R, A]], A, CC[A]]): RIO[R, CC[A]] =
+    RIO.collectAll(xs)

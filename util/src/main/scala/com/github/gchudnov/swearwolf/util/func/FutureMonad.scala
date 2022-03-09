@@ -7,6 +7,7 @@ import scala.util.Try
 import scala.util.Failure
 import scala.util.Success
 import scala.collection.Factory
+import scala.collection.BuildFrom
 
 class FutureMonad(implicit ec: ExecutionContext) extends MonadAsyncError[Future]:
 
@@ -60,5 +61,5 @@ class FutureMonad(implicit ec: ExecutionContext) extends MonadAsyncError[Future]
   override def blocking[A](a: => A): Future[A] =
     Future(scala.concurrent.blocking(a))
 
-  override def sequence[A, CC[A] <: Iterable[A]](xs: CC[Future[A]])(implicit cbf: Factory[A, CC[A]]): Future[CC[A]] =
-    Future.sequence[A, CC, CC](xs)
+  override def sequence[A, CC[A] <: Iterable[A]](xs: CC[Future[A]])(implicit bf: BuildFrom[CC[Future[A]], A, CC[A]]): Future[CC[A]] =
+    Future.sequence(xs)
