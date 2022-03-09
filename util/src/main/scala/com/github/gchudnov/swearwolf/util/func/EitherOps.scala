@@ -2,6 +2,7 @@ package com.github.gchudnov.swearwolf.util.func
 
 import com.github.gchudnov.swearwolf.util.func.FunctionK
 import scala.collection.Factory
+import scala.collection.Iterable
 
 object EitherOps:
 
@@ -16,12 +17,12 @@ object EitherOps:
     new FunctionK[Identity, Either[Throwable, *]]:
       override def apply[A](fa: Identity[A]): Either[Throwable, A] = Right(fa)
 
-  def sequence[A, CC[A] <: collection.Iterable[A], E](xs: CC[Either[E, A]])(implicit cbf: Factory[A, CC[A]]): Either[E, CC[A]] =
+  def sequence[A, CC[A] <: Iterable[A], E](xs: CC[Either[E, A]])(implicit cbf: Factory[A, CC[A]]): Either[E, CC[A]] =
     xs.partitionMap(identity) match
       case (Nil, rights) => Right[E, CC[A]](cbf.fromSpecific(rights))
       case (lefts, _)    => Left[E, CC[A]](lefts.head)
 
-  def traverse[A, CC[A] <: collection.Iterable[A], E, B](xs: CC[A])(f: A => Either[E, B])(implicit cbf: Factory[B, CC[B]]): Either[E, CC[B]] =
+  def traverse[A, CC[A] <: Iterable[A], E, B](xs: CC[A])(f: A => Either[E, B])(implicit cbf: Factory[B, CC[B]]): Either[E, CC[B]] =
     val builder = cbf.newBuilder
     val i       = xs.iterator
     while i.hasNext do

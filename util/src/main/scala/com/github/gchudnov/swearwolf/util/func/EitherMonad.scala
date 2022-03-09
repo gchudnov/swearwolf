@@ -3,6 +3,7 @@ package com.github.gchudnov.swearwolf.util.func
 import scala.util.Try
 import scala.util.Failure
 import scala.util.Success
+import scala.collection.Factory
 
 object EitherMonad extends MonadError[Either[Throwable, *]]:
   type R[+A] = Either[Throwable, A]
@@ -37,3 +38,8 @@ object EitherMonad extends MonadError[Either[Throwable, *]]:
     f match
       case Left(t)  => cleanup.flatMap(_ => Left(t))
       case Right(a) => cleanup.map(_ => a)
+
+  override def sequence[A, CC[A] <: Iterable[A]](xs: CC[Either[Throwable, A]])(implicit cbf: Factory[A, CC[A]]): Either[Throwable, CC[A]] =
+    xs.partitionMap(identity) match
+      case (Nil, rights) => Right[Throwable, CC[A]](cbf.fromSpecific(rights))
+      case (lefts, _)    => Left[Throwable, CC[A]](lefts.head)

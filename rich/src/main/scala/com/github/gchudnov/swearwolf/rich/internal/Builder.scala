@@ -11,7 +11,6 @@ import com.github.gchudnov.swearwolf.util.spans.ByteSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
 import com.github.gchudnov.swearwolf.util.func.Transform
-import scala.util.control.Exception.allCatch
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.rich.RichTextException
 import com.github.gchudnov.swearwolf.util.func.MonadError

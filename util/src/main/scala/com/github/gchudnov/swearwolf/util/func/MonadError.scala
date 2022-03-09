@@ -3,6 +3,8 @@ package com.github.gchudnov.swearwolf.util.func
 import scala.util.Success
 import scala.util.Failure
 import scala.util.Try
+import scala.collection.Factory
+
 
 trait MonadError[F[_]]:
   def pure[A](a: A): F[A]
@@ -34,6 +36,9 @@ trait MonadError[F[_]]:
 
   def blocking[A](a: => A): F[A] = eval(a)
 
+  def sequence[A, CC[A] <: Iterable[A]](xs: CC[F[A]])(implicit cbf: Factory[A, CC[A]]): F[CC[A]]
+
+
 object MonadError:
   def apply[F[_]: MonadError]: MonadError[F] = implicitly[MonadError[F]]
 
@@ -45,3 +50,13 @@ object MonadError:
 
   implicit final class MonadErrorValueOps[F[_], A](private val a: A) extends AnyVal:
     def pure(implicit ME: MonadError[F]): F[A] = ME.pure(a)
+
+
+/*
+  def collectAll[R, E, A, Collection[+Element] <: Iterable[Element]](
+    in: Collection[ZIO[R, E, A]]
+  )(implicit
+    bf: BuildFrom[Collection[ZIO[R, E, A]], A, Collection[A]],
+    trace: ZTraceElement
+  )
+*/
