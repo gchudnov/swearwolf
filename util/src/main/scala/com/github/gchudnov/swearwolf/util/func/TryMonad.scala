@@ -3,6 +3,7 @@ package com.github.gchudnov.swearwolf.util.func
 import scala.util.Try
 import scala.util.Success
 import scala.util.Failure
+import scala.collection.BuildFrom
 
 object TryMonad extends MonadError[Try]:
 
@@ -31,3 +32,9 @@ object TryMonad extends MonadError[Try]:
     f match
       case Success(x) => Try(e).flatten.map(_ => x)
       case Failure(t) => Try(e).flatten.flatMap(_ => Failure(t))
+
+  override def sequence[A, CC[A] <: Iterable[A]](xs: CC[Try[A]])(implicit bf: BuildFrom[CC[Try[A]], A, CC[A]]): Try[CC[A]] =
+    val cbf = bf.toFactory(xs)
+    xs.partitionMap(_.toEither) match
+      case (Nil, rights) => Success[CC[A]](cbf.fromSpecific(rights))
+      case (lefts, _)    => Failure[CC[A]](lefts.head)
