@@ -1,6 +1,6 @@
-package com.github.gchudnov.swearwolf.zio.internal.terminals
+package com.github.gchudnov.swearwolf.zio.internal
 
-import com.github.gchudnov.swearwolf.zio.RIOMonadAsyncError
+import com.github.gchudnov.swearwolf.zio.internal.RIOMonadAsyncError
 import com.github.gchudnov.swearwolf.term.AsyncTerm
 import java.io.InputStream
 import java.io.OutputStream
