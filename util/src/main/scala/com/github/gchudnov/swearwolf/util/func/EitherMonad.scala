@@ -22,7 +22,7 @@ given EitherMonad: MonadError[Either[Throwable, *]] with
       case Right(a) => f(a)
       case _        => fa.asInstanceOf[R[B]]
 
-  override def error[A](t: Throwable): R[A] =
+  override def fail[A](t: Throwable): R[A] =
     Left(t)
 
   override protected def handleErrorWith_[A](ra: R[A])(h: PartialFunction[Throwable, R[A]]): R[A] =

@@ -25,7 +25,7 @@ object Color:
    */
   def parse[F[_]: MonadError](value: String): F[Color] =
     import MonadError.*
-    if value.isEmpty then summon[MonadError[F]].error(new ColorException("Cannot parse the color: <empty>"))
+    if value.isEmpty then summon[MonadError[F]].fail(new ColorException("Cannot parse the color: <empty>"))
     else fromName[F](value).handleErrorWith(_ => fromHex(value))
 
   given Show[Color] with
@@ -36,12 +36,12 @@ object Color:
   private def fromName[F[_]: MonadError](name: String): F[Color] =
     require(name.nonEmpty, "Color Name must be non-empty")
     val normalizedName = name.toLowerCase.replaceAll("_", "-")
-    colors.get(normalizedName).fold(summon[MonadError[F]].error(new ColorException(s"Named Color is not found: $name")): F[Color])(c => summon[MonadError[F]].succeed(c))
+    colors.get(normalizedName).fold(summon[MonadError[F]].fail(new ColorException(s"Named Color is not found: $name")): F[Color])(c => summon[MonadError[F]].succeed(c))
 
   private def fromHex[F[_]: MonadError](value: String): F[Color] =
     require(value.nonEmpty, "Color Value must be non-empty")
     val c = if value.head == '#' then value.tail else value
-    if c.length != 6 then summon[MonadError[F]].error(new ColorException("Cannot parse the color: invalid format. Supported formats: (#RRGGBB, RRGGBB)"))
+    if c.length != 6 then summon[MonadError[F]].fail(new ColorException("Cannot parse the color: invalid format. Supported formats: (#RRGGBB, RRGGBB)"))
     else
       val cs = c.grouped(2).map(it => Integer.parseInt(it, 16)).toSeq
       summon[MonadError[F]].succeed(Color(cs(0), cs(1), cs(2)))

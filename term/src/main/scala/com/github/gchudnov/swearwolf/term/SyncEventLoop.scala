@@ -13,5 +13,5 @@ import com.github.gchudnov.swearwolf.util.func.Monoid
 import com.github.gchudnov.swearwolf.term.internal.Reader
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
-abstract class SyncEventLoop[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends AnyEventLoop[F](term)(ME) {}
+abstract class SyncEventLoop[F[_]](term: Term[F])(using ME: MonadError[F]) extends AnyEventLoop[F](term) {}
 

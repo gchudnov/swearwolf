@@ -16,7 +16,7 @@ given TryMonad: MonadError[Try] with
   override def flatMap[A, B](ta: Try[A])(f: (A) => Try[B]): Try[B] =
     ta.flatMap(f)
 
-  override def error[A](t: Throwable): Try[A] =
+  override def fail[A](t: Throwable): Try[A] =
     Failure(t)
 
   override protected def handleErrorWith_[A](ta: Try[A])(h: PartialFunction[Throwable, Try[A]]): Try[A] =

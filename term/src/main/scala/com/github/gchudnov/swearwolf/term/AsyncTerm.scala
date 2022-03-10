@@ -9,4 +9,4 @@ import java.io.BufferedOutputStream
 /**
  * Base Asynchronous Terminal
  */
-abstract class AsyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(implicit ME: MonadAsyncError[F]) extends AnyTerm[F](in, out, isClose)(ME) {}
+abstract class AsyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(using ME: MonadAsyncError[F]) extends AnyTerm[F](in, out, isClose) {}

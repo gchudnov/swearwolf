@@ -10,7 +10,7 @@ trait MonadError[F[_]]:
   def map[A, B](fa: F[A])(f: A => B): F[B]
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
 
-  def error[A](e: Throwable): F[A]
+  def fail[A](e: Throwable): F[A]
 
   def handleErrorWith[A](fa: => F[A])(h: PartialFunction[Throwable, F[A]]): F[A] =
     Try(fa) match
@@ -19,7 +19,7 @@ trait MonadError[F[_]]:
       case Failure(e) if h.isDefinedAt(e) =>
         h(e)
       case Failure(e) =>
-        error(e)
+        fail(e)
 
   protected def handleErrorWith_[A](fa: F[A])(f: PartialFunction[Throwable, F[A]]): F[A]
 
@@ -37,7 +37,7 @@ trait MonadError[F[_]]:
       case Success(x) =>
         succeed(x)
       case Failure(e) =>
-        error(e)
+        fail(e)
 
   def ensure[A](f: F[A], e: => F[Unit]): F[A]
 

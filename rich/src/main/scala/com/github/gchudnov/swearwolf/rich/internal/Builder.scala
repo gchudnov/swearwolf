@@ -59,4 +59,4 @@ private[rich] object Builder:
         for color <- Color.parse(value)
         yield TextStyle.Background(color)
       case _ =>
-        ME.error(new RichTextException(s"Cannot convert Tag(${name}, ${value}) to a TextStyle"))
+        ME.fail(new RichTextException(s"Cannot convert Tag(${name}, ${value}) to a TextStyle"))

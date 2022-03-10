@@ -8,7 +8,7 @@ import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen
 import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen.TermEffect
 import com.github.gchudnov.swearwolf.util.geometry.Size
 
-final class EitherShellScreen(term: Term[Either[Throwable, *]], rollback: List[TermEffect[Either[Throwable, *]]]) extends SyncScreen(term)(EitherMonad) {
+final class EitherShellScreen(term: Term[Either[Throwable, *]], rollback: List[TermEffect[Either[Throwable, *]]]) extends SyncScreen(term) {
 
   override def size: Either[Throwable, Option[Size]] = ???
 
@@ -24,7 +24,7 @@ object EitherShellScreen {
 
 // final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventLoop[Either[Throwable, *]](term)(EitherMonad):
 
-// abstract class SyncScreen[F[_]](term: Term[F])(implicit val ME: MonadError[F]) extends AnyScreen[F](term)(ME) {}
+// abstract class SyncScreen[F[_]](term: Term[F])(using ME: MonadError[F]) extends AnyScreen[F](term)(ME) {}
 
 /*
 

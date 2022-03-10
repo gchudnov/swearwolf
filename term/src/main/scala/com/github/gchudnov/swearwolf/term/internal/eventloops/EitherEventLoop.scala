@@ -13,7 +13,7 @@ import scala.annotation.tailrec
 /**
  * Synchronous EventLoop.
  */
-final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventLoop[Either[Throwable, *]](term)(EitherMonad):
+final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventLoop[Either[Throwable, *]](term):
   import AnyEventLoop.*
 
   override def run(handler: KeySeqHandler[Either[Throwable, *]]): Either[Throwable, Unit] =

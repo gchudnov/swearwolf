@@ -26,7 +26,7 @@ given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
       Left(UIO(canceler.cancel()))
     }
 
-  override def error[A](t: Throwable): RIO[R, A] =
+  override def fail[A](t: Throwable): RIO[R, A] =
     RIO.fail(t)
 
   override protected def handleErrorWith_[A](rt: RIO[R, A])(h: PartialFunction[Throwable, RIO[R, A]]): RIO[R, A] =

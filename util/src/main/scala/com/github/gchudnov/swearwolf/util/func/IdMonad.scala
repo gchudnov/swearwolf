@@ -12,7 +12,7 @@ given IdMonad: MonadError[Identity] with
   override def flatMap[A, B](fa: Identity[A])(f: (A) => Identity[B]): Identity[B] =
     f(fa)
 
-  override def error[A](a: Throwable): Identity[A] =
+  override def fail[A](a: Throwable): Identity[A] =
     throw a
 
   override protected def handleErrorWith_[A](fa: Identity[A])(h: PartialFunction[Throwable, Identity[A]]): Identity[A] =

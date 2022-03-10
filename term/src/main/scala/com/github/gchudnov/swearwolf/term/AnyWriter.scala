@@ -9,7 +9,7 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
 
-abstract class AnyWriter[F[_]](term: Term[F])(implicit ME: MonadError[F]) extends Writer[F]:
+abstract class AnyWriter[F[_]](term: Term[F])(using ME: MonadError[F]) extends Writer[F]:
   import AnyWriter.*
 
   override def put(value: String): F[Unit] =

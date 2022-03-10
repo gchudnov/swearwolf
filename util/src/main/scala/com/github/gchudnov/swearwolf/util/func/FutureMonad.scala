@@ -20,7 +20,7 @@ given FutureMonad(using ec: ExecutionContext): MonadAsyncError[Future] with
   override def flatMap[A, B](fa: Future[A])(f: (A) => Future[B]): Future[B] =
     fa.flatMap(f)
 
-  override def error[A](t: Throwable): Future[A] =
+  override def fail[A](t: Throwable): Future[A] =
     Future.failed(t)
 
   override protected def handleErrorWith_[A](fa: Future[A])(h: PartialFunction[Throwable, Future[A]]): Future[A] =
