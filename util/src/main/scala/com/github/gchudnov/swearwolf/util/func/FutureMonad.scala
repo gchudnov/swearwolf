@@ -11,7 +11,7 @@ import scala.collection.BuildFrom
 
 given FutureMonad(using ec: ExecutionContext): MonadAsyncError[Future] with
 
-  override def pure[A](a: A): Future[A] =
+  override def succeed[A](a: A): Future[A] =
     Future.successful(a)
 
   override def map[A, B](fa: Future[A])(f: (A) => B): Future[B] =
@@ -26,7 +26,7 @@ given FutureMonad(using ec: ExecutionContext): MonadAsyncError[Future] with
   override protected def handleErrorWith_[A](fa: Future[A])(h: PartialFunction[Throwable, Future[A]]): Future[A] =
     fa.recoverWith(h)
 
-  override def eval[A](a: => A): Future[A] =
+  override def attempt[A](a: => A): Future[A] =
     Future(a)
 
   override def suspend[A](fa: => Future[A]): Future[A] =

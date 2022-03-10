@@ -7,7 +7,7 @@ import scala.collection.BuildFrom
 
 given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
 
-  override def pure[A](a: A): RIO[R, A] =
+  override def succeed[A](a: A): RIO[R, A] =
     RIO.succeed(a)
 
   override def map[A, B](fa: RIO[R, A])(f: A => B): RIO[R, B] =
@@ -32,7 +32,7 @@ given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
   override protected def handleErrorWith_[A](rt: RIO[R, A])(h: PartialFunction[Throwable, RIO[R, A]]): RIO[R, A] =
     rt.catchSome(h)
 
-  override def eval[A](a: => A): RIO[R, A] =
+  override def attempt[A](a: => A): RIO[R, A] =
     RIO.attempt(a)
 
   override def suspend[A](a: => RIO[R, A]): RIO[R, A] =

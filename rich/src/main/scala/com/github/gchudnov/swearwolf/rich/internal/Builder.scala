@@ -27,35 +27,31 @@ private[rich] object Builder:
     yield StyleSpan(TextStyle.empty, spans)
 
   private def buildSpan[F[_]: MonadError](e: Element): F[Span] =
-    given ME: MonadError[F] = summon[MonadError[F]]
-
     e match
       case TextElement(text) =>
-        ME.pure(TextSpan(text))
+        summon[MonadError[F]].succeed(TextSpan(text))
       case NewLineElement =>
-        ME.pure(TextSpan(lineSep))
+        summon[MonadError[F]].succeed(TextSpan(lineSep))
       case TagElement(name, value, children) =>
         for
-          cs    <- ME.sequence(children.map(buildSpan))
+          cs    <- summon[MonadError[F]].sequence(children.map(buildSpan))
           style <- toTextStyle(name, value)
         yield StyleSpan(style, cs)
 
-  private def toTextStyle[F[_]: MonadError](name: String, value: Option[String]): F[TextStyle] =
-    given ME: MonadError[F] = summon[MonadError[F]]
-
+  private def toTextStyle[F[_]](name: String, value: Option[String])(using ME: MonadError[F]): F[TextStyle] =
     (name, value) match
       case ("b" | "bold", _) =>
-        ME.pure(TextStyle.Bold)
+        ME.succeed(TextStyle.Bold)
       case ("i" | "italic", _) =>
-        ME.pure(TextStyle.Italic)
+        ME.succeed(TextStyle.Italic)
       case ("u" | "underline", _) =>
-        ME.pure(TextStyle.Underline)
+        ME.succeed(TextStyle.Underline)
       case ("s" | "strikethrough", _) =>
-        ME.pure(TextStyle.Strikethrough)
+        ME.succeed(TextStyle.Strikethrough)
       case ("k" | "blink", _) =>
-        ME.pure(TextStyle.Blink)
+        ME.succeed(TextStyle.Blink)
       case ("v" | "invert", _) =>
-        ME.pure(TextStyle.Invert)
+        ME.succeed(TextStyle.Invert)
       case ("fg" | "fgcolor" | "color", Some(value)) =>
         for color <- Color.parse(value)
         yield TextStyle.Foreground(color)

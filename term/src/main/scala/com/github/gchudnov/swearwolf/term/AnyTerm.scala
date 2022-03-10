@@ -23,26 +23,26 @@ abstract class AnyTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolea
                         maybeLastBytes <- ME.blocking(nextAvailableChunk())
                         allBytes <- maybeLastBytes match
                                       case Some(last) =>
-                                        ME.eval(Some(first ++ last))
+                                        ME.attempt(Some(first ++ last))
                                       case None =>
-                                        ME.eval(Some(first))
+                                        ME.attempt(Some(first))
                       yield allBytes
                     case None =>
-                      ME.eval(None)
+                      ME.attempt(None)
     yield allBytes
 
   override def write(bytes: Array[Byte]): F[Unit] =
-    ME.eval(out.write(bytes))
+    ME.attempt(out.write(bytes))
 
   override def flush(): F[Unit] =
-    ME.eval(out.flush())
+    ME.attempt(out.flush())
 
   override def close(): F[Unit] =
     if (isClose) then
-      val inF  = ME.eval(in.close())
-      val outF = ME.eval(out.close())
+      val inF  = ME.attempt(in.close())
+      val outF = ME.attempt(out.close())
       ME.ensure(inF, outF)
-    else ME.pure(())
+    else ME.succeed(())
 
   private def nextChunk(maxLen: Int): Option[Array[Byte]] =
     val data = new Array[Byte](maxLen)

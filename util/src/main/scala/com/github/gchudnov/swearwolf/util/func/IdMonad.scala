@@ -3,7 +3,7 @@ package com.github.gchudnov.swearwolf.util.func
 import scala.collection.BuildFrom
 
 given IdMonad: MonadError[Identity] with
-  override def pure[A](a: A): Identity[A] =
+  override def succeed[A](a: A): Identity[A] =
     a
 
   override def map[A, B](fa: Identity[A])(f: (A) => B): Identity[B] =
@@ -18,7 +18,7 @@ given IdMonad: MonadError[Identity] with
   override protected def handleErrorWith_[A](fa: Identity[A])(h: PartialFunction[Throwable, Identity[A]]): Identity[A] =
     fa
 
-  override def eval[A](a: => A): Identity[A] =
+  override def attempt[A](a: => A): Identity[A] =
     a
 
   override def ensure[A](f: Identity[A], e: => Identity[Unit]): Identity[A] =

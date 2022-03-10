@@ -33,7 +33,7 @@ abstract class AnyEventLoop[F[_]](term: Term[F])(implicit ME: MonadError[F]) ext
   protected def iterate(acc: Acc): F[Option[(KeySeq, Acc)]] =
     acc match
       case Acc(ks, rest) if ks.nonEmpty =>
-        ME.pure(Some(ks.head, Acc(ks.tail, rest)))
+        ME.succeed(Some(ks.head, Acc(ks.tail, rest)))
       case Acc(ks, rest) if ks.isEmpty =>
         val (xKs, xRest) = Reader.parseBytes(Bytes(rest))
         if (xKs.nonEmpty) then iterate(Acc(xKs, xRest.asSeq))
@@ -43,7 +43,7 @@ abstract class AnyEventLoop[F[_]](term: Term[F])(implicit ME: MonadError[F]) ext
               val (yKs, yRest) = Reader.parseBytes(Bytes(bytes))
               iterate(Acc(yKs, yRest.asSeq))
             case None =>
-              ME.pure(None)
+              ME.succeed(None)
           }
 
 object AnyEventLoop:

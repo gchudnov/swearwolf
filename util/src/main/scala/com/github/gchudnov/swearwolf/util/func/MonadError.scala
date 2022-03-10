@@ -6,7 +6,7 @@ import scala.util.Success
 import scala.util.Try
 
 trait MonadError[F[_]]:
-  def pure[A](a: A): F[A]
+  def succeed[A](a: A): F[A]
   def map[A, B](fa: F[A])(f: A => B): F[B]
   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
 
@@ -23,11 +23,11 @@ trait MonadError[F[_]]:
 
   protected def handleErrorWith_[A](fa: F[A])(f: PartialFunction[Throwable, F[A]]): F[A]
 
-  def eval[A](a: => A): F[A] =
-    map(pure(()))(_ => a)
+  def attempt[A](a: => A): F[A] =
+    map(succeed(()))(_ => a)
 
   def suspend[A](fa: => F[A]): F[A] =
-    flatten(eval(fa))
+    flatten(attempt(fa))
 
   def flatten[A](ffa: F[F[A]]): F[A] =
     flatMap[F[A], A](ffa)(identity)
@@ -35,20 +35,20 @@ trait MonadError[F[_]]:
   def fromTry[A](ta: Try[A]): F[A] =
     ta match
       case Success(x) =>
-        pure(x)
+        succeed(x)
       case Failure(e) =>
         error(e)
 
-  def attempt[A](a: => A): F[A] = eval(a)
-
   def ensure[A](f: F[A], e: => F[Unit]): F[A]
 
-  def blocking[A](a: => A): F[A] = eval(a)
+  def blocking[A](a: => A): F[A] =
+    attempt(a)
 
   def sequence[A, CC[+A] <: Iterable[A]](xs: CC[F[A]])(using bf: BuildFrom[CC[F[A]], A, CC[A]]): F[CC[A]]
 
 object MonadError:
-  def apply[F[_]: MonadError]: MonadError[F] = summon[MonadError[F]]
+  def apply[F[_]: MonadError]: MonadError[F] =
+    summon[MonadError[F]]
 
   extension [F[_], A](r: => F[A])
     def map[B](f: A => B)(using ME: MonadError[F]): F[B] =
@@ -64,5 +64,5 @@ object MonadError:
       ME.ensure(r, e)
 
   extension [F[_], A](a: A)
-    def pure(using ME: MonadError[F]): F[A] =
-      ME.pure(a)
+    def succeed(using ME: MonadError[F]): F[A] =
+      ME.succeed(a)

@@ -1,14 +1,15 @@
 package com.github.gchudnov.swearwolf.util.func
 
-import scala.util.Try
+import scala.collection.BuildFrom
 import scala.util.Failure
 import scala.util.Success
-import scala.collection.BuildFrom
+import scala.util.Try
+import scala.util.control.Exception.*
 
 given EitherMonad: MonadError[Either[Throwable, *]] with
   type R[+A] = Either[Throwable, A]
 
-  override def pure[A](a: A): R[A] =
+  override def succeed[A](a: A): R[A] =
     Right(a)
 
   override def map[A, B](ra: R[A])(f: A => B): R[B] =
@@ -28,6 +29,9 @@ given EitherMonad: MonadError[Either[Throwable, *]] with
     ra match
       case Left(a) if h.isDefinedAt(a) => h(a)
       case _                           => ra
+
+  override def attempt[A](a: => A): Either[Throwable, A] = 
+    allCatch.either(a)
 
   override def ensure[A](f: Either[Throwable, A], e: => Either[Throwable, Unit]): Either[Throwable, A] =
     def cleanup: Either[Throwable, Unit] =

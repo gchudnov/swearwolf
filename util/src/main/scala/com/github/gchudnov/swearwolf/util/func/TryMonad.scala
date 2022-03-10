@@ -7,7 +7,7 @@ import scala.collection.BuildFrom
 
 given TryMonad: MonadError[Try] with
 
-  override def pure[A](a: A): Try[A] =
+  override def succeed[A](a: A): Try[A] =
     Success(a)
 
   override def map[A, B](ta: Try[A])(f: (A) => B): Try[B] =
@@ -22,7 +22,7 @@ given TryMonad: MonadError[Try] with
   override protected def handleErrorWith_[A](ta: Try[A])(h: PartialFunction[Throwable, Try[A]]): Try[A] =
     ta.recoverWith(h)
 
-  override def eval[A](a: => A): Try[A] =
+  override def attempt[A](a: => A): Try[A] =
     Try(a)
 
   override def fromTry[A](ta: Try[A]): Try[A] =

@@ -36,7 +36,7 @@ object Color:
   private def fromName[F[_]: MonadError](name: String): F[Color] =
     require(name.nonEmpty, "Color Name must be non-empty")
     val normalizedName = name.toLowerCase.replaceAll("_", "-")
-    colors.get(normalizedName).fold(summon[MonadError[F]].error(new ColorException(s"Named Color is not found: $name")): F[Color])(c => summon[MonadError[F]].pure(c))
+    colors.get(normalizedName).fold(summon[MonadError[F]].error(new ColorException(s"Named Color is not found: $name")): F[Color])(c => summon[MonadError[F]].succeed(c))
 
   private def fromHex[F[_]: MonadError](value: String): F[Color] =
     require(value.nonEmpty, "Color Value must be non-empty")
@@ -44,7 +44,7 @@ object Color:
     if c.length != 6 then summon[MonadError[F]].error(new ColorException("Cannot parse the color: invalid format. Supported formats: (#RRGGBB, RRGGBB)"))
     else
       val cs = c.grouped(2).map(it => Integer.parseInt(it, 16)).toSeq
-      summon[MonadError[F]].pure(Color(cs(0), cs(1), cs(2)))
+      summon[MonadError[F]].succeed(Color(cs(0), cs(1), cs(2)))
 
   val AliceBlue: Color            = Color(240, 248, 255)
   val AntiqueWhite: Color         = Color(250, 235, 215)

@@ -27,7 +27,7 @@ object EventLoop:
 
   given keySeqHandlerMonoid[F[_]: MonadError]: Monoid[KeySeqHandler[F]] with
     def empty: KeySeqHandler[F] =
-      (ks: KeySeq) => summon[MonadError[F]].pure(Action.Continue)
+      (ks: KeySeq) => summon[MonadError[F]].succeed(Action.Continue)
 
     extension (x: KeySeqHandler[F])
       infix def combine(y: KeySeqHandler[F]): KeySeqHandler[F] =

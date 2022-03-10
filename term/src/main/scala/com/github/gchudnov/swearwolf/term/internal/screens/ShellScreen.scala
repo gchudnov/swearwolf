@@ -47,7 +47,7 @@ trait ShellScreen:
     )
 
   private def noOp[F[_]: MonadError](): F[Unit] =
-    summon[MonadError[F]].pure(())
+    summon[MonadError[F]].succeed(())
 
   /**
    * Pairs of init and rollback functions.
