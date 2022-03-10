@@ -18,18 +18,17 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
  * Builds a Span from the parsed elements.
  */
 private[rich] object Builder:
+  import MonadError.*
 
   private val lineSep = sys.props("line.separator")
 
   def build[F[_]: MonadError](elements: Seq[Element]): F[Span] =
-    import MonadError.*
     given ME: MonadError[F] = summon[MonadError[F]]
 
     for spans <- ME.sequence(elements.map(buildSpan))
     yield StyleSpan(TextStyle.empty, spans)
 
   private def buildSpan[F[_]: MonadError](e: Element): F[Span] =
-    import MonadError.*
     given ME: MonadError[F] = summon[MonadError[F]]
 
     e match
@@ -44,7 +43,6 @@ private[rich] object Builder:
         yield StyleSpan(style, cs)
 
   private def toTextStyle[F[_]: MonadError](name: String, value: Option[String]): F[TextStyle] =
-    import MonadError.*
     given ME: MonadError[F] = summon[MonadError[F]]
 
     (name, value) match
