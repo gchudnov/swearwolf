@@ -39,6 +39,13 @@ trait MonadError[F[_]]:
       case Failure(e) =>
         fail(e)
 
+  def fromEither[A](ea: Either[Throwable, A]): F[A] =
+    ea match
+      case Right(x) =>
+        succeed(x)
+      case Left(e) =>
+        fail(e)
+
   def ensure[A](f: F[A], e: => F[Unit]): F[A]
 
   def blocking[A](a: => A): F[A] =
