@@ -23,6 +23,9 @@ trait MonadError[F[_]]:
 
   protected def handleErrorWith_[A](fa: F[A])(f: PartialFunction[Throwable, F[A]]): F[A]
 
+  def unit: F[Unit] =
+    succeed(())
+
   def attempt[A](a: => A): F[A] =
     map(succeed(()))(_ => a)
 
