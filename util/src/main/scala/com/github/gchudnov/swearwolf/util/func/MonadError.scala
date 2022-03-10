@@ -35,6 +35,9 @@ trait MonadError[F[_]]:
   def flatten[A](ffa: F[F[A]]): F[A] =
     flatMap[F[A], A](ffa)(identity)
 
+  def foldLeft[S, A](xs: => Iterable[A])(zero: => S)(f: (S, A) => F[S]): F[S] =
+    xs.foldLeft(succeed(zero))((acc, x) => flatMap(acc)(f(_, x)))
+
   def fromTry[A](ta: Try[A]): F[A] =
     ta match
       case Success(x) =>
@@ -63,6 +66,9 @@ object MonadError:
     summon[MonadError[F]]
 
   extension [F[_], A](r: => F[A])
+    def unit(using ME: MonadError[F]): F[Unit] =
+      ME.map(r)(_ => ())
+
     def map[B](f: A => B)(using ME: MonadError[F]): F[B] =
       ME.map(r)(f)
 

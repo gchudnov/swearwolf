@@ -8,21 +8,18 @@ import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen
 import com.github.gchudnov.swearwolf.term.internal.screens.TermAction
 import com.github.gchudnov.swearwolf.util.geometry.Size
 
-final class EitherShellScreen(term: Term[Either[Throwable, *]], cleanup: TermAction[Either[Throwable, *]]) extends SyncScreen(term) {
+final class EitherScreen(term: Term[Either[Throwable, *]], cleanup: TermAction[Either[Throwable, *]]) extends SyncScreen(term):
 
   override def size: Either[Throwable, Option[Size]] = ???
 
   override def close(): Either[Throwable, Unit] =
-    term.close()
-    // TODO: update it
+    cleanup(term)
+      .flatMap(_ => term.close())
 
-}
-
-object EitherShellScreen {
+object EitherScreen {
   // def apply(term: Term[Either[Throwable, *]], rollback: List[TermAction[Either[Throwable, *]]]): EitherShellScreen =
   //   new EitherShellScreen(term, rollback)
 }
-
 
 // final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventLoop[Either[Throwable, *]](term)(EitherMonad):
 
@@ -38,8 +35,8 @@ object EitherShellScreen {
 private[term] object TermScreen:
 
   /**
-   * Makes a new TermScreen.
-   */
+ * Makes a new TermScreen.
+ */
   def make(term: Term): Either[Throwable, TermScreen] =
     val (errOrOk, rollback) = initialize(term)
     errOrOk match
@@ -86,5 +83,5 @@ import sun.misc.Signal
 
 import scala.annotation.tailrec
 import scala.util.control.Exception.nonFatalCatch
-import com.github.gchudnov.swearwolf.term.EventLoop    
-*/
+import com.github.gchudnov.swearwolf.term.EventLoop
+ */

@@ -13,5 +13,5 @@ final class AsyncZioScreen(term: AsyncTerm[Task], cleanup: TermAction[Task[*]]) 
   override def size: Task[Option[Size]] = ???
 
   override def close(): Task[Unit] =
-    term.close()
-    // TODO: update it
+    cleanup(term)
+      .flatMap(_ => term.close())

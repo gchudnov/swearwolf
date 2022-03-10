@@ -1,16 +1,16 @@
 package com.github.gchudnov.swearwolf.term.internal.screens
 
+import com.github.gchudnov.swearwolf.term.EscSeq
 import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.util.geometry.Point
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.util.spans.Span
-import com.github.gchudnov.swearwolf.term.EscSeq
-import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import com.github.gchudnov.swearwolf.util.exec.Exec
+import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.util.geometry.Point
+import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import sun.misc.Signal
 import sun.misc.SignalHandler
-import com.github.gchudnov.swearwolf.util.func.MonadError
 
 type TermAction[F[_]] = (Term[F]) => F[Unit]
 
@@ -68,8 +68,20 @@ sealed trait ShellScreen:
   /**
    * Given a collection of TermActions, wrap them in a TermAction that can be executed.
    */
-  def makeActionExecutor[F[_]: MonadError](rs: Seq[TermAction[F]]): TermAction[F] = (term: Term[F]) =>
+  def makeActionExecutor[F[_]: MonadError](xs: Seq[TermAction[F]]): TermAction[F] = (term: Term[F]) =>
     import com.github.gchudnov.swearwolf.util.func.MonadError.*
-    summon[MonadError[F]].traverse(rs)(f => f(term)).map(_ => ())
+    summon[MonadError[F]].traverse(xs)(f => f(term)).unit
+
+  /**
+   * Initialize Terminal. If there is an error, roll it back
+   *
+   * Returns an action that need to be executed to clean-up the terminal.
+   */
+  def initTerm[F[_]](term: Term[F], pairs: List[(TermAction[F], TermAction[F])])(using ME: MonadError[F]): F[TermAction[F]] =
+    import com.github.gchudnov.swearwolf.util.func.MonadError.*
+    ME.foldLeft(pairs)(List.empty[TermAction[F]]) { case (acc, x) =>
+      val (init, rollback) = x
+      init(term).map(_ => rollback +: acc).handleErrorWith(t => ME.traverse(acc)(f => f(term)).flatMap(_ => ME.fail(t)))
+    }.map(rs => makeActionExecutor(rs))
 
 object ShellScreen extends ShellScreen
