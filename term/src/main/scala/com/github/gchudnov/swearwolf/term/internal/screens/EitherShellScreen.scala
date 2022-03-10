@@ -5,19 +5,20 @@ import com.github.gchudnov.swearwolf.term.SyncScreen
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen
-import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen.TermEffect
+import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen.TermAction
 import com.github.gchudnov.swearwolf.util.geometry.Size
 
-final class EitherShellScreen(term: Term[Either[Throwable, *]], rollback: List[TermEffect[Either[Throwable, *]]]) extends SyncScreen(term) {
+final class EitherShellScreen(term: Term[Either[Throwable, *]], rollback: List[TermAction[Either[Throwable, *]]]) extends SyncScreen(term) {
 
   override def size: Either[Throwable, Option[Size]] = ???
 
-  override def close(): Either[Throwable, Unit] = ???
+  override def close(): Either[Throwable, Unit] =
+    term.close()
 
 }
 
 object EitherShellScreen {
-  // def apply(term: Term[Either[Throwable, *]], rollback: List[TermEffect[Either[Throwable, *]]]): EitherShellScreen =
+  // def apply(term: Term[Either[Throwable, *]], rollback: List[TermAction[Either[Throwable, *]]]): EitherShellScreen =
   //   new EitherShellScreen(term, rollback)
 }
 
@@ -50,8 +51,8 @@ private[term] object TermScreen:
         Right(screen)
 
 
-  private def initialize(term: Term): (Either[Throwable, Unit], List[TermEffect]) =
-    initEffects.foldLeft((Right(()): Either[Throwable, Unit], List.empty[TermEffect])) { case ((err, acc), eff) =>
+  private def initialize(term: Term): (Either[Throwable, Unit], List[TermAction]) =
+    initEffects.foldLeft((Right(()): Either[Throwable, Unit], List.empty[TermAction])) { case ((err, acc), eff) =>
       err match
         case Left(t) => (Left(t), acc)
         case Right(_) =>
@@ -67,7 +68,7 @@ import com.github.gchudnov.swearwolf.term.EventLoop.Action
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.term.internal.screens.TermScreen.TermEffect
+import com.github.gchudnov.swearwolf.term.internal.screens.TermScreen.TermAction
 import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax

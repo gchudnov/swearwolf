@@ -11,4 +11,5 @@ final class AsyncZioScreen(term: AsyncTerm[Task]) extends AsyncScreen[Task](term
 
   override def size: Task[Option[Size]] = ???
 
-  override def close(): Task[Unit] = ???
+  override def close(): Task[Unit] =
+    term.close()

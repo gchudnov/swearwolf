@@ -15,7 +15,7 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 trait ShellScreen:
   import Term.*
 
-  type TermEffect[F[_]] = (Term[F]) => F[Unit]
+  type TermAction[F[_]] = (Term[F]) => F[Unit]
 
   /**
    * Set terminal to raw mode.
@@ -52,7 +52,7 @@ trait ShellScreen:
   /**
    * Pairs of init and rollback functions.
    */
-  def initRollback[F[_]: MonadError](sigHandler: SignalHandler): List[(TermEffect[F], TermEffect[F])] =
+  def initRollback[F[_]: MonadError](sigHandler: SignalHandler): List[(TermAction[F], TermAction[F])] =
     List(
       (t => headless(true), t => headless(false)),
       (t => sttyRaw(), t => sttySane()),
