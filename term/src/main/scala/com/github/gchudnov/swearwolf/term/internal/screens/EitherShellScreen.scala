@@ -5,15 +5,16 @@ import com.github.gchudnov.swearwolf.term.SyncScreen
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen
-import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen.TermAction
+import com.github.gchudnov.swearwolf.term.internal.screens.TermAction
 import com.github.gchudnov.swearwolf.util.geometry.Size
 
-final class EitherShellScreen(term: Term[Either[Throwable, *]], rollback: List[TermAction[Either[Throwable, *]]]) extends SyncScreen(term) {
+final class EitherShellScreen(term: Term[Either[Throwable, *]], cleanup: TermAction[Either[Throwable, *]]) extends SyncScreen(term) {
 
   override def size: Either[Throwable, Option[Size]] = ???
 
   override def close(): Either[Throwable, Unit] =
     term.close()
+    // TODO: update it
 
 }
 

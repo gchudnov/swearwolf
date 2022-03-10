@@ -12,10 +12,10 @@ import sun.misc.Signal
 import sun.misc.SignalHandler
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
-trait ShellScreen:
-  import Term.*
+type TermAction[F[_]] = (Term[F]) => F[Unit]
 
-  type TermAction[F[_]] = (Term[F]) => F[Unit]
+sealed trait ShellScreen:
+  import Term.*
 
   /**
    * Set terminal to raw mode.
@@ -52,7 +52,7 @@ trait ShellScreen:
   /**
    * Pairs of init and rollback functions.
    */
-  def initRollback[F[_]: MonadError](sigHandler: SignalHandler): List[(TermAction[F], TermAction[F])] =
+  def initRollbackActions[F[_]: MonadError](sigHandler: SignalHandler): List[(TermAction[F], TermAction[F])] =
     List(
       (t => headless(true), t => headless(false)),
       (t => sttyRaw(), t => sttySane()),
@@ -64,5 +64,12 @@ trait ShellScreen:
       (t => t.fetchSize(), t => noOp()),
       (t => t.flush(), t => noOp())
     )
+
+  def makeRollback[F[_]](rs: List[TermAction[F]]): TermAction[F] = (term: Term[F]) =>
+    ???
+
+
+    // rs.foldLeft(noOp[F])((acc, r) => summon[MonadError[F]].attempt(r._1(r._2)) *> acc)
+    // _.attempt(initRollback.traverse_(_._2))
 
 object ShellScreen extends ShellScreen
