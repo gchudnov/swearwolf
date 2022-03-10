@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.func.Canceler
 import zio.{ RIO, UIO, ZIO }
 import scala.collection.BuildFrom
 
-class RIOMonadAsyncError[R] extends MonadAsyncError[RIO[R, *]]:
+given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
 
   override def pure[A](a: A): RIO[R, A] =
     RIO.succeed(a)
@@ -44,5 +44,5 @@ class RIOMonadAsyncError[R] extends MonadAsyncError[RIO[R, *]]:
   override def ensure[A](f: RIO[R, A], e: => RIO[R, Unit]): RIO[R, A] =
     f.ensuring(e.catchAll(_ => ZIO.unit))
 
-  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[RIO[R, A]])(implicit bf: BuildFrom[CC[RIO[R, A]], A, CC[A]]): RIO[R, CC[A]] =
+  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[RIO[R, A]])(using bf: BuildFrom[CC[RIO[R, A]], A, CC[A]]): RIO[R, CC[A]] =
     ZIO.collectAll(xs)
