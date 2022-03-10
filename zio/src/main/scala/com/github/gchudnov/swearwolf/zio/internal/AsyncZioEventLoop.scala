@@ -14,7 +14,7 @@ import zio.stream.*
 /**
  * ZIO Async Event Loop
  */
-final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends AsyncEventLoop[Task](term)(new RIOMonadAsyncError[Any]):
+final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends AsyncEventLoop[Task](term):
   import AnyEventLoop.*
 
   override def run(handler: KeySeqHandler[Task]): Task[Unit] =
