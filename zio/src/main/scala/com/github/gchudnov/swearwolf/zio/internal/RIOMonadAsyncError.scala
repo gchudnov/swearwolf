@@ -1,8 +1,11 @@
 package com.github.gchudnov.swearwolf.zio.internal
 
-import com.github.gchudnov.swearwolf.util.func.MonadAsyncError
 import com.github.gchudnov.swearwolf.util.func.Canceler
-import zio.{ RIO, UIO, ZIO }
+import com.github.gchudnov.swearwolf.util.func.MonadAsyncError
+import zio.RIO
+import zio.UIO
+import zio.ZIO
+
 import scala.collection.BuildFrom
 
 given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
