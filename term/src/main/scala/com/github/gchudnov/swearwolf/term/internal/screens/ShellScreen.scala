@@ -65,11 +65,11 @@ sealed trait ShellScreen:
       (t => t.flush(), t => noOp())
     )
 
-  def makeRollback[F[_]](rs: List[TermAction[F]]): TermAction[F] = (term: Term[F]) =>
-    ???
-
-
-    // rs.foldLeft(noOp[F])((acc, r) => summon[MonadError[F]].attempt(r._1(r._2)) *> acc)
-    // _.attempt(initRollback.traverse_(_._2))
+  /**
+   * Given a collection of TermActions, wrap them in a TermAction that can be executed.
+   */
+  def makeActionExecutor[F[_]: MonadError](rs: Seq[TermAction[F]]): TermAction[F] = (term: Term[F]) =>
+    import com.github.gchudnov.swearwolf.util.func.MonadError.*
+    summon[MonadError[F]].traverse(rs)(f => f(term)).map(_ => ())
 
 object ShellScreen extends ShellScreen
