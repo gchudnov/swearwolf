@@ -26,7 +26,7 @@ object Table:
 
   def build[F[_]: MonadError](table: Table): F[Seq[Span]] =
     given ME: MonadError[F] = summon[MonadError[F]]
-    ME.pure(TableBuilder.build(table))
+    ME.succeed(TableBuilder.build(table))
 
   extension [F[_]: MonadError](screen: Screen[F])
     def put(pt: Point, table: Table, textStyle: TextStyle): F[Unit] =

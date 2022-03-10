@@ -17,7 +17,7 @@ object Label:
 
   def build[F[_]: MonadError](label: Label): F[Seq[Span]] =
     given ME: MonadError[F] = summon[MonadError[F]]
-    ME.pure(LabelBuilder.build(label))
+    ME.succeed(LabelBuilder.build(label))
 
   extension [F[_]: MonadError](screen: Screen[F])
     def put(pt: Point, label: Label, textStyle: TextStyle): F[Unit] =

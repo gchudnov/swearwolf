@@ -16,7 +16,7 @@ object Box:
 
   def build[F[_]: MonadError](box: Box): F[Seq[Span]] =
     given ME: MonadError[F] = summon[MonadError[F]]
-    ME.pure(BoxBuilder.build(box))
+    ME.succeed(BoxBuilder.build(box))
 
   extension [F[_]: MonadError](screen: Screen[F])
 

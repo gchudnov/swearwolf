@@ -17,7 +17,7 @@ object Grid:
 
   def build[F[_]: MonadError](grid: Grid): F[Seq[Span]] =
     given ME: MonadError[F] = summon[MonadError[F]]
-    ME.pure(GridBuilder.build(grid))
+    ME.succeed(GridBuilder.build(grid))
 
   extension [F[_]: MonadError](screen: Screen[F])
     def put(pt: Point, grid: Grid, textStyle: TextStyle): F[Unit] =

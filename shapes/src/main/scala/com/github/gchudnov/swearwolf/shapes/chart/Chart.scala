@@ -18,7 +18,7 @@ object Chart:
 
   def build[F[_]: MonadError](chart: Chart): F[Seq[Span]] =
     given ME: MonadError[F] = summon[MonadError[F]]
-    ME.pure(ChartBuilder.build(chart))
+    ME.succeed(ChartBuilder.build(chart))
 
   extension [F[_]: MonadError](screen: Screen[F])
     def put(pt: Point, chart: Chart, textStyle: TextStyle): F[Unit] =
