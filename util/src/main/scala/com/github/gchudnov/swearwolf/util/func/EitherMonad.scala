@@ -5,9 +5,7 @@ import scala.util.Failure
 import scala.util.Success
 import scala.collection.BuildFrom
 
-// TODO: replace with given ???
-
-object EitherMonad extends MonadError[Either[Throwable, *]]:
+given EitherMonad: MonadError[Either[Throwable, *]] with
   type R[+A] = Either[Throwable, A]
 
   override def pure[A](a: A): R[A] =

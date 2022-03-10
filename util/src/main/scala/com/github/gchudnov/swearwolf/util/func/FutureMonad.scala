@@ -9,7 +9,7 @@ import scala.util.Success
 import scala.collection.Factory
 import scala.collection.BuildFrom
 
-class FutureMonad(implicit ec: ExecutionContext) extends MonadAsyncError[Future]:
+given FutureMonad(using ec: ExecutionContext): MonadAsyncError[Future] with
 
   override def pure[A](a: A): Future[A] =
     Future.successful(a)
@@ -61,5 +61,5 @@ class FutureMonad(implicit ec: ExecutionContext) extends MonadAsyncError[Future]
   override def blocking[A](a: => A): Future[A] =
     Future(scala.concurrent.blocking(a))
 
-  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Future[A]])(implicit bf: BuildFrom[CC[Future[A]], A, CC[A]]): Future[CC[A]] =
+  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Future[A]])(using bf: BuildFrom[CC[Future[A]], A, CC[A]]): Future[CC[A]] =
     Future.sequence(xs)
