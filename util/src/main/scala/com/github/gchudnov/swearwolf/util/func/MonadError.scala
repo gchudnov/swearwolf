@@ -56,6 +56,8 @@ trait MonadError[F[_]]:
 
   def sequence[A, CC[+A] <: Iterable[A]](xs: CC[F[A]])(using bf: BuildFrom[CC[F[A]], A, CC[A]]): F[CC[A]]
 
+  def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => F[B])(using bf: BuildFrom[CC[A], B, CC[B]]): F[CC[B]]
+
 object MonadError:
   def apply[F[_]: MonadError]: MonadError[F] =
     summon[MonadError[F]]

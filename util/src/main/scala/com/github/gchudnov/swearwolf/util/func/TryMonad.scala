@@ -38,3 +38,12 @@ given TryMonad: MonadError[Try] with
     xs.partitionMap(_.toEither) match
       case (Nil, rights) => Success[CC[A]](cbf.fromSpecific(rights))
       case (lefts, _)    => Failure[CC[A]](lefts.head)
+
+  override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => Try[B])(using bf: BuildFrom[CC[A], B, CC[B]]): Try[CC[B]] =
+    val builder = bf.newBuilder(xs)
+    val i       = xs.iterator
+    while i.hasNext do
+      f(i.next) match
+        case Success(b) => builder += b
+        case Failure(e) => return Failure(e)
+    Success(builder.result)

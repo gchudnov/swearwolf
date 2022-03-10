@@ -28,3 +28,7 @@ given IdMonad: MonadError[Identity] with
   override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Identity[A]])(using bf: BuildFrom[CC[Identity[A]], A, CC[A]]): Identity[CC[A]] =
     val cbf = bf.toFactory(xs)
     cbf.fromSpecific(xs)
+
+  override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => Identity[B])(using bf: BuildFrom[CC[A], B, CC[B]]): Identity[CC[B]] =
+    val cbf = bf.toFactory(xs)
+    cbf.fromSpecific(xs.map(f))

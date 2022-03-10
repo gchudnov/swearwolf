@@ -63,3 +63,6 @@ given FutureMonad(using ec: ExecutionContext): MonadAsyncError[Future] with
 
   override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Future[A]])(using bf: BuildFrom[CC[Future[A]], A, CC[A]]): Future[CC[A]] =
     Future.sequence(xs)
+
+  override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => Future[B])(using bf: BuildFrom[CC[A], B, CC[B]]): Future[CC[B]] =
+    Future.traverse(xs)(f)

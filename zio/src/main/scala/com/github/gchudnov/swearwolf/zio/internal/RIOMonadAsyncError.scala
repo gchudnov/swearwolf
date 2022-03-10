@@ -46,3 +46,6 @@ given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
 
   override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[RIO[R, A]])(using bf: BuildFrom[CC[RIO[R, A]], A, CC[A]]): RIO[R, CC[A]] =
     ZIO.collectAll(xs)
+
+  override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => RIO[R, B])(using bf: BuildFrom[CC[A], B, CC[B]]): RIO[R, CC[B]] =
+    ZIO.foreach(xs)(f)

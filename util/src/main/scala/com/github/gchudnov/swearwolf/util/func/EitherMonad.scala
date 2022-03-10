@@ -30,7 +30,7 @@ given EitherMonad: MonadError[Either[Throwable, *]] with
       case Left(a) if h.isDefinedAt(a) => h(a)
       case _                           => ra
 
-  override def attempt[A](a: => A): Either[Throwable, A] = 
+  override def attempt[A](a: => A): Either[Throwable, A] =
     allCatch.either(a)
 
   override def ensure[A](f: Either[Throwable, A], e: => Either[Throwable, Unit]): Either[Throwable, A] =
@@ -49,7 +49,7 @@ given EitherMonad: MonadError[Either[Throwable, *]] with
       case (Nil, rights) => Right[Throwable, CC[A]](cbf.fromSpecific(rights))
       case (lefts, _)    => Left[Throwable, CC[A]](lefts.head)
 
-  def traverse[A, CC[+A] <: Iterable[A], E, B](xs: CC[A])(f: A => Either[E, B])(using bf: BuildFrom[CC[A], B, CC[B]]): Either[E, CC[B]] =
+  override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => Either[Throwable, B])(using bf: BuildFrom[CC[A], B, CC[B]]): Either[Throwable, CC[B]] =
     val builder = bf.newBuilder(xs)
     val i       = xs.iterator
     while i.hasNext do
