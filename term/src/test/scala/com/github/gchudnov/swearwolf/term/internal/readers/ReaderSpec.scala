@@ -15,7 +15,7 @@ object ReaderSpec extends DefaultRunnableSpec:
         val inputBytes = Bytes(input.getBytes)
 
         val expected = (Vector.empty[KeySeq], Bytes.empty): (Vector[KeySeq], Bytes)
-        val actual   = Reader.consume(inputBytes)
+        val actual   = Reader.parseBytes(inputBytes)
 
         assert(actual)(equalTo(expected))
       },
@@ -24,7 +24,7 @@ object ReaderSpec extends DefaultRunnableSpec:
         val inputBytes = Bytes(input.getBytes)
 
         val expected = (Vector(CtrlKeySeq(KeyCode.Esc), CtrlKeySeq(KeyCode.Esc)), Bytes.empty): (Vector[KeySeq], Bytes)
-        val actual   = Reader.consume(inputBytes)
+        val actual   = Reader.parseBytes(inputBytes)
 
         assert(actual)(equalTo(expected))
       },
@@ -32,7 +32,7 @@ object ReaderSpec extends DefaultRunnableSpec:
         val inputBytes = Bytes(Array(0x1b.toByte, 0xd0.toByte, 0x99.toByte))
 
         val expected = (Vector(UnknownKeySeq(Bytes(Array[Byte](27, -48, -103)))), Bytes.empty): (Vector[KeySeq], Bytes)
-        val actual   = Reader.consume(inputBytes)
+        val actual   = Reader.parseBytes(inputBytes)
 
         assert(actual)(equalTo(expected))
       }
