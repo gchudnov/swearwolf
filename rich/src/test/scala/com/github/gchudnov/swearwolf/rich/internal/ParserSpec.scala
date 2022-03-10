@@ -1,11 +1,17 @@
 package com.github.gchudnov.swearwolf.rich.internal
 
 import com.github.gchudnov.swearwolf.rich.internal.Parser
-
-import zio.test.Assertion.{ anything, equalTo, isLeft, isSubtype }
+import com.github.gchudnov.swearwolf.util.func.EitherMonad
+import com.github.gchudnov.swearwolf.util.func.MonadError
+import zio.test.Assertion.anything
+import zio.test.Assertion.equalTo
+import zio.test.Assertion.isLeft
+import zio.test.Assertion.isSubtype
 import zio.test.*
 
 object ParserSpec extends DefaultRunnableSpec:
+  given ME: MonadError[Either[Throwable, *]] = EitherMonad
+
   override def spec: ZSpec[Environment, Failure] =
     suite("Parser")(
       test("input is empty") {

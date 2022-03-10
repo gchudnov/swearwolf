@@ -1,20 +1,25 @@
 package com.github.gchudnov.swearwolf.rich.internal
 
 import com.github.gchudnov.swearwolf.rich.internal.Builder
-
 import com.github.gchudnov.swearwolf.rich.internal.Element
-import com.github.gchudnov.swearwolf.util.spans.Span
-import com.github.gchudnov.swearwolf.rich.internal.TextElement
-import com.github.gchudnov.swearwolf.util.spans.TextSpan
-import com.github.gchudnov.swearwolf.util.spans.StyleSpan
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.rich.internal.TagElement
+import com.github.gchudnov.swearwolf.rich.internal.TextElement
 import com.github.gchudnov.swearwolf.util.colors.Color
-
-import zio.test.Assertion.{ anything, equalTo, isLeft, isSubtype }
+import com.github.gchudnov.swearwolf.util.func.EitherMonad
+import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.spans.StyleSpan
+import com.github.gchudnov.swearwolf.util.spans.TextSpan
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import zio.test.Assertion.anything
+import zio.test.Assertion.equalTo
+import zio.test.Assertion.isLeft
+import zio.test.Assertion.isSubtype
 import zio.test.*
 
 object BuilderSpec extends DefaultRunnableSpec:
+  given ME: MonadError[Either[Throwable, *]] = EitherMonad
+
   override def spec: ZSpec[Environment, Failure] =
     suite("Builder")(
       test("input is empty") {

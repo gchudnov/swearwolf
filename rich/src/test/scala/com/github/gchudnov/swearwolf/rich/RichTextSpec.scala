@@ -1,18 +1,24 @@
 package com.github.gchudnov.swearwolf.rich
 
-import com.github.gchudnov.swearwolf.util.bytes.Bytes
-import com.github.gchudnov.swearwolf.util.geometry.{ Point, Size }
-import com.github.gchudnov.swearwolf.rich.Resources
 import com.github.gchudnov.swearwolf.rich.RichText
-import zio.test.Assertion.{ equalTo, isLeft, isRight }
-import zio.test.*
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.util.func.EitherMonad
+import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.util.geometry.Point
+import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.StyleSpan
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
-import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import zio.test.Assertion.equalTo
+import zio.test.Assertion.isLeft
+import zio.test.Assertion.isRight
+import zio.test.*
 
 object RichTextSpec extends DefaultRunnableSpec:
+  given ME: MonadError[Either[Throwable, *]] = EitherMonad
+
   override def spec: ZSpec[Environment, Failure] =
     suite("RichText")(
       test("empty") {
