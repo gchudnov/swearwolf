@@ -1,11 +1,9 @@
 package com.github.gchudnov.swearwolf.util.func
 
-import scala.util.Success
-import scala.util.Failure
-import scala.util.Try
-import scala.collection.Factory
 import scala.collection.BuildFrom
-
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Try
 
 trait MonadError[F[_]]:
   def pure[A](a: A): F[A]
@@ -16,20 +14,30 @@ trait MonadError[F[_]]:
 
   def handleErrorWith[A](fa: => F[A])(h: PartialFunction[Throwable, F[A]]): F[A] =
     Try(fa) match
-      case Success(a)                     => handleErrorWith_(a)(h)
-      case Failure(e) if h.isDefinedAt(e) => h(e)
-      case Failure(e)                     => error(e)
+      case Success(a) =>
+        handleErrorWith_(a)(h)
+      case Failure(e) if h.isDefinedAt(e) =>
+        h(e)
+      case Failure(e) =>
+        error(e)
 
   protected def handleErrorWith_[A](fa: F[A])(f: PartialFunction[Throwable, F[A]]): F[A]
 
-  def eval[A](a: => A): F[A]         = map(pure(()))(_ => a)
-  def suspend[A](fa: => F[A]): F[A]  = flatten(eval(fa))
-  def flatten[A](ffa: F[F[A]]): F[A] = flatMap[F[A], A](ffa)(identity)
+  def eval[A](a: => A): F[A] =
+    map(pure(()))(_ => a)
+
+  def suspend[A](fa: => F[A]): F[A] =
+    flatten(eval(fa))
+
+  def flatten[A](ffa: F[F[A]]): F[A] =
+    flatMap[F[A], A](ffa)(identity)
 
   def fromTry[A](ta: Try[A]): F[A] =
     ta match
-      case Success(x) => pure(x)
-      case Failure(e) => error(e)
+      case Success(x) =>
+        pure(x)
+      case Failure(e) =>
+        error(e)
 
   def attempt[A](a: => A): F[A] = eval(a)
 
@@ -37,17 +45,24 @@ trait MonadError[F[_]]:
 
   def blocking[A](a: => A): F[A] = eval(a)
 
-  def sequence[A, CC[+A] <: Iterable[A]](xs: CC[F[A]])(implicit bf: BuildFrom[CC[F[A]], A, CC[A]]): F[CC[A]]
-
+  def sequence[A, CC[+A] <: Iterable[A]](xs: CC[F[A]])(using bf: BuildFrom[CC[F[A]], A, CC[A]]): F[CC[A]]
 
 object MonadError:
-  def apply[F[_]: MonadError]: MonadError[F] = implicitly[MonadError[F]]
+  def apply[F[_]: MonadError]: MonadError[F] = summon[MonadError[F]]
 
-  implicit final class MonadErrorOps[F[_], A](r: => F[A]):
-    def map[B](f: A => B)(implicit ME: MonadError[F]): F[B]                                = ME.map(r)(f)
-    def flatMap[B](f: A => F[B])(implicit ME: MonadError[F]): F[B]                         = ME.flatMap(r)(f)
-    def handleErrorWith(h: PartialFunction[Throwable, F[A]])(implicit ME: MonadError[F]): F[A] = ME.handleErrorWith(r)(h)
-    def ensure(e: => F[Unit])(implicit ME: MonadError[F]): F[A]                            = ME.ensure(r, e)
+  extension [F[_], A](r: => F[A])
+    def map[B](f: A => B)(using ME: MonadError[F]): F[B] =
+      ME.map(r)(f)
 
-  implicit final class MonadErrorValueOps[F[_], A](private val a: A) extends AnyVal:
-    def pure(implicit ME: MonadError[F]): F[A] = ME.pure(a)
+    def flatMap[B](f: A => F[B])(using ME: MonadError[F]): F[B] =
+      ME.flatMap(r)(f)
+
+    def handleErrorWith(h: PartialFunction[Throwable, F[A]])(using ME: MonadError[F]): F[A] =
+      ME.handleErrorWith(r)(h)
+
+    def ensure(e: => F[Unit])(using ME: MonadError[F]): F[A] =
+      ME.ensure(r, e)
+
+  extension [F[_], A](a: A)
+    def pure(using ME: MonadError[F]): F[A] =
+      ME.pure(a)

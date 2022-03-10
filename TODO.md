@@ -1,3 +1,8 @@
+// TODO: how to rewrite in Scala 3 ?
+// TODO: replace implicit everywhere
+// TODO: make rich/test working
+
+
 = TODO: add term-zio; rich-zio; shapes-zio
 
 - TODO: add a CompositeScreen, that allows to wrap screens (e.g. to add logging to a normal screen)

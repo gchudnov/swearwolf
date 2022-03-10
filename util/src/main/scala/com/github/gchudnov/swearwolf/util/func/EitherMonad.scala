@@ -3,8 +3,9 @@ package com.github.gchudnov.swearwolf.util.func
 import scala.util.Try
 import scala.util.Failure
 import scala.util.Success
-import scala.collection.Factory
 import scala.collection.BuildFrom
+
+// TODO: replace with given ???
 
 object EitherMonad extends MonadError[Either[Throwable, *]]:
   type R[+A] = Either[Throwable, A]
@@ -40,13 +41,13 @@ object EitherMonad extends MonadError[Either[Throwable, *]]:
       case Left(t)  => cleanup.flatMap(_ => Left(t))
       case Right(a) => cleanup.map(_ => a)
 
-  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Either[Throwable, A]])(implicit bf: BuildFrom[CC[Either[Throwable, A]], A, CC[A]]): Either[Throwable, CC[A]] =
+  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Either[Throwable, A]])(using bf: BuildFrom[CC[Either[Throwable, A]], A, CC[A]]): Either[Throwable, CC[A]] =
     val cbf = bf.toFactory(xs)
     xs.partitionMap(identity) match
       case (Nil, rights) => Right[Throwable, CC[A]](cbf.fromSpecific(rights))
       case (lefts, _)    => Left[Throwable, CC[A]](lefts.head)
 
-  def traverse[A, CC[+A] <: Iterable[A], E, B](xs: CC[A])(f: A => Either[E, B])(implicit bf: BuildFrom[CC[A], B, CC[B]]): Either[E, CC[B]] =
+  def traverse[A, CC[+A] <: Iterable[A], E, B](xs: CC[A])(f: A => Either[E, B])(using bf: BuildFrom[CC[A], B, CC[B]]): Either[E, CC[B]] =
     val builder = bf.newBuilder(xs)
     val i       = xs.iterator
     while i.hasNext do
