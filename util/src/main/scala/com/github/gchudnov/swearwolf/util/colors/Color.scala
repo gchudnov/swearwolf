@@ -7,25 +7,6 @@ final case class Color(r: Byte, g: Byte, b: Byte):
   def toHex(): String =
     "#" + List(r, g, b).map(Color.byteToHex).mkString
 
-abstract class AnyColor[F[_]](using ME: MonadError[F]):
-
-  /**
-   * Parses color from a string
-   *
-   * {{{
-   *   #RRGGBB
-   *    RRGGBB
-   * }}}
-   */
-  def parse(value: String): F[Color] =
-    Color.parse[F](value)
-
-  private def fromName(name: String): F[Color] =
-    Color.fromName[F](name)
-
-  private def fromHex(value: String): F[Color] =
-    Color.fromHex[F](value)
-
 object Color:
 
   def apply(r: Byte, g: Byte, b: Byte): Color =
