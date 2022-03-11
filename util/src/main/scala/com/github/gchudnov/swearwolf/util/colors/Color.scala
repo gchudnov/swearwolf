@@ -3,20 +3,17 @@ package com.github.gchudnov.swearwolf.util.colors
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.show.Show
 
-final case class Color(r: Byte, g: Byte, b: Byte):
+final case class Color(r: Int, g: Int, b: Int):
   def toHex(): String =
-    "#" + List(r, g, b).map(Color.byteToHex).mkString
+    "#" + List(r, g, b).map(n => Color.intToHex(n)).mkString
 
 object Color:
 
-  def apply(r: Byte, g: Byte, b: Byte): Color =
+  def apply(r: Int, g: Int, b: Int): Color =
     new Color(r, g, b)
 
-  def apply(r: Int, g: Int, b: Int): Color =
-    apply(r.toByte, g.toByte, b.toByte)
-
   def apply(rgb: Int): Color =
-    apply((rgb >> 16 & 0xff).toByte, (rgb >> 8 & 0xff).toByte, (rgb & 0xff).toByte)
+    apply((rgb >> 16 & 0xff), (rgb >> 8 & 0xff), (rgb & 0xff))
 
   /**
    * Parses color from a string
@@ -41,10 +38,10 @@ object Color:
     val c = if value.head == '#' then value.tail else value
     if c.length != 6 then summon[MonadError[F]].fail(new ColorException("Cannot parse the color: invalid format. Supported formats: (#RRGGBB, RRGGBB)"))
     else
-      for cs <- summon[MonadError[F]].attempt(c.grouped(2).map(it => Integer.parseInt(it, 16).toByte).toSeq)
+      for cs <- summon[MonadError[F]].attempt(c.grouped(2).map(it => Integer.parseInt(it, 16)).toSeq)
       yield Color(cs(0), cs(1), cs(2))
 
-  private[colors] def byteToHex(n: Byte): String =
+  private[colors] def intToHex(n: Int): String =
     f"${n}%02x"
 
   private[colors] def normalizeName(name: String): String =

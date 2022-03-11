@@ -56,9 +56,9 @@ object EscSeq:
   val textAreaSize: EscSeq = csi("18t")
 
   // colors
-  def foreground(c: Color): EscSeq = sgr(38, List(2, c.r, c.g, c.b))
+  def foreground(c: Color): EscSeq = sgr(38, List(2, c.r & 0xFF, c.g & 0xFF, c.b & 0xFF))
   val resetForeground: EscSeq      = sgr(39)
-  def background(c: Color): EscSeq = sgr(48, List(2, c.r, c.g, c.b))
+  def background(c: Color): EscSeq = sgr(48, List(2, c.r & 0xFF, c.g & 0xFF, c.b & 0xFF))
   val resetBackground: EscSeq      = sgr(49)
   val bold: EscSeq                 = sgr(1)
   val resetBold: EscSeq            = sgr(22)
