@@ -12,8 +12,6 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 trait Screen[F[_]] extends Writer[F]:
-  def size: F[Option[Size]]
-
   def put(pt: Point, value: String): F[Unit]
   def put(pt: Point, value: String, style: TextStyle): F[Unit]
   def put(pt: Point, value: Span): F[Unit]
