@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.example.zio
 
-import com.github.gchudnov.swearwolf.example.zio.internal.Logic
+import com.github.gchudnov.swearwolf.example.zio.logic.Logic
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.keys.KeySeq

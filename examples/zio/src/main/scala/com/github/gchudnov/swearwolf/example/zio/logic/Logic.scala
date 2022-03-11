@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.example.zio.internal
+package com.github.gchudnov.swearwolf.example.zio.logic
 
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioScreen
