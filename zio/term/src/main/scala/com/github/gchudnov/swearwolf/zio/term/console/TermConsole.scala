@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.zio.term.comsole
+package com.github.gchudnov.swearwolf.zio.term.console
 
 import com.github.gchudnov.swearwolf.term.Term
 import zio.*
