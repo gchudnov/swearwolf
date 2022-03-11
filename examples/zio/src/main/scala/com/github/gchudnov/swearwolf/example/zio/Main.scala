@@ -9,9 +9,6 @@ import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.zio.term.ZioEventLoop
 import com.github.gchudnov.swearwolf.zio.term.ZioScreen
 import com.github.gchudnov.swearwolf.zio.term.ZioTerm
-import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioEventLoop
-import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioScreen
-import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioTerm
 import zio.*
 import zio.stream.*
 
@@ -23,9 +20,9 @@ object Main extends ZIOAppDefault:
 
     program
 
-  private def makeProgram(): ZIO[Logic with Clock with AsyncZioEventLoop, Throwable, Unit] =
+  private def makeProgram(): ZIO[Logic with Clock with ZioEventLoop, Throwable, Unit] =
     for
-      eventLoop <- ZIO.service[AsyncZioEventLoop]
+      eventLoop <- ZIO.service[ZioEventLoop]
       logic     <- ZIO.service[Logic]
       handler = (ks: KeySeq) =>
                   if (ks.isEsc) then ZIO.succeed(EventLoop.Action.Exit)
@@ -33,7 +30,7 @@ object Main extends ZIOAppDefault:
       _ <- eventLoop.run(handler)
     yield ()
 
-  private def makeEnv(): ZLayer[Any, Throwable, AsyncZioTerm with AsyncZioScreen with AsyncZioEventLoop with Logic] =
+  private def makeEnv(): ZLayer[Any, Throwable, ZioTerm with ZioScreen with ZioEventLoop with Logic] =
     val termLayer      = ZioTerm.layer
     val screenLayer    = termLayer >>> ZioScreen.shellLayer
     val eventLoopLayer = termLayer >>> ZioEventLoop.layer

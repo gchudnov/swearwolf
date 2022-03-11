@@ -6,9 +6,11 @@ import zio.*
 
 import java.lang.System
 
+type ZioTerm = AsyncZioTerm
+
 object ZioTerm:
 
-  def layer: ULayer[AsyncZioTerm] =
+  def layer: ULayer[ZioTerm] =
     val in  = System.in
     val out = System.out
 

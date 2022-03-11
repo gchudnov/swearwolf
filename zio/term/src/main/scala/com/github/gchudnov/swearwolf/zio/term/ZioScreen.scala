@@ -10,9 +10,11 @@ import sun.misc.SignalHandler
 import zio.*
 import zio.stream.*
 
+type ZioScreen = AsyncZioScreen
+
 object ZioScreen:
 
-  def shellLayer: RLayer[AsyncZioTerm, AsyncZioScreen] =
+  def shellLayer: RLayer[AsyncZioTerm, ZioScreen] =
     import Term.*
 
     val acquire = for

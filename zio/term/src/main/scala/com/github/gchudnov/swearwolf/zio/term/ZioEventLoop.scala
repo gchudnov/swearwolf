@@ -6,8 +6,10 @@ import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioEventLoop
 import zio.*
 
+type ZioEventLoop = AsyncZioEventLoop
+
 object ZioEventLoop:
-  def layer: URLayer[AsyncZioTerm, AsyncZioEventLoop] =
+  def layer: URLayer[AsyncZioTerm, ZioEventLoop] =
     (for
       term     <- ZIO.service[AsyncZioTerm]
       eventLoop = new AsyncZioEventLoop(term)
