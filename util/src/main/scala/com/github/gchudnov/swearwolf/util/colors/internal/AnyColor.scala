@@ -3,7 +3,7 @@ package com.github.gchudnov.swearwolf.util.colors.internal
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.colors.Color
 
-abstract class AnyColor[F[_]](using ME: MonadError[F]):
+abstract class AnyColor[F[_]: MonadError]:
 
   def parse(value: String): F[Color] =
     Color.parse[F](value)
