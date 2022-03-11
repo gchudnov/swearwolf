@@ -17,8 +17,6 @@ import zio.stream.*
 
 object Main extends ZIOAppDefault:
 
-  private val tickDuration = 1000.millis
-
   override def run: ZIO[Environment with ZEnv with ZIOAppArgs, Any, Any] =
     val env     = makeEnv()
     val program = makeProgram().provideSome[Clock](env)
@@ -29,12 +27,9 @@ object Main extends ZIOAppDefault:
     for
       eventLoop <- ZIO.service[AsyncZioEventLoop]
       logic     <- ZIO.service[Logic]
-      handler   = (ks: KeySeq) => {
-        if(ks.isEsc) then
-          ZIO.succeed(EventLoop.Action.Exit)
-        else
-          logic.onKeySeq(ks).map(_ => EventLoop.Action.Continue)
-      }
+      handler = (ks: KeySeq) =>
+                  if (ks.isEsc) then ZIO.succeed(EventLoop.Action.Exit)
+                  else logic.onKeySeq(ks).map(_ => EventLoop.Action.Continue)
       _ <- eventLoop.run(handler)
     yield ()
 

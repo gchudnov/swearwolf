@@ -27,13 +27,12 @@ import java.io.FileOutputStream
 import java.io.PrintStream
 import scala.annotation.nowarn
 
-
 final class LiveLogic(screen: Screen[Task]) extends Logic:
 
   override def onKeySeq(ks: KeySeq): Task[Unit] =
     import TextStyle.*
 
-    val sz = Size(256,256)
+    val sz = Size(256, 256) // NOTE: should be in the state
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
@@ -48,7 +47,6 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
     val ksLabel = Label(Size(sz.width - 32, 1), ks.toString, AlignStyle.Left)
 
     val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
-    // val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
     val errOrUnit = for
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
