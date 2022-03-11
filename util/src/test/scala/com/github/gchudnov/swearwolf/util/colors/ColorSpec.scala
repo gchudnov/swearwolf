@@ -38,6 +38,14 @@ object ColorSpec extends DefaultRunnableSpec:
 
         assert(actual)(equalTo(expected))
       },
+      test("RRGGBB with Try") {
+        val input = "fe2233"
+
+        val actual   = TryColor.parse(input).get
+        val expected = Color(254, 34, 51)
+
+        assert(actual)(equalTo(expected))
+      },      
       test("red") {
         val input = "red"
 
