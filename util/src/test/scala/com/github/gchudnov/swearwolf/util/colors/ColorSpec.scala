@@ -26,7 +26,7 @@ object ColorSpec extends DefaultRunnableSpec:
         val input = "#ff1122"
 
         val actual   = EitherColor.parse(input).toTry.get
-        val expected = EitherColor.make(255, 17, 34)
+        val expected = Color(255, 17, 34)
 
         assert(actual)(equalTo(expected))
       },
@@ -34,7 +34,7 @@ object ColorSpec extends DefaultRunnableSpec:
         val input = "fe2233"
 
         val actual   = EitherColor.parse(input).toTry.get
-        val expected = EitherColor.make(254, 34, 51)
+        val expected = Color(254, 34, 51)
 
         assert(actual)(equalTo(expected))
       },
@@ -42,7 +42,7 @@ object ColorSpec extends DefaultRunnableSpec:
         val input = "red"
 
         val actual   = EitherColor.parse(input).toTry.get
-        val expected = EitherColor.make(255, 0, 0)
+        val expected = Color(255, 0, 0)
 
         assert(actual)(equalTo(expected))
       },
@@ -51,15 +51,15 @@ object ColorSpec extends DefaultRunnableSpec:
 
         val actual = input.map(name => EitherColor.parse(name))
         val expected = Seq[Either[Throwable, Color]](
-          Right(EitherColor.White),
-          Right(EitherColor.Black),
-          Right(EitherColor.Red),
-          Right(EitherColor.Green),
-          Right(EitherColor.Yellow),
-          Right(EitherColor.Blue),
-          Right(EitherColor.RosyBrown),
-          Right(EitherColor.RosyBrown),
-          Right(EitherColor.Silver)
+          Right(Color.White),
+          Right(Color.Black),
+          Right(Color.Red),
+          Right(Color.Green),
+          Right(Color.Yellow),
+          Right(Color.Blue),
+          Right(Color.RosyBrown),
+          Right(Color.RosyBrown),
+          Right(Color.Silver)
         )
 
         assert(actual)(equalTo(expected))
@@ -71,7 +71,7 @@ object ColorSpec extends DefaultRunnableSpec:
         assert(actual)(isLeft)
       },
       test("show displays color") {
-        val input  = EitherColor.White
+        val input  = Color.White
         val actual = input.show
 
         val expected = "#ffffff"
