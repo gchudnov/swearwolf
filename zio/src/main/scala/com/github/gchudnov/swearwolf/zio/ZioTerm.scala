@@ -1,7 +1,18 @@
 package com.github.gchudnov.swearwolf.zio
 
-object ZioTerm {
+import com.github.gchudnov.swearwolf.term.Term
+import com.github.gchudnov.swearwolf.zio.internal.AsyncZioTerm
+import zio.*
 
-  // TODO: add terminal
+import java.lang.System
 
-}
+object ZioTerm:
+
+  def layer: ULayer[AsyncZioTerm] =
+    val in  = System.in
+    val out = System.out
+
+    val term = new AsyncZioTerm(in, out, false)
+    ZLayer.succeed(term)
+
+    // AsyncTerm[Task] ???

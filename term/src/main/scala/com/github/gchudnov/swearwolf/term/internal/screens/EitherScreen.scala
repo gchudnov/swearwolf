@@ -8,9 +8,10 @@ import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen
 import com.github.gchudnov.swearwolf.term.internal.screens.TermAction
 import com.github.gchudnov.swearwolf.util.geometry.Size
 
-final class EitherScreen(term: Term[Either[Throwable, *]], cleanup: TermAction[Either[Throwable, *]]) extends SyncScreen(term):
+final class EitherScreen(term: Term[Either[Throwable, *]], cleanup: TermAction[Either[Throwable, *]], sz: Option[Size]) extends SyncScreen(term):
 
-  override def size: Either[Throwable, Option[Size]] = ???
+  override def size: Either[Throwable, Option[Size]] = 
+    Right(sz)
 
   override def close(): Either[Throwable, Unit] =
     cleanup(term)
