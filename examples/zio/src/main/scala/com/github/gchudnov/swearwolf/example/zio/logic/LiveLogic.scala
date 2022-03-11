@@ -1,6 +1,5 @@
 package com.github.gchudnov.swearwolf.example.zio.logic
 
-import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.shapes.box.Box
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle
 import com.github.gchudnov.swearwolf.shapes.chart.Chart
@@ -46,7 +45,7 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
 
     val ksLabel = Label(Size(sz.width - 32, 1), ks.toString, AlignStyle.Left)
 
-    val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
+    val rich = ZioRichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
     val errOrUnit = for
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))

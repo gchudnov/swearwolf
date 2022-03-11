@@ -1,5 +1,6 @@
 package com.github.gchudnov.swearwolf.util.bytes
 
+import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.show.Show
 
 import java.nio.charset.StandardCharsets
@@ -53,7 +54,7 @@ object Bytes:
     new Bytes(bytes)
 
   def apply(bytes: Seq[Byte]): Bytes =
-    new Bytes(bytes.toArray)    
+    new Bytes(bytes.toArray)
 
   def apply(byte: Byte): Bytes =
     new Bytes(Array(byte))
@@ -70,9 +71,9 @@ object Bytes:
     def +:(b: Byte): Bytes =
       new Bytes(b +: bytes.asArray)
 
-  extension (str: String)
-    def asBytes: Bytes =
-      Bytes(str.grouped(2).map(Integer.parseInt(_, 16).toByte).toArray)
+  extension [F[_]: MonadError](str: String)
+    def asBytes: F[Bytes] =
+      summon[MonadError[F]].attempt(Bytes(str.grouped(2).map(Integer.parseInt(_, 16).toByte).toArray))
 
   given showBytes: Show[Bytes] with
     extension (a: Bytes)

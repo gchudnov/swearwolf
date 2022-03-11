@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 
 final case class Color(r: Int, g: Int, b: Int):
   def toHex(): String =
-    s"#${f"${r}%02x"}${f"${g}%02x"}${f"${b}%02x"}"
+    "#" + List(r, g, b).map(Color.intToHex).mkString
 
 object Color:
 
@@ -45,6 +45,9 @@ object Color:
     else
       val cs = c.grouped(2).map(it => Integer.parseInt(it, 16)).toSeq
       summon[MonadError[F]].succeed(Color(cs(0), cs(1), cs(2)))
+
+  private def intToHex(n: Int): String =
+    f"${n}%02x"
 
   val AliceBlue: Color            = Color(240, 248, 255)
   val AntiqueWhite: Color         = Color(250, 235, 215)

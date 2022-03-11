@@ -2,6 +2,7 @@ package com.github.gchudnov.swearwolf.util.bytes
 
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.bytes.Bytes.asBytes
+import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import zio.test.Assertion.*
 import zio.test.*
 
@@ -22,7 +23,14 @@ object BytesSpec extends DefaultRunnableSpec:
         val actual   = input.asBytes
         val expected = Bytes(Array(10.toByte, 23.toByte, 65.toByte))
 
-        assert(actual)(equalTo(expected))
+        assert(actual)(equalTo(Right(expected)))
+      },
+      test("string to bytes with non-hex characters") {
+        val input = "afdsgbvvjytut"
+
+        val actual   = input.asBytes
+
+        assert(actual)(isLeft)
       },
       test("show bytes") {
         val input = Array(10.toByte, 23.toByte, 65.toByte)
