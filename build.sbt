@@ -74,7 +74,7 @@ lazy val termZio = (project in file("zio/term"))
   )
 
 lazy val richZio = (project in file("zio/rich"))
-  .dependsOn(utilZio, termZio)
+  .dependsOn(utilZio, termZio, rich)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)

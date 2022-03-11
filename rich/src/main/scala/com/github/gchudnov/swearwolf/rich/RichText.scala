@@ -34,12 +34,3 @@ object RichText:
       elements <- Parser.parse(rich.input)
       span     <- Builder.build(elements)
     yield span
-
-  extension [F[_]: MonadError](screen: Screen[F])
-    def put(pt: Point, richText: RichText): F[Unit] =
-      import MonadError.*
-
-      for
-        span <- build(richText)
-        _    <- screen.put(pt, span)
-      yield ()
