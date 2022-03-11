@@ -12,13 +12,17 @@ import zio.*
 object ZioScreen:
 
   def shellLayer: RLayer[AsyncZioTerm, AsyncZioScreen] =
+    import Term.*
+
     (for
       term             <- ZIO.service[AsyncZioTerm]
-      cb: SignalHandler = (sig: Signal) => ()
+      sigHandler: SignalHandler = (sig: Signal) => ()
 
+      _ <- RIO.async(cb => {
+          cb(term.fetchSize().flatMap(_ => term.flush()))
+        })
 
-
-      pairs             = ShellScreen.initRollbackActions[Task](cb)
+      pairs             = ShellScreen.initRollbackActions[Task](sigHandler)
       cleanup          <- ShellScreen.initTerm(term, pairs)
       screen            = new AsyncZioScreen(term, cleanup)
     yield (screen)).toLayer
@@ -28,6 +32,10 @@ object ZioScreen:
 
 
 /*
+      _ <- ZIO.async(cb => {
+        cb(term.fetchSize().flatMap(_ => term.flush()))
+      })
+
 // Asynchronous Callback-based API
 def registerCallback(
     name: String,
