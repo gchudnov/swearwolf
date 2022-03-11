@@ -1,7 +1,7 @@
-package com.github.gchudnov.swearwolf.zio
+package com.github.gchudnov.swearwolf.zio.term
 
 import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.zio.internal.AsyncZioTerm
+import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioTerm
 import zio.*
 
 import java.lang.System
@@ -14,5 +14,3 @@ object ZioTerm:
 
     val term = new AsyncZioTerm(in, out, false)
     ZLayer.succeed(term)
-
-    // AsyncTerm[Task] ???

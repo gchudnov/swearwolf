@@ -14,8 +14,10 @@ import sun.misc.SignalHandler
 
 type TermAction[F[_]] = (Term[F]) => F[Unit]
 
-sealed trait ShellScreen:
+object ShellScreen:
   import Term.*
+
+  val SIGWINCH: Signal = new Signal("WINCH")
 
   /**
    * Set terminal to raw mode.
@@ -35,24 +37,13 @@ sealed trait ShellScreen:
   private def headless[F[_]: MonadError](flag: Boolean): F[Unit] =
     summon[MonadError[F]].attempt(System.setProperty("java.awt.headless", flag.toString))
 
-  /**
-   * Listen to window size change.
-   */
-  private def setWinchListener[F[_]: MonadError](sigHandler: SignalHandler): F[Unit] =
-    summon[MonadError[F]].attempt(
-      Signal.handle(
-        new Signal("WINCH"),
-        sigHandler
-      )
-    )
-
   private def noOp[F[_]: MonadError](): F[Unit] =
     summon[MonadError[F]].succeed(())
 
   /**
    * Pairs of init and rollback functions.
    */
-  def initRollbackActions[F[_]: MonadError](sigHandler: SignalHandler): List[(TermAction[F], TermAction[F])] =
+  def initRollbackActions[F[_]: MonadError](): List[(TermAction[F], TermAction[F])] =
     List(
       (t => headless(true), t => headless(false)),
       (t => sttyRaw(), t => sttySane()),
@@ -60,7 +51,6 @@ sealed trait ShellScreen:
       (t => t.bufferAlt(), t => t.bufferNormal()),
       (t => t.cursorHide(), t => t.cursorShow()),
       (t => t.mouseTrack(), t => t.mouseUntrack()),
-      (t => setWinchListener(sigHandler), t => noOp()),
       (t => t.fetchSize(), t => noOp()),
       (t => t.flush(), t => noOp())
     )
@@ -83,5 +73,3 @@ sealed trait ShellScreen:
       val (init, rollback) = x
       init(term).map(_ => rollback +: acc).handleErrorWith(t => ME.traverse(acc)(f => f(term)).flatMap(_ => ME.fail(t)))
     }.map(rs => makeActionExecutor(rs))
-
-object ShellScreen extends ShellScreen

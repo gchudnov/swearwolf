@@ -1,10 +1,10 @@
-package com.github.gchudnov.swearwolf.zio
+package com.github.gchudnov.swearwolf.zio.term
 
 import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.zio.internal.AsyncZioTerm
-import com.github.gchudnov.swearwolf.zio.internal.RIOMonadAsyncError
+import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioTerm
+import com.github.gchudnov.swearwolf.zio.term.internal.RIOMonadAsyncError
+import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioEventLoop
 import zio.*
-import com.github.gchudnov.swearwolf.zio.internal.AsyncZioEventLoop
 
 object ZioEventLoop:
   def layer: URLayer[AsyncZioTerm, AsyncZioEventLoop] =

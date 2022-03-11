@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.zio.internal
+package com.github.gchudnov.swearwolf.zio.term.internal
 
 import com.github.gchudnov.swearwolf.term.AnyEventLoop
 import com.github.gchudnov.swearwolf.term.AsyncEventLoop
@@ -7,7 +7,7 @@ import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.zio.internal.RIOMonadAsyncError
+import com.github.gchudnov.swearwolf.zio.term.internal.RIOMonadAsyncError
 import zio.*
 import zio.stream.*
 

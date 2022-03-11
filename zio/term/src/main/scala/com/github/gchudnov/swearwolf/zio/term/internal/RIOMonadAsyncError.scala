@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.zio.internal
+package com.github.gchudnov.swearwolf.zio.term.internal
 
 import com.github.gchudnov.swearwolf.util.func.Canceler
 import com.github.gchudnov.swearwolf.util.func.MonadAsyncError

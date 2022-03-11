@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.zio.internal
+package com.github.gchudnov.swearwolf.zio.term.internal
 
 import com.github.gchudnov.swearwolf.term.AsyncScreen
 import com.github.gchudnov.swearwolf.term.AsyncTerm
