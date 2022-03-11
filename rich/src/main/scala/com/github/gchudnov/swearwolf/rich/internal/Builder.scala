@@ -1,19 +1,19 @@
 package com.github.gchudnov.swearwolf.rich.internal
 
+import com.github.gchudnov.swearwolf.rich.RichTextException
 import com.github.gchudnov.swearwolf.rich.internal.Element
-import com.github.gchudnov.swearwolf.rich.internal.TextElement
 import com.github.gchudnov.swearwolf.rich.internal.NewLineElement
 import com.github.gchudnov.swearwolf.rich.internal.TagElement
+import com.github.gchudnov.swearwolf.rich.internal.TextElement
+import com.github.gchudnov.swearwolf.util.colors.Color
+import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.util.func.MonadError.*
+import com.github.gchudnov.swearwolf.util.spans.ByteSpan
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.StyleSpan
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
-import com.github.gchudnov.swearwolf.util.spans.ByteSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
-import com.github.gchudnov.swearwolf.util.colors.Color
-import com.github.gchudnov.swearwolf.rich.RichTextException
-import com.github.gchudnov.swearwolf.util.func.MonadError
-import com.github.gchudnov.swearwolf.util.func.MonadError.*
 
 /**
  * Builds a Span from the parsed elements.

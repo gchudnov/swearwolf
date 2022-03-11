@@ -18,28 +18,18 @@ abstract class AnyColor[F[_]](using ME: MonadError[F]):
    * }}}
    */
   def parse(value: String): F[Color] =
-    import MonadError.*
-    if value.isEmpty then summon[MonadError[F]].fail(new ColorException("Cannot parse the color: <empty>"))
-    else fromName(value).handleErrorWith(_ => fromHex(value))
+    Color.parse[F](value)
 
   private def fromName(name: String): F[Color] =
-    Color.colors.get(normalizeName(name)).fold(summon[MonadError[F]].fail(new ColorException(s"Named Color is not found: $name")): F[Color])(c => summon[MonadError[F]].succeed(c))
+    Color.fromName[F](name)
 
   private def fromHex(value: String): F[Color] =
-    import MonadError.*
-
-    val c = if value.head == '#' then value.tail else value
-    if c.length != 6 then summon[MonadError[F]].fail(new ColorException("Cannot parse the color: invalid format. Supported formats: (#RRGGBB, RRGGBB)"))
-    else
-      for cs <- summon[MonadError[F]].attempt(c.grouped(2).map(it => Integer.parseInt(it, 16).toByte).toSeq)
-      yield Color(cs(0), cs(1), cs(2))
-
-  private def normalizeName(name: String): String =
-    name.toLowerCase.replaceAll("_", "-")
+    Color.fromHex[F](value)
 
 object Color:
 
-  def apply(r: Byte, g: Byte, b: Byte): Color = new Color(r, g, b)
+  def apply(r: Byte, g: Byte, b: Byte): Color =
+    new Color(r, g, b)
 
   def apply(r: Int, g: Int, b: Int): Color =
     apply(r.toByte, g.toByte, b.toByte)
@@ -47,8 +37,37 @@ object Color:
   def apply(rgb: Int): Color =
     apply((rgb >> 16 & 0xff).toByte, (rgb >> 8 & 0xff).toByte, (rgb & 0xff).toByte)
 
-  private def byteToHex(n: Byte): String =
+  /**
+   * Parses color from a string
+   *
+   * {{{
+   *   #RRGGBB
+   *    RRGGBB
+   * }}}
+   */
+  def parse[F[_]: MonadError](value: String): F[Color] =
+    import MonadError.*
+    if value.isEmpty then summon[MonadError[F]].fail(new ColorException("Cannot parse the color: <empty>"))
+    else fromName(value).handleErrorWith(_ => fromHex(value))
+
+  private[colors] def fromName[F[_]: MonadError](name: String): F[Color] =
+    Color.colors
+      .get(Color.normalizeName(name))
+      .fold(summon[MonadError[F]].fail(new ColorException(s"Named Color is not found: $name")): F[Color])(c => summon[MonadError[F]].succeed(c))
+
+  private[colors] def fromHex[F[_]: MonadError](value: String): F[Color] =
+    import MonadError.*
+    val c = if value.head == '#' then value.tail else value
+    if c.length != 6 then summon[MonadError[F]].fail(new ColorException("Cannot parse the color: invalid format. Supported formats: (#RRGGBB, RRGGBB)"))
+    else
+      for cs <- summon[MonadError[F]].attempt(c.grouped(2).map(it => Integer.parseInt(it, 16).toByte).toSeq)
+      yield Color(cs(0), cs(1), cs(2))
+
+  private[colors] def byteToHex(n: Byte): String =
     f"${n}%02x"
+
+  private[colors] def normalizeName(name: String): String =
+    name.toLowerCase.replaceAll("_", "-")
 
   given Show[Color] with
     extension (a: Color)
@@ -196,7 +215,7 @@ object Color:
   val Yellow: Color               = Color(255, 255, 0)
   val YellowGreen: Color          = Color(154, 205, 50)
 
-  lazy val colors: Map[String, Color] = Map(
+  private[colors] lazy val colors: Map[String, Color] = Map(
     Names.AliceBlue            -> AliceBlue,
     Names.AntiqueWhite         -> AntiqueWhite,
     Names.Aqua                 -> Aqua,
