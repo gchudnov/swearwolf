@@ -4,7 +4,7 @@ import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen
 import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioScreen
 import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioTerm
-import com.github.gchudnov.swearwolf.zio.term.internal.RIOMonadAsyncError
+import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import sun.misc.Signal
 import sun.misc.SignalHandler
 import zio.*
