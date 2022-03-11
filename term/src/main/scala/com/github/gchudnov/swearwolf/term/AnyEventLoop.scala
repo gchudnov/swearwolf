@@ -7,7 +7,6 @@ import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
 import scala.annotation.tailrec
@@ -20,7 +19,7 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
 abstract class AnyEventLoop[F[_]](term: Term[F])(using ME: MonadError[F]) extends EventLoop[F]:
   import AnyEventLoop.*
   import EventLoop.*
-  import KeySeqSyntax.*
+  import KeySeq.*
   import MonadError.*
 
   /**
@@ -47,7 +46,6 @@ abstract class AnyEventLoop[F[_]](term: Term[F])(using ME: MonadError[F]) extend
           }
 
 object AnyEventLoop:
-  import KeySeqSyntax.*
 
   final case class Acc(ks: Seq[KeySeq], rest: Seq[Byte])
 

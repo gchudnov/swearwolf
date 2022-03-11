@@ -2,7 +2,6 @@ package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 import com.github.gchudnov.swearwolf.util.func.Monoid
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
@@ -14,7 +13,7 @@ trait EventLoop[F[_]]:
 
 
 object EventLoop:
-  import KeySeqSyntax.*
+  import KeySeq.*
   import MonadError.*
 
   type KeySeqHandler[F[_]] = KeySeq => F[EventLoop.Action]

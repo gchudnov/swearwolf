@@ -25,6 +25,9 @@ abstract class AnyWriter[F[_]](term: Term[F])(using ME: MonadError[F]) extends W
   override def put(value: Array[Byte]): F[Unit] =
     term.write(value)
 
+  override def flush(): F[Unit] =
+    term.flush()
+
 object AnyWriter:
   def toEscSeq(style: TextStyle): Seq[EscSeq] =
     style match

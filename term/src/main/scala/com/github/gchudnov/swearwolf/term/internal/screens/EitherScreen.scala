@@ -58,28 +58,4 @@ private[term] object TermScreen:
             case Right(_) => (Right(()), rollback :: acc)
     }
 
-
-import com.github.gchudnov.swearwolf.term.EscSeq
-import com.github.gchudnov.swearwolf.term.EventLoop.Action
-import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.term.Screen
-import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.term.internal.screens.TermScreen.TermAction
-import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
-import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
-import com.github.gchudnov.swearwolf.util.bytes.Bytes
-import com.github.gchudnov.swearwolf.util.exec.Exec
-import com.github.gchudnov.swearwolf.util.geometry.Point
-import com.github.gchudnov.swearwolf.util.geometry.Size
-import com.github.gchudnov.swearwolf.util.spans.Span
-import com.github.gchudnov.swearwolf.util.strings.Strings.*
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
-import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
-import sun.misc.Signal
-
-import scala.annotation.tailrec
-import scala.util.control.Exception.nonFatalCatch
-import com.github.gchudnov.swearwolf.term.EventLoop
  */

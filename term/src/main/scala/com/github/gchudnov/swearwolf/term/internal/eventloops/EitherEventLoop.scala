@@ -5,7 +5,6 @@ import com.github.gchudnov.swearwolf.term.AnyEventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.keys.KeySeqSyntax
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import scala.annotation.tailrec
@@ -17,6 +16,7 @@ final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventL
   import AnyEventLoop.*
 
   override def run(handler: KeySeqHandler[Either[Throwable, *]]): Either[Throwable, Unit] =
+    import KeySeq.*
 
     @tailrec
     def loop(acc: Acc): Either[Throwable, Unit] =

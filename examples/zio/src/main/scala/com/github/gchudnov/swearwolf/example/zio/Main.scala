@@ -1,19 +1,19 @@
 package com.github.gchudnov.swearwolf.example.zio
 
-import com.github.gchudnov.swearwolf.example.zio.internal.Run
-import com.github.gchudnov.swearwolf.example.zio.internal.TermLayers
-import com.github.gchudnov.swearwolf.example.zio.internal.TermRun
+import com.github.gchudnov.swearwolf.example.zio.internal.Logic
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.*
 import com.github.gchudnov.swearwolf.util.geometry.Size
-import zio.Console.printLineError
+import com.github.gchudnov.swearwolf.zio.term.ZioEventLoop
+import com.github.gchudnov.swearwolf.zio.term.ZioScreen
+import com.github.gchudnov.swearwolf.zio.term.ZioTerm
+import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioEventLoop
+import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioScreen
+import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioTerm
 import zio.*
-import zio.stream.ZStream
-import zio.stream.ZStream.Emit
-import com.github.gchudnov.swearwolf.example.zio.internal.console.TermConsole
-import com.github.gchudnov.swearwolf.example.zio.internal.Logger
+import zio.stream.*
 
 object Main extends ZIOAppDefault:
 
@@ -23,48 +23,26 @@ object Main extends ZIOAppDefault:
     val env     = makeEnv()
     val program = makeProgram().provideSome[Clock](env)
 
-    Logger.logLn(s"run");
-
     program
-      .tapError(t => printLineError(s"Error: ${t.getMessage}"))
 
-  private def makeProgram(): ZIO[Run with Clock with Screen with EventLoop, Throwable, Unit] =
+  private def makeProgram(): ZIO[Logic with Clock with AsyncZioEventLoop, Throwable, Unit] =
     for
-      eventLoop <- ZIO.service[EventLoop]
-      run       <- ZIO.service[Run]
-      f0 <- ZStream
-              .asyncZIO[Any, Throwable, KeySeq](cb => ZIO(fromCallback(cb, eventLoop)).fork)
-              .mapZIO(keySeq => run.onKeySeq(keySeq))
-              .runDrain
-              .fork
-//      f1 <- run.onTick().repeat(Schedule.spaced(tickDuration)).forever.fork
-      f2 <- run.messagePump().runDrain.fork
-      _  <- f0.join
+      eventLoop <- ZIO.service[AsyncZioEventLoop]
+      logic     <- ZIO.service[Logic]
+      handler   = (ks: KeySeq) => {
+        if(ks.isEsc) then
+          ZIO.succeed(EventLoop.Action.Exit)
+        else
+          logic.onKeySeq(ks).map(_ => EventLoop.Action.Continue)
+      }
+      _ <- eventLoop.run(handler)
     yield ()
 
-    // NOTE: the size of the screen is not being handled correctly
+  private def makeEnv(): ZLayer[Any, Throwable, AsyncZioTerm with AsyncZioScreen with AsyncZioEventLoop with Logic] =
+    val termLayer      = ZioTerm.layer
+    val screenLayer    = termLayer >>> ZioScreen.shellLayer
+    val eventLoopLayer = termLayer >>> ZioEventLoop.layer
 
-  // TODO: is it possible to make the event-loop async ?
-  // TODO: how to handle the key async and report the result so the event-loop can stop?
+    val logicLayer = screenLayer >>> Logic.layer
 
-  // TODO: make an EventLoop as F[_] ??? so that ZIo can be natively used, check sttp?
-
-  private def fromCallback(cb: Emit[Any, Throwable, KeySeq, Unit], eventLoop: EventLoop): Unit =
-    def handler(keySeq: KeySeq): Either[Throwable, EventLoop.Action] =
-      // TODO: how to make async ?
-      cb(ZIO.succeed(Chunk(keySeq)))
-      Right(EventLoop.Action.Continue) // TODO: sync / async?
-
-    eventLoop
-      .run(handler)
-      .fold(err => cb(ZIO.fail(err).mapError(Some(_))), _ => cb(ZIO.fail(None)))
-
-  private def makeEnv(): ZLayer[Any, Throwable, Term with Screen with EventLoop with Run with Console] =
-    val termLayer      = TermLayers.termLayer
-    val consoleLayer   = termLayer >>> TermConsole.layer
-    val screenLayer    = termLayer >>> TermLayers.screenLayer
-    val eventLoopLayer = termLayer >>> TermLayers.eventLoopLayer
-
-    val runLayer = screenLayer >>> TermRun.layer
-
-    termLayer ++ screenLayer ++ eventLoopLayer ++ runLayer ++ consoleLayer
+    termLayer ++ screenLayer ++ eventLoopLayer ++ logicLayer
