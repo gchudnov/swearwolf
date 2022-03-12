@@ -17,14 +17,13 @@ import zio.test.Assertion.isRight
 import zio.test.*
 
 object RichTextSpec extends DefaultRunnableSpec:
-  given ME: MonadError[Either[Throwable, *]] = EitherMonad
 
   override def spec: ZSpec[Environment, Failure] =
     suite("RichText")(
       test("empty") {
         val input = ""
 
-        val actual   = RichText.build(RichText(input))
+        val actual   = EitherRichText.build(RichText(input))
         val expected = Right(StyleSpan(TextStyle.Empty, List.empty[Span]))
 
         assert(actual)(equalTo(expected))
@@ -32,7 +31,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("bold tag without text") {
         val input = "<bold></bold>"
 
-        val actual   = RichText.build(RichText(input))
+        val actual   = EitherRichText.build(RichText(input))
         val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Bold, List.empty[Span]))))
 
         assert(actual)(equalTo(expected))
@@ -40,7 +39,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("text without tags") {
         val input = "text"
 
-        val actual   = RichText.build(RichText(input))
+        val actual   = EitherRichText.build(RichText(input))
         val expected = Right(StyleSpan(TextStyle.Empty, List(TextSpan("text"))))
 
         assert(actual)(equalTo(expected))
@@ -48,7 +47,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("tag with text") {
         val input = "<i>text</i>"
 
-        val actual   = RichText.build(RichText(input))
+        val actual   = EitherRichText.build(RichText(input))
         val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Italic, List(TextSpan("text"))))))
 
         assert(actual)(equalTo(expected))
@@ -56,7 +55,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("attribute with single quotes") {
         val input = "<fg='#AABBCC'>text</fg>"
 
-        val actual   = RichText.build(RichText(input))
+        val actual   = EitherRichText.build(RichText(input))
         val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Foreground(Color(170, 187, 204)), List(TextSpan("text"))))))
 
         assert(actual)(equalTo(expected))
@@ -64,7 +63,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("attribute with double quotes") {
         val input = "<fg=\"#AABBCC\">text</fg>"
 
-        val actual   = RichText.build(RichText(input))
+        val actual   = EitherRichText.build(RichText(input))
         val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Foreground(Color(170, 187, 204)), List(TextSpan("text"))))))
 
         assert(actual)(equalTo(expected))
@@ -72,7 +71,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("multiple attributes") {
         val input = "<fg='#AABBCC'><bg=\"DDEEFF\">text</bg></fg>"
 
-        val actual = RichText.build(RichText(input))
+        val actual = EitherRichText.build(RichText(input))
         val expected = Right(
           StyleSpan(
             TextStyle.Empty,
@@ -85,7 +84,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("nested tags") {
         val input = "<i><b>text</b></i>"
 
-        val actual   = RichText.build(RichText(input))
+        val actual   = EitherRichText.build(RichText(input))
         val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Italic, List(StyleSpan(TextStyle.Bold, List(TextSpan("text"))))))))
 
         assert(actual)(equalTo(expected))
@@ -93,7 +92,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("nested tags with text in between") {
         val input = "<i>A<b>text</b>B</i>"
 
-        val actual   = RichText.build(RichText(input))
+        val actual   = EitherRichText.build(RichText(input))
         val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Italic, List(TextSpan("A"), StyleSpan(TextStyle.Bold, List(TextSpan("text"))), TextSpan("B"))))))
 
         assert(actual)(equalTo(expected))
@@ -101,7 +100,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("nested tags with text and tags in between") {
         val input = "<i>A<b>text</b>B<u>C</u></i>"
 
-        val actual = RichText.build(RichText(input))
+        val actual = EitherRichText.build(RichText(input))
         val expected = Right(
           StyleSpan(
             TextStyle.Empty,
@@ -119,7 +118,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("nested tags with text with spaces") {
         val input = "<i>A B<b>text</b>C </i>"
 
-        val actual = RichText.build(RichText(input))
+        val actual = EitherRichText.build(RichText(input))
         val expected =
           Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Italic, List(TextSpan("A B"), StyleSpan(TextStyle.Bold, List(TextSpan("text"))), TextSpan("C "))))))
 
@@ -128,7 +127,7 @@ object RichTextSpec extends DefaultRunnableSpec:
       test("invalid document") {
         val input = "<i>no closing tag"
 
-        val actual = RichText.build(RichText(input))
+        val actual = EitherRichText.build(RichText(input))
 
         assert(actual)(isLeft)
       }

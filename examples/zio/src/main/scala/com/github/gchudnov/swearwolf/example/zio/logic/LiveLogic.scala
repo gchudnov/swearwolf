@@ -37,7 +37,7 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
-    val b  = Box(Size(21, 3), BoxStyle.SingleBorder)
+    val box  = Box(Size(21, 3), BoxStyle.SingleBorder)
     val g1 = Chart(Size(16, 1), data, ChartStyle.Dot)
     val g2 = Chart(Size(16, 2), data, ChartStyle.Step)
     val g3 = Chart(Size(16, 2), data, ChartStyle.Quad)
@@ -53,7 +53,7 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
       _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
       _ <- screen.put(Point(0, 2), rich)
-      // _ <- screen.put(Point(0, 4), b, Foreground(Color.Blue))
+      // _ <- screen.put(Point(0, 4), box, Foreground(Color.Blue))
       // _ <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
       // _ <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
       // _ <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))

@@ -8,8 +8,6 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.spans.Span
 
-final case class RichText(input: String)
-
 /**
  * Style text with the additional attributes.
  *
@@ -25,12 +23,5 @@ final case class RichText(input: String)
  *     strikethrough, t
  * }}}
  */
-object RichText:
+final case class RichText(input: String)
 
-  def build[F[_]: MonadError](rich: RichText): F[Span] =
-    import MonadError.*
-
-    for
-      elements <- Parser.parse(rich.input)
-      span     <- Builder.build(elements)
-    yield span

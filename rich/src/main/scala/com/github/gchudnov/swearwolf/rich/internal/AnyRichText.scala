@@ -6,10 +6,10 @@ import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.term.Screen
 
-abstract class AnyRichText[F[_]: MonadError]:
+trait AnyRichText[F[_]: MonadError]:
 
   def build(rich: RichText): F[Span] =
-    RichText.build(rich)
+    AnyRichText.build(rich)
 
   extension (screen: Screen[F])
     def put(pt: Point, richText: RichText): F[Unit] =
@@ -19,3 +19,13 @@ abstract class AnyRichText[F[_]: MonadError]:
         span <- build(richText)
         _    <- screen.put(pt, span)
       yield ()
+
+object AnyRichText:
+
+  def build[F[_]: MonadError](rich: RichText): F[Span] =
+    import MonadError.*
+
+    for
+      elements <- Parser.parse(rich.input)
+      span     <- Builder.build(elements)
+    yield span
