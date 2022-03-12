@@ -6,6 +6,6 @@ import com.github.gchudnov.swearwolf.util.func.TryMonad
 import scala.util.Try
 
 object TryColor:
-  extension (color: Color.type)
+  extension (colorT: Color.type)
     def parseTry(value: String): Try[Color] =
       Color.parse[Try](value)

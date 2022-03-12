@@ -7,6 +7,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 object FutureColor:
-  extension (color: Color.type)
+
+  extension (colorT: Color.type)
     def parseFuture(value: String)(using ec: ExecutionContext): Future[Color] =
       Color.parse[Future](value)

@@ -7,7 +7,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 
 object EitherRichText:
 
-  extension (richText: RichText.type)
+  extension (richTextT: RichText.type)
     def buildEither(rich: RichText): Either[Throwable, Span] =
       RichText.build[Either[Throwable, *]](rich)
 

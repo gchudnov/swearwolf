@@ -9,7 +9,7 @@ import zio.*
 
 object ZioRichText:
 
-  extension (richText: RichText.type)
+  extension (richTextT: RichText.type)
     def buildZIO(rich: RichText): Task[Span] =
       RichText.build[Task](rich)
 
