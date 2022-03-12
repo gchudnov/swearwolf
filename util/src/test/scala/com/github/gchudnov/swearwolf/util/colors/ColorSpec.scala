@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.util.colors
 
-import com.github.gchudnov.swearwolf.util.colors.EitherColor
+import com.github.gchudnov.swearwolf.util.colors.EitherColor.*
+import com.github.gchudnov.swearwolf.util.colors.TryColor.*
 import zio.test.Assertion.*
 import zio.test.*
 
@@ -11,21 +12,21 @@ object ColorSpec extends DefaultRunnableSpec:
       test("empty") {
         val input = ""
 
-        val actual = EitherColor.parse(input)
+        val actual = Color.parseEither(input)
 
         assert(actual)(isLeft)
       },
       test("wrong format") {
         val input = "#abc"
 
-        val actual = EitherColor.parse(input)
+        val actual = Color.parseEither(input)
 
         assert(actual)(isLeft)
       },
       test("#RRGGBB") {
         val input = "#ff1122"
 
-        val actual   = EitherColor.parse(input).toTry.get
+        val actual   = Color.parseEither(input).toTry.get
         val expected = Color(255, 17, 34)
 
         assert(actual)(equalTo(expected))
@@ -33,7 +34,7 @@ object ColorSpec extends DefaultRunnableSpec:
       test("RRGGBB") {
         val input = "fe2233"
 
-        val actual   = EitherColor.parse(input).toTry.get
+        val actual   = Color.parseEither(input).toTry.get
         val expected = Color(254, 34, 51)
 
         assert(actual)(equalTo(expected))
@@ -41,7 +42,7 @@ object ColorSpec extends DefaultRunnableSpec:
       test("RRGGBB with Try") {
         val input = "fe2233"
 
-        val actual   = TryColor.parse(input).get
+        val actual   = Color.parseTry(input).get
         val expected = Color(254, 34, 51)
 
         assert(actual)(equalTo(expected))
@@ -49,7 +50,7 @@ object ColorSpec extends DefaultRunnableSpec:
       test("red") {
         val input = "red"
 
-        val actual   = EitherColor.parse(input).toTry.get
+        val actual   = Color.parseEither(input).toTry.get
         val expected = Color(255, 0, 0)
 
         assert(actual)(equalTo(expected))
@@ -57,7 +58,7 @@ object ColorSpec extends DefaultRunnableSpec:
       test("parse name") {
         val input = Seq("white", "black", "red", "green", "yellow", "blue", "rosy-brown", "rosy_brown", "SILVER")
 
-        val actual = input.map(name => EitherColor.parse(name))
+        val actual = input.map(name => Color.parseEither(name))
         val expected = Seq[Either[Throwable, Color]](
           Right(Color.White),
           Right(Color.Black),
@@ -74,7 +75,7 @@ object ColorSpec extends DefaultRunnableSpec:
       },
       test("parse unknown name") {
         val input  = "whot"
-        val actual = EitherColor.parse(input)
+        val actual = Color.parseEither(input)
 
         assert(actual)(isLeft)
       },

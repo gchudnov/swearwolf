@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.zio.util.colors
 
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.colors.ColorException
-import com.github.gchudnov.swearwolf.zio.util.colors.ZioColor
+import com.github.gchudnov.swearwolf.zio.util.colors.ZioColor.*
 import zio.*
 import zio.test.Assertion.*
 import zio.test.*
@@ -14,19 +14,19 @@ object ZioColorSpec extends DefaultRunnableSpec:
       test("empty") {
         val input = ""
 
-        for actual <- ZioColor.parse(input).exit
+        for actual <- Color.parseZIO(input).exit
         yield (assert(actual)(fails(isSubtype[ColorException](anything))))
       },
       test("wrong format") {
         val input = "#abc"
 
-        for actual <- ZioColor.parse(input).exit
+        for actual <- Color.parseZIO(input).exit
         yield (assert(actual)(fails(isSubtype[ColorException](anything))))
       },
       test("#RRGGBB") {
         val input = "#ff1122"
 
-        val actual   = ZioColor.parse(input)
+        val actual   = Color.parseZIO(input)
         val expected = Color(255, 17, 34)
 
         assertM(actual)(equalTo(expected))
@@ -34,7 +34,7 @@ object ZioColorSpec extends DefaultRunnableSpec:
       test("RRGGBB") {
         val input = "fe2233"
 
-        val actual   = ZioColor.parse(input)
+        val actual   = Color.parseZIO(input)
         val expected = Color(254, 34, 51)
 
         assertM(actual)(equalTo(expected))
@@ -42,7 +42,7 @@ object ZioColorSpec extends DefaultRunnableSpec:
       test("red") {
         val input = "red"
 
-        val actual   = ZioColor.parse(input)
+        val actual   = Color.parseZIO(input)
         val expected = Color(255, 0, 0)
 
         assertM(actual)(equalTo(expected))
@@ -50,7 +50,7 @@ object ZioColorSpec extends DefaultRunnableSpec:
       test("parse name") {
         val input = Seq("white", "black", "red", "green", "yellow", "blue", "rosy-brown", "rosy_brown", "SILVER")
 
-        val actual = ZIO.foreach(input)(name => ZioColor.parse(name))
+        val actual = ZIO.foreach(input)(name => Color.parseZIO(name))
         val expected = Seq[Color](
           Color.White,
           Color.Black,
@@ -68,7 +68,7 @@ object ZioColorSpec extends DefaultRunnableSpec:
       test("parse unknown name") {
         val input = "whot"
 
-        val actual = ZioColor.parse(input).exit
+        val actual = Color.parseZIO(input).exit
 
         assertM(actual)(fails(isSubtype[ColorException](anything)))
       },

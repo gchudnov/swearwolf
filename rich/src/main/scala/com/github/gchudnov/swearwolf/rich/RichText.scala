@@ -25,3 +25,24 @@ import com.github.gchudnov.swearwolf.util.spans.Span
  */
 final case class RichText(input: String)
 
+object RichText:
+
+  extension [F[_]: MonadError](screen: Screen[F])
+    def put(pt: Point, richText: RichText): F[Unit] =
+      putScreen(screen, pt, richText)
+
+  def build[F[_]: MonadError](rich: RichText): F[Span] =
+    import MonadError.*
+
+    for
+      elements <- Parser.parse(rich.input)
+      span     <- Builder.build(elements)
+    yield span
+
+  def putScreen[F[_]: MonadError](screen: Screen[F], pt: Point, richText: RichText): F[Unit] =
+    import MonadError.*
+
+    for
+      span <- build(richText)
+      _    <- screen.put(pt, span)
+    yield ()
