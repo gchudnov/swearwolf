@@ -1,4 +1,6 @@
-= TODO: add shapes-zio
+= TODO: allow to include all shapes in ZIO
+= TODO: add Either-shapes
+= TODO: make plain example working, rename to Either-example?
 
 - TODO: impl Either example
 - TODO: refactor term names

@@ -17,18 +17,12 @@ final case class Chart(size: Size, data: Seq[Double], style: ChartStyle):
 object Chart:
 
   def build[F[_]: MonadError](chart: Chart): F[Seq[Span]] =
-    given ME: MonadError[F] = summon[MonadError[F]]
-    ME.succeed(ChartBuilder.build(chart))
+    summon[MonadError[F]].succeed(ChartBuilder.build(chart))
 
-  extension [F[_]: MonadError](screen: Screen[F])
-    def put(pt: Point, chart: Chart, textStyle: TextStyle): F[Unit] =
-      import MonadError.*
-      given ME: MonadError[F] = summon[MonadError[F]]
+  def put[F[_]: MonadError](screen: Screen[F], pt: Point, chart: Chart, textStyle: TextStyle): F[Unit] =
+    import MonadError.*
 
-      for
-        spans <- build(chart)
-        _     <- ME.sequence(spans.zipWithIndex.map { case (span, y) => screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span))) })
-      yield ()
-
-    def put(pt: Point, chart: Chart): F[Unit] =
-      put(pt, chart, TextStyle.Empty)
+    for
+      spans <- build(chart)
+      _     <- summon[MonadError[F]].sequence(spans.zipWithIndex.map { case (span, y) => screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span))) })
+    yield ()

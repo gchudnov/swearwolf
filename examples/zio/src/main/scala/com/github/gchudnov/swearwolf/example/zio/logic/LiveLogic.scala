@@ -19,8 +19,12 @@ import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
-// import com.github.gchudnov.swearwolf.zio.rich.ZioRichText.*
+import com.github.gchudnov.swearwolf.zio.rich.ZioRichText.*
 import com.github.gchudnov.swearwolf.zio.shapes.ZioBox.*
+import com.github.gchudnov.swearwolf.zio.shapes.ZioChart.*
+import com.github.gchudnov.swearwolf.zio.shapes.ZioGrid.*
+import com.github.gchudnov.swearwolf.zio.shapes.ZioTable.*
+import com.github.gchudnov.swearwolf.zio.shapes.ZioLabel.*
 import zio.Queue
 import zio.*
 import zio.stream.ZStream
@@ -38,7 +42,7 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
-    val box  = Box(Size(21, 3), BoxStyle.SingleBorder)
+    val b  = Box(Size(21, 3), BoxStyle.SingleBorder)
     val g1 = Chart(Size(16, 1), data, ChartStyle.Dot)
     val g2 = Chart(Size(16, 2), data, ChartStyle.Step)
     val g3 = Chart(Size(16, 2), data, ChartStyle.Quad)
@@ -48,21 +52,21 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
 
     val ksLabel = Label(Size(sz.width - 32, 1), ks.toString, AlignStyle.Left)
 
-    val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
+    val rh = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
     val errOrUnit = for
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
       _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
-      // _ <- screen.put(Point(0, 2), rich)
-      _ <- screen.put(Point(0, 4), box, Foreground(Color.Blue))
-      // _ <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
-      // _ <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
-      // _ <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))
-      // _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
-      // _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
-      // _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
-      // _ <- screen.put(Point(32, 0), ksLabel)
-      // _ <- screen.put(Point(22, 13), s"window size: ${sz.width}x${sz.height}", Foreground(Color.GhostWhite))
+      _ <- screen.putRich(Point(0, 2), rh)
+      _ <- screen.putBox(Point(0, 4), b, Foreground(Color.Blue))
+      _ <- screen.putChart(Point(32, 2), g1, Foreground(Color.Green))
+      _ <- screen.putChart(Point(32, 4), g2, Foreground(Color.LimeGreen))
+      _ <- screen.putChart(Point(32, 7), g3, Foreground(Color.Azure))
+      _ <- screen.putGrid(Point(22, 0), gd, Foreground(Color.Yellow))
+      _ <- screen.putTable(Point(0, 7), t, Foreground(Color.White))
+      _ <- screen.putLabel(Point(0, 13), l, Foreground(Color.Red))
+      _ <- screen.putLabel(Point(32, 0), ksLabel)
+      _ <- screen.put(Point(22, 13), s"window size: ${sz.width}x${sz.height}", Foreground(Color.GhostWhite))
       _ <- screen.flush()
     yield ()
 

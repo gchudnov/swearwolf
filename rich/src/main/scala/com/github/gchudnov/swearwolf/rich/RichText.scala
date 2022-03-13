@@ -27,10 +27,6 @@ final case class RichText(input: String)
 
 object RichText:
 
-  extension [F[_]: MonadError](screen: Screen[F])
-    def put(pt: Point, richText: RichText): F[Unit] =
-      putScreen(screen, pt, richText)
-
   def build[F[_]: MonadError](rich: RichText): F[Span] =
     import MonadError.*
 
@@ -39,7 +35,7 @@ object RichText:
       span     <- Builder.build(elements)
     yield span
 
-  def putScreen[F[_]: MonadError](screen: Screen[F], pt: Point, richText: RichText): F[Unit] =
+  def put[F[_]: MonadError](screen: Screen[F], pt: Point, richText: RichText): F[Unit] =
     import MonadError.*
 
     for

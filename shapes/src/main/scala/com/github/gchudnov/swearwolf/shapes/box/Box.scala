@@ -14,18 +14,10 @@ final case class Box(size: Size, style: BoxStyle)
 
 object Box:
 
-  extension [F[_]: MonadError](screen: Screen[F])
-
-    def put(pt: Point, box: Box, textStyle: TextStyle): F[Unit] =
-      putScreen(screen, pt, box, textStyle)
-
-    def put(pt: Point, box: Box): F[Unit] =
-      put(pt, box, TextStyle.Empty)
-
   def build[F[_]: MonadError](box: Box): F[Seq[Span]] =
     summon[MonadError[F]].succeed(BoxBuilder.build(box))
 
-  def putScreen[F[_]: MonadError](screen: Screen[F], pt: Point, box: Box, textStyle: TextStyle): F[Unit] =
+  def put[F[_]: MonadError](screen: Screen[F], pt: Point, box: Box, textStyle: TextStyle): F[Unit] =
     import MonadError.*
 
     for

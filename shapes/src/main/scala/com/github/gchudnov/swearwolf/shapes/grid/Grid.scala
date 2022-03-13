@@ -16,18 +16,12 @@ final case class Grid(size: Size, cell: Size, style: GridStyle)
 object Grid:
 
   def build[F[_]: MonadError](grid: Grid): F[Seq[Span]] =
-    given ME: MonadError[F] = summon[MonadError[F]]
-    ME.succeed(GridBuilder.build(grid))
+    summon[MonadError[F]].succeed(GridBuilder.build(grid))
 
-  extension [F[_]: MonadError](screen: Screen[F])
-    def put(pt: Point, grid: Grid, textStyle: TextStyle): F[Unit] =
-      import MonadError.*
-      given ME: MonadError[F] = summon[MonadError[F]]
+  def put[F[_]: MonadError](screen: Screen[F], pt: Point, grid: Grid, textStyle: TextStyle): F[Unit] =
+    import MonadError.*
 
-      for
-        spans <- build(grid)
-        _     <- ME.sequence(spans.zipWithIndex.map { case (span, y) => screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span))) })
-      yield ()
-
-    def put(pt: Point, grid: Grid): F[Unit] =
-      put(pt, grid, TextStyle.Empty)
+    for
+      spans <- build(grid)
+      _     <- summon[MonadError[F]].sequence(spans.zipWithIndex.map { case (span, y) => screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span))) })
+    yield ()

@@ -5,12 +5,8 @@ import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.spans.Span
 
-object EitherRichText:
+object EitherRichText extends AnyRichText[Either[Throwable, *]]:
 
   extension (richTextT: RichText.type)
     def buildEither(rich: RichText): Either[Throwable, Span] =
       RichText.build[Either[Throwable, *]](rich)
-
-  extension (screen: Screen[Either[Throwable, *]])
-    def put(pt: Point, richText: RichText): Either[Throwable, Unit] =
-      RichText.putScreen(screen, pt, richText)

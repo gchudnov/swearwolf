@@ -15,5 +15,5 @@ object FutureRichText:
       RichText.build[Future](rich)
 
   extension (screen: Screen[Future])
-    def put(pt: Point, richText: RichText)(using ec: ExecutionContext): Future[Unit] =
-      RichText.putScreen(screen, pt, richText)
+    def putRich(pt: Point, richText: RichText)(using ec: ExecutionContext): Future[Unit] =
+      RichText.put(screen, pt, richText)
