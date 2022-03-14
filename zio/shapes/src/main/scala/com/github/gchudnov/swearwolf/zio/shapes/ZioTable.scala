@@ -6,7 +6,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import zio.*
 
-object ZioTable extends AnyTable[Task]:
+trait ZioTable extends AnyTable[Task]:
 
   extension (tableT: Table.type)
     def buildZIO(table: Table): Task[Seq[Span]] =

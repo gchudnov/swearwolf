@@ -6,7 +6,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import zio.*
 
-object ZioGrid extends AnyGrid[Task]:
+trait ZioGrid extends AnyGrid[Task]:
 
   extension (gridT: Grid.type)
     def buildZIO(grid: Grid): Task[Seq[Span]] =

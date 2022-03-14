@@ -6,7 +6,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import zio.*
 
-object ZioChart extends AnyChart[Task]:
+trait ZioChart extends AnyChart[Task]:
 
   extension (chartT: Chart.type)
     def buildZIO(chart: Chart): Task[Seq[Span]] =

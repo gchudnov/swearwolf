@@ -6,7 +6,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import zio.*
 
-object ZioLabel extends AnyLabel[Task]:
+trait ZioLabel extends AnyLabel[Task]:
 
   extension (labelT: Label.type)
     def buildZIO(label: Label): Task[Seq[Span]] =

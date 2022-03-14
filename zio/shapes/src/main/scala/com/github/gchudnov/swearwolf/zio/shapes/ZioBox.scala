@@ -6,7 +6,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import zio.*
 
-object ZioBox extends AnyBox[Task]:
+trait ZioBox extends AnyBox[Task]:
 
   extension (boxT: Box.type)
     def buildZIO(box: Box): Task[Seq[Span]] =

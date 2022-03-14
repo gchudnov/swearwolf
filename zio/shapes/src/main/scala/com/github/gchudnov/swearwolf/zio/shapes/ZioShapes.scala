@@ -1,5 +1,9 @@
 package com.github.gchudnov.swearwolf.zio.shapes
 
-object ZioShapes
+import com.github.gchudnov.swearwolf.shapes.AllShapes
 
-// TODO: allow to include all shapes ^^
+import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
+import zio.*
+
+object ZioShapes extends ZioBox with ZioChart with ZioGrid with ZioLabel with ZioTable
+

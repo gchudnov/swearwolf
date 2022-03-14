@@ -20,12 +20,7 @@ import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.zio.rich.ZioRichText.*
-import com.github.gchudnov.swearwolf.zio.shapes.ZioBox.*
-import com.github.gchudnov.swearwolf.zio.shapes.ZioChart.*
-import com.github.gchudnov.swearwolf.zio.shapes.ZioGrid.*
-import com.github.gchudnov.swearwolf.zio.shapes.ZioTable.*
-import com.github.gchudnov.swearwolf.zio.shapes.ZioLabel.*
-import zio.Queue
+import com.github.gchudnov.swearwolf.zio.shapes.ZioShapes.*
 import zio.*
 import zio.stream.ZStream
 
