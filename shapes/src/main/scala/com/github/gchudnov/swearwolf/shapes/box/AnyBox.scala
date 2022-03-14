@@ -6,8 +6,8 @@ import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
 abstract class AnyBox[F[_]: MonadError]:
-  extension (screen: Screen[F])
 
+  extension (screen: Screen[F])
     def putBox(pt: Point, box: Box, textStyle: TextStyle): F[Unit] =
       Box.put(screen, pt, box, textStyle)
 

@@ -20,6 +20,8 @@ import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.rich.EitherRichText.*
+import com.github.gchudnov.swearwolf.shapes.box.EitherBox.*
+import com.github.gchudnov.swearwolf.shapes.chart.EitherChart.*
 
 import scala.util.control.Exception.nonFatalCatch
 import com.github.gchudnov.swearwolf.term.internal.terminals.EitherTerm
@@ -73,10 +75,10 @@ object Main extends App:
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
       _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
       _ <- screen.putRich(Point(0, 2), rich)
-      // _ <- screen.put(Point(0, 4), b, Foreground(Color.Blue))
-      // _ <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
-      // _ <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
-      // _ <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))
+      _ <- screen.putBox(Point(0, 4), b, Foreground(Color.Blue))
+      _ <- screen.putChart(Point(32, 2), g1, Foreground(Color.Green))
+      _ <- screen.putChart(Point(32, 4), g2, Foreground(Color.LimeGreen))
+      _ <- screen.putChart(Point(32, 7), g3, Foreground(Color.Azure))
       // _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
       // _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
       // _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
