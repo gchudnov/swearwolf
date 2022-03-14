@@ -1,6 +1,8 @@
 package com.github.gchudnov.swearwolf.example.either
 
+import com.github.gchudnov.swearwolf.rich.EitherRichText.*
 import com.github.gchudnov.swearwolf.rich.RichText
+import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
 import com.github.gchudnov.swearwolf.shapes.box.Box
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle
 import com.github.gchudnov.swearwolf.shapes.chart.Chart
@@ -14,21 +16,20 @@ import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.Action
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.*
+import com.github.gchudnov.swearwolf.term.internal.eventloops.EitherEventLoop
+import com.github.gchudnov.swearwolf.term.internal.screens.EitherScreen
+import com.github.gchudnov.swearwolf.term.internal.terminals.EitherTerm
 import com.github.gchudnov.swearwolf.term.keys.*
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.rich.EitherRichText.*
-import com.github.gchudnov.swearwolf.shapes.box.EitherBox.*
-import com.github.gchudnov.swearwolf.shapes.chart.EitherChart.*
 
 import scala.util.control.Exception.nonFatalCatch
-import com.github.gchudnov.swearwolf.term.internal.terminals.EitherTerm
-import com.github.gchudnov.swearwolf.term.internal.screens.EitherScreen
-import com.github.gchudnov.swearwolf.term.internal.eventloops.EitherEventLoop
 
 object Main extends App:
+
+  var screenSize: Option[Size] = None
 
   val term = EitherSyncTerm.make()
 
@@ -46,6 +47,7 @@ object Main extends App:
       else
         ks match
           case SizeKeySeq(sz) =>
+            screenSize = Some(sz)
             for _ <- onKeySeq(screen, ks)
             yield Action.Continue
           case _ =>
@@ -55,7 +57,8 @@ object Main extends App:
   private def onKeySeq(screen: Screen[Either[Throwable, *]], ks: KeySeq): Either[Throwable, Unit] =
     import TextStyle.*
 
-    val sz = Size(256, 256)
+    val screenWidth  = screenSize.map(_.width).getOrElse(80)
+    val screenHeight = screenSize.map(_.height).getOrElse(24)
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
@@ -67,7 +70,8 @@ object Main extends App:
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
-    val ksLabel = Label(Size(sz.width - 32, 1), ks.toString, AlignStyle.Left)
+    val posLabelX = 32
+    val ksLabel   = Label(Size(screenWidth - posLabelX, 1), ks.toString, AlignStyle.Left)
 
     val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
@@ -79,10 +83,10 @@ object Main extends App:
       _ <- screen.putChart(Point(32, 2), g1, Foreground(Color.Green))
       _ <- screen.putChart(Point(32, 4), g2, Foreground(Color.LimeGreen))
       _ <- screen.putChart(Point(32, 7), g3, Foreground(Color.Azure))
-      // _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
-      // _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
-      // _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
-      // _ <- screen.put(Point(32, 0), ksLabel)
-      // _ <- screen.put(Point(22, 13), s"window size: ${sz.width}x${sz.height}", Foreground(Color.GhostWhite))
+      _ <- screen.putGrid(Point(22, 0), gd, Foreground(Color.Yellow))
+      _ <- screen.putTable(Point(0, 7), t, Foreground(Color.White))
+      _ <- screen.putLabel(Point(0, 13), l, Foreground(Color.Red))
+      _ <- screen.putLabel(Point(posLabelX, 0), ksLabel)
+      _ <- screen.put(Point(22, 13), s"window size: ${screenWidth}x${screenHeight}", Foreground(Color.GhostWhite))
       _ <- screen.flush()
     yield ()

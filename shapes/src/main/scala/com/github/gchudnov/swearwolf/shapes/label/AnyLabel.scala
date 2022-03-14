@@ -7,7 +7,7 @@ import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
-abstract class AnyLabel[F[_]: MonadError]:
+trait AnyLabel[F[_]: MonadError]:
 
   extension (screen: Screen[F])
     def putLabel(pt: Point, label: Label, textStyle: TextStyle): F[Unit] =

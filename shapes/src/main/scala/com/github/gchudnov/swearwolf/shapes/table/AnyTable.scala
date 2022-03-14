@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
-abstract class AnyTable[F[_]: MonadError]:
+trait AnyTable[F[_]: MonadError]:
 
   extension (screen: Screen[F])
     def putTable(pt: Point, table: Table, textStyle: TextStyle): F[Unit] =

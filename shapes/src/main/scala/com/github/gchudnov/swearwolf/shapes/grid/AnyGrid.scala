@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
-abstract class AnyGrid[F[_]: MonadError]:
+trait AnyGrid[F[_]: MonadError]:
 
   extension (screen: Screen[F])
     def putGrid(pt: Point, grid: Grid, textStyle: TextStyle): F[Unit] =
