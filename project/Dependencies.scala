@@ -60,7 +60,7 @@ object Dependencies {
     compile ++ test
   }
 
-  val ExamplePlain: Seq[ModuleID] = {
+  val ExampleAll: Seq[ModuleID] = {
     val compile = Seq.empty[ModuleID]
     val test    = Seq.empty[ModuleID] map (_ % "test")
     compile ++ test

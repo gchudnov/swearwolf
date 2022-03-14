@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.example.plain
+package com.github.gchudnov.swearwolf.example.either
 
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.shapes.box.Box
@@ -20,46 +20,39 @@ import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
-import java.io.FileOutputStream
-import java.io.PrintStream
-import scala.annotation.nowarn
-import scala.util.Using
-import scala.util.Using.Releasable
 import scala.util.control.Exception.nonFatalCatch
+import com.github.gchudnov.swearwolf.term.internal.terminals.EitherTerm
+import com.github.gchudnov.swearwolf.term.internal.screens.EitherScreen
+import com.github.gchudnov.swearwolf.term.internal.eventloops.EitherEventLoop
 
 object Main extends App:
 
-  private val logFilePath = "~/swearwolf-plain-example-errors.log"
-
-  val term = Term.make()
+  val term = EitherSyncTerm.make()
 
   val resF = for
-    screen       <- Screen.make(term)
-    eventLoop     = EventLoop.make(term)
+    screen       <- EitherScreen.make(term)
+    eventLoop     = new EitherEventLoop(term)
     keySeqHandler = makeKeySeqHandler(screen)
     _            <- eventLoop.run(keySeqHandler)
     _            <- nonFatalCatch.either(screen.close())
   yield ()
 
-  resF.fold(t => writeToStdout, identity)
-
-  private def makeKeySeqHandler(screen: Screen): KeySeqHandler =
+  private def makeKeySeqHandler(screen: Screen[Either[Throwable, *]]): KeySeqHandler[Either[Throwable, *]] =
     (ks: KeySeq) =>
-      ks match
-        case SizeKeySeq(sz) =>
-          for
-            _ <- screen.onSize(sz)
-            _ <- screen.clear()
-            _ <- render(screen, "")
-          yield Action.Continue
-        case _ =>
-          for _ <- render(screen, ks.toString)
-          yield Action.Continue
+      if (ks.isEsc) then Right(EventLoop.Action.Exit)
+      else
+        ks match
+          case SizeKeySeq(sz) =>
+            for _ <- onKeySeq(screen, ks)
+            yield Action.Continue
+          case _ =>
+            for _ <- onKeySeq(screen, ks)
+            yield Action.Continue
 
-  private def render(screen: Screen, text: String): Either[Throwable, Unit] =
+  private def onKeySeq(screen: Screen[Either[Throwable, *]], ks: KeySeq): Either[Throwable, Unit] =
     import TextStyle.*
 
-    val sz = screen.size
+    val sz = Size(256, 256)
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
@@ -71,41 +64,22 @@ object Main extends App:
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
-    val ksLabel = Label(Size(sz.width - 32, 1), text, AlignStyle.Left)
+    val ksLabel = Label(Size(sz.width - 32, 1), ks.toString, AlignStyle.Left)
 
     val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
     for
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
       _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
-      _ <- screen.put(Point(0, 2), rich)
-      _ <- screen.put(Point(0, 4), b, Foreground(Color.Blue))
-      _ <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
-      _ <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
-      _ <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))
-      _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
-      _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
-      _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
-      _ <- screen.put(Point(32, 0), ksLabel)
-      _ <- screen.put(Point(22, 13), s"window size: ${sz.width}x${sz.height}", Foreground(Color.GhostWhite))
+      // _ <- screen.put(Point(0, 2), rich)
+      // _ <- screen.put(Point(0, 4), b, Foreground(Color.Blue))
+      // _ <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
+      // _ <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
+      // _ <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))
+      // _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
+      // _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
+      // _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
+      // _ <- screen.put(Point(32, 0), ksLabel)
+      // _ <- screen.put(Point(22, 13), s"window size: ${sz.width}x${sz.height}", Foreground(Color.GhostWhite))
       _ <- screen.flush()
     yield ()
-
-  private def sequence[A, B](es: Seq[Either[A, B]]): Either[A, Seq[B]] =
-    es.partitionMap(identity) match
-      case (Nil, rights) => Right[A, Seq[B]](rights)
-      case (lefts, _)    => Left[A, Seq[B]](lefts.head)
-
-  @nowarn
-  private def writeToStdout(t: Throwable): Unit =
-    writeErrorLog(System.out)(t)
-
-  @nowarn
-  private def writeToFile(t: Throwable): Unit =
-    val output = new PrintStream(new FileOutputStream(logFilePath, true))
-    writeErrorLog(output)(t)
-
-  private def writeErrorLog(output: PrintStream)(t: Throwable): Unit =
-    output.println(t.getMessage)
-    t.printStackTrace(output)
-    output.flush()

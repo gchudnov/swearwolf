@@ -1,3 +1,4 @@
+- TODO: refactor util, term, zio classes, move them to the correct directories
 = TODO: allow to include all shapes in ZIO
 = TODO: add Either-shapes
 = TODO: make plain example working, rename to Either-example?

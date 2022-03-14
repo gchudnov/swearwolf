@@ -93,15 +93,15 @@ lazy val shapesZio = (project in file("zio/shapes"))
     libraryDependencies ++= Dependencies.Zio
   )  
 
-lazy val examplePlain = (project in file("examples/plain"))
+lazy val exampleEither = (project in file("examples/either"))
   .dependsOn(util, term, rich, shapes)
   .settings(allSettings: _*)
   .settings(Settings.assemblySettings)
   .settings(Settings.noPublish)
   .settings(
-    name := "example-plain",
-    libraryDependencies ++= Dependencies.ExamplePlain,
-    assembly / mainClass       := Some("com.github.gchudnov.swearwolf.example.plain.Main"),
+    name := "example-either",
+    libraryDependencies ++= Dependencies.ExampleAll,
+    assembly / mainClass       := Some("com.github.gchudnov.swearwolf.example.either.Main"),
     assembly / assemblyOption  := (assembly / assemblyOption).value.withPrependShellScript(prependShellScript = Some(defaultUniversalScript(shebang = true))),
     assembly / assemblyJarName := s"${name.value}"
   )
@@ -121,7 +121,7 @@ lazy val exampleZio = (project in file("examples/zio"))
   )
 
 lazy val root = (project in file("."))
-  .aggregate(util, term, shapes, rich, utilZio, termZio, richZio, shapesZio, examplePlain, exampleZio)
+  .aggregate(util, term, shapes, rich, utilZio, termZio, richZio, shapesZio, exampleEither, exampleZio)
   .settings(allSettings: _*)
   .settings(Settings.noPublish)
   .settings(

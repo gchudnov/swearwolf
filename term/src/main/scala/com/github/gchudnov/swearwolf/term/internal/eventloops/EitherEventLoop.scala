@@ -11,6 +11,8 @@ import scala.annotation.tailrec
 
 /**
  * Synchronous EventLoop.
+ * 
+ * // TODO: might be worth to extract, the code is not unique to Either
  */
 final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventLoop[Either[Throwable, *]](term):
   import AnyEventLoop.*
