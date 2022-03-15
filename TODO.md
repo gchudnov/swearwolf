@@ -1,5 +1,5 @@
+- TODO: add IdTerm, IdWriter, IdScreen
 - TODO: add logging to ZIO
-- TODO: non-interactive stdout
 - TODO: fix ZIO event-loop -- no exit after quit
 = TODO: add LogScreen that logs execution
 

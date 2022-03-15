@@ -17,6 +17,7 @@ trait Screen[F[_]] extends Writer[F]:
   def put(pt: Point, value: Span): F[Unit]
   def put(pt: Point, value: Array[Byte]): F[Unit]
 
+  def close(): F[Unit]
 
 // object Screen:
 

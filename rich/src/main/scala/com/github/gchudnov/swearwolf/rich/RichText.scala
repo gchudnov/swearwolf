@@ -7,6 +7,7 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.term.Writer
 
 /**
  * Style text with the additional attributes.
@@ -34,6 +35,14 @@ object RichText:
       elements <- Parser.parse(rich.input)
       span     <- Builder.build(elements)
     yield span
+
+  def put[F[_]: MonadError](writer: Writer[F], richText: RichText): F[Unit] =
+    import MonadError.*
+
+    for
+      span <- build(richText)
+      _    <- writer.put(span)
+    yield ()
 
   def put[F[_]: MonadError](screen: Screen[F], pt: Point, richText: RichText): F[Unit] =
     import MonadError.*
