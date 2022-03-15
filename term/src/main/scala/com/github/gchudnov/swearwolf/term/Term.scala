@@ -1,6 +1,8 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EscSeq
+import com.github.gchudnov.swearwolf.util.func.Monoid
+import com.github.gchudnov.swearwolf.util.func.MonadError
 
 trait Term[F[_]]:
   def read(): F[Option[Array[Byte]]]
@@ -9,6 +11,17 @@ trait Term[F[_]]:
   def close(): F[Unit]
 
 object Term:
+
+  type TermAction[F[_]] = (Term[F]) => F[Unit]
+
+  given termActionMonoid[F[_]: MonadError]: Monoid[TermAction[F]] with
+    def empty: TermAction[F] =
+      _ => summon[MonadError[F]].unit
+
+    extension (x: TermAction[F])
+      infix def combine(y: TermAction[F]): TermAction[F] =
+        import MonadError.*
+        t => x(t).flatMap(_ => y(t))
 
   extension [F[_]](term: Term[F])
     /**

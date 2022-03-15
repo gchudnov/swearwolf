@@ -4,7 +4,7 @@ import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.SyncScreen
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.internal.screens.ShellScreen
-import com.github.gchudnov.swearwolf.term.internal.screens.TermAction
+import com.github.gchudnov.swearwolf.term.Term.TermAction
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import sun.misc.Signal

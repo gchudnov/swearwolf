@@ -12,8 +12,6 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import sun.misc.Signal
 import sun.misc.SignalHandler
 
-type TermAction[F[_]] = (Term[F]) => F[Unit]
-
 object ShellScreen:
   import Term.*
 

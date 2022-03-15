@@ -34,7 +34,6 @@ object Main extends ZIOAppDefault:
                         szRef.updateAndGet(_ => Some(sz)).flatMap(sz => logic.onKeySeq(sz, ks).map(_ => EventLoop.Action.Continue))
                       case _ =>
                         szRef.get.flatMap(sz => logic.onKeySeq(sz, ks).map(_ => EventLoop.Action.Continue))
-
       _ <- eventLoop.run(handler)
     yield ()
 

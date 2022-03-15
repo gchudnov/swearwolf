@@ -63,7 +63,7 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
       _ <- screen.putTable(Point(0, 7), t, Foreground(Color.White))
       _ <- screen.putLabel(Point(0, 13), l, Foreground(Color.Red))
       _ <- screen.putLabel(Point(posLabelX, 0), ksLabel)
-      _ <- screen.put(Point(22, 13), s"window size: ${screenWidth}x${screenHeight}", Foreground(Color.GhostWhite))
+      _ <- screen.put(Point(22, 13), s"window size: ${screenWidth}x${screenHeight}  ", Foreground(Color.GhostWhite))
       _ <- screen.flush()
     yield ()
 
