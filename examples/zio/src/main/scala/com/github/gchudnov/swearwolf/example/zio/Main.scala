@@ -4,6 +4,7 @@ import com.github.gchudnov.swearwolf.example.zio.logic.Logic
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.term.keys.SizeKeySeq
 import com.github.gchudnov.swearwolf.util.*
 import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.zio.term.ZioEventLoop
@@ -24,9 +25,16 @@ object Main extends ZIOAppDefault:
     for
       eventLoop <- ZIO.service[ZioEventLoop]
       logic     <- ZIO.service[Logic]
+      szRef     <- ZRef.make(None: Option[Size])
       handler = (ks: KeySeq) =>
                   if (ks.isEsc) then ZIO.succeed(EventLoop.Action.Exit)
-                  else logic.onKeySeq(ks).map(_ => EventLoop.Action.Continue)
+                  else
+                    ks match
+                      case SizeKeySeq(sz) =>
+                        szRef.updateAndGet(_ => Some(sz)).flatMap(sz => logic.onKeySeq(sz, ks).map(_ => EventLoop.Action.Continue))
+                      case _ =>
+                        szRef.get.flatMap(sz => logic.onKeySeq(sz, ks).map(_ => EventLoop.Action.Continue))
+
       _ <- eventLoop.run(handler)
     yield ()
 

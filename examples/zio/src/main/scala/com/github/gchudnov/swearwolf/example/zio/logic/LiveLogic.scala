@@ -30,10 +30,11 @@ import scala.annotation.nowarn
 
 final class LiveLogic(screen: Screen[Task]) extends Logic:
 
-  override def onKeySeq(ks: KeySeq): Task[Unit] =
+  override def onKeySeq(sz: Option[Size], ks: KeySeq): Task[Unit] =
     import TextStyle.*
 
-    val sz = Size(256, 256) // NOTE: should be in the state
+    val screenWidth  = sz.map(_.width).getOrElse(80)
+    val screenHeight = sz.map(_.height).getOrElse(24)
 
     val data = List(10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0, 10.0, 56.0, 25.0, 112.0, 45.9, 92.1, 8.0, 12.0)
 
@@ -45,7 +46,8 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
     val t  = Table(Seq(Seq("111", "222"), Seq("a", "b"), Seq("c", "d")), TableStyle.Frame)
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
-    val ksLabel = Label(Size(sz.width - 32, 1), ks.toString, AlignStyle.Left)
+    val posLabelX = 32
+    val ksLabel = Label(Size(screenWidth - posLabelX, 1), ks.toString, AlignStyle.Left)
 
     val rh = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
@@ -60,8 +62,8 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
       _ <- screen.putGrid(Point(22, 0), gd, Foreground(Color.Yellow))
       _ <- screen.putTable(Point(0, 7), t, Foreground(Color.White))
       _ <- screen.putLabel(Point(0, 13), l, Foreground(Color.Red))
-      _ <- screen.putLabel(Point(32, 0), ksLabel)
-      _ <- screen.put(Point(22, 13), s"window size: ${sz.width}x${sz.height}", Foreground(Color.GhostWhite))
+      _ <- screen.putLabel(Point(posLabelX, 0), ksLabel)
+      _ <- screen.put(Point(22, 13), s"window size: ${screenWidth}x${screenHeight}", Foreground(Color.GhostWhite))
       _ <- screen.flush()
     yield ()
 
