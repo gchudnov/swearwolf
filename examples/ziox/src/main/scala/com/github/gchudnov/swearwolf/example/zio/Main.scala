@@ -36,9 +36,9 @@ object Main extends ZIOAppDefault:
                   else
                     ks match
                       case SizeKeySeq(sz) =>
-                        szRef.updateAndGet(_ => Some(sz)).flatMap(sz => logic.onKeySeq(sz, ks).map(_ => EventLoop.Action.Continue))
+                        szRef.updateAndGet(_ => Some(sz)).flatMap(sz => logic.onKeySeq(sz, ks).as(EventLoop.Action.Continue))
                       case _ =>
-                        szRef.get.flatMap(sz => logic.onKeySeq(sz, ks).map(_ => EventLoop.Action.Continue))
+                        szRef.get.flatMap(sz => logic.onKeySeq(sz, ks).as(EventLoop.Action.Continue))
       _ <- eventLoop.run(handler)
     yield ()
 
