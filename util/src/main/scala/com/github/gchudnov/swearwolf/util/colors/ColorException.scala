@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.util.colors
 
 import com.github.gchudnov.swearwolf.util.SwearwolfException
 
-class ColorException(message: String) extends SwearwolfException(message):
+final class ColorException(message: String) extends SwearwolfException(message):
 
   def this(message: String, cause: Throwable) =
     this(message)

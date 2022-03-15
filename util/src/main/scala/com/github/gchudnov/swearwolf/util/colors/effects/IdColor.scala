@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.util.colors
+package com.github.gchudnov.swearwolf.util.colors.effects
 
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.func.IdMonad
