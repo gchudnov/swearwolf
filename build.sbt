@@ -120,8 +120,22 @@ lazy val exampleZio = (project in file("examples/zio"))
     assembly / assemblyJarName := s"${name.value}"
   )
 
+lazy val exampleNonInteractive = (project in file("examples/noninteractive"))
+  .dependsOn(util, term, rich, shapes)
+  .settings(allSettings: _*)
+  .settings(Settings.assemblySettings)
+  .settings(Settings.noPublish)
+  .settings(
+    name := "example-noninteractive",
+    libraryDependencies ++= Dependencies.ExampleAll,
+    assembly / mainClass       := Some("com.github.gchudnov.swearwolf.example.noninteractive.Main"),
+    assembly / assemblyOption  := (assembly / assemblyOption).value.withPrependShellScript(prependShellScript = Some(defaultUniversalScript(shebang = true))),
+    assembly / assemblyJarName := s"${name.value}"
+  )
+
+
 lazy val root = (project in file("."))
-  .aggregate(util, term, shapes, rich, utilZio, termZio, richZio, shapesZio, exampleEither, exampleZio)
+  .aggregate(util, term, shapes, rich, utilZio, termZio, richZio, shapesZio, exampleEither, exampleZio, exampleNonInteractive)
   .settings(allSettings: _*)
   .settings(Settings.noPublish)
   .settings(
