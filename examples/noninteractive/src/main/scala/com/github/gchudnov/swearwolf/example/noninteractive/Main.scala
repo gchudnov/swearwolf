@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.example.noninteractive
 
-import com.github.gchudnov.swearwolf.rich.EitherRichText.*
+import com.github.gchudnov.swearwolf.rich.effects.EitherRichText.*
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.term.EitherSyncTerm
 import com.github.gchudnov.swearwolf.term.writers.EitherWriter

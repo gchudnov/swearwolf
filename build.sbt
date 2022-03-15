@@ -53,7 +53,7 @@ lazy val rich = (project in file("rich"))
     libraryDependencies ++= Dependencies.Rich
   )
 
-lazy val utilZio = (project in file("zio/util"))
+lazy val utilZio = (project in file("ziox/util"))
   .dependsOn(util)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
@@ -63,7 +63,7 @@ lazy val utilZio = (project in file("zio/util"))
     libraryDependencies ++= Dependencies.Zio
   )
 
-lazy val termZio = (project in file("zio/term"))
+lazy val termZio = (project in file("ziox/term"))
   .dependsOn(utilZio, term)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
@@ -73,7 +73,7 @@ lazy val termZio = (project in file("zio/term"))
     libraryDependencies ++= Dependencies.Zio
   )
 
-lazy val richZio = (project in file("zio/rich"))
+lazy val richZio = (project in file("ziox/rich"))
   .dependsOn(utilZio, termZio, rich)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
@@ -83,13 +83,13 @@ lazy val richZio = (project in file("zio/rich"))
     libraryDependencies ++= Dependencies.Zio
   )  
 
-lazy val shapesZio = (project in file("zio/shapes"))
+lazy val shapesZio = (project in file("ziox/shapes"))
   .dependsOn(utilZio, termZio, shapes)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "rich-shapes",
+    name := "shapes-zio",
     libraryDependencies ++= Dependencies.Zio
   )  
 
@@ -106,7 +106,7 @@ lazy val exampleEither = (project in file("examples/either"))
     assembly / assemblyJarName := s"${name.value}"
   )
 
-lazy val exampleZio = (project in file("examples/zio"))
+lazy val exampleZio = (project in file("examples/ziox"))
   .dependsOn(termZio, richZio, shapesZio)
   .settings(allSettings: _*)
   .settings(Settings.testZioSettings)

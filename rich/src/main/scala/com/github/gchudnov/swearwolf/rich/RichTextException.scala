@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.rich
 
 import com.github.gchudnov.swearwolf.util.SwearwolfException
 
-class RichTextException(message: String) extends RuntimeException(message):
+final class RichTextException(message: String) extends SwearwolfException(message):
 
   def this(message: String, cause: Throwable) =
     this(message)

@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.example.either
 
-import com.github.gchudnov.swearwolf.rich.EitherRichText.*
+import com.github.gchudnov.swearwolf.rich.effects.EitherRichText.*
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
 import com.github.gchudnov.swearwolf.shapes.box.Box
