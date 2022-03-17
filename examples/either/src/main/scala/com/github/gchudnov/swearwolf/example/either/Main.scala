@@ -1,9 +1,9 @@
 package com.github.gchudnov.swearwolf.example.either
 
 import com.github.gchudnov.swearwolf.rich.RichText
-import com.github.gchudnov.swearwolf.rich.instances.*
-import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
+import com.github.gchudnov.swearwolf.rich.instances.*
+import com.github.gchudnov.swearwolf.shapes.instances.*
 import com.github.gchudnov.swearwolf.shapes.box.Box
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle
 import com.github.gchudnov.swearwolf.shapes.chart.Chart
@@ -85,14 +85,14 @@ object Main extends App:
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
       _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
       _ <- screen.put(Point(0, 2), rich)
-      _ <- screen.putBox(Point(0, 4), b, Foreground(Color.Blue))
-      _ <- screen.putChart(Point(32, 2), g1, Foreground(Color.Green))
-      _ <- screen.putChart(Point(32, 4), g2, Foreground(Color.LimeGreen))
-      _ <- screen.putChart(Point(32, 7), g3, Foreground(Color.Azure))
-      _ <- screen.putGrid(Point(22, 0), gd, Foreground(Color.Yellow))
-      _ <- screen.putTable(Point(0, 7), t, Foreground(Color.White))
-      _ <- screen.putLabel(Point(0, 13), l, Foreground(Color.Red))
-      _ <- screen.putLabel(Point(posLabelX, 0), ksLabel)
+      _ <- screen.put(Point(0, 4), b, Foreground(Color.Blue))
+      _ <- screen.put(Point(32, 2), g1, Foreground(Color.Green))
+      _ <- screen.put(Point(32, 4), g2, Foreground(Color.LimeGreen))
+      _ <- screen.put(Point(32, 7), g3, Foreground(Color.Azure))
+      _ <- screen.put(Point(22, 0), gd, Foreground(Color.Yellow))
+      _ <- screen.put(Point(0, 7), t, Foreground(Color.White))
+      _ <- screen.put(Point(0, 13), l, Foreground(Color.Red))
+      _ <- screen.put(Point(posLabelX, 0), ksLabel)
       _ <- screen.put(Point(22, 13), s"window size: ${screenWidth}x${screenHeight}  ", Foreground(Color.GhostWhite))
       _ <- screen.flush()
     yield ()

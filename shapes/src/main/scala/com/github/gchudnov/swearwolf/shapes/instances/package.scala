@@ -1,5 +1,3 @@
 package com.github.gchudnov.swearwolf.shapes
 
-class FutureShapes {
-
-}
+package object instances extends AllShapes

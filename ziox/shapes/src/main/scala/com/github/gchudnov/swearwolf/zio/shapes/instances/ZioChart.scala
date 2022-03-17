@@ -1,12 +1,12 @@
-package com.github.gchudnov.swearwolf.zio.shapes.internal
+package com.github.gchudnov.swearwolf.zio.shapes.instances
 
-import com.github.gchudnov.swearwolf.shapes.chart.AnyChart
 import com.github.gchudnov.swearwolf.shapes.chart.Chart
+import com.github.gchudnov.swearwolf.shapes.instances.AnyChart
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
-import zio.*
+import zio.Task
 
-private[shapes] trait ZioChart extends AnyChart[Task]:
+private[instances] trait ZioChart:
 
   extension (chartT: Chart.type)
     def buildZIO(chart: Chart): Task[Seq[Span]] =
