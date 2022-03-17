@@ -1,7 +1,6 @@
 package com.github.gchudnov.swearwolf.util.colors
 
-import com.github.gchudnov.swearwolf.util.colors.effects.EitherColor.*
-import com.github.gchudnov.swearwolf.util.colors.effects.TryColor.*
+import com.github.gchudnov.swearwolf.util.instances.*
 import zio.test.Assertion.*
 import zio.test.*
 

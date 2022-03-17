@@ -1,16 +1,14 @@
-package com.github.gchudnov.swearwolf.rich.effects
+package com.github.gchudnov.swearwolf.rich.instances
 
-import com.github.gchudnov.swearwolf.term.Screen
-import com.github.gchudnov.swearwolf.util.func.FutureMonad
+import com.github.gchudnov.swearwolf.rich.RichText
+import com.github.gchudnov.swearwolf.term.{ Screen, Writer }
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.spans.Span
-import com.github.gchudnov.swearwolf.rich.RichText
+import com.github.gchudnov.swearwolf.util.func.FutureMonad
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
-import com.github.gchudnov.swearwolf.term.Writer
+import scala.concurrent.{ ExecutionContext, Future }
 
-object FutureRichText:
+trait FutureRichText:
 
   extension (richTextT: RichText.type)
     def buildFuture(rich: RichText)(using ec: ExecutionContext): Future[Span] =

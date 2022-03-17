@@ -4,7 +4,7 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.show.Show
 
 final case class Color(r: Int, g: Int, b: Int):
-  def toHex(): String =
+  def toHex: String =
     "#" + List(r, g, b).map(n => Color.intToHex(n)).mkString
 
 object Color:
@@ -50,7 +50,7 @@ object Color:
   given Show[Color] with
     extension (a: Color)
       def show: String =
-        a.toHex()
+        a.toHex
 
   val AliceBlue: Color            = Color(240, 248, 255)
   val AntiqueWhite: Color         = Color(250, 235, 215)
