@@ -1,7 +1,6 @@
 package com.github.gchudnov.swearwolf.example.zio.logic
 
 import com.github.gchudnov.swearwolf.rich.RichText
-import com.github.gchudnov.swearwolf.rich.instances.*
 import com.github.gchudnov.swearwolf.shapes.box.Box
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle
 import com.github.gchudnov.swearwolf.shapes.chart.Chart
@@ -22,6 +21,7 @@ import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import com.github.gchudnov.swearwolf.zio.shapes.ZioShapes.*
+import com.github.gchudnov.swearwolf.zio.rich.instances.*
 import zio.*
 import zio.stream.ZStream
 

@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.zio.util.colors
+package com.github.gchudnov.swearwolf.zio.util.instances
 
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
