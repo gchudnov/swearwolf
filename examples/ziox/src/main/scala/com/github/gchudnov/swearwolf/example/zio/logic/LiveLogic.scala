@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.example.zio.logic
 
 import com.github.gchudnov.swearwolf.rich.RichText
+import com.github.gchudnov.swearwolf.rich.instances.*
 import com.github.gchudnov.swearwolf.shapes.box.Box
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle
 import com.github.gchudnov.swearwolf.shapes.chart.Chart
@@ -19,7 +20,7 @@ import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.zio.rich.ZioRichText.*
+import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import com.github.gchudnov.swearwolf.zio.shapes.ZioShapes.*
 import zio.*
 import zio.stream.ZStream
@@ -49,12 +50,12 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
     val posLabelX = 32
     val ksLabel = Label(Size(screenWidth - posLabelX, 1), ks.toString, AlignStyle.Left)
 
-    val rh = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
+    val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 
     val errOrUnit = for
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
       _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
-      _ <- screen.putRich(Point(0, 2), rh)
+      _ <- screen.put(Point(0, 2), rich)
       _ <- screen.putBox(Point(0, 4), b, Foreground(Color.Blue))
       _ <- screen.putChart(Point(32, 2), g1, Foreground(Color.Green))
       _ <- screen.putChart(Point(32, 4), g2, Foreground(Color.LimeGreen))

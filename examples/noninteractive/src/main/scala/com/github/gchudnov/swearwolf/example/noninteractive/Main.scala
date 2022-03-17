@@ -1,7 +1,8 @@
 package com.github.gchudnov.swearwolf.example.noninteractive
 
-import com.github.gchudnov.swearwolf.rich.instances.EitherRichText.*
+import com.github.gchudnov.swearwolf.rich.instances.*
 import com.github.gchudnov.swearwolf.rich.RichText
+import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import com.github.gchudnov.swearwolf.term.EitherSyncTerm
 import com.github.gchudnov.swearwolf.term.writers.EitherWriter
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
@@ -23,6 +24,6 @@ object Main extends App:
   for
     _ <- writer.put("HELLO ", Bold | Foreground(Color.Blue))
     _ <- writer.put("WORLD!\n", Foreground(Color.Blue) | Background(Color.Yellow))
-    _ <- writer.putRich(rich)
+    _ <- writer.put(rich)
     _ <- writer.flush()
   yield ()

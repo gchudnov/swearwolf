@@ -31,7 +31,7 @@ final class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
     value.nonEmpty
 
   def size: Int =
-    value.size
+    value.length
 
   def asArray: Array[Byte] =
     value.clone()

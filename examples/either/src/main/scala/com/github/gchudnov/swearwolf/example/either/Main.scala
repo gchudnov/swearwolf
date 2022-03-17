@@ -1,8 +1,9 @@
 package com.github.gchudnov.swearwolf.example.either
 
-import com.github.gchudnov.swearwolf.rich.instances.EitherRichText.*
 import com.github.gchudnov.swearwolf.rich.RichText
+import com.github.gchudnov.swearwolf.rich.instances.*
 import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
+import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import com.github.gchudnov.swearwolf.shapes.box.Box
 import com.github.gchudnov.swearwolf.shapes.box.BoxStyle
 import com.github.gchudnov.swearwolf.shapes.chart.Chart
@@ -83,7 +84,7 @@ object Main extends App:
     for
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
       _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
-      _ <- screen.putRich(Point(0, 2), rich)
+      _ <- screen.put(Point(0, 2), rich)
       _ <- screen.putBox(Point(0, 4), b, Foreground(Color.Blue))
       _ <- screen.putChart(Point(32, 2), g1, Foreground(Color.Green))
       _ <- screen.putChart(Point(32, 4), g2, Foreground(Color.LimeGreen))
