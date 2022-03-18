@@ -7,7 +7,7 @@ import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import zio.*
 
 
-trait ZioRichText:
+trait ZioRichText extends AnyRichText[Task]:
 
   extension (richTextT: RichText.type)
     def buildZIO(rich: RichText): Task[Span] =

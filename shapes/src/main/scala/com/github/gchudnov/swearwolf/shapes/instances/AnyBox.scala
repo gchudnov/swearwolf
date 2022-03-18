@@ -9,8 +9,8 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 trait AnyBox:
 
   extension [F[_]](screen: Screen[F])
-    def put(pt: Point, box: Box, textStyle: TextStyle)(using MF: MonadError[F]): F[Unit] =
+    def putBox(pt: Point, box: Box, textStyle: TextStyle)(using MF: MonadError[F]): F[Unit] =
       Box.put(screen, pt, box, textStyle)
 
-    def put(pt: Point, box: Box)(using MF: MonadError[F]): F[Unit] =
-      put(pt, box, TextStyle.Empty)
+    def putBox(pt: Point, box: Box)(using MF: MonadError[F]): F[Unit] =
+      putBox(pt, box, TextStyle.Empty)

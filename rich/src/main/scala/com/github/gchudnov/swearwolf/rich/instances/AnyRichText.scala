@@ -5,12 +5,12 @@ import com.github.gchudnov.swearwolf.term.{ Screen, Writer }
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.geometry.Point
 
-trait AnyRichText:
+trait AnyRichText[F[_]: MonadError]:
 
-  extension [F[_]](writer: Writer[F])
-    def put(richText: RichText)(using MF: MonadError[F]): F[Unit] =
+  extension (writer: Writer[F])
+    def putRich(richText: RichText): F[Unit] =
       RichText.put(writer, richText)
 
-  extension [F[_]](screen: Screen[F])
-    def put(pt: Point, richText: RichText)(using MF: MonadError[F]): F[Unit] =
+  extension (screen: Screen[F])
+    def putRich(pt: Point, richText: RichText): F[Unit] =
       RichText.put(screen, pt, richText)

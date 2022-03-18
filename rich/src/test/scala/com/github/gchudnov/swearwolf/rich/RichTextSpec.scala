@@ -10,7 +10,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.StyleSpan
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.rich.instances.*
+import com.github.gchudnov.swearwolf.rich.instances.EitherRichText.*
 import zio.test.Assertion.equalTo
 import zio.test.Assertion.isLeft
 import zio.test.Assertion.isRight

@@ -5,8 +5,10 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.func.TryMonad
 import scala.util.Try
 
-trait TryRichText:
+trait TryRichText extends AnyRichText[Try]:
 
   extension (richTextT: RichText.type)
     def buildTry(rich: RichText): Try[Span] =
       RichText.build[Try](rich)
+
+object TryRichText extends TryRichText
