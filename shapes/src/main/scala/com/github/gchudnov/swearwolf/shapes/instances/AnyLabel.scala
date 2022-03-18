@@ -6,11 +6,11 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
-trait AnyLabel:
+trait AnyLabel[F[_]: MonadError]:
 
-  extension [F[_]](screen: Screen[F])
-    def put(pt: Point, label: Label, textStyle: TextStyle)(using MF: MonadError[F]): F[Unit] =
+  extension (screen: Screen[F])
+    def putLabel(pt: Point, label: Label, textStyle: TextStyle): F[Unit] =
       Label.put(screen, pt, label, textStyle)
 
-    def put(pt: Point, label: Label)(using MF: MonadError[F]): F[Unit] =
-      put(pt, label, TextStyle.Empty)
+    def putLabel(pt: Point, label: Label): F[Unit] =
+      putLabel(pt, label, TextStyle.Empty)

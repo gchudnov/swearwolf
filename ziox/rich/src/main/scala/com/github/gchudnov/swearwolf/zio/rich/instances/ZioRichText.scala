@@ -12,3 +12,5 @@ trait ZioRichText extends AnyRichText[Task]:
   extension (richTextT: RichText.type)
     def buildZIO(rich: RichText): Task[Span] =
       RichText.build[Task](rich)
+
+object ZioRichText extends ZioRichText

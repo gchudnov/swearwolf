@@ -19,9 +19,8 @@ import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
-import com.github.gchudnov.swearwolf.zio.shapes.ZioShapes.*
-import com.github.gchudnov.swearwolf.zio.rich.instances.*
+import com.github.gchudnov.swearwolf.zio.shapes.instances.ZioShapes.*
+import com.github.gchudnov.swearwolf.zio.rich.instances.ZioRichText.*
 import zio.*
 import zio.stream.ZStream
 
@@ -55,7 +54,7 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
     val errOrUnit = for
       _ <- screen.put(Point(0, 0), "HELLO", Bold | Foreground(Color.Blue))
       _ <- screen.put(Point(8, 0), "WORLD!", Foreground(Color.Blue) | Background(Color.Yellow))
-      _ <- screen.put(Point(0, 2), rich)
+      _ <- screen.putRich(Point(0, 2), rich)
       _ <- screen.putBox(Point(0, 4), b, Foreground(Color.Blue))
       _ <- screen.putChart(Point(32, 2), g1, Foreground(Color.Green))
       _ <- screen.putChart(Point(32, 4), g2, Foreground(Color.LimeGreen))

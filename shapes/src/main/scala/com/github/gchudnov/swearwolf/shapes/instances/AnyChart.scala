@@ -6,11 +6,11 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
-trait AnyChart:
+trait AnyChart[F[_]: MonadError]:
 
-  extension [F[_]](screen: Screen[F])
-    def put(pt: Point, chart: Chart, textStyle: TextStyle)(using MF: MonadError[F]): F[Unit] =
+  extension (screen: Screen[F])
+    def putChart(pt: Point, chart: Chart, textStyle: TextStyle): F[Unit] =
       Chart.put(screen, pt, chart, textStyle)
 
-    def put(pt: Point, chart: Chart)(using MF: MonadError[F]): F[Unit] =
-      put(pt, chart, TextStyle.Empty)
+    def putChart(pt: Point, chart: Chart): F[Unit] =
+      putChart(pt, chart, TextStyle.Empty)

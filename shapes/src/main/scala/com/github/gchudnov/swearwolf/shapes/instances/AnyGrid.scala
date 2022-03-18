@@ -6,11 +6,11 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
-trait AnyGrid:
+trait AnyGrid[F[_]: MonadError]:
 
-  extension [F[_]](screen: Screen[F])
-    def put(pt: Point, grid: Grid, textStyle: TextStyle)(using MF: MonadError[F]): F[Unit] =
+  extension (screen: Screen[F])
+    def putGrid(pt: Point, grid: Grid, textStyle: TextStyle): F[Unit] =
       Grid.put(screen, pt, grid, textStyle)
 
-    def put(pt: Point, grid: Grid)(using MF: MonadError[F]): F[Unit] =
-      put(pt, grid, TextStyle.Empty)
+    def putGrid(pt: Point, grid: Grid): F[Unit] =
+      putGrid(pt, grid, TextStyle.Empty)
