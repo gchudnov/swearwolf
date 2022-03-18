@@ -17,10 +17,10 @@ import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.Action
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.*
-import com.github.gchudnov.swearwolf.term.internal.eventloops.EitherEventLoop
-import com.github.gchudnov.swearwolf.term.internal.screens.EitherScreen
-import com.github.gchudnov.swearwolf.term.internal.terminals.EitherTerm
+import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
 import com.github.gchudnov.swearwolf.term.keys.*
+import com.github.gchudnov.swearwolf.term.screens.EitherScreen
+import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
 import com.github.gchudnov.swearwolf.util.styles.AlignStyle

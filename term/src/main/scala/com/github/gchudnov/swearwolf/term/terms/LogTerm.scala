@@ -1,15 +1,12 @@
-package com.github.gchudnov.swearwolf.term.internal.terminals
+package com.github.gchudnov.swearwolf.term.terms
 
-import com.github.gchudnov.swearwolf.term.Term
-import java.io.OutputStream
-import java.io.PrintWriter
-import java.io.OutputStreamWriter
-import java.nio.charset.StandardCharsets.UTF_8
-import com.github.gchudnov.swearwolf.term.EscSeq
+import com.github.gchudnov.swearwolf.term.{EscSeq, Term}
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import java.nio.file.Path
-import java.io.FileOutputStream
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
+
+import java.io.{FileOutputStream, OutputStream, OutputStreamWriter, PrintWriter}
+import java.nio.charset.StandardCharsets.UTF_8
+import java.nio.file.Path
 
 final class LogTerm()
 

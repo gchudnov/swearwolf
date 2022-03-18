@@ -1,10 +1,8 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.terms
 
-import com.github.gchudnov.swearwolf.term.SyncTerm
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
 
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.{InputStream, OutputStream}
 
 final class EitherSyncTerm(in: InputStream, out: OutputStream, isClose: Boolean) extends SyncTerm[Either[Throwable, *]](in = in, out = out, isClose = isClose)
 

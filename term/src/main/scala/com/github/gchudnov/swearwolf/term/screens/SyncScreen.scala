@@ -1,5 +1,7 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.screens
 
+import com.github.gchudnov.swearwolf.term.Term
+import com.github.gchudnov.swearwolf.term.screens.AnyScreen
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
 /**

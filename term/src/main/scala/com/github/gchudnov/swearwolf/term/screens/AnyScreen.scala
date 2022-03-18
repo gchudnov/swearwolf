@@ -1,14 +1,12 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.screens
 
-import com.github.gchudnov.swearwolf.term.Screen
-import com.github.gchudnov.swearwolf.term.AnyWriter
-import com.github.gchudnov.swearwolf.util.geometry.Point
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.util.spans.Span
-import com.github.gchudnov.swearwolf.term.EscSeq
-import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
-import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
+import com.github.gchudnov.swearwolf.term.writers.AnyWriter
+import com.github.gchudnov.swearwolf.term.{EscSeq, Screen, Term}
+import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.util.geometry.Point
+import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.styles.{TextStyle, TextStyleSeq}
 
 abstract class AnyScreen[F[_]](term: Term[F])(using ME: MonadError[F]) extends AnyWriter[F](term) with Screen[F]:
   import AnyWriter.*

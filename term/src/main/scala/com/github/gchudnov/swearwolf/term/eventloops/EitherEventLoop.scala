@@ -1,12 +1,11 @@
-package com.github.gchudnov.swearwolf.term.internal.eventloops
+package com.github.gchudnov.swearwolf.term.eventloops
 
-import com.github.gchudnov.swearwolf.term.SyncEventLoop
-import com.github.gchudnov.swearwolf.term.AnyEventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
+
 import scala.annotation.tailrec
 
 /**

@@ -1,17 +1,13 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.eventloops
 
-import com.github.gchudnov.swearwolf.term.EventLoop
-import com.github.gchudnov.swearwolf.util.func.MonadError
-
-import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.term.Term
+import com.github.gchudnov.swearwolf.term.internal.Reader
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.term.{EventLoop, Term}
+import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
 import scala.annotation.tailrec
-import com.github.gchudnov.swearwolf.term.internal.Reader
-import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
 /**
  * Any EventLoop
@@ -50,4 +46,4 @@ object AnyEventLoop:
   final case class Acc(ks: Seq[KeySeq], rest: Seq[Byte])
 
   object Acc:
-    val empty = Acc(Seq.empty[KeySeq], Seq.empty[Byte])
+    val empty: Acc = Acc(Seq.empty[KeySeq], Seq.empty[Byte])

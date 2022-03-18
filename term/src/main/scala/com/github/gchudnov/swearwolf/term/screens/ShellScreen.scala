@@ -1,4 +1,4 @@
-package com.github.gchudnov.swearwolf.term.internal.screens
+package com.github.gchudnov.swearwolf.term.screens
 
 import com.github.gchudnov.swearwolf.term.EscSeq
 import com.github.gchudnov.swearwolf.term.Screen

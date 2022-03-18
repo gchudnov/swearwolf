@@ -1,10 +1,9 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.writers
 
-import com.github.gchudnov.swearwolf.term.Writer
+import com.github.gchudnov.swearwolf.term.{EscSeq, Term, Writer}
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.spans.Span
-import com.github.gchudnov.swearwolf.term.EscSeq
 import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler

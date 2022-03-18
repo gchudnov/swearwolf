@@ -1,5 +1,7 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.writers
 
+import com.github.gchudnov.swearwolf.term.Term
+import com.github.gchudnov.swearwolf.term.writers.AnyWriter
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
 /**

@@ -1,7 +1,6 @@
 package com.github.gchudnov.swearwolf.term.writers
 
 import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.term.SyncWriter
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
 
 final class EitherWriter(term: Term[Either[Throwable, *]]) extends SyncWriter(term)

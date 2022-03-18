@@ -1,9 +1,9 @@
-package com.github.gchudnov.swearwolf.term
+package com.github.gchudnov.swearwolf.term.terms
 
+import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.util.func.MonadError
-import java.io.InputStream
-import java.io.OutputStream
-import java.io.BufferedOutputStream
+
+import java.io.{BufferedOutputStream, InputStream, OutputStream}
 
 /**
  * Any Terminal

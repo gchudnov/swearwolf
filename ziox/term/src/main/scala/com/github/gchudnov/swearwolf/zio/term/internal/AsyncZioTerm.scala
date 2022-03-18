@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.zio.term.internal
 
-import com.github.gchudnov.swearwolf.term.AsyncTerm
+import com.github.gchudnov.swearwolf.term.terms.AsyncTerm
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import zio.*
 
