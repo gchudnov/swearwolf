@@ -51,8 +51,8 @@ given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
   override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => RIO[R, B])(using bf: BuildFrom[CC[A], B, CC[B]]): RIO[R, CC[B]] =
     ZIO.foreach(xs)(f)
 
-  override def tailrecM[A, B](a: A)(f: A => RIO[R, Either[A, B]]): RIO[R, B] =
-    f(a).flatMap(_.fold(tailrecM(_)(f), ZIO.succeed(_)))
+  override def tailRecM[A, B](a: A)(f: A => RIO[R, Either[A, B]]): RIO[R, B] =
+    f(a).flatMap(_.fold(tailRecM(_)(f), ZIO.succeed(_)))
 
 /*
   override final def tailRecM[A, B](a: A)(f: A => F[Either[A, B]]): F[B] = {

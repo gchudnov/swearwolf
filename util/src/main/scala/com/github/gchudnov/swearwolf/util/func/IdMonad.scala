@@ -33,7 +33,6 @@ given IdMonad: MonadError[Identity] with
     val cbf = bf.toFactory(xs)
     cbf.fromSpecific(xs.map(f))
 
-  @tailrec
   def tailRecM[A, B](a: A)(f: A => Identity[Either[A, B]]): Identity[B] =
     f(a) match {
       case Left(a1) => tailRecM(a1)(f)
