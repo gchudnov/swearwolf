@@ -4,9 +4,9 @@ import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.eventloops.AnyEventLoop
 import com.github.gchudnov.swearwolf.term.internal.Reader
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.{EventLoop, Term}
+import com.github.gchudnov.swearwolf.term.{ EventLoop, Term }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
-import com.github.gchudnov.swearwolf.util.func.{MonadError, Monoid}
+import com.github.gchudnov.swearwolf.util.func.{ MonadError, Monoid }
 
 import scala.annotation.tailrec
 import scala.jdk.CollectionConverters.*
@@ -18,7 +18,7 @@ abstract class SyncEventLoop[F[_]](term: Term[F])(using ME: MonadError[F]) exten
   override def run(handler: KeySeqHandler[F]): F[Unit] =
     import KeySeq.*
 
-    ME.tailRecM(Acc.empty)(acc => {
+    ME.tailRecM(Acc.empty)(acc =>
       iterate(acc).flatMap {
         case None =>
           ME.succeed(Right(()))
@@ -30,4 +30,4 @@ abstract class SyncEventLoop[F[_]](term: Term[F])(using ME: MonadError[F]) exten
               Right(())
           }
       }
-    })
+    )

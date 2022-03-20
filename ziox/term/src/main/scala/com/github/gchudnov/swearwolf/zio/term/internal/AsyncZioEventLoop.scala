@@ -3,7 +3,7 @@ package com.github.gchudnov.swearwolf.zio.term.internal
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Term
-import com.github.gchudnov.swearwolf.term.eventloops.{AnyEventLoop, AsyncEventLoop}
+import com.github.gchudnov.swearwolf.term.eventloops.{ AnyEventLoop, AsyncEventLoop }
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.terms.AsyncTerm
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
@@ -21,9 +21,8 @@ private[term] final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends Async
 
   private def stream(handler: KeySeqHandler[Task]): ZStream[Any, Throwable, KeySeq] =
     ZStream
-      .unfoldZIO(Acc.empty)(acc => {
-        iterate(acc)
-        .flatMap({
+      .unfoldZIO(Acc.empty)(acc =>
+        iterate(acc).flatMap {
           case None =>
             ZIO.none
           case Some((key, value)) =>
@@ -33,5 +32,5 @@ private[term] final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends Async
               case _ =>
                 None
             }
-        })
-      })
+        }
+      )
