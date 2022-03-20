@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.zio.util.func
 
 import com.github.gchudnov.swearwolf.util.func.{ Canceler, MonadAsyncError }
-import zio.{ RIO, UIO, ZIO }
+import zio.{ RIO, UIO, ZIO, URIO }
 
 import scala.annotation.tailrec
 import scala.collection.BuildFrom
@@ -24,7 +24,7 @@ given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
         case Right(a) => cb(RIO.succeed(a))
       }
 
-      Left(UIO(canceler.cancel()))
+      Left(URIO.succeed(canceler.cancel()))
     }
 
   override def fail[A](t: Throwable): RIO[R, A] =
