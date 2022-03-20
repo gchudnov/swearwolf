@@ -3,7 +3,7 @@ import sbt._
 object Dependencies {
 
   object versions {
-    val zio          = "2.0.0-RC2"
+    val zio          = "2.0.0-RC3"
     val scalaParser  = "2.1.1"
   }
 
