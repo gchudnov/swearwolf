@@ -2,10 +2,8 @@ package com.github.gchudnov.swearwolf.util.func
 
 import scala.annotation.tailrec
 import scala.collection.BuildFrom
-import scala.util.Failure
-import scala.util.Success
-import scala.util.Try
 import scala.util.control.Exception.*
+import scala.util.{ Failure, Success, Try }
 
 given EitherMonad: MonadError[Either[Throwable, *]] with
   type R[+A] = Either[Throwable, A]
@@ -59,10 +57,11 @@ given EitherMonad: MonadError[Either[Throwable, *]] with
         case Left(e)  => return Left(e)
     Right(builder.result)
 
-  @tailrec
   def tailRecM[A, B](a: A)(f: A => Either[Throwable, Either[A, B]]): Either[Throwable, B] =
-    f(a) match {
-      case Left(t) => Left(t)
-      case Right(Left(a1)) => tailRecM(a1)(f)
-      case Right(Right(b)) => Right(b)
-    }
+    @tailrec
+    def iterate(a: A): Either[Throwable, B] =
+      f(a) match
+        case Left(t)         => Left(t)
+        case Right(Left(a1)) => iterate(a1)
+        case Right(Right(b)) => Right(b)
+    iterate(a)

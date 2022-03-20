@@ -64,7 +64,9 @@ given FutureMonad(using ec: ExecutionContext): MonadAsyncError[Future] with
     Future.traverse(xs)(f)
 
   def tailRecM[A, B](a: A)(f: A => Future[Either[A, B]]): Future[B] =
-    f(a).flatMap {
-      case Left(a1) => tailRecM(a1)(f)
-      case Right(b) => Future.successful(b)
-    }
+    def iterate(a: A): Future[B] =
+      f(a).flatMap {
+        case Left(a1) => iterate(a1)
+        case Right(b) => Future.successful(b)
+      }
+    iterate(a)

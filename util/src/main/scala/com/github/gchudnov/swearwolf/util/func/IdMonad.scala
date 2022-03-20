@@ -1,5 +1,6 @@
 package com.github.gchudnov.swearwolf.util.func
 
+import scala.annotation.tailrec
 import scala.collection.BuildFrom
 
 given IdMonad: MonadError[Identity] with
@@ -34,7 +35,9 @@ given IdMonad: MonadError[Identity] with
     cbf.fromSpecific(xs.map(f))
 
   def tailRecM[A, B](a: A)(f: A => Identity[Either[A, B]]): Identity[B] =
-    f(a) match {
-      case Left(a1) => tailRecM(a1)(f)
-      case Right(b) => b
-    }
+    @tailrec
+    def iterate(a: A): Identity[B] =
+      f(a) match
+        case Left(a1) => iterate(a1)
+        case Right(b) => b
+    iterate(a)

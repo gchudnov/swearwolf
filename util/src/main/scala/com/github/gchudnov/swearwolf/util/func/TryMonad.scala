@@ -1,10 +1,8 @@
 package com.github.gchudnov.swearwolf.util.func
 
 import scala.annotation.tailrec
-import scala.util.Try
-import scala.util.Success
-import scala.util.Failure
 import scala.collection.BuildFrom
+import scala.util.{ Failure, Success, Try }
 
 given TryMonad: MonadError[Try] with
 
@@ -49,10 +47,11 @@ given TryMonad: MonadError[Try] with
         case Failure(e) => return Failure(e)
     Success(builder.result)
 
-  @tailrec
   def tailRecM[A, B](a: A)(f: A => Try[Either[A, B]]): Try[B] =
-    f(a) match {
-      case Failure(t) => Failure(t)
-      case Success(Left(a1)) => tailRecM(a1)(f)
-      case Success(Right(b)) => Success(b)
-    }
+    @tailrec
+    def iterate(a: A): Try[B] =
+      f(a) match
+        case Failure(t)        => Failure(t)
+        case Success(Left(a1)) => iterate(a1)
+        case Success(Right(b)) => Success(b)
+    iterate(a)

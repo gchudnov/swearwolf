@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.zio.util.func
 
-import com.github.gchudnov.swearwolf.util.func.{Canceler, MonadAsyncError}
-import zio.{RIO, UIO, ZIO}
+import com.github.gchudnov.swearwolf.util.func.{ Canceler, MonadAsyncError }
+import zio.{ RIO, UIO, ZIO }
 
 import scala.annotation.tailrec
 import scala.collection.BuildFrom
@@ -52,15 +52,9 @@ given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
     ZIO.foreach(xs)(f)
 
   override def tailRecM[A, B](a: A)(f: A => RIO[R, Either[A, B]]): RIO[R, B] =
-    f(a).flatMap(_.fold(tailRecM(_)(f), ZIO.succeed(_)))
-
-/*
-  override final def tailRecM[A, B](a: A)(f: A => F[Either[A, B]]): F[B] = {
-    def loop(a: A): F[B] = f(a).flatMap {
-      case Left(a)  => loop(a)
-      case Right(b) => ZIO.succeedNow(b)
-    }
-
-    ZIO.effectSuspendTotal(loop(a))
-  }
-*/
+    def iterate(a: A): RIO[R, B] =
+      f(a).flatMap {
+        case Left(a1) => iterate(a1)
+        case Right(b) => ZIO.succeed(b)
+      }
+    ZIO.suspendSucceed(iterate(a))
