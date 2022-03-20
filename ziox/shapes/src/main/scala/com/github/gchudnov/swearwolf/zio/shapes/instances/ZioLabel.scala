@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.zio.shapes.instances
 
-import com.github.gchudnov.swearwolf.shapes.instances.{AnyBox, AnyLabel}
+import com.github.gchudnov.swearwolf.shapes.instances.{ AnyBox, AnyLabel }
 import com.github.gchudnov.swearwolf.shapes.label.Label
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError

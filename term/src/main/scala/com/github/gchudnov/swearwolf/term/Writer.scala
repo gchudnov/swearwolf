@@ -17,4 +17,3 @@ trait Writer[F[_]]:
   def put(value: Array[Byte]): F[Unit]
 
   def flush(): F[Unit]
-

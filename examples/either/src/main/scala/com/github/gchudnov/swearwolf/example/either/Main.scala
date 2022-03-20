@@ -30,7 +30,7 @@ import scala.util.control.Exception.nonFatalCatch
 
 /**
  * Interactive Example, that uses StdIn to get input and StdOut to display output.
- * 
+ *
  * Uses `Either[Throwable, *]` to represent the result of a computation.
  */
 object Main extends App:

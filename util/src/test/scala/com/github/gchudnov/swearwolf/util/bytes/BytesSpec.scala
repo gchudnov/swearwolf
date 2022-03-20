@@ -28,7 +28,7 @@ object BytesSpec extends DefaultRunnableSpec:
       test("string to bytes with non-hex characters") {
         val input = "afdsgbvvjytut"
 
-        val actual   = input.asBytes
+        val actual = input.asBytes
 
         assert(actual)(isLeft)
       },

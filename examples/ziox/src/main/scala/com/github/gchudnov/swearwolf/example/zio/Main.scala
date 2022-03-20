@@ -15,7 +15,7 @@ import zio.stream.*
 
 /**
  * Interactive Example, that uses StdIn to get input and StdOut to display output.
- * 
+ *
  * Uses `Task` from ZIO to represent the result of a computation.
  */
 object Main extends ZIOAppDefault:

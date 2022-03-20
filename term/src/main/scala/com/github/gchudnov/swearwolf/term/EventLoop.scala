@@ -11,7 +11,6 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 trait EventLoop[F[_]]:
   def run(handler: KeySeqHandler[F]): F[Unit]
 
-
 object EventLoop:
   import KeySeq.*
   import MonadError.*
@@ -19,10 +18,8 @@ object EventLoop:
   type KeySeqHandler[F[_]] = KeySeq => F[EventLoop.Action]
 
   def defaultExitKeySeqAction: KeySeq => Action = (ks: KeySeq) =>
-    if (ks.isEsc) then 
-      EventLoop.Action.Exit 
-    else
-      EventLoop.Action.Continue
+    if (ks.isEsc) then EventLoop.Action.Exit
+    else EventLoop.Action.Continue
 
   given keySeqHandlerMonoid[F[_]: MonadError]: Monoid[KeySeqHandler[F]] with
     def empty: KeySeqHandler[F] =
@@ -30,9 +27,7 @@ object EventLoop:
 
     extension (x: KeySeqHandler[F])
       infix def combine(y: KeySeqHandler[F]): KeySeqHandler[F] =
-        (ks: KeySeq) =>
-          x(ks).flatMap(a1 => y(ks).map(a2 => a1 | a2))
-
+        (ks: KeySeq) => x(ks).flatMap(a1 => y(ks).map(a2 => a1 | a2))
 
   sealed trait Action
   object Action:

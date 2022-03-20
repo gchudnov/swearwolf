@@ -3,7 +3,7 @@ package com.github.gchudnov.swearwolf.term.eventloops
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.internal.Reader
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.{EventLoop, Term}
+import com.github.gchudnov.swearwolf.term.{ EventLoop, Term }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
@@ -23,7 +23,7 @@ abstract class AnyEventLoop[F[_]](term: Term[F])(using ME: MonadError[F]) extend
    *
    * A Blocking operation.
    *
-   * Returns None if the input is closed, otherwise Some(KeySeq) and the accumulator that can be used to read the next KeySeq.
+   * Returns None if the input is closed, otherwise Some(KeySeq, Acc) - the accumulator that can be used to read the next KeySeq.
    */
   protected def iterate(acc: Acc): F[Option[(KeySeq, Acc)]] =
     acc match

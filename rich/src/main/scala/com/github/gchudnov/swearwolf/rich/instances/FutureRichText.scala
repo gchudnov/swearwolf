@@ -22,5 +22,4 @@ trait FutureRichText:
     def putRich(pt: Point, richText: RichText)(using ec: ExecutionContext): Future[Unit] =
       RichText.put(screen, pt, richText)
 
-
 object FutureRichText extends FutureRichText

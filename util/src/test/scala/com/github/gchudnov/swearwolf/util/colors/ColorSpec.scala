@@ -45,7 +45,7 @@ object ColorSpec extends DefaultRunnableSpec:
         val expected = Color(254, 34, 51)
 
         assert(actual)(equalTo(expected))
-      },      
+      },
       test("red") {
         val input = "red"
 

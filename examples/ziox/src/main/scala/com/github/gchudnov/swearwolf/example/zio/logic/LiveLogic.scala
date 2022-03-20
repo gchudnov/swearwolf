@@ -47,7 +47,7 @@ final class LiveLogic(screen: Screen[Task]) extends Logic:
     val l  = Label(Size(16, 4), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)
 
     val posLabelX = 32
-    val ksLabel = Label(Size(screenWidth - posLabelX, 1), ks.toString, AlignStyle.Left)
+    val ksLabel   = Label(Size(screenWidth - posLabelX, 1), ks.toString, AlignStyle.Left)
 
     val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>")
 

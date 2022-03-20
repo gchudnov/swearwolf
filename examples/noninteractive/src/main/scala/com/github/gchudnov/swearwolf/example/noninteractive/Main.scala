@@ -16,7 +16,7 @@ import com.github.gchudnov.swearwolf.util.geometry.*
 object Main extends App:
   import TextStyle.*
 
-  val term = EitherSyncTerm.make()
+  val term   = EitherSyncTerm.make()
   val writer = EitherWriter.make(term)
 
   val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>\n")

@@ -11,26 +11,4 @@ import scala.annotation.tailrec
 /**
  * Synchronous EventLoop.
  */
-final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventLoop[Either[Throwable, *]](term):
-  import AnyEventLoop.*
-
-  override def run(handler: KeySeqHandler[Either[Throwable, *]]): Either[Throwable, Unit] =
-    import KeySeq.*
-
-    @tailrec
-    def loop(acc: Acc): Either[Throwable, Unit] =
-      iterate(acc) match
-        case Left(t) => Left(t)
-        case Right(Some(ks: KeySeq, xAcc: Acc)) =>
-          handler(ks) match
-            case Left(t) => Left(t)
-            case Right(action) if action == EventLoop.Action.Continue =>
-              loop(xAcc)
-            case _ =>
-              Right(())
-        case Right(None) =>
-          Right(())
-
-          loop(acc)
-
-    loop(Acc.empty)
+final class EitherEventLoop(term: Term[Either[Throwable, *]]) extends SyncEventLoop[Either[Throwable, *]](term) {}
