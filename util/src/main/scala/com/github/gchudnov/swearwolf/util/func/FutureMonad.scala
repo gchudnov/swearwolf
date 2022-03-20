@@ -1,13 +1,9 @@
 package com.github.gchudnov.swearwolf.util.func
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
-import scala.concurrent.Promise
-import scala.util.Try
-import scala.util.Failure
-import scala.util.Success
-import scala.collection.Factory
-import scala.collection.BuildFrom
+import scala.annotation.tailrec
+import scala.collection.{ BuildFrom, Factory }
+import scala.concurrent.{ ExecutionContext, Future, Promise }
+import scala.util.{ Failure, Success, Try }
 
 given FutureMonad(using ec: ExecutionContext): MonadAsyncError[Future] with
 
@@ -66,3 +62,9 @@ given FutureMonad(using ec: ExecutionContext): MonadAsyncError[Future] with
 
   override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => Future[B])(using bf: BuildFrom[CC[A], B, CC[B]]): Future[CC[B]] =
     Future.traverse(xs)(f)
+
+  def tailRecM[A, B](a: A)(f: A => Future[Either[A, B]]): Future[B] =
+    f(a).flatMap {
+      case Left(a1) => tailRecM(a1)(f)
+      case Right(b) => Future.successful(b)
+    }

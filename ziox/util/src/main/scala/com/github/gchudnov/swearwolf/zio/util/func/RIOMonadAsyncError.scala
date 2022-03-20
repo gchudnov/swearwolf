@@ -53,3 +53,14 @@ given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
 
   override def tailrecM[A, B](a: A)(f: A => RIO[R, Either[A, B]]): RIO[R, B] =
     f(a).flatMap(_.fold(tailrecM(_)(f), ZIO.succeed(_)))
+
+/*
+  override final def tailRecM[A, B](a: A)(f: A => F[Either[A, B]]): F[B] = {
+    def loop(a: A): F[B] = f(a).flatMap {
+      case Left(a)  => loop(a)
+      case Right(b) => ZIO.succeedNow(b)
+    }
+
+    ZIO.effectSuspendTotal(loop(a))
+  }
+*/
