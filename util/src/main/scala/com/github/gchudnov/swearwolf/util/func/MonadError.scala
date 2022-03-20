@@ -61,6 +61,8 @@ trait MonadError[F[_]]:
 
   def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => F[B])(using bf: BuildFrom[CC[A], B, CC[B]]): F[CC[B]]
 
+  def tailRecM[A, B](a: A)(f: A => F[Either[A, B]]): F[B]
+
 object MonadError:
   def apply[F[_]: MonadError]: MonadError[F] =
     summon[MonadError[F]]

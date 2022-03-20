@@ -25,7 +25,7 @@ private[term] final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends Async
         iterate(acc)
         .flatMap({
           case None =>
-            ZIO.succeed(None)
+            ZIO.none
           case Some((key, value)) =>
             handler(key).map {
               case EventLoop.Action.Continue =>

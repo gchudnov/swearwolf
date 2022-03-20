@@ -1,11 +1,9 @@
 package com.github.gchudnov.swearwolf.zio.util.func
 
-import com.github.gchudnov.swearwolf.util.func.Canceler
-import com.github.gchudnov.swearwolf.util.func.MonadAsyncError
-import zio.RIO
-import zio.UIO
-import zio.ZIO
+import com.github.gchudnov.swearwolf.util.func.{Canceler, MonadAsyncError}
+import zio.{RIO, UIO, ZIO}
 
+import scala.annotation.tailrec
 import scala.collection.BuildFrom
 
 given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
@@ -45,10 +43,13 @@ given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
     ffa.flatten
 
   override def ensure[A](f: RIO[R, A], e: => RIO[R, Unit]): RIO[R, A] =
-    f.ensuring(e.catchAll(_ => ZIO.unit))
+    f.ensuring(e.ignore)
 
   override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[RIO[R, A]])(using bf: BuildFrom[CC[RIO[R, A]], A, CC[A]]): RIO[R, CC[A]] =
     ZIO.collectAll(xs)
 
   override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => RIO[R, B])(using bf: BuildFrom[CC[A], B, CC[B]]): RIO[R, CC[B]] =
     ZIO.foreach(xs)(f)
+
+  override def tailrecM[A, B](a: A)(f: A => RIO[R, Either[A, B]]): RIO[R, B] =
+    f(a).flatMap(_.fold(tailrecM(_)(f), ZIO.succeed(_)))

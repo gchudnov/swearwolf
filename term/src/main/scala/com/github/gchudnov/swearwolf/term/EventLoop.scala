@@ -18,7 +18,7 @@ object EventLoop:
 
   type KeySeqHandler[F[_]] = KeySeq => F[EventLoop.Action]
 
-  def defaultExitKeySeqAction = (ks: KeySeq) => 
+  def defaultExitKeySeqAction: KeySeq => Action = (ks: KeySeq) =>
     if (ks.isEsc) then 
       EventLoop.Action.Exit 
     else

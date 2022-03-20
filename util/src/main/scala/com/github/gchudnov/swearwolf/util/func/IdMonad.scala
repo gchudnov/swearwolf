@@ -32,3 +32,10 @@ given IdMonad: MonadError[Identity] with
   override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => Identity[B])(using bf: BuildFrom[CC[A], B, CC[B]]): Identity[CC[B]] =
     val cbf = bf.toFactory(xs)
     cbf.fromSpecific(xs.map(f))
+
+  @tailrec
+  def tailRecM[A, B](a: A)(f: A => Identity[Either[A, B]]): Identity[B] =
+    f(a) match {
+      case Left(a1) => tailRecM(a1)(f)
+      case Right(b) => b
+    }

@@ -52,8 +52,8 @@ given FutureMonad(using ec: ExecutionContext): MonadAsyncError[Future] with
         case Success(v) => v
 
     f.onComplete {
-      case Success(v) => cleanup.map(_ => v).onComplete(p.complete(_))
-      case Failure(f) => cleanup.flatMap(_ => Future.failed(f)).onComplete(p.complete(_))
+      case Success(v) => cleanup.map(_ => v).onComplete(p.complete)
+      case Failure(f) => cleanup.flatMap(_ => Future.failed(f)).onComplete(p.complete)
     }
 
     p.future
