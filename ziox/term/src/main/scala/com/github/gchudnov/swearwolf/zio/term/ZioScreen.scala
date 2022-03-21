@@ -4,7 +4,7 @@ import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioScreen
 import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioTerm
 import com.github.gchudnov.swearwolf.term.Term.TermAction
-import com.github.gchudnov.swearwolf.term.screens.ShellScreen
+import com.github.gchudnov.swearwolf.term.screens.AnyShellScreen
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import sun.misc.Signal
 import sun.misc.SignalHandler
@@ -27,15 +27,15 @@ object ZioScreen:
                            override def handle(signal: Signal): Unit =
                              emit(term.fetchSize().flatMap(_ => term.flush()).map(Chunk(_)).mapError(Option(_)))
 
-                         Signal.handle(ShellScreen.SIGWINCH, handler)
+                         Signal.handle(AnyShellScreen.SIGWINCH, handler)
                        }
                        .runDrain
                        .forkDaemon
 
       resizeClose: TermAction[Task] = (t: Term[Task]) => resizeFiber.interruptFork
 
-      pairs    = ShellScreen.initRollbackActions[Task]()
-      cleanup <- ShellScreen.initTerm(term, pairs)
+      pairs    = AnyShellScreen.initRollbackActions[Task]()
+      cleanup <- AnyShellScreen.init(term, pairs)
 
       screen = new AsyncZioScreen(term, resizeClose | cleanup)
     yield (screen)

@@ -15,6 +15,7 @@ final class EitherScreen(term: Term[Either[Throwable, *]], cleanup: TermAction[E
       .flatMap(_ => term.close())
 
 // TODO: extract, the code looks common for all of the sync effects
+// TODO: add SyncShellScreen ???
 object EitherScreen:
 
   def make(term: Term[Either[Throwable, *]]): Either[Throwable, EitherScreen] =
@@ -22,11 +23,11 @@ object EitherScreen:
       override def handle(signal: Signal): Unit =
         term.fetchSize().flatMap(_ => term.flush())
 
-    Signal.handle(ShellScreen.SIGWINCH, handler)
+    Signal.handle(AnyShellScreen.SIGWINCH, handler)
 
-    val pairs = ShellScreen.initRollbackActions[Either[Throwable, *]]()
+    val pairs = AnyShellScreen.initRollbackActions[Either[Throwable, *]]()
 
     for
-      cleanup <- ShellScreen.initTerm(term, pairs)
+      cleanup <- AnyShellScreen.init(term, pairs)
       screen   = new EitherScreen(term, cleanup)
     yield screen

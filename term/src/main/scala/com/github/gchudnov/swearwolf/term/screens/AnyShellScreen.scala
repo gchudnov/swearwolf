@@ -12,7 +12,7 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import sun.misc.Signal
 import sun.misc.SignalHandler
 
-object ShellScreen:
+object AnyShellScreen:
   import Term.*
 
   val SIGWINCH: Signal = new Signal("WINCH")
@@ -65,7 +65,7 @@ object ShellScreen:
    *
    * Returns an action that need to be executed to clean-up the terminal.
    */
-  def initTerm[F[_]](term: Term[F], pairs: List[(TermAction[F], TermAction[F])])(using ME: MonadError[F]): F[TermAction[F]] =
+  def init[F[_]](term: Term[F], pairs: List[(TermAction[F], TermAction[F])])(using ME: MonadError[F]): F[TermAction[F]] =
     import com.github.gchudnov.swearwolf.util.func.MonadError.*
     ME.foldLeft(pairs)(List.empty[TermAction[F]]) { case (acc, x) =>
       val (init, rollback) = x
