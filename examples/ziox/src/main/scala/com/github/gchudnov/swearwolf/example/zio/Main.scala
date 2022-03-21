@@ -1,15 +1,11 @@
 package com.github.gchudnov.swearwolf.example.zio
 
 import com.github.gchudnov.swearwolf.example.zio.logic.Logic
-import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.*
-import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.keys.SizeKeySeq
+import com.github.gchudnov.swearwolf.term.keys.{ KeySeq, SizeKeySeq }
 import com.github.gchudnov.swearwolf.util.*
 import com.github.gchudnov.swearwolf.util.geometry.Size
-import com.github.gchudnov.swearwolf.zio.term.ZioEventLoop
-import com.github.gchudnov.swearwolf.zio.term.ZioScreen
-import com.github.gchudnov.swearwolf.zio.term.ZioTerm
+import com.github.gchudnov.swearwolf.zio.term.{ ZioEventLoop, ZioScreen, ZioTerm }
 import zio.*
 import zio.stream.*
 
@@ -43,7 +39,7 @@ object Main extends ZIOAppDefault:
     yield ()
 
   private def makeEnv(): ZLayer[Any, Throwable, ZioTerm with ZioScreen with ZioEventLoop with Logic] =
-    val termLayer      = ZioTerm.layer
+    val termLayer      = ZioTerm.stdIoLayer
     val screenLayer    = termLayer >>> ZioScreen.shellLayer
     val eventLoopLayer = termLayer >>> ZioEventLoop.layer
 
