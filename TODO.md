@@ -1,4 +1,3 @@
-- TODO: add IdTerm, IdWriter, IdScreen
 - TODO: add logging to ZIO
 
 - TODO: refactor term names
