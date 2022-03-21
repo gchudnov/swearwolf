@@ -1,59 +1,42 @@
 package com.github.gchudnov.swearwolf.term.terms
 
-import com.github.gchudnov.swearwolf.term.{EscSeq, Term}
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.term.{ EscSeq, Term }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.util.logging.Logging
 
-import java.io.{FileOutputStream, OutputStream, OutputStreamWriter, PrintWriter}
+import java.io.{ FileOutputStream, OutputStream, OutputStreamWriter, PrintWriter }
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.Path
+import java.time.LocalDateTime
 
-final class LogTerm()
+final class LogTerm[F[_]](logging: Logging[F], term: Term[F])(using ME: MonadError[F]) extends Term[F]:
+  import MonadError.*
 
-// final class LogTerm(output: OutputStream, inner: Term) extends Term:
+  def read(): F[Option[Array[Byte]]] =
+    val msg = s"read()"
+    tryLog1(msg, term.read())
 
-//   private val pw = new PrintWriter(new OutputStreamWriter(output, UTF_8))
+  def write(bytes: Array[Byte]): F[Unit] =
+    val data = Bytes(bytes)
+    val msg  = s"write('${data.show}')"
+    tryLog0(msg, term.write(bytes))
 
-//   override def write(bytes: Array[Byte]): Either[Throwable, Unit] =
-//     val data = Bytes(bytes)
-//     pw.print(s"write(Array[Byte]): ${data.show} ...")
-//     withLogResult(inner.write(bytes))
+  def flush(): F[Unit] =
+    val msg = s"flush()"
+    tryLog0(msg, term.flush())
 
-//   override def write(seq: EscSeq): Either[Throwable, Unit] =
-//     val data = Bytes(seq.value.getBytes)
-//     pw.print(s"write(EscSeq): ${data.show} ...")
-//     withLogResult(inner.write(seq))
+  def close(): F[Unit] =
+    val msg = s"close()"
+    tryLog0(msg, term.flush())
 
-//   override def write(str: String): Either[Throwable, Unit] =
-//     val data = str
-//     pw.print(s"write(String): ${data} ...")
-//     withLogResult(inner.write(str))
+  private def tryLog0(msg: => String, f: => F[Unit]): F[Unit] =
+    val dt = LocalDateTime.now() // TODO: extract
+    f.flatMap(_ => logging.log(s"${dt}: ${msg} ...OK")).handleErrorWith(t => logging.log(s"${msg} ...ERR: '${t.getMessage}'"))
 
-//   override def flush(): Either[Throwable, Unit] =
-//     pw.print("flush() ...")
-//     withLogResult(inner.flush())
-
-//   override def blockingPoll(): Either[Throwable, Option[List[KeySeq]]] =
-//     pw.print("blockingPoll() ...")
-//     withLogResult(inner.blockingPoll())
-
-//   override def poll(): Either[Throwable, Option[List[KeySeq]]] =
-//     pw.print("poll() ...")
-//     withLogResult(inner.poll())
-
-//   private def withLogResult[A](e: Either[Throwable, A]): Either[Throwable, A] =
-//     e match
-//       case Left(e) =>
-//         pw.println("ERR: " + e.getMessage)
-//         pw.flush()
-//         Left(e)
-//       case Right(a) =>
-//         pw.println("OK: " + a)
-//         pw.flush()
-//         Right(a)
-
-// object LogTerm:
-
-//   def make(path: Path, inner: Term): LogTerm =
-//     val outStream = new FileOutputStream(path.toFile)
-//     new LogTerm(outStream, inner)
+  private def tryLog1(msg: => String, f: => F[Option[Array[Byte]]]): F[Option[Array[Byte]]] =
+    val dt = LocalDateTime.now()
+    f
+      .flatMap(r => logging.log(s"${dt}: ${msg} ...OK: ${r}").map(_ => r))
+      .handleErrorWith(t => logging.log(s"${msg} ...ERR: '${t.getMessage}'").flatMap(_ => ME.fail(t)))

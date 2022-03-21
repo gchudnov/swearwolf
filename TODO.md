@@ -1,4 +1,5 @@
-- TODO: add logging to ZIO
+= TODO: add logging to ZIO (Term, EventLoop)
+
 
 - TODO: refactor term names
 
