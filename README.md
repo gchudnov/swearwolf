@@ -29,7 +29,7 @@ libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes" % "2.0.0"
 ### Modules
 
 - [/util](util) - A collection of utilities, other libraries in the project depend on.
-- 
+
 - [/term](term) - Enable interactive and non-interactive IO in the terminal.
 
 - [/shapes](shapes) - A collection of shapes (box, chart, grid, label, table) to use with the library.
