@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.{ Files, Path, Paths, StandardOpenOption }
 import java.time.LocalDateTime
 
-abstract class FileLogging[F[_]](path: Path)(using ME: MonadError[F]) extends Logging[F]:
+class FileLogging[F[_]](path: Path)(using ME: MonadError[F]) extends Logging[F]:
   import MonadError.*
 
   override def log(msg: => String): F[Unit] =

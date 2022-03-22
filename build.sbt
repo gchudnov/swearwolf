@@ -133,9 +133,21 @@ lazy val exampleNonInteractive = (project in file("examples/noninteractive"))
     assembly / assemblyJarName := s"${name.value}"
   )
 
+lazy val exampleLog = (project in file("examples/log"))
+  .dependsOn(util, term, rich, shapes)
+  .settings(allSettings: _*)
+  .settings(Settings.assemblySettings)
+  .settings(Settings.noPublish)
+  .settings(
+    name := "example-log",
+    libraryDependencies ++= Dependencies.ExampleAll,
+    assembly / mainClass       := Some("com.github.gchudnov.swearwolf.example.log.Main"),
+    assembly / assemblyOption  := (assembly / assemblyOption).value.withPrependShellScript(prependShellScript = Some(defaultUniversalScript(shebang = true))),
+    assembly / assemblyJarName := s"${name.value}"
+  )
 
 lazy val root = (project in file("."))
-  .aggregate(util, term, shapes, rich, utilZio, termZio, richZio, shapesZio, exampleEither, exampleZio, exampleNonInteractive)
+  .aggregate(util, term, shapes, rich, utilZio, termZio, richZio, shapesZio, exampleEither, exampleZio, exampleNonInteractive, exampleLog)
   .settings(allSettings: _*)
   .settings(Settings.noPublish)
   .settings(

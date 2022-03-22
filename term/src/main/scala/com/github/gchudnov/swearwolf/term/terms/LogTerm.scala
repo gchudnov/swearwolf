@@ -1,16 +1,16 @@
 package com.github.gchudnov.swearwolf.term.terms
 
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.{ EscSeq, Term }
+import com.github.gchudnov.swearwolf.term.{EscSeq, Term}
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.clock.Clock
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.logging.Logging
 
-import java.io.{ FileOutputStream, OutputStream, OutputStreamWriter, PrintWriter }
+import java.io.{FileOutputStream, OutputStream, OutputStreamWriter, PrintWriter}
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.Path
-import java.time.LocalDateTime
+import java.time.{LocalDateTime, ZoneId, ZoneOffset}
 import java.time.format.DateTimeFormatter
 
 final class LogTerm[F[_]](fmt: DateTimeFormatter, logging: Logging[F], clock: Clock[F], term: Term[F])(using ME: MonadError[F]) extends Term[F]:
@@ -52,4 +52,4 @@ final class LogTerm[F[_]](fmt: DateTimeFormatter, logging: Logging[F], clock: Cl
       )
 
 object LogTerm:
-  val defaultFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+  val defaultDateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC))
