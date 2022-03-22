@@ -1,17 +1,17 @@
 package com.github.gchudnov.swearwolf.term.terms
 
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.term.{EscSeq, Term}
+import com.github.gchudnov.swearwolf.term.{ EscSeq, Term }
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.clock.Clock
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.logging.Logging
 
-import java.io.{FileOutputStream, OutputStream, OutputStreamWriter, PrintWriter}
+import java.io.{ FileOutputStream, OutputStream, OutputStreamWriter, PrintWriter }
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.Path
-import java.time.{LocalDateTime, ZoneId, ZoneOffset}
 import java.time.format.DateTimeFormatter
+import java.time.{ LocalDateTime, ZoneId, ZoneOffset }
 
 final class LogTerm[F[_]](fmt: DateTimeFormatter, logging: Logging[F], clock: Clock[F], term: Term[F])(using ME: MonadError[F]) extends Term[F]:
   import MonadError.*
@@ -47,7 +47,7 @@ final class LogTerm[F[_]](fmt: DateTimeFormatter, logging: Logging[F], clock: Cl
       .flatMap(i =>
         val dt = fmt.format(i)
         f
-          .flatMap(r => logging.log(s"${dt}: ${msg} ...OK: ${r}").map(_ => r))
+          .flatMap((r: Option[Array[Byte]]) => logging.log(s"${dt}: ${msg} ...OK: ${r.map(Bytes(_).show)}").map(_ => r))
           .handleErrorWith(t => logging.log(s"${msg} ...ERR: '${t.getMessage}'").flatMap(_ => ME.fail(t)))
       )
 
