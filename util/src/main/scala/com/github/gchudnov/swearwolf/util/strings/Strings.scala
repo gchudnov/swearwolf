@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.util.strings
 
 import scala.annotation.tailrec
 
-trait StringOps:
+sealed trait StringOps:
 
   extension (s: String)
     /**

@@ -6,7 +6,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import zio.*
 
-trait ZioRichText extends AnyRichText[Task]:
+sealed trait ZioRichText extends AnyRichText[Task]:
 
   extension (richTextT: RichText.type)
     def buildZIO(rich: RichText): Task[Span] =

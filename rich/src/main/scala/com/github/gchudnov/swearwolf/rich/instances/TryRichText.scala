@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.func.TryMonad
 import scala.util.Try
 
-trait TryRichText extends AnyRichText[Try]:
+sealed trait TryRichText extends AnyRichText[Try]:
 
   extension (richTextT: RichText.type)
     def buildTry(rich: RichText): Try[Span] =

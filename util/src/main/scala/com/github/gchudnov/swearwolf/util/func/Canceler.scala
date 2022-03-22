@@ -1,3 +1,3 @@
 package com.github.gchudnov.swearwolf.util.func
 
-case class Canceler(cancel: () => Unit)
+final case class Canceler(cancel: () => Unit)

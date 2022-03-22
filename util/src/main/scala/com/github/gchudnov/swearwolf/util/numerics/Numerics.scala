@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.util.numerics
 
-trait NumericOps:
+sealed trait NumericOps:
 
   extension [T: Numeric](value: T)
     def clamp(min: T, max: T): T =

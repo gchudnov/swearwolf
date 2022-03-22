@@ -8,7 +8,7 @@ import com.github.gchudnov.swearwolf.util.func.FutureMonad
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-trait FutureRichText:
+sealed trait FutureRichText:
 
   extension (richTextT: RichText.type)
     def buildFuture(rich: RichText)(using ec: ExecutionContext): Future[Span] =

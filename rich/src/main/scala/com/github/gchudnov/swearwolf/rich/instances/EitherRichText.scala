@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import com.github.gchudnov.swearwolf.util.geometry.Point
 
-trait EitherRichText extends AnyRichText[Either[Throwable, *]]:
+sealed trait EitherRichText extends AnyRichText[Either[Throwable, *]]:
 
   extension (richTextT: RichText.type)
     def buildEither(rich: RichText): Either[Throwable, Span] =
