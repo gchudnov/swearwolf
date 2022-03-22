@@ -36,7 +36,7 @@ object Main extends App:
 
   val resF = for
     screen       <- EitherScreen.make(logTerm)
-    eventLoop     = new EitherEventLoop(logTerm)
+    eventLoop     = EitherEventLoop.make(logTerm)
     keySeqHandler = makeKeySeqHandler(screen)
     _            <- eventLoop.run(keySeqHandler)
     _            <- nonFatalCatch.either(screen.close())
