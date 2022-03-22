@@ -327,22 +327,6 @@ Text Styles can be composed using '|' operator, e.g.:
 val textStyle = TextStyle.Foreground(NamedColor.Azure) | TextStyle.Background(NamedColor.LightGray) | TextStyle.Strikethrough
 ```
 
-### Colors
-
-A `Color` is a combination of **R**, **G** and **B** values in range `[0 - 255]` and represented as: `Color(r: Int, g: Int, b: Int)`.
-Colors can be constructed by calling `Color.parse` or by specifying the exact values of R, G and B.
-
-- **Color.parse(value: String): Either[Throwable, Color]**
-
-  Parses a color specified in `#RRGGBB` or `RRGGBB` format where `RR`, `GG`, `BB` are hex values.
-  For example: `#FF0000` and `FF0000` are valid inputs representing red color.
-
-In addition, the library defines [a set of predefined named colors](res/colors/NAMED-COLORS.md), `NamedColor`.
-Named colors can be used directly, e.g. `NamedColor.Aqua` or `NamedColor.LightCyan` or parsed from a string by calling `NamedColor.parse`.
-
-- **NamedColor.parse(name: String): Either[Throwable, Color]**
-
-  `name: String` is the name of the color separated by '-' for composite words, e.g.: `aqua` or `light-cyan`.
 
 
 ## Swearwolf-Woods - UI Primitives Library

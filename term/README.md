@@ -2,3 +2,7 @@
 
 > Terminal for swearwolf
 
+## Usage
+
+## Examples
+

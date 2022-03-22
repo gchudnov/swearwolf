@@ -4,17 +4,28 @@
 
 Allows using tags to specify styles text should be rendered with.
 
-An example of usage:
+## Usage
 
 ```scala
+import com.github.gchudnov.swearwolf.term.terms.IdSyncTerm
+import com.github.gchudnov.swearwolf.term.writers.IdWriter
+import com.github.gchudnov.swearwolf.rich.RichText
+import com.github.gchudnov.swearwolf.rich.instances.IdRichText.*
+
 val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>\n")
+
+val term   = IdSyncTerm.make()
+val writer = IdWriter.make(term)
+
+writer.putRich(rich)
+writer.flush()
 ```
 
-Produces the following output:
+When rendered, produces the following output:
 
 ![rich-test](../res/images/rich.png)
 
-## HowTo
+## Available Tags
 
 `RichText` can be constructed using the following html-like tags:
 
@@ -80,4 +91,6 @@ Quotes could be either singular (`'`) or double (`"`).
 
 ## Examples
 
-TODO: point to the examples
+- [examples/noninteractive](../examples/noninteractive) - writes RichText to stdout without capturing IO.
+- [examples/either](../examples/either) - writes RichText to the terminal in interactive mode, using `Either[Throwable, *]` to wrap the result.
+- [examples/zio](../examples/ziox) - integration with ZIO.
