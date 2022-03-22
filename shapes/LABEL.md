@@ -10,7 +10,7 @@ val label  = Label(Size(16, 1), "test data", AlignStyle.Left)
 |test data       |
 ```
 
-If the text is longer than the width, it will be truncated.
+If the text is longer than the provided width, it will be truncated.
 
 ```scala
 val label = Label(Size(16, 2), "this is a very long text that doesn't fit in the provided area entirely", AlignStyle.Left)

@@ -2,13 +2,11 @@
 
 <img src="res/images/swearwolf-256.png" width="256px" height="219px" align="right" />
 
-> A small and modular Scala library to create TUI
+> A small Scala library to create TUI
 
 ![Scala CI](https://github.com/gchudnov/swearwolf/workflows/Scala%20CI/badge.svg)
 
 Built for Scala 3.1. The [previous](https://github.com/gchudnov/swearwolf/tree/v1.0.2) version of the library works with scala 2.13.
-
-The library enables creation of applications with the text-user interface (TUI). It sends the correct control characters to the terminal to display text in a given style.
 
 <br clear="right" /><!-- Turn off the wrapping for the logo image. -->
 
@@ -31,12 +29,18 @@ libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes" % "2.0.0"
 ### Modules
 
 - [/util](util) - A collection of utilities, other libraries in the project depend on.
+- 
+- [/term](term) - Enable interactive and non-interactive IO in the terminal.
 
-- [/shapes](shapes) - A small collection of shapes (box, chart, grid, label, table) that can be used either with the library or independently.
+- [/shapes](shapes) - A collection of shapes (box, chart, grid, label, table) to use with the library.
 
-- [/term](term) - Enables either running a terminal application in full-screen mode or just to display styled text.
+- [/rich](rich) - Rich text to display in the terminal.
 
-- [/rich](rich) - Allows to display rich text in the terminal.
+- [/zio](ziox) - Integration with ZIO.
+
+
+TODO: logging
+
 
 ### Shapes
 
@@ -366,77 +370,7 @@ Extends the `Screen` with a draw operation to display a rich text:
 def put(pt: Point, value: RichText): Either[Throwable, Unit]
 ```
 
-`RichText` can be constructed using a html-like tags and their combinations:
 
-- **bold**, **b**
-
-  ```html
-  <bold>TEXT</bold>
-  <b>TEXT</b>
-  ```
-
-- **italic**, **i**
-
-  ```html
-  <italic>TEXT</italic>
-  <i>TEXT</i>
-  ```
-
-- **underline**, **u**
-
-  ```html
-  <underline>TEXT</underline>
-  <u>TEXT</u>
-  ```
-
-- **blink**, **k**
-
-  ```html
-  <blink>TEXT</blink>
-  <k>TEXT</k>
-  ```
-
-- **invert**, **v**
-
-  ```html
-  <invert>TEXT</invert>
-  <v>TEXT</v>
-  ```
-
-- **strikethrough**, **t**
-
-  ```html
-  <strikethrough>TEXT</strikethrough>
-  <t>TEXT</t>
-  ```
-
-- **color**
-  specifies a color using the following attributes:
-  - **fgcolor**, **fg** to specify the foreground color of the text.
-  - **bgcolor**, **bg** to specify the background color of the text.
-  
-  ```html
-  <color fg='#FF0000' >TEXT</color>
-  <color fgcolor='#FF0000' >TEXT</color>
-
-  <color bg='#00FF00' >TEXT</color>
-  <color bgcolor='#00FF00' >TEXT</color>
-
-  <color fg='#FF0000' bg='#00FF00' >TEXT</color>
-  <color fgcolor='#FF0000' bgcolor='#00FF00' >TEXT</color>
-  ```
-
-A more complex example:
-
-```html
-<b>BOLD</b><color fg='#AA0000' bg='#00FF00'>NOR</color>MAL<i>italic</i><k>BLINK</k>
-```
-
-Text and tags can be nested, for example:
-
-```html
-<i>A<b>text</b>B<u>C</u></i>
-```
 
 
 ## Examples

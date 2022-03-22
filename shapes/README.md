@@ -1,8 +1,8 @@
 # swearwolf / shapes
 
-> A small collection of shapes (box, chart, grid, label, table) that can be used either with `swearwolf`-library or independently.
+> A collection of shapes
 
-Includes the following shapes:
+The following shapes are implemented in the library:
 
 - [Box](./BOX.md)
 - [Chart](./CHART.md)
