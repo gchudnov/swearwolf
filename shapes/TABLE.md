@@ -1,5 +1,7 @@
 # Table
 
+A `Table` takes `Seq[Seq[Any]` where each element is converted to a `String`. `TableStyle` parameter is used to style borders of a table.
+
 ## TableStyle.Simple
 
 ```scala
@@ -41,3 +43,7 @@ val table = Table(data, TableStyle.Frame)
 │ 20 │ B  │
 └────┴────┘
 ```
+
+## Examples
+
+- [examples/either](../examples/either) - writes shapes to the terminal, using `Either[Throwable, *]` to wrap the result.

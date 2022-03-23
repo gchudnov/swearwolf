@@ -2,6 +2,10 @@
 
 > Utilities for swearwolf
 
+- [Color](#Color)
+- [TextStyle](#TextStyle)
+- [AlignStyle](#AlignStyle)
+
 ## Color
 
 ```scala
@@ -18,14 +22,77 @@ val color: Color = Color.White
 A `Color` is represented as a triple of **R**, **G** and **B** values in range `[0 - 255]`: `Color(r: Int, g: Int, b: Int)`.
 Colors can be constructed by calling `Color.parseXXX` or by specifying the exact values of R, G and B.
 
-- **Color.parseEither(value: String): Either[Throwable, Color]** - parses a color and returns the result as `Either[Throwable, Color]`.
-- **Color.parseId(value: String): Identity[Color]** - parses a color and returns it or throws an exception.
-- **Color.parseTry(value: String): Try[Color]** - parses a color and returns the result, wrapped in `Try`.
-- **Color.parseFuture(value: String): Future[Color]** - parses a color and returns the result, wrapped in a `Future`.
+```scala
+  // Parses a color and returns the result as `Either[Throwable, Color]`
+  Color.parseEither(value: String): Either[Throwable, Color]
+  
+  // Parses a color and returns it or throws an exception.
+  Color.parseId(value: String): Identity[Color]
 
-`value: String` is the [name of the color](COLORS.md) or hex-representation, `#RRGGBB` or `RRGGBB`.
+  // Parses a color and returns the result, wrapped in `Try`
+  Color.parseTry(value: String): Try[Color]
+
+  // Parses a color and returns the result, wrapped in a `Future`.
+  Color.parseFuture(value: String): Future[Color] 
+```
+
+Where `value: String` is the [name of the color](COLORS.md) or hex-representation, `#RRGGBB` or `RRGGBB`.
 
 - [List of colors](COLORS.md)
+
+## TextStyle
+
+`TextStyle` is a combination of one or more of the following styles:
+
+- **TextStyle.Empty**
+
+  No style is specified. The default text foreground and background colors are used.
+
+- **TextStyle.Foreground(color: Color)**
+
+  Specifies a foreground [color](#Color) of the text.
+
+- **TextStyle.Background(color: Color)**
+
+  Specifies a background [color](#Color) of the text.
+
+- **TextStyle.Bold**
+
+  Make letters of a text thicker than the surrounding text.
+
+- **TextStyle.Italic**
+
+  Text is written in a script style.
+
+- **TextStyle.Underline**
+
+  Underlines text.
+
+- **TextStyle.Blink**
+
+  Make text blinking on the screen.
+
+- **TextStyle.Invert**
+
+  Foreground and background colors of the text are inverted.
+
+- **TextStyle.Strikethrough**
+
+  Draws a line through the given text.
+
+Text Styles can be composed using `|` operator, e.g.:
+
+```scala
+val textStyle = TextStyle.Foreground(NamedColor.Azure) | TextStyle.Background(NamedColor.LightGray) | TextStyle.Strikethrough
+```
+
+## AlignStyle
+
+Allows to specify the text alignment:
+
+- `AlignStyle.Left`
+- `AlignStyle.Right`
+- `AlignStyle.Center`
 
 ## Examples
 

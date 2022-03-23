@@ -2,11 +2,13 @@
 
 <img src="res/images/swearwolf-256.png" width="256px" height="219px" align="right" />
 
-> A small Scala library to create TUI
+> A Scala library to write to and read from the terminal.
 
 ![Scala CI](https://github.com/gchudnov/swearwolf/workflows/Scala%20CI/badge.svg)
 
-Built for Scala 3.1. The [previous](https://github.com/gchudnov/swearwolf/tree/v1.0.2) version of the library works with scala 2.13.
+Built for Scala 3.1. 
+
+Use the [previous](https://github.com/gchudnov/swearwolf/tree/v1.0.2) version of the library for scala 2.13.
 
 <br clear="right" /><!-- Turn off the wrapping for the logo image. -->
 
@@ -26,92 +28,64 @@ libraryDependencies += "com.github.gchudnov.swearwolf" %% "rich" % "2.0.0"
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes" % "2.0.0"
 ```
 
+ZIO-integration: instead of the imports listed above, use the ones with `zio` suffix:
+
+```scala
+libraryDependencies += "com.github.gchudnov.swearwolf" %% "term-zio" % "2.0.0"
+libraryDependencies += "com.github.gchudnov.swearwolf" %% "rich-zio" % "2.0.0"
+libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes-zio" % "2.0.0"
+```
+
 ### Modules
 
 - [/util](util) - A collection of utilities, other libraries in the project depend on.
-
 - [/term](term) - Enable interactive and non-interactive IO in the terminal.
-
 - [/shapes](shapes) - A collection of shapes (box, chart, grid, label, table) to use with the library.
-
 - [/rich](rich) - Rich text to display in the terminal.
-
 - [/zio](ziox) - Integration with ZIO.
+
+
+## Building Examples
+
+The project contains several demo applications that demonstrate how to use the library with the keyboard and mouse input.
+
+To build, invoke:
+
+```sbt
+sbt assembly
+```
+
+After building, several executables will be available in  `/target` directory:
+
+```bash
+./example-either
+./example-log
+./example-noninteractive
+./example-zio
+```
+
+## Compatibility
+
+**The library was built and tested on Ubuntu 18.04.5 LTS with GNU bash, version 4.4.20**.
+
+
+## Contact
+
+[Grigorii Chudnov] (mailto:g.chudnov@gmail.com)
+
+
+## License
+
+Distributed under the [The MIT License (MIT)](LICENSE).
+
+---------------------------------------------------------------------------------------------------------
 
 
 TODO: logging
 
 
-### Shapes
+???????????????
 
-
-Extends the `Screen` with a draw operation to display a box:
-
-```scala
-def put(pt: Point, box: Box, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-When a *Box* is constructed, `BoxStyle` can be used to specify a border to use: `Empty`, `SingleBorder`, `DoubleBorder`, `BoldBorder`.
-
-#### Graph
-
-Extends the `Screen` with a draw operation to display a graph:
-
-```scala
-def put(pt: Point, graph: Graph, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-When a *Graph* is constructed, `GraphStyle` can be used to specify the type of the graph to use: `Dot`, `Step`, `Quad`.
-This value encodes how many points one character of the graph can contain.
-
-- **Dot** - one text character contains 2-x and 4-y points.
-- **Step** - one text character contains 1-x and 8-y points.
-- **Quad** - one text character contains 2-x and 2-y points.
-
-#### Grid
-
-Extends the `Screen` with a draw operation to display a grid:
-
-```scala
-def put(pt: Point, grid: Grid, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-`Grid` is constructed by providing a cell-size and `GridStyle` to specify borders to use.
-
-#### Label
-
-Extends the `Screen` with a draw operation to display a label:
-
-```scala
-def put(pt: Point, label: Label, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-Label provides the `AlignStyle` that can be used to specify the way the text is aligned inside of the label.
-
-#### Table
-
-Extends the `Screen` with a draw operation to display a table:
-
-```scala
-def put(pt: Point, table: Table, textStyle: TextStyle): Either[Throwable, Unit]
-```
-
-A table takes `Seq[Seq[Any]` where each cell is converted to a string and displayed. `TableStyle` can be used to style borders of a table.
-
-
-
----
-TODO:
-
-In the application, import:
-
-```scala
-import com.github.gchudnov.swearwolf._
-import com.github.gchudnov.swearwolf.util._
-
-// If UI-primitives library is included, add:
-import com.github.gchudnov.swearwolf.woods._
-```
 
 Next, create an *instance of the screen* by calling `Screen.acquire()` or `Screen.acquireOrThrow()` methods.
 
@@ -279,111 +253,3 @@ The default event handler, `EventLoop.defaultHandler` returns `Action.Exit` only
 
 To compose a user-provided event handler with the default one, `EventLoop.withDefaultHandler(handler: KeySeqHandler): KeySeqHandler` can be used.
 This method always invokes both handlers (one provided by the user and the default one) and returns `Action.Exit` if any of the handlers returned `Action.Exit`.
-
-
-### Text Styles
-
-`TextStyle` is a combination of the following styles:
-
-- **TextStyle.Empty**
-
-  No style is specified. The default text foreground and background colors are used.
-
-- **TextStyle.Foreground(color: Color)**
-
-  Specifies a foreground [color](#Colors) of the text.
-
-- **TextStyle.Background(color: Color)**
-
-  Specifies a background [color](#Colors) of the text.
-
-- **TextStyle.Bold**
-
-  Makes letters of a text thicker than the surrounding text.
-
-- **TextStyle.Italic**
-
-  Text is written in a script style.
-
-- **TextStyle.Underline**
-
-  Draws lines under letters for emphasis.
-
-- **TextStyle.Blink**
-
-  Text is blinking on the screen.
-
-- **TextStyle.Invert**
-
-  Foreground and background colors of the text are inverted.
-
-- **TextStyle.Strikethrough**
-
-  Draws a line throush the given text.
-
-Text Styles can be composed using '|' operator, e.g.:
-
-```scala
-val textStyle = TextStyle.Foreground(NamedColor.Azure) | TextStyle.Background(NamedColor.LightGray) | TextStyle.Strikethrough
-```
-
-
-
-## Swearwolf-Woods - UI Primitives Library
-
-`Swearwolf-Woods` library provides basic building blocks (primitives) to rendering on the screen.
-
-The available primitives include: a *box*, *graph*, *grid*, *label*, *table* and *rich-text*.
-
-In the current implementation of the library these primitives are very basic and cannot be composed. In this way it is not possible to create a table where a cell includes a label or a box.
-
-To use the library in the application, import:
-
-```scala
-import com.github.gchudnov.swearwolf.woods._
-```
-
-### Primitives Description
-
-
-#### RichText
-
-Extends the `Screen` with a draw operation to display a rich text:
-
-```scala
-def put(pt: Point, value: RichText): Either[Throwable, Unit]
-```
-
-
-
-
-## Examples
-
-The project contains two demo applications that demonstrate how to use the library with keyboard and mouse input.
-To build, invoke:
-
-```sbt
-sbt examplePlain/assembly
-sbt exampleZio/assembly
-```
-
-Executable files will be built and saved in the `/target` directory:
-
-```bash
-./target/example-plain
-./target/example-zio
-```
-
-## Compatibility
-
-**The library was built and tested on Ubuntu 18.04.5 LTS with GNU bash, version 4.4.20**.
-
-
-## Contact
-
-[Grigorii Chudnov] (mailto:g.chudnov@gmail.com)
-
-
-## License
-
-Distributed under the [The MIT License (MIT)](LICENSE).

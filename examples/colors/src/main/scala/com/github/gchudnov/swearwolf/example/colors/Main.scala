@@ -23,7 +23,7 @@ object Main extends App:
   private val szWidth: Int  = 32
   private val szHeight: Int = 16
 
-  val rows = colorNames.map(name =>
+  private val rows = colorNames.map(name =>
     val color     = Color.namedColors(name)
     val hex       = color.toHex.toUpperCase()
     val imageName = s"${name}.png"
@@ -45,12 +45,12 @@ object Main extends App:
     ).map(wrap)
   )
 
-  val header = List(
+  private val header = List(
     List("View", "Name", "Color", "Code", "Hex").map(wrap),
     List("---", "---", "---", "---", "---").map(wrap)
   )
 
-  val lines = header ++ rows
+  private val lines = header ++ rows
 
   lines.foreach(it => println(it.mkString("|", "|", "|")))
 
