@@ -1,9 +1,9 @@
 package com.github.gchudnov.swearwolf.term.terms
 
 import com.github.gchudnov.swearwolf.term.terms.AnyTerm
-import com.github.gchudnov.swearwolf.util.func.{MonadAsyncError, MonadError}
+import com.github.gchudnov.swearwolf.util.func.{ MonadAsyncError, MonadError }
 
-import java.io.{BufferedOutputStream, InputStream, OutputStream}
+import java.io.{ BufferedOutputStream, InputStream, OutputStream }
 
 /**
  * Base Asynchronous Terminal

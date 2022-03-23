@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.term.screens
 
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.screens.AnyScreen
-import com.github.gchudnov.swearwolf.util.func.{MonadAsyncError, MonadError}
+import com.github.gchudnov.swearwolf.util.func.{ MonadAsyncError, MonadError }
 
 /**
  * Async Screen

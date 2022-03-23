@@ -29,7 +29,7 @@ object Color:
     else fromName(value).handleErrorWith(_ => fromHex(value))
 
   private[colors] def fromName[F[_]: MonadError](name: String): F[Color] =
-    Color.colors
+    Color.namedColors
       .get(Color.normalizeName(name))
       .fold(summon[MonadError[F]].fail(new ColorException(s"Named Color is not found: $name")): F[Color])(c => summon[MonadError[F]].succeed(c))
 
@@ -193,7 +193,7 @@ object Color:
   val Yellow: Color               = Color(255, 255, 0)
   val YellowGreen: Color          = Color(154, 205, 50)
 
-  private[colors] lazy val colors: Map[String, Color] = Map(
+  lazy val namedColors: Map[String, Color] = Map(
     Names.AliceBlue            -> AliceBlue,
     Names.AntiqueWhite         -> AntiqueWhite,
     Names.Aqua                 -> Aqua,

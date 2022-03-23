@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.term.writers
 
-import com.github.gchudnov.swearwolf.term.{EscSeq, Term, Writer}
+import com.github.gchudnov.swearwolf.term.{ EscSeq, Term, Writer }
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.spans.Span

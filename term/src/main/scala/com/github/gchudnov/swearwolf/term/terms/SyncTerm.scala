@@ -3,7 +3,7 @@ package com.github.gchudnov.swearwolf.term.terms
 import com.github.gchudnov.swearwolf.term.terms.AnyTerm
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
-import java.io.{BufferedOutputStream, InputStream, OutputStream}
+import java.io.{ BufferedOutputStream, InputStream, OutputStream }
 
 /**
  * Synchronous Terminal

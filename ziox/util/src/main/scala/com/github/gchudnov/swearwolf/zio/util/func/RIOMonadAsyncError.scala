@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.zio.util.func
 
 import com.github.gchudnov.swearwolf.util.func.{ Canceler, MonadAsyncError }
-import zio.{ RIO, UIO, ZIO, URIO }
+import zio.{ RIO, UIO, URIO, ZIO }
 
 import scala.annotation.tailrec
 import scala.collection.BuildFrom

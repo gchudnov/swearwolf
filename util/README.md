@@ -25,8 +25,8 @@ Colors can be constructed by calling `Color.parseXXX` or by specifying the exact
 
 `value: String` is the [name of the color](COLORS.md) or hex-representation, `#RRGGBB` or `RRGGBB`.
 
-- [List of the named colors](COLORS.md)
+- [List of colors](COLORS.md)
 
 ## Examples
 
-TODO: add example
+- [examples/colors](../examples/colors) - generates PNG-images of the available colors.

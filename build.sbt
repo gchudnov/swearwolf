@@ -146,8 +146,21 @@ lazy val exampleLog = (project in file("examples/log"))
     assembly / assemblyJarName := s"${name.value}"
   )
 
+lazy val exampleColors = (project in file("examples/colors"))
+  .dependsOn(util, term)
+  .settings(allSettings: _*)
+  .settings(Settings.assemblySettings)
+  .settings(Settings.noPublish)
+  .settings(
+    name := "example-colors",
+    libraryDependencies ++= Dependencies.ExampleAll,
+    assembly / mainClass       := Some("com.github.gchudnov.swearwolf.example.colors.Main"),
+    assembly / assemblyOption  := (assembly / assemblyOption).value.withPrependShellScript(prependShellScript = Some(defaultUniversalScript(shebang = true))),
+    assembly / assemblyJarName := s"${name.value}"
+  )
+
 lazy val root = (project in file("."))
-  .aggregate(util, term, shapes, rich, utilZio, termZio, richZio, shapesZio, exampleEither, exampleZio, exampleNonInteractive, exampleLog)
+  .aggregate(util, term, shapes, rich, utilZio, termZio, richZio, shapesZio, exampleEither, exampleZio, exampleNonInteractive, exampleLog, exampleColors)
   .settings(allSettings: _*)
   .settings(Settings.noPublish)
   .settings(
