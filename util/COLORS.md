@@ -2,7 +2,7 @@
 
 Predefined colors, supported by the library:
 
-| Color | Name | Code | Code | Hex |
+| View | Name | Color | Code | Hex |
 | --- | --- | --- | --- | --- |
 | ![#F0F8FF](res/colors/alice-blue.png) | alice-blue | Color.AliceBlue | Color(240,248,255) | #F0F8FF |
 | ![#FAEBD7](res/colors/antique-white.png) | antique-white | Color.AntiqueWhite | Color(250,235,215) | #FAEBD7 |

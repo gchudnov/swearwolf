@@ -46,7 +46,7 @@ object Main extends App:
   )
 
   val header = List(
-    List("Color", "Name", "Code", "Code", "Hex").map(wrap),
+    List("View", "Name", "Color", "Code", "Hex").map(wrap),
     List("---", "---", "---", "---", "---").map(wrap)
   )
 
