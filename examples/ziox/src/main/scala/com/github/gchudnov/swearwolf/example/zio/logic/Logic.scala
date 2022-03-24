@@ -2,7 +2,7 @@ package com.github.gchudnov.swearwolf.example.zio.logic
 
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.geometry.Size
-import com.github.gchudnov.swearwolf.zio.term.ZioScreen
+import com.github.gchudnov.swearwolf.zio.term.*
 import zio.*
 import zio.stream.ZStream
 
@@ -11,8 +11,8 @@ trait Logic:
 
 object Logic:
 
-  def layer: ZLayer[ZioScreen, Nothing, Logic] =
+  def layer: ZLayer[ZScreen, Nothing, Logic] =
     (for
-      screen <- ZIO.service[ZioScreen]
+      screen <- ZIO.service[ZScreen]
       logic   = new LiveLogic(screen)
     yield logic).toLayer

@@ -1,8 +1,8 @@
 package com.github.gchudnov.swearwolf.zio.term
 
-import com.github.gchudnov.swearwolf.term.Term
+import com.github.gchudnov.swearwolf.term.{Screen, Term}
 import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioScreen
-import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioTerm
+import com.github.gchudnov.swearwolf.zio.term.ZTerm
 import com.github.gchudnov.swearwolf.term.Term.TermAction
 import com.github.gchudnov.swearwolf.term.screens.AnyShellScreen
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
@@ -11,15 +11,15 @@ import sun.misc.SignalHandler
 import zio.*
 import zio.stream.*
 
-type ZioScreen = AsyncZioScreen
+type ZScreen = Screen[Task]
 
 object ZioScreen:
 
-  def shellLayer: RLayer[AsyncZioTerm, ZioScreen] =
+  def shellLayer: RLayer[ZTerm, Screen[Task]] =
     import Term.*
 
     val acquire = for
-      term <- ZIO.service[AsyncZioTerm]
+      term <- ZIO.service[ZTerm]
 
       resizeFiber <- ZStream
                        .async[Any, Throwable, Unit] { emit =>

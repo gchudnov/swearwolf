@@ -5,7 +5,7 @@ import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.keys.{ KeySeq, SizeKeySeq }
 import com.github.gchudnov.swearwolf.util.*
 import com.github.gchudnov.swearwolf.util.geometry.Size
-import com.github.gchudnov.swearwolf.zio.term.{ ZioEventLoop, ZioScreen, ZioTerm }
+import com.github.gchudnov.swearwolf.zio.term.*
 import zio.*
 import zio.stream.*
 
@@ -22,9 +22,9 @@ object Main extends ZIOAppDefault:
 
     program
 
-  private def makeProgram(): ZIO[Logic with Clock with ZioEventLoop, Throwable, Unit] =
+  private def makeProgram(): ZIO[Logic with Clock with ZEventLoop, Throwable, Unit] =
     for
-      eventLoop <- ZIO.service[ZioEventLoop]
+      eventLoop <- ZIO.service[ZEventLoop]
       logic     <- ZIO.service[Logic]
       szRef     <- ZRef.make(None: Option[Size])
       handler = (ks: KeySeq) =>
@@ -38,8 +38,8 @@ object Main extends ZIOAppDefault:
       _ <- eventLoop.run(handler)
     yield ()
 
-  private def makeEnv(): ZLayer[Any, Throwable, ZioTerm with ZioScreen with ZioEventLoop with Logic] =
-    val termLayer      = ZioTerm.stdIoLayer
+  private def makeEnv(): ZLayer[Any, Throwable, ZTerm with ZScreen with ZEventLoop with Logic] =
+    val termLayer      = Term.layer()
     val screenLayer    = termLayer >>> ZioScreen.shellLayer
     val eventLoopLayer = termLayer >>> ZioEventLoop.layer
 

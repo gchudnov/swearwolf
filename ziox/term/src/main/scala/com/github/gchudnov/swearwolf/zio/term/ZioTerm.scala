@@ -11,23 +11,25 @@ import java.lang.System
 import java.nio.file.Path
 import java.time.format.DateTimeFormatter
 
-type ZioTerm = AsyncZioTerm
+type ZTerm = Term[Task]
+
+private[term] trait ZioTerm:
+  extension (termT: Term.type)
+
+    def asyncZIO(in: InputStream = System.in, out: OutputStream = System.out): Term[Task] =
+      ZioTerm.make(in, out)
+
+    def asyncFileLogZIO(
+      path: Path,
+      term: Term[Task] = ZioTerm.make(System.in, System.out),
+      isTruncate: Boolean = true,
+      fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+    ): Term[Task] =
+      LogTerm.fileLog(term, path, isTruncate, fmt)
+
+    def layer(in: InputStream = System.in, out: OutputStream = System.out): ULayer[Term[Task]] =
+      ZLayer.succeed(ZioTerm.make(in, out))
 
 object ZioTerm:
-
-  def layer(in: InputStream = System.in, out: OutputStream = System.out): ULayer[ZioTerm] =
-    ZLayer.succeed(make(in, out))
-
-  def stdIoLayer: ULayer[ZioTerm] =
-    layer()
-
-  def fileLogLayer(
-    path: Path,
-    term: Term[Task] = make(System.in, System.out),
-    isTruncate: Boolean = true,
-    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
-  ): Term[Task] =
-    LogTerm.fileLog(term, path, isTruncate, fmt)
-
-  private def make(in: InputStream, out: OutputStream): AsyncZioTerm =
+  def make(in: InputStream = System.in, out: OutputStream = System.out): Term[Task] =
     new AsyncZioTerm(in, out, false)

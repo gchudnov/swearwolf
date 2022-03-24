@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 
 final class EitherSyncTerm(in: InputStream, out: OutputStream, isClose: Boolean) extends SyncTerm[Either[Throwable, *]](in = in, out = out, isClose = isClose)
 
-object EitherSyncTerm extends SyncTermFactory[Either[Throwable, *]]:
+object EitherSyncTerm extends AnyTermFactory[Either[Throwable, *]]:
 
   override def make(in: InputStream, out: OutputStream): EitherSyncTerm =
     new EitherSyncTerm(in = in, out = out, isClose = false)

@@ -1,11 +1,10 @@
 package com.github.gchudnov.swearwolf.zio.term.internal
 
-import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.eventloops.{ AnyEventLoop, AsyncEventLoop }
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.term.terms.AsyncTerm
+import com.github.gchudnov.swearwolf.term.{ EventLoop, Term }
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import zio.*
 import zio.stream.*
@@ -13,7 +12,7 @@ import zio.stream.*
 /**
  * ZIO Async Event Loop
  */
-private[term] final class AsyncZioEventLoop(term: AsyncTerm[Task]) extends AsyncEventLoop[Task](term):
+private[term] final class AsyncZioEventLoop(term: Term[Task]) extends AsyncEventLoop[Task](term):
   import AnyEventLoop.*
 
   override def run(handler: KeySeqHandler[Task]): Task[Unit] =
