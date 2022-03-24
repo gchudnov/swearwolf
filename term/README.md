@@ -34,7 +34,7 @@ The application can either Non-Interactive or Interactive Mode:
 - - *Non-Interactive Mode* allows writing rich-text and shapes to StdOut, and `StdIn` is not processed by the library.
 - *Interactive Mode* captures input from the keyboard and mouse and an `EventLoop` is used to process it.
 
-### 2A. Non-Interactive Mode
+#### 2A. Non-Interactive Mode
 
 Create an instance of `Writer`. A writer is used to write styled text to the terminal.
 
