@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EscSeq
-import com.github.gchudnov.swearwolf.term.terms.{EitherSyncTerm, IdSyncTerm}
+import com.github.gchudnov.swearwolf.term.terms.{EitherSyncTerm, IdSyncTerm, TrySyncTerm}
 import com.github.gchudnov.swearwolf.util.func.{Identity, MonadError, Monoid}
 
 import java.io.{InputStream, OutputStream}
@@ -79,14 +79,14 @@ object Term:
   /**
    * Constructors
    */
-  def syncEither(): Term[Either[Throwable, *]] =
-    EitherSyncTerm.make()
+  def syncEither(in: InputStream = System.in, out: OutputStream = System.out): Term[Either[Throwable, *]] =
+    EitherSyncTerm.make(in, out)
 
   def syncId(in: InputStream = System.in, out: OutputStream = System.out): Term[Identity] =
     IdSyncTerm.make(in, out)
 
-  def syncTry(): Term[Try] =
-    ???
+  def syncTry(in: InputStream = System.in, out: OutputStream = System.out): Term[Try] =
+    TrySyncTerm.make(in, out)
 
   def asyncFuture(): Term[Future[*]] =
     ???
