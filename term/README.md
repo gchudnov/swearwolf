@@ -63,10 +63,10 @@ Import [rich](../rich) library to expend the methods available in the `Screen` i
 Create an instance of `Screen` and `EventLoop`.
 
 ```scala
-import com.github.gchudnov.swearwolf.term.screens.EitherScreen
+import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
 
-val screen: Either[Throwable, Screen] = EitherScreen.make(term)
+val screen: Either[Throwable, Screen[Either[Throwable, *]]] = Screen.syncEither(term)
 val eventLoop: Either[Throwable, EventLoop] = EitherEventLoop.make(term)
 ```
 

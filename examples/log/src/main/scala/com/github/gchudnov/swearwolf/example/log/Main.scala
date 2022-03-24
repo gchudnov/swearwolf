@@ -12,7 +12,7 @@ import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.EventLoop.{ Action, KeySeqHandler }
 import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
 import com.github.gchudnov.swearwolf.term.keys.*
-import com.github.gchudnov.swearwolf.term.screens.EitherScreen
+import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
 import com.github.gchudnov.swearwolf.util.clock.InstantClock
 import com.github.gchudnov.swearwolf.util.colors.Color
@@ -35,7 +35,7 @@ object Main extends App:
   val logTerm = EitherSyncTerm.fileLog(Paths.get("example-log.log"))
 
   val resF = for
-    screen       <- EitherScreen.make(logTerm)
+    screen       <- Screen.syncEither(logTerm)
     eventLoop     = EitherEventLoop.make(logTerm)
     keySeqHandler = makeKeySeqHandler(screen)
     _            <- eventLoop.run(keySeqHandler)

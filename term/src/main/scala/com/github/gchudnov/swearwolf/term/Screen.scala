@@ -5,6 +5,7 @@ import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.Term
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
+import com.github.gchudnov.swearwolf.term.screens.EitherScreen
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.geometry.Size
@@ -19,7 +20,10 @@ trait Screen[F[_]] extends Writer[F]:
 
   def close(): F[Unit]
 
-// object Screen:
+object Screen:
+
+  def syncEither(term: Term[Either[Throwable, *]]): Either[Throwable, Screen[Either[Throwable, *]]] =
+    EitherScreen.make(term)
 
 //   def make(term: Term): Either[Throwable, Screen] =
 //     TermScreen.make(term)

@@ -19,7 +19,6 @@ import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
 import com.github.gchudnov.swearwolf.term.keys.*
-import com.github.gchudnov.swearwolf.term.screens.EitherScreen
 import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
@@ -40,7 +39,7 @@ object Main extends App:
   val term = Term.syncEither()
 
   val resF = for
-    screen       <- EitherScreen.make(term)
+    screen       <- Screen.syncEither(term)
     eventLoop     = EitherEventLoop.make(term)
     keySeqHandler = makeKeySeqHandler(screen)
     _            <- eventLoop.run(keySeqHandler)
