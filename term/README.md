@@ -4,6 +4,10 @@
 
 ## Usage
 
+1. Create a Term instance
+2. Create a `Screen` (Interactive) or `Writer` (Non-Interactive Mode)
+3. Create an `EventLoop` to handle events from StdIn (optional)
+
 ### 1. Create a Term instance
 
 ```scala
@@ -35,15 +39,24 @@ The application can either Non-Interactive or Interactive Mode:
 Create an instance of `Writer`.
 
 ```scala
+import com.github.gchudnov.swearwolf.term.writers.IdWriter
 
+val writer = IdWriter.make(term)
 ```
 
 ```scala
+trait Writer[F[_]]:
+  def put(value: String): F[Unit]
+  def put(value: String, style: TextStyle): F[Unit]
+  def put(value: Span): F[Unit]
+  def put(value: Array[Byte]): F[Unit]
 
+  def flush(): F[Unit]
 ```
 
-Import [rich](../rich) library to expend the methods available in the `Screen` interface.
+Here [TextStyle](../util/README.md#TextStyle) is used to specify the style of the text, [Span](../util/README.md#Span) allows the creation of rich-text strings.
 
+Import [rich](../rich) library to expend the methods available in the `Screen` interface.
 
 #### 2B. Interactive Mode
 
@@ -59,7 +72,7 @@ Create an instance of `Screen` and `EventLoop`.
 
 Import [rich](../rich) and [shapes](../shapes) libraries to expend the methods available in the `Screen` interface.
 
-## Event Loop
+## 3. Event Loop
 
 
 

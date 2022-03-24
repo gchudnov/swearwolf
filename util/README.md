@@ -5,6 +5,7 @@
 - [Color](#Color)
 - [TextStyle](#TextStyle)
 - [AlignStyle](#AlignStyle)
+- [Span](#Span)
 
 ## Color
 
@@ -93,6 +94,22 @@ Allows to specify the text alignment:
 - `AlignStyle.Left`
 - `AlignStyle.Right`
 - `AlignStyle.Center`
+
+## Span
+
+A `Span` allows to combine text and bytes with styles, creating a tree. A `Span` is represented by one of the following case-classes:
+
+- **StyleSpan(style: TextStyle, children: Seq[Span])**
+
+  Specifies style for the children spans.
+
+- **TextSpan(text: String)**
+
+  Specifies text string that can be styled by wrapping in a `StyleSpan`. 
+
+- **ByteSpan(bytes: Array[Byte])**
+
+  Specifies an array of bytes that can be styles by wrapping in a `StyleSpan`
 
 ## Examples
 
