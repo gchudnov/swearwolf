@@ -12,4 +12,6 @@ libraryDependencies += "com.github.gchudnov.swearwolf" %% "rich-zio" % "2.0.0"
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes-zio" % "2.0.0"
 ```
 
+## Examples
 
+- [examples/zio](../examples/ziox) - using library with ZIO.

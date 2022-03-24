@@ -36,7 +36,7 @@ The application can either Non-Interactive or Interactive Mode:
 
 ### 2A. Non-Interactive Mode
 
-Create an instance of `Writer`.
+Create an instance of `Writer`. A writer is used to write styled text to the terminal.
 
 ```scala
 import com.github.gchudnov.swearwolf.term.writers.IdWriter
@@ -63,18 +63,60 @@ Import [rich](../rich) library to expend the methods available in the `Screen` i
 Create an instance of `Screen` and `EventLoop`.
 
 ```scala
+import com.github.gchudnov.swearwolf.term.screens.EitherScreen
+import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
 
+val screen: Either[Throwable, Screen] = EitherScreen.make(term)
+val eventLoop: Either[Throwable, EventLoop] = EitherEventLoop.make(term)
 ```
 
-```scala
+A `Screen` allows to print style text at the given coordinates in the Terminal.
 
+```scala
+trait Screen[F[_]] extends Writer[F]:
+  def put(pt: Point, value: String): F[Unit]
+  def put(pt: Point, value: String, style: TextStyle): F[Unit]
+  def put(pt: Point, value: Span): F[Unit]
+  def put(pt: Point, value: Array[Byte]): F[Unit]
+
+  def close(): F[Unit]
 ```
 
 Import [rich](../rich) and [shapes](../shapes) libraries to expend the methods available in the `Screen` interface.
 
 ## 3. Event Loop
 
+An `EventLoop` is needed to read keyboard and mouse input as key sequences.
 
+```scala
+import com.github.gchudnov.swearwolf.term.EventLoop
+import com.github.gchudnov.swearwolf.term.EventLoop.Action
+import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
+import com.github.gchudnov.swearwolf.term.*
+import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
+
+val eventLoop: Either[Throwable, EventLoop] = EitherEventLoop.make(term)
+
+val keySeqHandler: KeySeqHandler[Either[Throwable, *]] = (ks: KeySeq) =>
+  if (ks.isEsc) then Right(EventLoop.Action.Exit)
+  else Right(Action.Continue)
+
+val _: Either[Throwable, Unit] = eventLoop.run(keySeqHandler)
+```
+
+A Key Sequence Handler has the following signature:
+
+```scala
+type KeySeqHandler[F[_]] = KeySeq => F[EventLoop.Action]
+```
+
+It is provided to the `eventLoop` to handle the incoming key sequences, `KeySeq` and trigger actions.
+For example, when a keyboard key is pressed, a corresponding key sequence is passed to the provided `KeySeqHandler` in the event loop.
+
+After processing the event handler should return one of following EventLoop Actions:
+
+- `Action.Continue` - to continue running the event loop,
+- `Action.Exit` - to exit the event loop.
 
 ## Key Sequences
 
@@ -108,6 +150,7 @@ The following Key Sequences are available:
   Represents an unknown input that the library failed to parse.
   When the library reports this key sequence, most likely one of the parsers is incomplete on the given OS / terminal and cannot parse byte sequence that was sent to the library.
 
+TODO: add logging
 
 ## Examples
 

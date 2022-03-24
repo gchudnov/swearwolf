@@ -4,7 +4,6 @@ import com.github.gchudnov.swearwolf.rich.instances.IdRichText.*
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.term.terms.IdSyncTerm
 import com.github.gchudnov.swearwolf.term.writers.IdWriter
-import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*

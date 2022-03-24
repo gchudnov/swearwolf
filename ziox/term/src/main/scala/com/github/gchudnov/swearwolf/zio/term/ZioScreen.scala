@@ -25,7 +25,7 @@ object ZioScreen:
                        .async[Any, Throwable, Unit] { emit =>
                          val handler = new SignalHandler:
                            override def handle(signal: Signal): Unit =
-                             emit(term.fetchSize().flatMap(_ => term.flush()).map(Chunk(_)).mapError(Option(_)))
+                             emit(term.fetchSize().flatMap(_ => term.flush()).mapBoth(Option(_), Chunk(_)))
 
                          Signal.handle(AnyShellScreen.SIGWINCH, handler)
                        }
