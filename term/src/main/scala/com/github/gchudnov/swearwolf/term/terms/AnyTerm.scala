@@ -11,8 +11,7 @@ import java.io.{ BufferedOutputStream, InputStream, OutputStream }
 abstract class AnyTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(using ME: MonadError[F]) extends Term[F]:
   import MonadError.*
 
-  private val bufOutSize: Int = 4096
-  private val bufOut          = new BufferedOutputStream(out, bufOutSize)
+  private val bufOut = new BufferedOutputStream(out, AnyTerm.bufOutSize)
 
   override def read(): F[Option[Array[Byte]]] =
     for
@@ -61,3 +60,6 @@ abstract class AnyTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolea
     val nAvail = in.available()
     if nAvail > 0 then nextChunk(nAvail)
     else Some(Array.emptyByteArray)
+
+object AnyTerm:
+  private val bufOutSize: Int = 4096

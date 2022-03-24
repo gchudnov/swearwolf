@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EscSeq
+import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
 import com.github.gchudnov.swearwolf.util.func.Monoid
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
@@ -72,7 +73,14 @@ object Term:
     def clear(): F[Unit] =
       term.write(EscSeq.erase.bytes)
 
-  // TODO: add methods to create terminals
+  /**
+   * Constructors
+   */
+  def syncEither(): Term[Either[Throwable, *]] =
+    EitherSyncTerm.make()
+
+
+// TODO: add methods to create terminals
   // def syncEither
   // def syncId
   // def syncTry

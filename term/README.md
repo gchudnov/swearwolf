@@ -11,9 +11,9 @@
 ### 1. Create a Term instance
 
 ```scala
-import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
+import com.github.gchudnov.swearwolf.term.terms.Term
 
-val term = EitherSyncTerm.make()
+val term = Term.syncEither()
 ```
 
 `Term` contains a set of methods that can be used to interact on low-level with the Terminal.

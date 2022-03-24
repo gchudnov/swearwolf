@@ -37,7 +37,7 @@ object Main extends App:
 
   var screenSize: Option[Size] = None
 
-  val term = EitherSyncTerm.make()
+  val term = Term.syncEither()
 
   val resF = for
     screen       <- EitherScreen.make(term)
