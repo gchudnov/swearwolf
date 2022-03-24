@@ -204,33 +204,6 @@ Screen interface contains a list of methods to display text on the terminal and 
 
 ### Key Sequence Events
 
-Key Seqnence trait, `KeqSeq` represents a control event received from the terminal.
-The following Key Sequences are propagated to the event handler:
-
-- **case class SizeKeySeq(sz: Size) extends KeySeq**
-
-  Raised when the terminal window was resized. `Size` contains the new *width* and *height* of the screen.
-
-- **case class CharKeySeq(ch: Char, mods: Set[KeyModifier]) extends KeySeq**
-
-  Represents a text character with a set of key modifers.
-  `KeyModifier` is a control key: `Shift`, `Alt` or `Ctrl`.
-
-- **case class CtrlKeySeq(key: KeyCode, mods: Set[KeyModifier]) extends KeySeq**
-
-  Represents a control ket code, e.g. `F1` with a set of key modifiers.
-  `KeyModifier` is a control key: `Shift`, `Alt` or `Ctrl`.
-
-- **case class MouseKeySeq(pt: Point, button: MouseButton, action: MouseAction, mods: Set[KeyModifier]) extends KeySeq**
-
-  Represents a captured mouse event when a mouse button was pressed or released.
-  `MouseButton` is one of the following events: `Left`, `Middle`, `Right`, `ScrollBackward` or `ScrollForward`.
-  `MouseAction` is either a `Press` or `Release` event.
-
-- **case class UnknownKeySeq(bytes: Seq[Byte]) extends KeySeq**
-
-  Represents an unknown input that the library failed to parse.
-  When the library reports this key sequence, most likely one of the parsers is incomplete on the given OS / terminal and cannot parse byte sequence that was sent to the library.
 
 
 ### Key Sequence Handler

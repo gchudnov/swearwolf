@@ -71,3 +71,11 @@ object Term:
      */
     def clear(): F[Unit] =
       term.write(EscSeq.erase.bytes)
+
+  // TODO: add methods to create terminals
+  // def syncEither
+  // def syncId
+  // def syncTry
+  // def asyncFuture
+  // TODO: for ZIO, add:
+  // def asyncZIO in ZIO-library
