@@ -1,9 +1,12 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EscSeq
-import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
-import com.github.gchudnov.swearwolf.util.func.Monoid
-import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.term.terms.{EitherSyncTerm, IdSyncTerm}
+import com.github.gchudnov.swearwolf.util.func.{Identity, MonadError, Monoid}
+
+import java.io.{InputStream, OutputStream}
+import scala.util.Try
+import scala.concurrent.Future
 
 trait Term[F[_]]:
   def read(): F[Option[Array[Byte]]]
@@ -79,11 +82,19 @@ object Term:
   def syncEither(): Term[Either[Throwable, *]] =
     EitherSyncTerm.make()
 
+  def syncId(in: InputStream = System.in, out: OutputStream = System.out): Term[Identity] =
+    IdSyncTerm.make(in, out)
+
+  def syncTry(): Term[Try] =
+    ???
+
+  def asyncFuture(): Term[Future[*]] =
+    ???
 
 // TODO: add methods to create terminals
-  // def syncEither
-  // def syncId
-  // def syncTry
-  // def asyncFuture
-  // TODO: for ZIO, add:
-  // def asyncZIO in ZIO-library
+// def syncEither
+// def syncId
+// def syncTry
+// def asyncFuture
+// TODO: for ZIO, add:
+// def asyncZIO in ZIO-library

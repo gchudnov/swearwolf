@@ -9,15 +9,7 @@ import java.time.format.DateTimeFormatter
 
 final class IdSyncTerm(in: InputStream, out: OutputStream, isClose: Boolean) extends SyncTerm[Identity](in = in, out = out, isClose = isClose)
 
-object IdSyncTerm:
+object IdSyncTerm extends SyncTermFactory[Identity]:
 
-  def make(in: InputStream = System.in, out: OutputStream = System.out): IdSyncTerm =
+  override def make(in: InputStream, out: OutputStream): SyncTerm[Identity] =
     new IdSyncTerm(in = in, out = out, isClose = false)
-
-  def fileLog(
-    path: Path,
-    term: Term[Identity] = make(),
-    isTruncate: Boolean = true,
-    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
-  ): Term[Identity] =
-    LogTerm.fileLog(term, path, isTruncate, fmt)
