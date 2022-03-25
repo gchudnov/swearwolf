@@ -18,14 +18,18 @@ object Term:
 
   type TermAction[F[_]] = (Term[F]) => F[Unit]
 
-  given termActionMonoid[F[_]: MonadError]: Monoid[TermAction[F]] with
-    def empty: TermAction[F] =
-      _ => summon[MonadError[F]].unit
+  object TermAction:
+    def apply[F[_]](fn: (Term[F]) => F[Unit]): TermAction[F] =
+      fn
 
-    extension (x: TermAction[F])
-      infix def combine(y: TermAction[F]): TermAction[F] =
-        import MonadError.*
-        t => x(t).flatMap(_ => y(t))
+    given termActionMonoid[F[_]: MonadError]: Monoid[TermAction[F]] with
+      def empty: TermAction[F] =
+        _ => summon[MonadError[F]].unit
+
+      extension (x: TermAction[F])
+        infix def combine(y: TermAction[F]): TermAction[F] =
+          import MonadError.*
+          t => x(t).flatMap(_ => y(t))
 
   extension [F[_]](term: Term[F])
     /**

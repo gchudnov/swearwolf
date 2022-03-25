@@ -4,6 +4,7 @@ import com.github.gchudnov.swearwolf.term.{Screen, Term}
 import com.github.gchudnov.swearwolf.zio.term.internal.AsyncZioScreen
 import com.github.gchudnov.swearwolf.zio.term.ZTerm
 import com.github.gchudnov.swearwolf.term.Term.TermAction
+import com.github.gchudnov.swearwolf.term.Term.TermAction.given
 import com.github.gchudnov.swearwolf.term.screens.AnyShellScreen
 import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import sun.misc.Signal
@@ -25,7 +26,7 @@ object ZioScreen:
                        .async[Any, Throwable, Unit] { emit =>
                          val handler = new SignalHandler:
                            override def handle(signal: Signal): Unit =
-                             emit(term.fetchSize().flatMap(_ => term.flush()).mapBoth(Option(_), Chunk(_)))
+                             emit((term.fetchSize() *> term.flush()).mapBoth(Option(_), Chunk(_)))
 
                          Signal.handle(AnyShellScreen.SIGWINCH, handler)
                        }

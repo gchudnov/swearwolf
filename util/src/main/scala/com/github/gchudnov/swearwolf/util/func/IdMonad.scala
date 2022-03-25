@@ -1,9 +1,12 @@
 package com.github.gchudnov.swearwolf.util.func
 
+import com.github.gchudnov.swearwolf.util.func.Identity
+
 import scala.annotation.tailrec
 import scala.collection.BuildFrom
 
 given IdMonad: MonadError[Identity] with
+
   override def succeed[A](a: A): Identity[A] =
     a
 
