@@ -1,10 +1,8 @@
 package com.github.gchudnov.swearwolf.term.screens
 
-import com.github.gchudnov.swearwolf.term.{ Screen, Term }
 import com.github.gchudnov.swearwolf.term.Term.TermAction
+import com.github.gchudnov.swearwolf.term.{ Screen, Term }
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
-import com.github.gchudnov.swearwolf.util.geometry.Size
-import sun.misc.{ Signal, SignalHandler }
 
 final class EitherScreen(term: Term[Either[Throwable, *]], cleanup: TermAction[Either[Throwable, *]]) extends SyncShellScreen(term, cleanup) {}
 

@@ -57,7 +57,7 @@ object AnyShellScreen:
    * Given a collection of TermActions, wrap them in a TermAction that can be executed.
    */
   def makeActionExecutor[F[_]: MonadError](xs: Seq[TermAction[F]]): TermAction[F] = (term: Term[F]) =>
-    import com.github.gchudnov.swearwolf.util.func.MonadError.*
+    import MonadError.*
     summon[MonadError[F]].traverse(xs)(f => f(term)).unit
 
   /**
@@ -66,7 +66,7 @@ object AnyShellScreen:
    * Returns an action that need to be executed to clean-up the terminal.
    */
   def init[F[_]](term: Term[F], pairs: List[(TermAction[F], TermAction[F])])(using ME: MonadError[F]): F[TermAction[F]] =
-    import com.github.gchudnov.swearwolf.util.func.MonadError.*
+    import MonadError.*
     ME.foldLeft(pairs)(List.empty[TermAction[F]]) { case (acc, x) =>
       val (init, rollback) = x
       init(term).map(_ => rollback +: acc).handleErrorWith(t => ME.traverse(acc)(f => f(term)).flatMap(_ => ME.fail(t)))
