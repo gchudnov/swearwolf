@@ -39,9 +39,9 @@ The application can either Non-Interactive or Interactive Mode:
 Create an instance of `Writer`. A writer is used to write styled text to the terminal.
 
 ```scala
-import com.github.gchudnov.swearwolf.term.writers.IdWriter
+import com.github.gchudnov.swearwolf.term.*
 
-val writer = IdWriter.make(term)
+val writer = Writer.syncId(term)
 ```
 
 ```scala
