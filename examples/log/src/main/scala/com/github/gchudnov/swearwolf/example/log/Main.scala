@@ -2,12 +2,8 @@ package com.github.gchudnov.swearwolf.example.log
 
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.rich.instances.EitherRichText.*
-import com.github.gchudnov.swearwolf.shapes.box.{ Box, BoxStyle }
-import com.github.gchudnov.swearwolf.shapes.chart.{ Chart, ChartStyle }
-import com.github.gchudnov.swearwolf.shapes.grid.{ Grid, GridStyle }
+import com.github.gchudnov.swearwolf.shapes.*
 import com.github.gchudnov.swearwolf.shapes.instances.EitherShapes.*
-import com.github.gchudnov.swearwolf.shapes.label.Label
-import com.github.gchudnov.swearwolf.shapes.table.{ Table, TableStyle }
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.EventLoop.{ Action, KeySeqHandler }
 import com.github.gchudnov.swearwolf.term.keys.*
