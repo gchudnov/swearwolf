@@ -11,7 +11,6 @@ import com.github.gchudnov.swearwolf.shapes.table.{ Table, TableStyle }
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.EventLoop.{ Action, KeySeqHandler }
 import com.github.gchudnov.swearwolf.term.keys.*
-import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
 import com.github.gchudnov.swearwolf.util.clock.InstantClock
 import com.github.gchudnov.swearwolf.util.colors.Color
