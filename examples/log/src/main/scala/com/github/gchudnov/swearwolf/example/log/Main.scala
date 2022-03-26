@@ -3,9 +3,8 @@ package com.github.gchudnov.swearwolf.example.log
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.rich.instances.EitherRichText.*
 import com.github.gchudnov.swearwolf.shapes.*
-import com.github.gchudnov.swearwolf.shapes.instances.EitherShapes.*
+import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
 import com.github.gchudnov.swearwolf.term.*
-import com.github.gchudnov.swearwolf.term.EventLoop.{ Action, KeySeqHandler }
 import com.github.gchudnov.swearwolf.term.keys.*
 import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
 import com.github.gchudnov.swearwolf.util.clock.InstantClock
@@ -36,7 +35,7 @@ object Main extends App:
     _            <- nonFatalCatch.either(screen.close())
   yield ()
 
-  private def makeKeySeqHandler(screen: Screen[Either[Throwable, *]]): KeySeqHandler[Either[Throwable, *]] =
+  private def makeKeySeqHandler(screen: Screen[Either[Throwable, *]]): EventLoop.KeySeqHandler[Either[Throwable, *]] =
     (ks: KeySeq) =>
       if (ks.isEsc) then Right(EventLoop.Action.Exit)
       else
@@ -44,10 +43,10 @@ object Main extends App:
           case SizeKeySeq(sz) =>
             screenSize = Some(sz)
             for _ <- onKeySeq(screen, ks)
-            yield Action.Continue
+            yield EventLoop.Action.Continue
           case _ =>
             for _ <- onKeySeq(screen, ks)
-            yield Action.Continue
+            yield EventLoop.Action.Continue
 
   private def onKeySeq(screen: Screen[Either[Throwable, *]], ks: KeySeq): Either[Throwable, Unit] =
     import TextStyle.*

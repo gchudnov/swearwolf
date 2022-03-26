@@ -6,3 +6,4 @@ package object shapes:
   export grid.{ Grid, GridStyle }
   export label.Label
   export table.{ Table, TableStyle }
+  export instances.{ EitherShapes, FutureShapes, IdShapes, TryShapes }
