@@ -1,10 +1,11 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
+import com.github.gchudnov.swearwolf.term.eventloops.{ EitherEventLoop, IdEventLoop, TryEventLoop }
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.util.func.Monoid
-import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.util.func.{ Identity, MonadError, Monoid }
+
+import scala.util.Try
 
 /**
  * Event-Loop Interface
@@ -61,3 +62,9 @@ object EventLoop:
    */
   def syncEither(term: Term[Either[Throwable, *]]): EventLoop[Either[Throwable, *]] =
     EitherEventLoop.make(term)
+
+  def syncId(term: Term[Identity]): EventLoop[Identity] =
+    IdEventLoop.make(term)
+
+  def syncTry(term: Term[Try]): EventLoop[Try] =
+    TryEventLoop.make(term)
