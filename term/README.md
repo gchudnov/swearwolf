@@ -63,11 +63,10 @@ Import [rich](../rich) library to expend the methods available in the `Screen` i
 Create an instance of `Screen` and `EventLoop`.
 
 ```scala
-import com.github.gchudnov.swearwolf.term.Screen
-import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
+import com.github.gchudnov.swearwolf.term.*
 
 val screen: Either[Throwable, Screen[Either[Throwable, *]]] = Screen.syncEither(term)
-val eventLoop: Either[Throwable, EventLoop] = EitherEventLoop.make(term)
+val eventLoop: Either[Throwable, EventLoop] = EventLoop.syncEither(term)
 ```
 
 A `Screen` allows to print style text at the given coordinates in the Terminal.
@@ -89,13 +88,11 @@ Import [rich](../rich) and [shapes](../shapes) libraries to expend the methods a
 An `EventLoop` is needed to read keyboard and mouse input as key sequences.
 
 ```scala
-import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.Action
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.*
-import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
 
-val eventLoop: Either[Throwable, EventLoop] = EitherEventLoop.make(term)
+val eventLoop: Either[Throwable, EventLoop] = EventLoop.syncEither(term)
 
 val keySeqHandler: KeySeqHandler[Either[Throwable, *]] = (ks: KeySeq) =>
   if (ks.isEsc) then Right(EventLoop.Action.Exit)

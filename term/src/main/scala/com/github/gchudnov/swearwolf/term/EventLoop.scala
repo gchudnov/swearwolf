@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
+import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
 import com.github.gchudnov.swearwolf.util.func.Monoid
 import com.github.gchudnov.swearwolf.util.func.MonadError
@@ -55,5 +56,8 @@ object EventLoop:
             case (_, Action.Exit) => Action.Exit
             case _                => Action.Continue
 
-  // def make(term: Term): EventLoop =
-  //   TermEventLoop.make(term)
+  /**
+   * Constructors
+   */
+  def syncEither(term: Term[Either[Throwable, *]]): EventLoop[Either[Throwable, *]] =
+    EitherEventLoop.make(term)
