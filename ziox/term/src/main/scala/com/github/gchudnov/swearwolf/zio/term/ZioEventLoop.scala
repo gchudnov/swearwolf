@@ -8,9 +8,11 @@ import zio.*
 
 type ZEventLoop = EventLoop[Task]
 
-object ZioEventLoop:
-  def layer: URLayer[ZTerm, EventLoop[Task]] =
-    (for
-      term     <- ZIO.service[Term[Task]]
-      eventLoop = new AsyncZioEventLoop(term)
-    yield (eventLoop)).toLayer
+private[term] trait ZioEventLoop:
+  extension (eventLoopT: EventLoop.type)
+
+    def eventLoopLayer: URLayer[ZTerm, EventLoop[Task]] =
+      (for
+        term     <- ZIO.service[Term[Task]]
+        eventLoop = new AsyncZioEventLoop(term)
+      yield (eventLoop)).toLayer

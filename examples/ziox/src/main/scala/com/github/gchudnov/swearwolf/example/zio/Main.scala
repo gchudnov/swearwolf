@@ -41,7 +41,7 @@ object Main extends ZIOAppDefault:
   private def makeEnv(): ZLayer[Any, Throwable, ZTerm with ZScreen with ZEventLoop with Logic] =
     val termLayer      = Term.layer()
     val screenLayer    = termLayer >>> Screen.shellLayer
-    val eventLoopLayer = termLayer >>> ZioEventLoop.layer
+    val eventLoopLayer = termLayer >>> EventLoop.eventLoopLayer
 
     val logicLayer = screenLayer >>> Logic.layer
 

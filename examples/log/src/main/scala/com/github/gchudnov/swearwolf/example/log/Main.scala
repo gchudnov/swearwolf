@@ -10,7 +10,6 @@ import com.github.gchudnov.swearwolf.shapes.label.Label
 import com.github.gchudnov.swearwolf.shapes.table.{ Table, TableStyle }
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.EventLoop.{ Action, KeySeqHandler }
-import com.github.gchudnov.swearwolf.term.eventloops.EitherEventLoop
 import com.github.gchudnov.swearwolf.term.keys.*
 import com.github.gchudnov.swearwolf.term.Screen
 import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
@@ -36,7 +35,7 @@ object Main extends App:
 
   val resF = for
     screen       <- Screen.syncEither(logTerm)
-    eventLoop     = EitherEventLoop.make(logTerm)
+    eventLoop     = EventLoop.syncEither(logTerm)
     keySeqHandler = makeKeySeqHandler(screen)
     _            <- eventLoop.run(keySeqHandler)
     _            <- nonFatalCatch.either(screen.close())
