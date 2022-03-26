@@ -4,15 +4,7 @@ import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.util.func.EitherMonad
 import com.github.gchudnov.swearwolf.rich.instances.EitherRichText.*
 import com.github.gchudnov.swearwolf.shapes.instances.EitherShapes.*
-import com.github.gchudnov.swearwolf.shapes.box.Box
-import com.github.gchudnov.swearwolf.shapes.box.BoxStyle
-import com.github.gchudnov.swearwolf.shapes.chart.Chart
-import com.github.gchudnov.swearwolf.shapes.chart.ChartStyle
-import com.github.gchudnov.swearwolf.shapes.grid.Grid
-import com.github.gchudnov.swearwolf.shapes.grid.GridStyle
-import com.github.gchudnov.swearwolf.shapes.label.Label
-import com.github.gchudnov.swearwolf.shapes.table.Table
-import com.github.gchudnov.swearwolf.shapes.table.TableStyle
+import com.github.gchudnov.swearwolf.shapes.*
 import com.github.gchudnov.swearwolf.term.EventLoop
 import com.github.gchudnov.swearwolf.term.EventLoop.Action
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
