@@ -1,10 +1,11 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.term.eventloops.{ EitherEventLoop, IdEventLoop, TryEventLoop }
+import com.github.gchudnov.swearwolf.term.eventloops.{EitherEventLoop, IdEventLoop, TryEventLoop, FutureEventLoop}
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.util.func.{ Identity, MonadError, Monoid }
+import com.github.gchudnov.swearwolf.util.func.{Identity, MonadError, Monoid}
 
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
 /**
@@ -68,3 +69,6 @@ object EventLoop:
 
   def syncTry(term: Term[Try]): EventLoop[Try] =
     TryEventLoop.make(term)
+
+  def asyncFuture(term: Term[Future])(using ec: ExecutionContext): EventLoop[Future] =
+    FutureEventLoop.make(term)
