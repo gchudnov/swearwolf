@@ -1,16 +1,14 @@
 package com.github.gchudnov.swearwolf.example.either
 
+import com.github.gchudnov.swearwolf.rich.EitherRichText.*
 import com.github.gchudnov.swearwolf.rich.RichText
-import com.github.gchudnov.swearwolf.util.func.EitherMonad
-import com.github.gchudnov.swearwolf.rich.instances.EitherRichText.*
-import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
 import com.github.gchudnov.swearwolf.shapes.*
+import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.keys.*
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
-import com.github.gchudnov.swearwolf.util.styles.AlignStyle
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
+import com.github.gchudnov.swearwolf.util.styles.{ AlignStyle, TextStyle }
 
 import scala.util.control.Exception.nonFatalCatch
 

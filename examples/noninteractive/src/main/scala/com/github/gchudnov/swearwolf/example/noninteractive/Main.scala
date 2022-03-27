@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.example.noninteractive
 
-import com.github.gchudnov.swearwolf.rich.instances.IdRichText.*
+import com.github.gchudnov.swearwolf.rich.IdRichText.*
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
