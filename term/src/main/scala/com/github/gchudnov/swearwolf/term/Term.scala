@@ -1,10 +1,12 @@
 package com.github.gchudnov.swearwolf.term
 
 import com.github.gchudnov.swearwolf.term.EscSeq
-import com.github.gchudnov.swearwolf.term.terms.{ EitherSyncTerm, FutureSyncTerm, IdSyncTerm, TrySyncTerm }
+import com.github.gchudnov.swearwolf.term.terms.*
 import com.github.gchudnov.swearwolf.util.func.{ Identity, MonadError, Monoid }
 
 import java.io.{ InputStream, OutputStream }
+import java.nio.file.Path
+import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 import scala.util.Try
 
@@ -94,3 +96,38 @@ object Term:
 
   def asyncFuture(in: InputStream = System.in, out: OutputStream = System.out): Term[Future[*]] =
     FutureSyncTerm.make(in, out)
+
+  /**
+   * Logging Constructors
+   */
+  def syncFileLogEither(
+    path: Path,
+    term: Term[Either[Throwable, *]] = syncEither(System.in, System.out),
+    isTruncate: Boolean = true,
+    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+  ): Term[Either[Throwable, *]] =
+    EitherSyncTerm.fileLog(path, term, isTruncate, fmt)
+
+  def syncFileLogId(
+    path: Path,
+    term: Term[Identity] = syncId(System.in, System.out),
+    isTruncate: Boolean = true,
+    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+  ): Term[Identity] =
+    IdSyncTerm.fileLog(path, term, isTruncate, fmt)
+
+  def syncFileLogTry(
+    path: Path,
+    term: Term[Try] = syncTry(System.in, System.out),
+    isTruncate: Boolean = true,
+    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+  ): Term[Try] =
+    TrySyncTerm.fileLog(path, term, isTruncate, fmt)
+
+  def asyncFileLogFuture(
+    path: Path,
+    term: Term[Future] = asyncFuture(System.in, System.out),
+    isTruncate: Boolean = true,
+    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+  ): Term[Future[*]] =
+    FutureSyncTerm.fileLog(path, term, isTruncate, fmt)

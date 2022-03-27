@@ -1,18 +1,17 @@
 package com.github.gchudnov.swearwolf.term
 
-import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
-import com.github.gchudnov.swearwolf.term.eventloops.{EitherEventLoop, IdEventLoop, TryEventLoop, FutureEventLoop}
+import com.github.gchudnov.swearwolf.term.eventloops.{ EitherEventLoop, FutureEventLoop, IdEventLoop, TryEventLoop }
 import com.github.gchudnov.swearwolf.term.keys.KeySeq
-import com.github.gchudnov.swearwolf.util.func.{Identity, MonadError, Monoid}
+import com.github.gchudnov.swearwolf.util.func.{ Identity, MonadError, Monoid }
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.Try
 
 /**
  * Event-Loop Interface
  */
 trait EventLoop[F[_]]:
-  def run(handler: KeySeqHandler[F]): F[Unit]
+  def run(handler: EventLoop.KeySeqHandler[F]): F[Unit]
 
 object EventLoop:
   import KeySeq.*

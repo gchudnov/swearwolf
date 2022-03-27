@@ -6,7 +6,6 @@ import com.github.gchudnov.swearwolf.shapes.*
 import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.term.keys.*
-import com.github.gchudnov.swearwolf.term.terms.EitherSyncTerm
 import com.github.gchudnov.swearwolf.util.clock.InstantClock
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.geometry.*
@@ -25,7 +24,7 @@ object Main extends App:
 
   var screenSize: Option[Size] = None
 
-  val logTerm = EitherSyncTerm.fileLog(Paths.get("example-log.log"))
+  val logTerm = Term.syncFileLogEither(Paths.get("example-log.log"))
 
   val resF = for
     screen       <- Screen.syncEither(logTerm)
