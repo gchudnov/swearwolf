@@ -16,7 +16,9 @@ import scala.util.Try
  */
 trait Writer[F[_]]:
   def put(value: String): F[Unit]
+  def putLn(value: String): F[Unit]
   def put(value: String, style: TextStyle): F[Unit]
+  def putLn(value: String, style: TextStyle): F[Unit]
   def put(value: Span): F[Unit]
   def put(value: Array[Byte]): F[Unit]
 

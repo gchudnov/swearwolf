@@ -1,12 +1,11 @@
 package com.github.gchudnov.swearwolf.term.writers
 
-import com.github.gchudnov.swearwolf.term.{ EscSeq, Term, Writer }
-import com.github.gchudnov.swearwolf.util.geometry.Point
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.util.spans.Span
-import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
-import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.term.internal.spans.SpanCompiler
+import com.github.gchudnov.swearwolf.term.{ EscSeq, Term, Writer }
+import com.github.gchudnov.swearwolf.util.func.MonadError
+import com.github.gchudnov.swearwolf.util.geometry.Point
+import com.github.gchudnov.swearwolf.util.spans.Span
+import com.github.gchudnov.swearwolf.util.styles.{ TextStyle, TextStyleSeq }
 
 abstract class AnyWriter[F[_]](term: Term[F])(using ME: MonadError[F]) extends Writer[F]:
   import AnyWriter.*
@@ -14,8 +13,14 @@ abstract class AnyWriter[F[_]](term: Term[F])(using ME: MonadError[F]) extends W
   override def put(value: String): F[Unit] =
     put(value.getBytes)
 
+  override def putLn(value: String): F[Unit] =
+    ME.flatMap(put(value.getBytes))(_ => put(lineSep))
+
   override def put(value: String, style: TextStyle): F[Unit] =
     put(toBytes(value, style))
+
+  override def putLn(value: String, style: TextStyle): F[Unit] =
+    ME.flatMap(put(toBytes(value, style)))(_ => put(lineSep))
 
   override def put(value: Span): F[Unit] =
     val bytes = SpanCompiler.compile(value)
@@ -28,6 +33,9 @@ abstract class AnyWriter[F[_]](term: Term[F])(using ME: MonadError[F]) extends W
     term.flush()
 
 object AnyWriter:
+
+  private val lineSep = sys.props("line.separator")
+
   def toEscSeq(style: TextStyle): Seq[EscSeq] =
     style match
       case a: TextStyleSeq =>
