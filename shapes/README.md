@@ -20,6 +20,13 @@ Import the library
 libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes" % "2.0.0"
 ```
 
+import packages:
+
+```scala
+import com.github.gchudnov.swearwolf.shapes.*
+import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
+```
+
 And use the following functions for the rendering:
 
 ```scala

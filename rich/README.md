@@ -9,7 +9,7 @@ Allows using tags to specify styles text should be rendered with.
 ```scala
 import com.github.gchudnov.swearwolf.term.*
 import com.github.gchudnov.swearwolf.rich.RichText
-import com.github.gchudnov.swearwolf.rich.instances.IdRichText.*
+import com.github.gchudnov.swearwolf.rich.EitherRichText.*
 
 val rich = RichText("<b>BOLD</b><fg='#AA0000'><bg='#00FF00'>NOR</bg></fg>MAL<i>italic</i><k>BLINK</k>\n")
 

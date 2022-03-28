@@ -10,8 +10,7 @@
 ## Color
 
 ```scala
-import com.github.gchudnov.swearwolf.util.colors.Color
-import com.github.gchudnov.swearwolf.util.instances.*
+import com.github.gchudnov.swearwolf.util.*
 import scala.util.Try
 
 val errOrColor1: Either[Throwable, Color] = Color.parseEither("#ff1122")

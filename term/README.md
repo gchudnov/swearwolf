@@ -11,7 +11,7 @@
 ### 1. Create a Term instance
 
 ```scala
-import com.github.gchudnov.swearwolf.term.terms.Term
+import com.github.gchudnov.swearwolf.term.*
 
 val term = Term.syncEither()
 ```
@@ -88,8 +88,6 @@ Import [rich](../rich) and [shapes](../shapes) libraries to expend the methods a
 An `EventLoop` is needed to read keyboard and mouse input as key sequences.
 
 ```scala
-import com.github.gchudnov.swearwolf.term.EventLoop.Action
-import com.github.gchudnov.swearwolf.term.EventLoop.KeySeqHandler
 import com.github.gchudnov.swearwolf.term.*
 
 val eventLoop: Either[Throwable, EventLoop] = EventLoop.syncEither(term)
