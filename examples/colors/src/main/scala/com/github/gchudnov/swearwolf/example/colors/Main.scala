@@ -12,12 +12,12 @@ import scala.sys.process.*
  */
 object Main extends App:
 
-  private val projectName       = "swearwolf"
-  private val classPath: String = getClass.getResource("").getPath
-  private val rootPath: String  = classPath.substring(0, classPath.indexOf(projectName) + projectName.length)
-  private val utilDir: String   = "util"
-  private val relPath: String   = "res/colors"
-  private val outPath: Path     = Paths.get(rootPath, utilDir, relPath)
+  private val projectName        = "swearwolf"
+  private val classPath: String  = getClass.getResource("").getPath
+  private val rootPath: String   = classPath.substring(0, classPath.indexOf(projectName) + projectName.length).replace("file:", "")
+  private val utilDir: String    = "util"
+  private val resRelPath: String = "res/colors"
+  private val outPath: Path      = Paths.get(rootPath, utilDir, resRelPath)
 
   private val colorNames: List[String] = Color.namedColors.keys.toList.sorted
 
@@ -29,7 +29,7 @@ object Main extends App:
     val hex       = color.toHex.toUpperCase()
     val imageName = s"${name}.png"
 
-    val imageRelPath  = Paths.get(relPath, imageName)
+    val imageRelPath  = Paths.get(resRelPath, imageName)
     val imageFilePath = outPath.resolve(imageName)
 
     val execCmd = s"convert -size ${szWidth}x${szHeight} xc:${hex} ${imageFilePath}"
