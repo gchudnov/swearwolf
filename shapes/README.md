@@ -17,7 +17,7 @@ The library extends [Screen](../util/README.md#Screen) with put operations to di
 Import the library
 
 ```scala
-libraryDependencies += "com.github.gchudnov.swearwolf" %% "shapes" % "2.0.0"
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-shapes" % "2.0.0"
 ```
 
 import packages:
