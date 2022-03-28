@@ -19,7 +19,7 @@ lazy val util = (project in file("util"))
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "util",
+    name := "swearwolf-util",
     libraryDependencies ++= Dependencies.Util
   )
 
@@ -29,7 +29,7 @@ lazy val shapes = (project in file("shapes"))
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "shapes",
+    name := "swearwolf-shapes",
     libraryDependencies ++= Dependencies.Shapes
   )
 
@@ -39,7 +39,7 @@ lazy val term = (project in file("term"))
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "term",
+    name := "swearwolf-term",
     libraryDependencies ++= Dependencies.Term
   )
 
@@ -49,7 +49,7 @@ lazy val rich = (project in file("rich"))
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "rich",
+    name := "swearwolf-rich",
     libraryDependencies ++= Dependencies.Rich
   )
 
@@ -59,7 +59,7 @@ lazy val utilZio = (project in file("ziox/util"))
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "util-zio",
+    name := "swearwolf-util-zio",
     libraryDependencies ++= Dependencies.Zio
   )
 
@@ -69,7 +69,7 @@ lazy val termZio = (project in file("ziox/term"))
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "term-zio",
+    name := "swearwolf-term-zio",
     libraryDependencies ++= Dependencies.Zio
   )
 
@@ -79,7 +79,7 @@ lazy val richZio = (project in file("ziox/rich"))
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "rich-zio",
+    name := "swearwolf-rich-zio",
     libraryDependencies ++= Dependencies.Zio
   )  
 
@@ -89,7 +89,7 @@ lazy val shapesZio = (project in file("ziox/shapes"))
   .settings(Settings.testZioSettings)
   .settings(Settings.sonatype)
   .settings(
-    name := "shapes-zio",
+    name := "swearwolf-shapes-zio",
     libraryDependencies ++= Dependencies.Zio
   )  
 
