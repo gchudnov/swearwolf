@@ -14,7 +14,7 @@ jobs:
     name: Test and Assembly
     runs-on: ubuntu-latest
     container:
-      image: hseeberger/scala-sbt:17.0.0_1.5.5_3.0.2
+      image: hseeberger/scala-sbt:17.0.2_1.6.2_3.1.1
     steps:
       - uses: actions/checkout@v2
       - name: Cache SBT
