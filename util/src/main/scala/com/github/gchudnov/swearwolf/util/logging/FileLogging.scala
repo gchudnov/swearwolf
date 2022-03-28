@@ -18,4 +18,4 @@ final class FileLogging[F[_]](path: Path)(using ME: MonadError[F]) extends Loggi
 
 object FileLogging:
   def truncateFile(path: Path): Unit =
-    Files.write(path, Array.empty[Byte], StandardOpenOption.TRUNCATE_EXISTING)
+    Files.write(path, Array.empty[Byte], StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)

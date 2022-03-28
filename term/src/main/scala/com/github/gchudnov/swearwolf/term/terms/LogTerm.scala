@@ -22,7 +22,7 @@ final class LogTerm[F[_]](fmt: DateTimeFormatter, logging: Logging[F], clock: Cl
 
   def write(bytes: Array[Byte]): F[Unit] =
     val data = Bytes(bytes)
-    val msg  = s"write('${data.show}')"
+    val msg  = s"write(${data.show})"
     tryLog0(msg, term.write(bytes))
 
   def flush(): F[Unit] =
