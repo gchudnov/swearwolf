@@ -145,8 +145,6 @@ The following Key Sequences are available:
   Represents an unknown input that the library failed to parse.
   When the library reports this key sequence, most likely one of the parsers is incomplete on the given OS / terminal and cannot parse byte sequence that was sent to the library.
 
-TODO: add logging
-
 ## Examples
 
 - [examples/noninteractive](../examples/noninteractive) - writes RichText to stdout without capturing IO.
