@@ -5,7 +5,6 @@ import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.shapes.*
 import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
 import com.github.gchudnov.swearwolf.term.*
-import com.github.gchudnov.swearwolf.term.keys.*
 import com.github.gchudnov.swearwolf.util.*
 
 import scala.util.control.Exception.nonFatalCatch
