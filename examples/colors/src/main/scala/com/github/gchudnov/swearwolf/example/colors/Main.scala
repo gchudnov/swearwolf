@@ -12,8 +12,9 @@ import scala.sys.process.*
  */
 object Main extends App:
 
+  private val projectName       = "swearwolf"
   private val classPath: String = getClass.getResource("").getPath
-  private val rootPath: String  = classPath.substring(0, classPath.indexOf("examples"))
+  private val rootPath: String  = classPath.substring(0, classPath.indexOf(projectName) + projectName.length)
   private val utilDir: String   = "util"
   private val relPath: String   = "res/colors"
   private val outPath: Path     = Paths.get(rootPath, utilDir, relPath)
