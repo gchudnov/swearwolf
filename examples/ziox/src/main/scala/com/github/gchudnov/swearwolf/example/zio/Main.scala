@@ -2,9 +2,7 @@ package com.github.gchudnov.swearwolf.example.zio
 
 import com.github.gchudnov.swearwolf.example.zio.logic.Logic
 import com.github.gchudnov.swearwolf.term.*
-import com.github.gchudnov.swearwolf.term.keys.{ KeySeq, SizeKeySeq }
 import com.github.gchudnov.swearwolf.util.*
-import com.github.gchudnov.swearwolf.util.geometry.Size
 import com.github.gchudnov.swearwolf.zio.term.*
 import zio.*
 import zio.stream.*

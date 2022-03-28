@@ -1,6 +1,6 @@
 package com.github.gchudnov.swearwolf.util.colors
 
-import com.github.gchudnov.swearwolf.util.instances.*
+import com.github.gchudnov.swearwolf.util.*
 import zio.test.Assertion.*
 import zio.test.*
 

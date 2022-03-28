@@ -3,9 +3,7 @@ package com.github.gchudnov.swearwolf.example.noninteractive
 import com.github.gchudnov.swearwolf.rich.IdRichText.*
 import com.github.gchudnov.swearwolf.rich.RichText
 import com.github.gchudnov.swearwolf.term.*
-import com.github.gchudnov.swearwolf.util.styles.TextStyle
-import com.github.gchudnov.swearwolf.util.colors.Color
-import com.github.gchudnov.swearwolf.util.geometry.*
+import com.github.gchudnov.swearwolf.util.*
 
 /**
  * Allows to write styled text to StdOut.

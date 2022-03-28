@@ -5,12 +5,7 @@ import com.github.gchudnov.swearwolf.rich.EitherRichText.*
 import com.github.gchudnov.swearwolf.shapes.*
 import com.github.gchudnov.swearwolf.shapes.EitherShapes.*
 import com.github.gchudnov.swearwolf.term.*
-import com.github.gchudnov.swearwolf.term.keys.*
-import com.github.gchudnov.swearwolf.util.clock.InstantClock
-import com.github.gchudnov.swearwolf.util.colors.Color
-import com.github.gchudnov.swearwolf.util.geometry.*
-import com.github.gchudnov.swearwolf.util.logging.FileLogging
-import com.github.gchudnov.swearwolf.util.styles.{ AlignStyle, TextStyle }
+import com.github.gchudnov.swearwolf.util.*
 
 import java.nio.file.Paths
 import scala.util.control.Exception.nonFatalCatch
