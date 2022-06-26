@@ -5,8 +5,8 @@ import com.github.gchudnov.swearwolf.rich.internal.Lexer
 import zio.test.Assertion.{ equalTo, isLeft }
 import zio.test.*
 
-object LexerSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object LexerSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Lexer")(
       test("input is empty") {
         val input    = ""

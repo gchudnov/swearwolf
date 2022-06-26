@@ -6,8 +6,8 @@ import com.github.gchudnov.swearwolf.shapes.chart.internal.ChartBuilder
 import zio.test.Assertion.*
 import zio.test.*
 
-object ChartSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object ChartSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Chart")(
       test("uStep") {
         val dy = 25.0    // height of 1 cell

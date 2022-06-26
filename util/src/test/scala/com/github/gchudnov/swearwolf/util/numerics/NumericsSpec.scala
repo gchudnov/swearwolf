@@ -6,8 +6,8 @@ import com.github.gchudnov.swearwolf.util.numerics.Numerics.*
 import zio.test.Assertion.*
 import zio.test.*
 
-object NumericsSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object NumericsSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Numerics")(
       test("clamp") {
         val min = 0.0

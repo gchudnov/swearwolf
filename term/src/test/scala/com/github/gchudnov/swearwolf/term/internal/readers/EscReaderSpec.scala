@@ -8,11 +8,11 @@ import zio.test.Assertion.*
 import zio.test.*
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
-object EscReaderSpec extends DefaultRunnableSpec:
+object EscReaderSpec extends ZIOSpecDefault:
 
   private val EscChar = 0x1b.toChar
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("EscReader")(
       test("modifiers can be extracted from 0") {
         val input = 0

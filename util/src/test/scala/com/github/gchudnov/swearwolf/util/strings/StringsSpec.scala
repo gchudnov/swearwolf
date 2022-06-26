@@ -7,8 +7,8 @@ import com.github.gchudnov.swearwolf.util.strings.Strings.*
 import zio.test.Assertion.*
 import zio.test.*
 
-object StringsSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object StringsSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Strings")(
       test("empty string can be clipped to the given size") {
         val input = ""

@@ -6,9 +6,9 @@ import zio.test.Assertion.equalTo
 import zio.test.*
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
-object CharReaderSpec extends DefaultRunnableSpec:
+object CharReaderSpec extends ZIOSpecDefault:
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("CharReader")(
       test(s"empty") {
         val input      = s""

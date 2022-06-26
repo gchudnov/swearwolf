@@ -4,9 +4,9 @@ import com.github.gchudnov.swearwolf.util.*
 import zio.test.Assertion.*
 import zio.test.*
 
-object ColorSpec extends DefaultRunnableSpec:
+object ColorSpec extends ZIOSpecDefault:
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Color")(
       test("empty") {
         val input = ""

@@ -4,8 +4,8 @@ import com.github.gchudnov.swearwolf.term.keys.KeyCode
 import zio.test.Assertion.*
 import zio.test.*
 
-object ShortcutsSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object ShortcutsSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Shortcuts")(
       test("combination with unrecognized keys") {
         val keys = Seq(KeyCode.Space, KeyCode.Shift, KeyCode.Bell)

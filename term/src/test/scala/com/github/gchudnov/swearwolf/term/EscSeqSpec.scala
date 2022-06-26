@@ -6,9 +6,9 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes.asBytes
 import zio.test.Assertion.*
 import zio.test.*
 
-object EscSeqSpec extends DefaultRunnableSpec:
+object EscSeqSpec extends ZIOSpecDefault:
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("EscSeq")(
       test("foreground color") {
         val input = EscSeq.foreground(Color(255, 0, 0))

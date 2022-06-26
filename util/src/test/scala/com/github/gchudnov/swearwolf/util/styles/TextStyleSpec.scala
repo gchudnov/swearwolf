@@ -7,8 +7,8 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
 import zio.test.Assertion.*
 import zio.test.*
 
-object TextStyleSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object TextStyleSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("TextStyle")(
       test("compose two simple styles") {
         val actual   = Bold | Italic

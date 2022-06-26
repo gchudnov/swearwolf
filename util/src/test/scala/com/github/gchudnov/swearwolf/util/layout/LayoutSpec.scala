@@ -5,8 +5,8 @@ import com.github.gchudnov.swearwolf.util.styles.AlignStyle
 import zio.test.Assertion.*
 import zio.test.*
 
-object LayoutSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object LayoutSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Layout")(
       test("align left") {
         val sz = Size(48, 2)

@@ -10,9 +10,9 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import zio.test.Assertion.*
 import zio.test.*
 
-object SpanCompilerSpec extends DefaultRunnableSpec:
+object SpanCompilerSpec extends ZIOSpecDefault:
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("SpanCompiler")(
       test("empty span") {
         // ""

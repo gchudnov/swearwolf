@@ -6,3 +6,4 @@
 .metals
 target
 **/metals.sbt
+publish.sbt

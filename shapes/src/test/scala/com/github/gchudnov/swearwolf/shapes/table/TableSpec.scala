@@ -7,8 +7,8 @@ import com.github.gchudnov.swearwolf.shapes.table.internal.TableBuilder
 import zio.test.Assertion.*
 import zio.test.*
 
-object TableSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object TableSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Table")(
       test("draw simple") {
         val data = Seq(

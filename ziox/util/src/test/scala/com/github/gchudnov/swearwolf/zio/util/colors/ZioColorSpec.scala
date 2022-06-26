@@ -7,9 +7,9 @@ import zio.*
 import zio.test.Assertion.*
 import zio.test.*
 
-object ZioColorSpec extends DefaultRunnableSpec:
+object ZioColorSpec extends ZIOSpecDefault:
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("ZioColor")(
       test("empty") {
         val input = ""
@@ -29,7 +29,7 @@ object ZioColorSpec extends DefaultRunnableSpec:
         val actual   = Color.parseZIO(input)
         val expected = Color(255, 17, 34)
 
-        assertM(actual)(equalTo(expected))
+        assertZIO(actual)(equalTo(expected))
       },
       test("RRGGBB") {
         val input = "fe2233"
@@ -37,7 +37,7 @@ object ZioColorSpec extends DefaultRunnableSpec:
         val actual   = Color.parseZIO(input)
         val expected = Color(254, 34, 51)
 
-        assertM(actual)(equalTo(expected))
+        assertZIO(actual)(equalTo(expected))
       },
       test("red") {
         val input = "red"
@@ -45,7 +45,7 @@ object ZioColorSpec extends DefaultRunnableSpec:
         val actual   = Color.parseZIO(input)
         val expected = Color(255, 0, 0)
 
-        assertM(actual)(equalTo(expected))
+        assertZIO(actual)(equalTo(expected))
       },
       test("parse name") {
         val input = Seq("white", "black", "red", "green", "yellow", "blue", "rosy-brown", "rosy_brown", "SILVER")
@@ -63,14 +63,14 @@ object ZioColorSpec extends DefaultRunnableSpec:
           Color.Silver
         )
 
-        assertM(actual)(equalTo(expected))
+        assertZIO(actual)(equalTo(expected))
       },
       test("parse unknown name") {
         val input = "whot"
 
         val actual = Color.parseZIO(input).exit
 
-        assertM(actual)(fails(isSubtype[ColorException](anything)))
+        assertZIO(actual)(fails(isSubtype[ColorException](anything)))
       },
       test("show displays color") {
         val input  = Color.White

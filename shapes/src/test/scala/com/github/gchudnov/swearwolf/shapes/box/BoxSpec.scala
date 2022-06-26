@@ -7,8 +7,8 @@ import com.github.gchudnov.swearwolf.shapes.box.internal.BoxBuilder
 import zio.test.Assertion.*
 import zio.test.*
 
-object BoxSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object BoxSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Box")(
       test("single border") {
         val box = Box(Size(20, 10), BoxStyle.SingleBorder)

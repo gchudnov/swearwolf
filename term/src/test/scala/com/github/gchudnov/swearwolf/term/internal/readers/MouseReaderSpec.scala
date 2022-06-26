@@ -12,9 +12,9 @@ import com.github.gchudnov.swearwolf.util.geometry.Point
 import zio.test.Assertion.*
 import zio.test.*
 
-object MouseReaderSpec extends DefaultRunnableSpec:
+object MouseReaderSpec extends ZIOSpecDefault:
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("EscReader")(
       test("1b5b3c303b39323b33334d") {
         val inputBytes = "1b5b3c303b39323b33334d".asBytes.toTry.get

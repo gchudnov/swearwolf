@@ -17,10 +17,10 @@ import zio.test.Assertion.isLeft
 import zio.test.Assertion.isSubtype
 import zio.test.*
 
-object BuilderSpec extends DefaultRunnableSpec:
+object BuilderSpec extends ZIOSpecDefault:
   given ME: MonadError[Either[Throwable, *]] = EitherMonad
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Builder")(
       test("input is empty") {
         val input    = Seq.empty[Element]

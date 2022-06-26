@@ -16,9 +16,9 @@ import zio.test.Assertion.isLeft
 import zio.test.Assertion.isRight
 import zio.test.*
 
-object RichTextSpec extends DefaultRunnableSpec:
+object RichTextSpec extends ZIOSpecDefault:
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("RichText")(
       test("empty") {
         val input = ""

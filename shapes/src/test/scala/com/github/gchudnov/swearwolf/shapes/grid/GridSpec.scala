@@ -7,8 +7,8 @@ import com.github.gchudnov.swearwolf.shapes.Resources
 import zio.test.Assertion.*
 import zio.test.*
 
-object GridSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object GridSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Grid")(
       test("cell is too big for a grid") {
         val grid = Grid(Size(1, 1), Size(3, 3), GridStyle.Dash2)

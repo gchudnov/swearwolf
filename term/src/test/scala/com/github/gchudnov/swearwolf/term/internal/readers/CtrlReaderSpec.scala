@@ -7,12 +7,12 @@ import zio.test.Assertion.equalTo
 import zio.test.*
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
 
-object CtrlReaderSpec extends DefaultRunnableSpec:
+object CtrlReaderSpec extends ZIOSpecDefault:
 
   private val BackspaceChar = 0x7f.toChar
   private val EscChar       = 0x1b.toChar
 
-  override def spec: ZSpec[Environment, Failure] =
+  override def spec: Spec[TestEnvironment, Any] =
     suite("CtrlReader")(
       test(s"empty") {
         val input      = s""

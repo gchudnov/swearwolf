@@ -7,8 +7,8 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyle.*
 import com.github.gchudnov.swearwolf.util.colors.Color
 
-object SpanSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object SpanSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Span")(
       test("show is called on a nested span") {
         val span     = StyleSpan(Bold | Italic, Seq(TextSpan("nested"), ByteSpan(Array[Byte](1, 2, 3))))

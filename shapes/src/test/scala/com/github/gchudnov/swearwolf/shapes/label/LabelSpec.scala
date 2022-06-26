@@ -8,8 +8,8 @@ import com.github.gchudnov.swearwolf.shapes.label.internal.LabelBuilder
 import zio.test.Assertion.*
 import zio.test.*
 
-object LabelSpec extends DefaultRunnableSpec:
-  override def spec: ZSpec[Environment, Failure] =
+object LabelSpec extends ZIOSpecDefault:
+  override def spec: Spec[TestEnvironment, Any] =
     suite("Label")(
       test("draw with align left") {
         val label = Label(Size(16, 1), "test data", AlignStyle.Left)
