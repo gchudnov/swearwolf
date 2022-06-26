@@ -21,19 +21,19 @@ Use the [previous](https://github.com/gchudnov/swearwolf/tree/v1.0.2) version of
 Add the following dependency to your `build.sbt`:
 
 ```scala
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-term" % "2.0.0"
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-term" % "2.1.0"
 
 // Optionally, include rich-text & shapes libraries
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-rich" % "2.0.0"
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-shapes" % "2.0.0"
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-rich" % "2.1.0"
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-shapes" % "2.1.0"
 ```
 
 ZIO-integration: instead of the imports listed above, use the ones with `zio` suffix:
 
 ```scala
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-term-zio" % "2.0.0"
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-rich-zio" % "2.0.0"
-libraryDependencies += "com.github.gchudnov" %% "swearwolf-shapes-zio" % "2.0.0"
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-term-zio" % "2.1.0"
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-rich-zio" % "2.1.0"
+libraryDependencies += "com.github.gchudnov" %% "swearwolf-shapes-zio" % "2.1.0"
 ```
 
 A Non-Interactive example:

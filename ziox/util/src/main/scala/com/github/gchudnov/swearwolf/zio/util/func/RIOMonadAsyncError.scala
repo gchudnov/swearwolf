@@ -1,7 +1,7 @@
 package com.github.gchudnov.swearwolf.zio.util.func
 
 import com.github.gchudnov.swearwolf.util.func.{ Canceler, MonadAsyncError }
-import zio.{ RIO, UIO, URIO, ZIO }
+import zio.*
 
 import scala.annotation.tailrec
 import scala.collection.BuildFrom
@@ -9,7 +9,7 @@ import scala.collection.BuildFrom
 given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
 
   override def succeed[A](a: A): RIO[R, A] =
-    RIO.succeed(a)
+    ZIO.succeed(a)
 
   override def map[A, B](fa: RIO[R, A])(f: A => B): RIO[R, B] =
     fa.map(f)
@@ -18,26 +18,26 @@ given RIOMonadAsyncError[R]: MonadAsyncError[RIO[R, *]] with
     fa.flatMap(f)
 
   override def async[A](register: (Either[Throwable, A] => Unit) => Canceler): RIO[R, A] =
-    RIO.asyncInterrupt { cb =>
+    ZIO.asyncInterrupt { cb =>
       val canceler = register {
-        case Left(t)  => cb(RIO.fail(t))
-        case Right(a) => cb(RIO.succeed(a))
+        case Left(t)  => cb(ZIO.fail(t))
+        case Right(a) => cb(ZIO.succeed(a))
       }
 
-      Left(URIO.succeed(canceler.cancel()))
+      Left(ZIO.succeed(canceler.cancel()))
     }
 
   override def fail[A](t: Throwable): RIO[R, A] =
-    RIO.fail(t)
+    ZIO.fail(t)
 
   override protected def handleErrorWith_[A](rt: RIO[R, A])(h: PartialFunction[Throwable, RIO[R, A]]): RIO[R, A] =
     rt.catchSome(h)
 
   override def attempt[A](a: => A): RIO[R, A] =
-    RIO.attempt(a)
+    ZIO.attempt(a)
 
   override def suspend[A](a: => RIO[R, A]): RIO[R, A] =
-    RIO.suspend(a)
+    ZIO.suspend(a)
 
   override def flatten[A](ffa: RIO[R, RIO[R, A]]): RIO[R, A] =
     ffa.flatten

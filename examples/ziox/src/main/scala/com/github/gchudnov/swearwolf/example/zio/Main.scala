@@ -14,17 +14,17 @@ import zio.stream.*
  */
 object Main extends ZIOAppDefault:
 
-  override def run: ZIO[Environment with ZEnv with ZIOAppArgs, Any, Any] =
+  override def run: ZIO[Environment with ZIOAppArgs with Scope, Any, Any] =
     val env     = makeEnv()
-    val program = makeProgram().provideSome[Clock](env)
+    val program = makeProgram().provideSome[Scope](env)
 
     program
 
-  private def makeProgram(): ZIO[Logic with Clock with ZEventLoop, Throwable, Unit] =
+  private def makeProgram(): ZIO[Logic with ZEventLoop, Throwable, Unit] =
     for
       eventLoop <- ZIO.service[ZEventLoop]
       logic     <- ZIO.service[Logic]
-      szRef     <- ZRef.make(None: Option[Size])
+      szRef     <- Ref.make(None: Option[Size])
       handler = (ks: KeySeq) =>
                   if (ks.isEsc) then ZIO.succeed(EventLoop.Action.Exit)
                   else
@@ -36,7 +36,7 @@ object Main extends ZIOAppDefault:
       _ <- eventLoop.run(handler)
     yield ()
 
-  private def makeEnv(): ZLayer[Any, Throwable, ZTerm with ZScreen with ZEventLoop with Logic] =
+  private def makeEnv(): ZLayer[Scope, Throwable, ZTerm with ZScreen with ZEventLoop with Logic] =
     val termLayer      = Term.layer()
     val screenLayer    = termLayer >>> Screen.shellLayer
     val eventLoopLayer = termLayer >>> EventLoop.eventLoopLayer

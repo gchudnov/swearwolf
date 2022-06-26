@@ -15,7 +15,7 @@ type ZScreen = Screen[Task]
 
 private[term] trait ZioScreen:
   extension (screenT: Screen.type)
-    def shellLayer: RLayer[ZTerm, Screen[Task]] =
+    def shellLayer: RLayer[ZTerm with Scope, Screen[Task]] =
       import Term.*
 
       val acquire = for
@@ -42,4 +42,4 @@ private[term] trait ZioScreen:
 
       val release = (s: AsyncZioScreen) => s.close().orDie
 
-      ZLayer.fromAcquireRelease(acquire)(release)
+      ZLayer.fromZIO(ZIO.acquireRelease(acquire)(release))

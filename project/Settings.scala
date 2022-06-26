@@ -8,13 +8,13 @@ import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 
 object Settings {
-  private val scala311 = "3.1.1"
-  private val scalaV   = scala311
+  private val scala313 = "3.1.3"
+  private val scalaV   = scala313
 
   private val sharedScalacOptions = Seq(
     "-deprecation",                  // emit warning and location for usages of deprecated APIs
-    "-explain",                      // explain errors in more detail
-    "-explain-types",                // explain type errors in more detail
+//    "-explain",                      // explain errors in more detail
+//    "-explain-types",                // explain type errors in more detail
     "-feature",                      // emit warning and location for usages of features that should be imported explicitly
     "-indent",                       // allow significant indentation.
     "-new-syntax",                   // require scala 3.0 new syntax.
@@ -39,7 +39,7 @@ object Settings {
   }
 
   val globalScalaVersion: String = scalaV
-  val supportedScalaVersions = List(scala311)
+  val supportedScalaVersions: List[String] = List(scala313)
 
   val assemblySettings: Seq[Setting[_]] = Seq(
     assembly / test                  := {},
@@ -47,10 +47,7 @@ object Settings {
     assembly / assemblyMergeStrategy := defaultMergeStrategy((assembly / assemblyMergeStrategy).value)
   )
 
-  val sharedResolvers: Vector[MavenRepository] = Seq(
-    Resolver.mavenLocal,
-    Resolver.sonatypeRepo("releases")
-  ).toVector
+  val sharedResolvers: Vector[MavenRepository] = (Seq(Resolver.mavenLocal) ++ Resolver.sonatypeOssRepos("releases")).toVector
 
   val shared: Seq[Setting[_]] = Seq(
     scalacOptions      := sharedScalacOptions,

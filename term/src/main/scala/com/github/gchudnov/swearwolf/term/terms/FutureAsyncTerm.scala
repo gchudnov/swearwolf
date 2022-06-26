@@ -16,5 +16,3 @@ object FutureSyncTerm extends AnyTermFactory[Future]:
 
   override def make(in: InputStream, out: OutputStream): FutureAsyncTerm =
     new FutureAsyncTerm(in = in, out = out, isClose = false)
-
-

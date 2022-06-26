@@ -12,7 +12,7 @@ trait Logic:
 object Logic:
 
   def layer: ZLayer[ZScreen, Nothing, Logic] =
-    (for
+    ZLayer.fromZIO(for
       screen <- ZIO.service[ZScreen]
       logic   = new LiveLogic(screen)
-    yield logic).toLayer
+    yield logic)
