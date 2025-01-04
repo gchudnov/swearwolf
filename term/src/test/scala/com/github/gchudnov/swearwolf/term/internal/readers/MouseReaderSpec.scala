@@ -27,17 +27,21 @@ object MouseReaderSpec extends ZIOSpecDefault:
       test("1b5b3c36393b37393b31334d") {
         val inputBytes = "1b5b3c36393b37393b31334d".asBytes.toTry.get
 
-        val expected = ParsedReadState(MouseKeySeq(Point(78, 12), MouseButton.ScrollForward, MouseAction.Press, Set(KeyModifier.Shift)), Bytes.empty)
-        val actual   = MouseReader.read(inputBytes)
+        val expected =
+          ParsedReadState(MouseKeySeq(Point(78, 12), MouseButton.ScrollForward, MouseAction.Press, Set(KeyModifier.Shift)), Bytes.empty)
+        val actual = MouseReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
       },
       test("1b5b3c38353b37373b31364d") {
         val inputBytes = "1b5b3c38353b37373b31364d".asBytes.toTry.get
 
-        val expected = ParsedReadState(MouseKeySeq(Point(76, 15), MouseButton.ScrollForward, MouseAction.Press, Set(KeyModifier.Shift, KeyModifier.Ctrl)), Bytes.empty)
-        val actual   = MouseReader.read(inputBytes)
+        val expected = ParsedReadState(
+          MouseKeySeq(Point(76, 15), MouseButton.ScrollForward, MouseAction.Press, Set(KeyModifier.Shift, KeyModifier.Ctrl)),
+          Bytes.empty,
+        )
+        val actual = MouseReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

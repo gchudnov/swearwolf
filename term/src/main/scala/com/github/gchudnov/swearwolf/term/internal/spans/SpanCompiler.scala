@@ -23,8 +23,8 @@ private[term] object SpanCompiler:
   /**
    * {{{{ Option[Switch]: None: no changes to the effect Some(On): turn on the effect of the span Some(Off): turn off the effect of the span
    *
-   * (Option[Color], Option[Color]) (None, None): no changes to the color (Some(c), None): change the color from c to none (None, Some(c)): change the color from none to c
-   * (Some(c1), Some(c2)): change the color from c1 to c2 }}}
+   * (Option[Color], Option[Color]) (None, None): no changes to the color (Some(c), None): change the color from c to none (None, Some(c)):
+   * change the color from none to c (Some(c1), Some(c2)): change the color from c1 to c2 }}}
    */
   private case class StateDiff(
     empty: Option[Switch] = None,
@@ -37,7 +37,7 @@ private[term] object SpanCompiler:
     invert: Option[Switch] = None,
     strikethrough: Option[Switch] = None,
     transparent: Option[Switch] = None,
-    noColor: Option[Switch] = None
+    noColor: Option[Switch] = None,
   )
 
   private case class State(
@@ -51,7 +51,7 @@ private[term] object SpanCompiler:
     invert: Int = 0,
     strikethrough: Int = 0,
     transparent: Int = 0,
-    noColor: Int = 0
+    noColor: Int = 0,
   ):
     def withStyle(style: TextStyle): State = style match
       case TextStyle.Empty             => copy(empty = empty + 1)
@@ -79,18 +79,18 @@ private[term] object SpanCompiler:
         invert = intDiff(invert, that.invert),
         strikethrough = intDiff(strikethrough, that.strikethrough),
         transparent = intDiff(transparent, that.transparent),
-        noColor = intDiff(noColor, that.noColor)
+        noColor = intDiff(noColor, that.noColor),
       )
 
     private def intDiff(lhs: Int, rhs: Int): Option[Switch] =
-      if (rhs == lhs) then None else if (rhs > lhs) then Some(On) else Some(Off)
+      if rhs == lhs then None else if rhs > lhs then Some(On) else Some(Off)
 
     private def colorDiff(lhs: Stack[Color], rhs: Stack[Color]): (Option[Color], Option[Color]) =
       (lhs.isEmpty, rhs.isEmpty) match
         case (true, true)   => (None, None)
         case (false, true)  => (Some(lhs.top), None)
         case (true, false)  => (None, Some(rhs.top))
-        case (false, false) => if (rhs.top == lhs.top) then (None, None) else (Some(lhs.top), Some(rhs.top))
+        case (false, false) => if rhs.top == lhs.top then (None, None) else (Some(lhs.top), Some(rhs.top))
 
   private object State:
     val empty: State =
@@ -126,19 +126,21 @@ private[term] object SpanCompiler:
   private def diffToBytes(diff: StateDiff): (Array[Byte], Array[Byte]) =
     val emptyTuple = (Array.empty[Byte], Array.empty[Byte])
 
-    val (setEmpty, resetEmpty)                 = emptyTuple
-    val (setFgColor, resetFgColor)             = colorDiffToBytes(diff.fgColor)
-    val (setBgColor, resetBgColor)             = colorDiffToBytes(diff.bgColor)
-    val (setBold, resetBold)                   = switchDiffToBytes(diff.bold, EscSeq.bold.bytes, EscSeq.resetBold.bytes)
-    val (setItalic, resetItalic)               = switchDiffToBytes(diff.italic, EscSeq.italic.bytes, EscSeq.resetItalic.bytes)
-    val (setUnderline, resetUnderline)         = switchDiffToBytes(diff.underline, EscSeq.underline.bytes, EscSeq.resetUnderline.bytes)
-    val (setBlink, resetBlink)                 = switchDiffToBytes(diff.blink, EscSeq.blink.bytes, EscSeq.resetBlink.bytes)
-    val (setInvert, resetInvert)               = switchDiffToBytes(diff.invert, EscSeq.invert.bytes, EscSeq.resetInvert.bytes)
-    val (setStrikethrough, resetStrikethrough) = switchDiffToBytes(diff.strikethrough, EscSeq.strikethrough.bytes, EscSeq.resetStrikethrough.bytes)
-    val (setTransparent, resetTransparent)     = emptyTuple
-    val (setNoColor, resetNoColor)             = emptyTuple
+    val (setEmpty, resetEmpty)         = emptyTuple
+    val (setFgColor, resetFgColor)     = colorDiffToBytes(diff.fgColor)
+    val (setBgColor, resetBgColor)     = colorDiffToBytes(diff.bgColor)
+    val (setBold, resetBold)           = switchDiffToBytes(diff.bold, EscSeq.bold.bytes, EscSeq.resetBold.bytes)
+    val (setItalic, resetItalic)       = switchDiffToBytes(diff.italic, EscSeq.italic.bytes, EscSeq.resetItalic.bytes)
+    val (setUnderline, resetUnderline) = switchDiffToBytes(diff.underline, EscSeq.underline.bytes, EscSeq.resetUnderline.bytes)
+    val (setBlink, resetBlink)         = switchDiffToBytes(diff.blink, EscSeq.blink.bytes, EscSeq.resetBlink.bytes)
+    val (setInvert, resetInvert)       = switchDiffToBytes(diff.invert, EscSeq.invert.bytes, EscSeq.resetInvert.bytes)
+    val (setStrikethrough, resetStrikethrough) =
+      switchDiffToBytes(diff.strikethrough, EscSeq.strikethrough.bytes, EscSeq.resetStrikethrough.bytes)
+    val (setTransparent, resetTransparent) = emptyTuple
+    val (setNoColor, resetNoColor)         = emptyTuple
 
-    val setBytes = setEmpty ++ setFgColor ++ setBgColor ++ setBold ++ setItalic ++ setUnderline ++ setBlink ++ setInvert ++ setStrikethrough ++ setTransparent ++ setNoColor
+    val setBytes =
+      setEmpty ++ setFgColor ++ setBgColor ++ setBold ++ setItalic ++ setUnderline ++ setBlink ++ setInvert ++ setStrikethrough ++ setTransparent ++ setNoColor
     val resetBytes =
       resetEmpty ++ resetFgColor ++ resetBgColor ++ resetBold ++ resetItalic ++ resetUnderline ++ resetBlink ++ resetInvert ++ resetStrikethrough ++ resetTransparent ++ resetNoColor
 

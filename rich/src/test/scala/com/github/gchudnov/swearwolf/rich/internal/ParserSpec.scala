@@ -69,7 +69,7 @@ object ParserSpec extends ZIOSpecDefault:
           Seq(
             TagElement("tag1", Some("value1"), List(TagElement("inner1", None, List(TextElement("text1"))))),
             NewLineElement,
-            TagElement("tag2", None, List(TagElement("inner2", None, List(TextElement("text2")))))
+            TagElement("tag2", None, List(TagElement("inner2", None, List(TextElement("text2"))))),
           )
         )
         val actual = Parser.parse(input)
@@ -99,5 +99,5 @@ object ParserSpec extends ZIOSpecDefault:
         val actual = Parser.parse(input)
 
         assert(actual)(isLeft(isSubtype[ParserException](anything)))
-      }
+      },
     )

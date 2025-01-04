@@ -36,7 +36,7 @@ object ChartSpec extends ZIOSpecDefault:
           (20.0  -> 3),
           (22.0  -> 3),
           (24.0  -> 3),
-          (25.0  -> 4)
+          (25.0  -> 4),
         )
 
         val input    = table.map(_._1)
@@ -67,7 +67,7 @@ object ChartSpec extends ZIOSpecDefault:
           (22.0  -> 4),
           (25.0  -> 4),
           (26.0  -> 4),
-          (50.0  -> 4)
+          (50.0  -> 4),
         )
 
         val input    = table.map(_._1)
@@ -111,7 +111,7 @@ object ChartSpec extends ZIOSpecDefault:
         val actual = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Dot)
         val expected = Seq(
           "  ⢠⣾",
-          " ⣴⣿⣿"
+          " ⣴⣿⣿",
         )
 
         assert(actual)(equalTo(expected))
@@ -288,7 +288,7 @@ object ChartSpec extends ZIOSpecDefault:
         val actual = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Quad)
         val expected = Seq(
           "   ▟█",
-          "▗▟███"
+          "▗▟███",
         )
 
         assert(actual)(equalTo(expected))
@@ -304,7 +304,7 @@ object ChartSpec extends ZIOSpecDefault:
         val actual = ChartBuilder.prepare(sz, ceilY, maxY, data, ChartStyle.Quad)
         val expected = Seq(
           "     ",
-          "     "
+          "     ",
         )
 
         assert(actual)(equalTo(expected))
@@ -341,5 +341,5 @@ object ChartSpec extends ZIOSpecDefault:
         val expected = Seq("▗▄▟██")
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

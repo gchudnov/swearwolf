@@ -26,7 +26,7 @@ object Main extends ZIOAppDefault:
       logic     <- ZIO.service[Logic]
       szRef     <- Ref.make(None: Option[Size])
       handler = (ks: KeySeq) =>
-                  if (ks.isEsc) then ZIO.succeed(EventLoop.Action.Exit)
+                  if ks.isEsc then ZIO.succeed(EventLoop.Action.Exit)
                   else
                     ks match
                       case SizeKeySeq(sz) =>

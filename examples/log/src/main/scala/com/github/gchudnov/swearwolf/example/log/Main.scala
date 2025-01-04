@@ -31,7 +31,7 @@ object Main extends App:
 
   private def makeKeySeqHandler(screen: Screen[Either[Throwable, *]]): EventLoop.KeySeqHandler[Either[Throwable, *]] =
     (ks: KeySeq) =>
-      if (ks.isEsc) then Right(EventLoop.Action.Exit)
+      if ks.isEsc then Right(EventLoop.Action.Exit)
       else
         ks match
           case SizeKeySeq(sz) =>

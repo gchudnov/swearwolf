@@ -124,7 +124,8 @@ object SpanCompilerSpec extends ZIOSpecDefault:
       },
       test("multiple attributes") {
         // <fg color="0xAABBCC"><bg>text</bg></fg>
-        val span   = StyleSpan(TextStyle.Foreground(Color(0xaabbcc)), Seq(StyleSpan(TextStyle.Background(Color(0xddeeff)), Seq(TextSpan("text")))))
+        val span =
+          StyleSpan(TextStyle.Foreground(Color(0xaabbcc)), Seq(StyleSpan(TextStyle.Background(Color(0xddeeff)), Seq(TextSpan("text")))))
         val actual = SpanCompiler.compile(span).show
 
         val expected =
@@ -153,10 +154,19 @@ object SpanCompilerSpec extends ZIOSpecDefault:
       test("nested tags with text and tags in between") {
         // "<i>A<b>text</b>B<u>C</u></i>"
         val span =
-          StyleSpan(TextStyle.Italic, Seq(TextSpan("A"), StyleSpan(TextStyle.Bold, Seq(TextSpan("text"))), TextSpan("B"), StyleSpan(TextStyle.Underline, Seq(TextSpan("C")))))
+          StyleSpan(
+            TextStyle.Italic,
+            Seq(
+              TextSpan("A"),
+              StyleSpan(TextStyle.Bold, Seq(TextSpan("text"))),
+              TextSpan("B"),
+              StyleSpan(TextStyle.Underline, Seq(TextSpan("C"))),
+            ),
+          )
         val actual = SpanCompiler.compile(span).show
 
-        val expected = "|1b 5b 33 6d 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 1b 5b 34 6d 43 1b 5b 32 34 6d 1b 5b 32 33 6d|.[3mA.[1mtext.[22mB.[4mC.[24m.[23m|"
+        val expected =
+          "|1b 5b 33 6d 41 1b 5b 31 6d 74 65 78 74 1b 5b 32 32 6d 42 1b 5b 34 6d 43 1b 5b 32 34 6d 1b 5b 32 33 6d|.[3mA.[1mtext.[22mB.[4mC.[24m.[23m|"
 
         assert(actual)(equalTo(expected))
       },
@@ -175,11 +185,14 @@ object SpanCompilerSpec extends ZIOSpecDefault:
           TextStyle.Empty,
           List(
             StyleSpan(TextStyle.Bold, List(TextSpan("BOLD"))),
-            StyleSpan(TextStyle.Foreground(Color(170, 0, 0)), List(StyleSpan(TextStyle.Background(Color(0, 255, 0)), List(TextSpan("NOR"))))),
+            StyleSpan(
+              TextStyle.Foreground(Color(170, 0, 0)),
+              List(StyleSpan(TextStyle.Background(Color(0, 255, 0)), List(TextSpan("NOR")))),
+            ),
             TextSpan("MAL"),
             StyleSpan(TextStyle.Italic, List(TextSpan("italic"))),
-            StyleSpan(TextStyle.Blink, List(TextSpan("BLINK")))
-          )
+            StyleSpan(TextStyle.Blink, List(TextSpan("BLINK"))),
+          ),
         )
         val actual = SpanCompiler.compile(span).show
 
@@ -187,5 +200,5 @@ object SpanCompilerSpec extends ZIOSpecDefault:
           "|1b 5b 31 6d 42 4f 4c 44 1b 5b 32 32 6d 1b 5b 33 38 3b 32 3b 31 37 30 3b 30 3b 30 6d 1b 5b 33 38 3b 32 3b 30 3b 32 35 35 3b 30 6d 4e 4f 52 1b 5b 33 39 6d 1b 5b 33 39 6d 4d 41 4c 1b 5b 33 6d 69 74 61 6c 69 63 1b 5b 32 33 6d 1b 5b 35 6d 42 4c 49 4e 4b 1b 5b 32 35 6d|.[1mBOLD.[22m.[38;2;170;0;0m.[38;2;0;255;0mNOR.[39m.[39mMAL.[3mitalic.[23m.[5mBLINK.[25m|"
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

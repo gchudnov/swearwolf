@@ -5,6 +5,8 @@ import com.github.gchudnov.swearwolf.util.show.Show
 
 import java.nio.charset.StandardCharsets
 import scala.language.strictEquality
+import scala.collection.immutable.IndexedSeq
+import scala.collection.immutable.Seq
 
 final class Bytes(value: Array[Byte]) extends AnyVal derives CanEqual:
 
@@ -59,9 +61,9 @@ object Bytes:
   def apply(byte: Byte): Bytes =
     new Bytes(Array(byte))
 
-  object +: :
+  object `+:`:
     def unapply(bytes: Bytes): Option[(Byte, Bytes)] =
-      if (bytes.nonEmpty) then Some(bytes.head, bytes.tail)
+      if bytes.nonEmpty then Some(bytes.head, bytes.tail)
       else None
 
   extension (bytes: Bytes)

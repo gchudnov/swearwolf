@@ -10,4 +10,5 @@ import java.io.OutputStream
 /**
  * ZIO Terminal
  */
-private[term] final class AsyncZioTerm(in: InputStream, out: OutputStream, isClose: Boolean) extends AsyncTerm[Task](in = in, out = out, isClose = isClose) {}
+private[term] final class AsyncZioTerm(in: InputStream, out: OutputStream, isClose: Boolean)
+    extends AsyncTerm[Task](in = in, out = out, isClose = isClose) {}

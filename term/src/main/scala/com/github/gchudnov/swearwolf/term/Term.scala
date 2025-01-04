@@ -104,7 +104,7 @@ object Term:
     path: Path,
     term: Term[Either[Throwable, *]] = syncEither(System.in, System.out),
     isTruncate: Boolean = true,
-    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter,
   ): Term[Either[Throwable, *]] =
     EitherSyncTerm.fileLog(path, term, isTruncate, fmt)
 
@@ -112,7 +112,7 @@ object Term:
     path: Path,
     term: Term[Identity] = syncId(System.in, System.out),
     isTruncate: Boolean = true,
-    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter,
   ): Term[Identity] =
     IdSyncTerm.fileLog(path, term, isTruncate, fmt)
 
@@ -120,7 +120,7 @@ object Term:
     path: Path,
     term: Term[Try] = syncTry(System.in, System.out),
     isTruncate: Boolean = true,
-    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter,
   ): Term[Try] =
     TrySyncTerm.fileLog(path, term, isTruncate, fmt)
 
@@ -128,6 +128,6 @@ object Term:
     path: Path,
     term: Term[Future] = asyncFuture(System.in, System.out),
     isTruncate: Boolean = true,
-    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter,
   ): Term[Future[*]] =
     FutureSyncTerm.fileLog(path, term, isTruncate, fmt)

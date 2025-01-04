@@ -20,7 +20,7 @@ object EventLoop:
   type KeySeqHandler[F[_]] = KeySeq => F[EventLoop.Action]
 
   def defaultExitKeySeqAction: KeySeq => Action = (ks: KeySeq) =>
-    if (ks.isEsc) then EventLoop.Action.Exit
+    if ks.isEsc then EventLoop.Action.Exit
     else EventLoop.Action.Continue
 
   given keySeqHandlerMonoid[F[_]: MonadError]: Monoid[KeySeqHandler[F]] with

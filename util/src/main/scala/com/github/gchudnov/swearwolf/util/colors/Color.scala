@@ -31,12 +31,15 @@ object Color:
   private[colors] def fromName[F[_]: MonadError](name: String): F[Color] =
     Color.namedColors
       .get(Color.normalizeName(name))
-      .fold(summon[MonadError[F]].fail(new ColorException(s"Named Color is not found: $name")): F[Color])(c => summon[MonadError[F]].succeed(c))
+      .fold(summon[MonadError[F]].fail(new ColorException(s"Named Color is not found: $name")): F[Color])(c =>
+        summon[MonadError[F]].succeed(c)
+      )
 
   private[colors] def fromHex[F[_]: MonadError](value: String): F[Color] =
     import MonadError.*
     val c = if value.head == '#' then value.tail else value
-    if c.length != 6 then summon[MonadError[F]].fail(new ColorException("Cannot parse the color: invalid format. Supported formats: (#RRGGBB, RRGGBB)"))
+    if c.length != 6 then
+      summon[MonadError[F]].fail(new ColorException("Cannot parse the color: invalid format. Supported formats: (#RRGGBB, RRGGBB)"))
     else
       for cs <- summon[MonadError[F]].attempt(c.grouped(2).map(it => Integer.parseInt(it, 16)).toSeq)
       yield Color(cs(0), cs(1), cs(2))
@@ -333,5 +336,5 @@ object Color:
     Names.White                -> White,
     Names.WhiteSmoke           -> WhiteSmoke,
     Names.Yellow               -> Yellow,
-    Names.YellowGreen          -> YellowGreen
+    Names.YellowGreen          -> YellowGreen,
   )

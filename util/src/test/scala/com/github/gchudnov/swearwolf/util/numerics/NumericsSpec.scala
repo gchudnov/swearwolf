@@ -21,7 +21,7 @@ object NumericsSpec extends ZIOSpecDefault:
           2.0  -> 2.0,
           3.0  -> 3.0,
           4.0  -> 4.0,
-          5.0  -> 4.0
+          5.0  -> 4.0,
         )
 
         val input    = table.map(_._1)
@@ -90,5 +90,5 @@ object NumericsSpec extends ZIOSpecDefault:
         val expected = Seq(0, 0)
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

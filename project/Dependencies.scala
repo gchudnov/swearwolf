@@ -3,8 +3,8 @@ import sbt._
 object Dependencies {
 
   object versions {
-    val zio          = "2.0.0"
-    val scalaParser  = "2.1.1"
+    val zio         = "2.1.14"
+    val scalaParser = "2.4.0"
   }
 
   private val scalaParser = "org.scala-lang.modules" %% "scala-parser-combinators" % versions.scalaParser
@@ -20,24 +20,24 @@ object Dependencies {
   val Util: Seq[ModuleID] = {
     val compile = Seq(
     )
-    val test = Seq(
-    ) ++ zioTestAll map (_ % "test")
+    val test = (Seq(
+    ) ++ zioTestAll).map(_ % "test")
     compile ++ test
   }
 
   val Shapes: Seq[ModuleID] = {
     val compile = Seq(
     )
-    val test = Seq(
-    ) ++ zioTestAll map (_ % "test")
+    val test = (Seq(
+    ) ++ zioTestAll).map(_ % "test")
     compile ++ test
-  }  
+  }
 
   val Term: Seq[ModuleID] = {
     val compile = Seq(
     )
-    val test = Seq(
-    ) ++ zioTestAll map (_ % "test")
+    val test = (Seq(
+    ) ++ zioTestAll).map(_ % "test")
     compile ++ test
   }
 
@@ -45,34 +45,34 @@ object Dependencies {
     val compile = Seq(
       scalaParser
     )
-    val test = Seq(
-    ) ++ zioTestAll map (_ % "test")
+    val test = (Seq(
+    ) ++ zioTestAll).map(_ % "test")
     compile ++ test
   }
 
   val Zio: Seq[ModuleID] = {
     val compile = Seq(
       zio,
-      zioStreams
+      zioStreams,
     )
-    val test = Seq(
-    ) ++ zioTestAll map (_ % "test")
+    val test = (Seq(
+    ) ++ zioTestAll).map(_ % "test")
     compile ++ test
   }
 
   val ExampleAll: Seq[ModuleID] = {
     val compile = Seq.empty[ModuleID]
-    val test    = Seq.empty[ModuleID] map (_ % "test")
+    val test    = Seq.empty[ModuleID].map(_ % "test")
     compile ++ test
   }
 
   val ExampleZio: Seq[ModuleID] = {
     val compile = Seq(
       zio,
-      zioStreams
+      zioStreams,
     )
-    val test = Seq(
-    ) ++ zioTestAll map (_ % "test")
+    val test = (Seq(
+    ) ++ zioTestAll).map(_ % "test")
     compile ++ test
   }
 

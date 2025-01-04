@@ -40,5 +40,5 @@ object BytesSpec extends ZIOSpecDefault:
         val expected = "|0a 17 41|..A|"
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

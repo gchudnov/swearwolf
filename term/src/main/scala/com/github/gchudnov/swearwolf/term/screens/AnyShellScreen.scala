@@ -11,6 +11,7 @@ import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.styles.TextStyleSeq
 import sun.misc.Signal
 import sun.misc.SignalHandler
+import scala.collection.immutable.Seq
 
 object AnyShellScreen:
   import Term.*
@@ -50,7 +51,7 @@ object AnyShellScreen:
       (t => t.cursorHide(), t => t.cursorShow()),
       (t => t.mouseTrack(), t => t.mouseUntrack()),
       (t => t.fetchSize(), t => noOp()),
-      (t => t.flush(), t => noOp())
+      (t => t.flush(), t => noOp()),
     )
 
   /**

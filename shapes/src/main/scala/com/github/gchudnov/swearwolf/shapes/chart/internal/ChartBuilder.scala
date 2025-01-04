@@ -13,6 +13,8 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
+import scala.collection.immutable.Seq
+
 private[chart] object ChartBuilder:
   private val ceilY = 100.0
 

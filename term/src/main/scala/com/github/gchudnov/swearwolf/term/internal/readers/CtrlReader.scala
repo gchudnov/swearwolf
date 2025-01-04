@@ -15,7 +15,7 @@ private[internal] object CtrlReader extends BasicKeySeqReader:
     0x1c.toByte -> '\\'.toByte, // ^\
     0x1d.toByte -> ']'.toByte,  // ^]
     0x1e.toByte -> '^'.toByte,  // ^^
-    0x1f.toByte -> '_'.toByte   // ^_
+    0x1f.toByte -> '_'.toByte,  // ^_
   )
 
   override def read(data: Bytes): ReadState =

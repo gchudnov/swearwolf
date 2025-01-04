@@ -9,7 +9,7 @@ private[internal] abstract class BasicKeySeqReader extends KeySeqReader:
   val modMap: Map[Int, KeyModifier] = Map(
     1 -> KeyModifier.Shift,
     2 -> KeyModifier.Alt,
-    4 -> KeyModifier.Ctrl
+    4 -> KeyModifier.Ctrl,
   )
 
   def appendNumber(acc: Int, x: Byte): Int =

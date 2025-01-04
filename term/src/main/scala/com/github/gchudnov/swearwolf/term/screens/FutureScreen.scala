@@ -9,7 +9,8 @@ import scala.concurrent.{ ExecutionContext, Future }
 /**
  * NOTE: it is safe to inherit from SyncScreen since Future is eager.
  */
-final class FutureScreen(term: Term[Future], cleanup: TermAction[Future])(using ec: ExecutionContext) extends SyncShellScreen(term, cleanup) {}
+final class FutureScreen(term: Term[Future], cleanup: TermAction[Future])(using ec: ExecutionContext)
+    extends SyncShellScreen(term, cleanup) {}
 
 object FutureScreen:
   def make(term: Term[Future])(using ec: ExecutionContext): Future[FutureScreen] =

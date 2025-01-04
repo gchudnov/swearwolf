@@ -41,5 +41,5 @@ object GridSpec extends ZIOSpecDefault:
         val expected = Resources.string("grid/grid-empty.txt").toTry.get
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

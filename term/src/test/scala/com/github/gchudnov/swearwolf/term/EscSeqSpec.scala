@@ -253,5 +253,5 @@ object EscSeqSpec extends ZIOSpecDefault:
         val expected = "1b5b313874"
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

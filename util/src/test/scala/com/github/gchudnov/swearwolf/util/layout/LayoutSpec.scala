@@ -39,5 +39,5 @@ object LayoutSpec extends ZIOSpecDefault:
         val expected = "......................text......................"
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

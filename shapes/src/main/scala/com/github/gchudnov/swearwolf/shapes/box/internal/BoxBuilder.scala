@@ -7,6 +7,8 @@ import com.github.gchudnov.swearwolf.shapes.box.BoxStyle.*
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
 import com.github.gchudnov.swearwolf.util.spans.Span
 
+import scala.collection.immutable.Seq
+
 private[box] object BoxBuilder:
 
   def build(box: Box): Seq[Span] =
@@ -38,7 +40,7 @@ private[box] object BoxBuilder:
           tl = Symbols.Empty,
           tr = Symbols.Empty,
           bl = Symbols.Empty,
-          br = Symbols.Empty
+          br = Symbols.Empty,
         )
 
       case SingleBorder =>
@@ -50,7 +52,7 @@ private[box] object BoxBuilder:
           tl = Symbols.Frame_EFH,
           tr = Symbols.Frame_DEH,
           bl = Symbols.Frame_BEF,
-          br = Symbols.Frame_BED
+          br = Symbols.Frame_BED,
         )
       case DoubleBorder =>
         BoxDesc(
@@ -61,7 +63,7 @@ private[box] object BoxBuilder:
           tl = Symbols.Frame_TQR,
           tr = Symbols.Frame_QRU,
           bl = Symbols.Frame_NQR,
-          br = Symbols.Frame_NQP
+          br = Symbols.Frame_NQP,
         )
 
       case BoldBorder =>
@@ -73,7 +75,7 @@ private[box] object BoxBuilder:
           tl = Symbols.Quadrant_ABC,
           tr = Symbols.Quadrant_ABD,
           bl = Symbols.Quadrant_ACD,
-          br = Symbols.Quadrant_BCD
+          br = Symbols.Quadrant_BCD,
         )
 
   private final case class BoxDesc(
@@ -84,5 +86,5 @@ private[box] object BoxBuilder:
     tl: String, // top-left
     tr: String, // top-right
     bl: String, // bottom-left
-    br: String  // bottom-right
+    br: String, // bottom-right
   )

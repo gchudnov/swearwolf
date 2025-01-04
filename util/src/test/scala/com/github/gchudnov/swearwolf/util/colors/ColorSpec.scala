@@ -67,7 +67,7 @@ object ColorSpec extends ZIOSpecDefault:
           Right(Color.Blue),
           Right(Color.RosyBrown),
           Right(Color.RosyBrown),
-          Right(Color.Silver)
+          Right(Color.Silver),
         )
 
         assert(actual)(equalTo(expected))
@@ -85,5 +85,5 @@ object ColorSpec extends ZIOSpecDefault:
         val expected = "#ffffff"
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

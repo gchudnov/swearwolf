@@ -13,7 +13,8 @@ import java.nio.file.Path
 import java.time.format.DateTimeFormatter
 import java.time.{ LocalDateTime, ZoneId, ZoneOffset }
 
-final class LogTerm[F[_]](fmt: DateTimeFormatter, logging: Logging[F], clock: Clock[F], term: Term[F])(using ME: MonadError[F]) extends Term[F]:
+final class LogTerm[F[_]](fmt: DateTimeFormatter, logging: Logging[F], clock: Clock[F], term: Term[F])(using ME: MonadError[F])
+    extends Term[F]:
   import MonadError.*
 
   def read(): F[Option[Array[Byte]]] =

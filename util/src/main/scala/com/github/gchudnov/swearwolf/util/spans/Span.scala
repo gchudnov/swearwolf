@@ -3,6 +3,7 @@ package com.github.gchudnov.swearwolf.util.spans
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.show.Show
 import com.github.gchudnov.swearwolf.util.bytes.Bytes
+import scala.collection.immutable.Seq
 
 sealed trait Span
 

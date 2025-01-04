@@ -58,7 +58,7 @@ private[internal] object EscReader extends BasicKeySeqReader:
     'P'.toByte -> KeyCode.F1,
     'Q'.toByte -> KeyCode.F2,
     'R'.toByte -> KeyCode.F3,
-    'S'.toByte -> KeyCode.F4
+    'S'.toByte -> KeyCode.F4,
   )
 
   private val stdMap: Map[Int, KeyCode] = Map(
@@ -80,7 +80,7 @@ private[internal] object EscReader extends BasicKeySeqReader:
     20 -> KeyCode.F9,
     21 -> KeyCode.F10,
     23 -> KeyCode.F11,
-    24 -> KeyCode.F12
+    24 -> KeyCode.F12,
   )
 
   override def read(data: Bytes): ReadState =

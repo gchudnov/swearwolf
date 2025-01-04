@@ -7,6 +7,8 @@ import com.github.gchudnov.swearwolf.zio.util.func.RIOMonadAsyncError
 import com.github.gchudnov.swearwolf.util.func.MonadError
 import zio.Task
 
+import scala.collection.immutable.Seq
+
 private[instances] trait ZioLabel extends AnyLabel[Task]:
 
   extension (labelT: Label.type)

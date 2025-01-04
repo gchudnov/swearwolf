@@ -55,16 +55,18 @@ object RichTextSpec extends ZIOSpecDefault:
       test("attribute with single quotes") {
         val input = "<fg='#AABBCC'>text</fg>"
 
-        val actual   = RichText.buildEither(RichText(input))
-        val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Foreground(Color(170, 187, 204)), List(TextSpan("text"))))))
+        val actual = RichText.buildEither(RichText(input))
+        val expected =
+          Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Foreground(Color(170, 187, 204)), List(TextSpan("text"))))))
 
         assert(actual)(equalTo(expected))
       },
       test("attribute with double quotes") {
         val input = "<fg=\"#AABBCC\">text</fg>"
 
-        val actual   = RichText.buildEither(RichText(input))
-        val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Foreground(Color(170, 187, 204)), List(TextSpan("text"))))))
+        val actual = RichText.buildEither(RichText(input))
+        val expected =
+          Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Foreground(Color(170, 187, 204)), List(TextSpan("text"))))))
 
         assert(actual)(equalTo(expected))
       },
@@ -75,7 +77,12 @@ object RichTextSpec extends ZIOSpecDefault:
         val expected = Right(
           StyleSpan(
             TextStyle.Empty,
-            List(StyleSpan(TextStyle.Foreground(Color(170, 187, 204)), List(StyleSpan(TextStyle.Background(Color(221, 238, 255)), List(TextSpan("text"))))))
+            List(
+              StyleSpan(
+                TextStyle.Foreground(Color(170, 187, 204)),
+                List(StyleSpan(TextStyle.Background(Color(221, 238, 255)), List(TextSpan("text")))),
+              )
+            ),
           )
         )
 
@@ -84,16 +91,22 @@ object RichTextSpec extends ZIOSpecDefault:
       test("nested tags") {
         val input = "<i><b>text</b></i>"
 
-        val actual   = RichText.buildEither(RichText(input))
-        val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Italic, List(StyleSpan(TextStyle.Bold, List(TextSpan("text"))))))))
+        val actual = RichText.buildEither(RichText(input))
+        val expected =
+          Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Italic, List(StyleSpan(TextStyle.Bold, List(TextSpan("text"))))))))
 
         assert(actual)(equalTo(expected))
       },
       test("nested tags with text in between") {
         val input = "<i>A<b>text</b>B</i>"
 
-        val actual   = RichText.buildEither(RichText(input))
-        val expected = Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Italic, List(TextSpan("A"), StyleSpan(TextStyle.Bold, List(TextSpan("text"))), TextSpan("B"))))))
+        val actual = RichText.buildEither(RichText(input))
+        val expected = Right(
+          StyleSpan(
+            TextStyle.Empty,
+            List(StyleSpan(TextStyle.Italic, List(TextSpan("A"), StyleSpan(TextStyle.Bold, List(TextSpan("text"))), TextSpan("B")))),
+          )
+        )
 
         assert(actual)(equalTo(expected))
       },
@@ -107,9 +120,14 @@ object RichTextSpec extends ZIOSpecDefault:
             List(
               StyleSpan(
                 TextStyle.Italic,
-                List(TextSpan("A"), StyleSpan(TextStyle.Bold, List(TextSpan("text"))), TextSpan("B"), StyleSpan(TextStyle.Underline, List(TextSpan("C"))))
+                List(
+                  TextSpan("A"),
+                  StyleSpan(TextStyle.Bold, List(TextSpan("text"))),
+                  TextSpan("B"),
+                  StyleSpan(TextStyle.Underline, List(TextSpan("C"))),
+                ),
               )
-            )
+            ),
           )
         )
 
@@ -120,7 +138,12 @@ object RichTextSpec extends ZIOSpecDefault:
 
         val actual = RichText.buildEither(RichText(input))
         val expected =
-          Right(StyleSpan(TextStyle.Empty, List(StyleSpan(TextStyle.Italic, List(TextSpan("A B"), StyleSpan(TextStyle.Bold, List(TextSpan("text"))), TextSpan("C "))))))
+          Right(
+            StyleSpan(
+              TextStyle.Empty,
+              List(StyleSpan(TextStyle.Italic, List(TextSpan("A B"), StyleSpan(TextStyle.Bold, List(TextSpan("text"))), TextSpan("C ")))),
+            )
+          )
 
         assert(actual)(equalTo(expected))
       },
@@ -130,5 +153,5 @@ object RichTextSpec extends ZIOSpecDefault:
         val actual = RichText.buildEither(RichText(input))
 
         assert(actual)(isLeft)
-      }
+      },
     )

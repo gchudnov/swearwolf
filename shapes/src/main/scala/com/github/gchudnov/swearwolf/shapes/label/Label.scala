@@ -10,6 +10,8 @@ import com.github.gchudnov.swearwolf.util.spans.StyleSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
+import scala.collection.immutable.Seq
+
 final case class Label(size: Size, value: String, align: AlignStyle)
 
 object Label:
@@ -22,5 +24,7 @@ object Label:
 
     for
       spans <- build(label)
-      _     <- summon[MonadError[F]].sequence(spans.zipWithIndex.map { case (span, y) => screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span))) })
+      _ <- summon[MonadError[F]].sequence(spans.zipWithIndex.map { case (span, y) =>
+             screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span)))
+           })
     yield ()
