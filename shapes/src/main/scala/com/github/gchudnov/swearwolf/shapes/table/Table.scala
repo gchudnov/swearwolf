@@ -11,6 +11,8 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.StyleSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 
+import scala.collection.immutable.Seq
+
 final case class Table(rows: Seq[Seq[Any]], style: TableStyle):
   def isEmpty: Boolean =
     rows.isEmpty
@@ -32,5 +34,7 @@ object Table:
 
     for
       spans <- build(table)
-      _     <- summon[MonadError[F]].sequence(spans.zipWithIndex.map { case (span, y) => screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span))) })
+      _ <- summon[MonadError[F]].sequence(spans.zipWithIndex.map { case (span, y) =>
+             screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span)))
+           })
     yield ()

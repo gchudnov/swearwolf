@@ -42,13 +42,13 @@ object Main extends App:
       s"${name}",
       s"${colorTypeName}",
       s"${color}",
-      s"${hex}"
+      s"${hex}",
     ).map(wrap)
   )
 
   private val header = List(
     List("View", "Name", "Color", "Code", "Hex").map(wrap),
-    List("---", "---", "---", "---", "---").map(wrap)
+    List("---", "---", "---", "---", "---").map(wrap),
   )
 
   private val lines = header ++ rows

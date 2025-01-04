@@ -1,6 +1,7 @@
 package com.github.gchudnov.swearwolf.rich.internal
 
 import scala.util.parsing.combinator.*
+import scala.collection.immutable.Seq
 
 private[internal] object Lexer:
   def lex(input: String): Seq[Token] =

@@ -42,13 +42,17 @@ given EitherMonad: MonadError[Either[Throwable, *]] with
       case Left(t)  => cleanup.flatMap(_ => Left(t))
       case Right(a) => cleanup.map(_ => a)
 
-  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Either[Throwable, A]])(using bf: BuildFrom[CC[Either[Throwable, A]], A, CC[A]]): Either[Throwable, CC[A]] =
+  override def sequence[A, CC[+A] <: Iterable[A]](xs: CC[Either[Throwable, A]])(using
+    bf: BuildFrom[CC[Either[Throwable, A]], A, CC[A]]
+  ): Either[Throwable, CC[A]] =
     val cbf = bf.toFactory(xs)
     xs.partitionMap(identity) match
       case (Nil, rights) => Right[Throwable, CC[A]](cbf.fromSpecific(rights))
       case (lefts, _)    => Left[Throwable, CC[A]](lefts.head)
 
-  override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => Either[Throwable, B])(using bf: BuildFrom[CC[A], B, CC[B]]): Either[Throwable, CC[B]] =
+  override def traverse[A, CC[+A] <: Iterable[A], B](xs: CC[A])(f: A => Either[Throwable, B])(using
+    bf: BuildFrom[CC[A], B, CC[B]]
+  ): Either[Throwable, CC[B]] =
     val builder = bf.newBuilder(xs)
     val i       = xs.iterator
     while i.hasNext do

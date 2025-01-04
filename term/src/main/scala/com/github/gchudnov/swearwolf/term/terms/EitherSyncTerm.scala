@@ -8,7 +8,8 @@ import java.io.{ InputStream, OutputStream }
 import java.nio.file.Path
 import java.time.format.DateTimeFormatter
 
-final class EitherSyncTerm(in: InputStream, out: OutputStream, isClose: Boolean) extends SyncTerm[Either[Throwable, *]](in = in, out = out, isClose = isClose)
+final class EitherSyncTerm(in: InputStream, out: OutputStream, isClose: Boolean)
+    extends SyncTerm[Either[Throwable, *]](in = in, out = out, isClose = isClose)
 
 object EitherSyncTerm extends AnyTermFactory[Either[Throwable, *]]:
 

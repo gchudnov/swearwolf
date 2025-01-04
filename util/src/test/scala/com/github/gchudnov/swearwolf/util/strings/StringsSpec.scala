@@ -120,7 +120,7 @@ object StringsSpec extends ZIOSpecDefault:
           "this is a very",
           "long text that",
           "doesn't fit the",
-          "provided width"
+          "provided width",
         )
 
         val maxLen = expected.map(_.length).max
@@ -141,7 +141,7 @@ object StringsSpec extends ZIOSpecDefault:
           "vwxyz ab",
           "cdefghik",
           "lmnopqrs",
-          "tuvwxyz"
+          "tuvwxyz",
         )
 
         val maxLen = expected.map(_.length).max
@@ -156,7 +156,7 @@ object StringsSpec extends ZIOSpecDefault:
         val actual = input.wrap(width)
         val expected = Seq(
           "title/some_very_long",
-          "_header"
+          "_header",
         )
 
         val maxLen = expected.map(_.length).max
@@ -185,7 +185,7 @@ object StringsSpec extends ZIOSpecDefault:
         val actual = input.wrap(width)
         val expected = Seq(
           "abcdefgh",
-          "ijklmnop"
+          "ijklmnop",
         )
 
         val maxLen = expected.map(_.length).max
@@ -217,5 +217,5 @@ object StringsSpec extends ZIOSpecDefault:
         val expected = "this is some t..."
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

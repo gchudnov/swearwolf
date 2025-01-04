@@ -50,5 +50,5 @@ object LabelSpec extends ZIOSpecDefault:
         val expected = Resources.string("label/label-empty.txt").toTry.get
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

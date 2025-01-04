@@ -58,7 +58,7 @@ private[term] object MouseReader extends BasicKeySeqReader:
     1  -> MouseButton.Middle,
     2  -> MouseButton.Right,
     64 -> MouseButton.ScrollBackward,
-    65 -> MouseButton.ScrollForward
+    65 -> MouseButton.ScrollForward,
   )
 
   override def read(data: Bytes): ReadState =

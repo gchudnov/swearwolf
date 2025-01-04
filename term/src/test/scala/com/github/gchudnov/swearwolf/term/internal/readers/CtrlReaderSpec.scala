@@ -103,5 +103,5 @@ object CtrlReaderSpec extends ZIOSpecDefault:
         val actual   = CtrlReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

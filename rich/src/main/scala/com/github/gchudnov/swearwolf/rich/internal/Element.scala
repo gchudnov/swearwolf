@@ -1,5 +1,7 @@
 package com.github.gchudnov.swearwolf.rich.internal
 
+import scala.collection.immutable.Seq
+
 private[internal] sealed trait Element
 
 private[internal] final case class TextElement(text: String) extends Element:

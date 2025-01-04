@@ -7,7 +7,8 @@ import java.io.{ InputStream, OutputStream }
 import java.nio.file.Path
 import java.time.format.DateTimeFormatter
 
-final class IdSyncTerm(in: InputStream, out: OutputStream, isClose: Boolean) extends SyncTerm[Identity](in = in, out = out, isClose = isClose)
+final class IdSyncTerm(in: InputStream, out: OutputStream, isClose: Boolean)
+    extends SyncTerm[Identity](in = in, out = out, isClose = isClose)
 
 object IdSyncTerm extends AnyTermFactory[Identity]:
 

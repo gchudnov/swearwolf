@@ -53,8 +53,8 @@ object BuilderSpec extends ZIOSpecDefault:
               StyleSpan(TextStyle.Foreground(Color.Red), Seq.empty[Span]),
               TextSpan("a"),
               StyleSpan(TextStyle.Background(Color.Blue), Seq.empty[Span]),
-              TextSpan("b")
-            )
+              TextSpan("b"),
+            ),
           )
         )
 
@@ -68,12 +68,12 @@ object BuilderSpec extends ZIOSpecDefault:
             TextStyle.empty,
             Seq(
               StyleSpan(TextStyle.Bold, Seq(StyleSpan(TextStyle.Background(Color.Blue), Seq(TextSpan("b")))))
-            )
+            ),
           )
         )
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )
 
   private def wrapSpan(s: Span): Span =

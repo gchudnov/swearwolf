@@ -39,7 +39,7 @@ abstract class AnyTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolea
     ME.attempt(out.flush())
 
   override def close(): F[Unit] =
-    if (isClose) then
+    if isClose then
       val inF  = ME.attempt(in.close())
       val outF = ME.attempt(out.close())
       ME.ensure(inF, outF)

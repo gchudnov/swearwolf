@@ -235,7 +235,7 @@ object Symbols:
     "1_2" -> Quadrant_BCD,
     "2_0" -> BlockLeft_4_8,
     "2_1" -> Quadrant_ACD,
-    "2_2" -> BlockFull_8_8
+    "2_2" -> BlockFull_8_8,
   )
 
   val stepChartUp: Map[String, String] = Map(
@@ -247,7 +247,7 @@ object Symbols:
     "5" -> BlockLower_5_8,
     "6" -> BlockLower_6_8,
     "7" -> BlockLower_7_8,
-    "8" -> BlockFull_8_8
+    "8" -> BlockFull_8_8,
   )
 
   val dotChartUp: Map[String, String] = Map(
@@ -275,7 +275,7 @@ object Symbols:
     "4_1" -> DotsUp_4_1,
     "4_2" -> DotsUp_4_2,
     "4_3" -> DotsUp_4_3,
-    "4_4" -> DotsUp_4_4
+    "4_4" -> DotsUp_4_4,
   )
 
   val dotChartDown: Map[String, String] = Map(
@@ -303,5 +303,5 @@ object Symbols:
     "4_1" -> DotsDown_4_1,
     "4_2" -> DotsDown_4_2,
     "4_3" -> DotsDown_4_3,
-    "4_4" -> DotsDown_4_4
+    "4_4" -> DotsDown_4_4,
   )

@@ -8,11 +8,11 @@ import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 
 object Settings {
-  private val scala313 = "3.1.3"
-  private val scalaV   = scala313
+  private val scala3 = "3.3.4"
+  private val scalaV = scala3
 
   private val sharedScalacOptions = Seq(
-    "-deprecation",                  // emit warning and location for usages of deprecated APIs
+    "-deprecation", // emit warning and location for usages of deprecated APIs
 //    "-explain",                      // explain errors in more detail
 //    "-explain-types",                // explain type errors in more detail
     "-feature",                      // emit warning and location for usages of features that should be imported explicitly
@@ -27,7 +27,7 @@ object Settings {
     "-language:experimental.macros", // Allow macro definition (besides implementation and application)
     "-language:higherKinds",         // Allow higher-kinded types
     "-language:implicitConversions", // Allow definition of implicit functions called views
-    "-language:postfixOps"           // Enable postfixOps
+    "-language:postfixOps",          // Enable postfixOps
   )
 
   type MergeStrategySelector = String => MergeStrategy
@@ -38,18 +38,18 @@ object Settings {
     case x                                               => fallbackStrategy(x)
   }
 
-  val globalScalaVersion: String = scalaV
-  val supportedScalaVersions: List[String] = List(scala313)
+  val globalScalaVersion: String           = scalaV
+  val supportedScalaVersions: List[String] = List(scala3)
 
-  val assemblySettings: Seq[Setting[_]] = Seq(
+  val assemblySettings: Seq[Setting[?]] = Seq(
     assembly / test                  := {},
     assembly / assemblyOutputPath    := new File("./target") / (assembly / assemblyJarName).value,
-    assembly / assemblyMergeStrategy := defaultMergeStrategy((assembly / assemblyMergeStrategy).value)
+    assembly / assemblyMergeStrategy := defaultMergeStrategy((assembly / assemblyMergeStrategy).value),
   )
 
   val sharedResolvers: Vector[MavenRepository] = (Seq(Resolver.mavenLocal) ++ Resolver.sonatypeOssRepos("releases")).toVector
 
-  val shared: Seq[Setting[_]] = Seq(
+  val shared: Seq[Setting[?]] = Seq(
     scalacOptions      := sharedScalacOptions,
     crossScalaVersions := supportedScalaVersions,
     scalaVersion       := scalaV,
@@ -63,27 +63,27 @@ object Settings {
     scmInfo := Some(
       ScmInfo(
         url("https://github.com/gchudnov/swearwolf"),
-        "scm:git@github.com:gchudnov/swearwolf.git"
+        "scm:git@github.com:gchudnov/swearwolf.git",
       )
     ),
     developers := List(
       Developer(id = "gchudnov", name = "Grigorii Chudnov", email = "g.chudnov@gmail.com", url = url("https://github.com/gchudnov"))
-    )
+    ),
   )
 
-  val noPublish: Seq[Setting[_]] = Seq(
+  val noPublish: Seq[Setting[?]] = Seq(
     publishArtifact := false,
     publish         := {},
     publishLocal    := {},
-    publish / skip  := true
+    publish / skip  := true,
   )
 
-  val sonatype: Seq[Setting[_]] = Seq(
+  val sonatype: Seq[Setting[?]] = Seq(
     publishMavenStyle      := true,
     Test / publishArtifact := false,
     credentials            := Seq(Credentials(Path.userHome / ".sbt" / ".credentials-sonatype")),
     usePgpKeyHex("8A64557ABEC7965C31A1DF8DE12F2C6DE96AF6D1"),
-    publishTo                     := Some("Sonatype Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"),
+    publishTo                     := Some("Sonatype Releases".at("https://oss.sonatype.org/service/local/staging/deploy/maven2")),
     releaseCrossBuild             := true,
     releaseIgnoreUntrackedFiles   := true,
     releasePublishArtifactsAction := PgpKeys.publishSigned.value,
@@ -99,11 +99,11 @@ object Settings {
       releaseStepCommandAndRemaining("sonatypeBundleRelease"),
       setNextVersion,
       commitNextVersion,
-      pushChanges
-    )
+      pushChanges,
+    ),
   )
 
-  val testZioSettings: Seq[Setting[_]] = Seq(
+  val testZioSettings: Seq[Setting[?]] = Seq(
     testFrameworks := Seq(new TestFramework("zio.test.sbt.ZTestFramework"))
   )
 }

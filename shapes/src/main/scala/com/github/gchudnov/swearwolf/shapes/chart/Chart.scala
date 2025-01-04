@@ -10,6 +10,8 @@ import com.github.gchudnov.swearwolf.util.spans.StyleSpan
 import com.github.gchudnov.swearwolf.util.styles.TextStyle
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
+import scala.collection.immutable.Seq
+
 final case class Chart(size: Size, data: Seq[Double], style: ChartStyle):
   def add(value: Double): Chart =
     this.copy(data = this.data ++ Seq(value))
@@ -24,5 +26,7 @@ object Chart:
 
     for
       spans <- build(chart)
-      _     <- summon[MonadError[F]].sequence(spans.zipWithIndex.map { case (span, y) => screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span))) })
+      _ <- summon[MonadError[F]].sequence(spans.zipWithIndex.map { case (span, y) =>
+             screen.put(pt.offset(0, y), StyleSpan(textStyle, Seq(span)))
+           })
     yield ()

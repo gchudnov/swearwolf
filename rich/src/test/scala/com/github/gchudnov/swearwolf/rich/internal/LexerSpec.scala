@@ -148,11 +148,11 @@ object LexerSpec extends ZIOSpecDefault:
           Text("text1"),
           OpenTag("tag2", Some("value3")),
           CloseTag("tag2"),
-          CloseTag("tag1")
+          CloseTag("tag1"),
         )
 
         val actual = Lexer.lex(input)
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

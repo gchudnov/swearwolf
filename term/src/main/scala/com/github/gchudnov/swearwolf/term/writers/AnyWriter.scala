@@ -6,6 +6,7 @@ import com.github.gchudnov.swearwolf.util.func.MonadError
 import com.github.gchudnov.swearwolf.util.geometry.Point
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.styles.{ TextStyle, TextStyleSeq }
+import scala.collection.immutable.Seq
 
 abstract class AnyWriter[F[_]](term: Term[F])(using ME: MonadError[F]) extends Writer[F]:
   import AnyWriter.*

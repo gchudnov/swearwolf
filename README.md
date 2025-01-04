@@ -6,7 +6,7 @@
 
 ![Scala CI](https://github.com/gchudnov/swearwolf/workflows/Scala%20CI/badge.svg)
 
-Built for Scala 3.1. 
+Built for Scala 3.x. 
 
 Use the [previous](https://github.com/gchudnov/swearwolf/tree/v1.0.2) version of the library for scala 2.13.
 

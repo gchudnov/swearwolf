@@ -23,7 +23,7 @@ private[term] trait ZioTerm:
       path: Path,
       term: Term[Task] = ZioTerm.make(System.in, System.out),
       isTruncate: Boolean = true,
-      fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+      fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter,
     ): Term[Task] =
       LogTerm.fileLog(term, path, isTruncate, fmt)
 

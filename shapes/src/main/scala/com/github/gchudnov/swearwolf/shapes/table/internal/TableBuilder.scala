@@ -7,6 +7,8 @@ import com.github.gchudnov.swearwolf.shapes.styles.Symbols
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
 
+import scala.collection.immutable.Seq
+
 private[table] object TableBuilder:
 
   def build(table: Table): Seq[Span] =
@@ -58,7 +60,7 @@ private[table] object TableBuilder:
           horz = Symbols.CharMinus,
           vert = Symbols.CharVertSeparator,
           empty = Symbols.Empty,
-          pad = 2
+          pad = 2,
         )
 
       case TableStyle.Frame =>
@@ -75,7 +77,7 @@ private[table] object TableBuilder:
           horz = Symbols.Frame_DEF,
           vert = Symbols.Frame_BEH,
           empty = Symbols.Empty,
-          pad = 2
+          pad = 2,
         )
 
   private final case class TableDesc(
@@ -91,5 +93,5 @@ private[table] object TableBuilder:
     horz: String,
     vert: String,
     empty: String,
-    pad: Int
+    pad: Int,
   )

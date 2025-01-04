@@ -79,5 +79,5 @@ object TextStyleSpec extends ZIOSpecDefault:
         val expected = false
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

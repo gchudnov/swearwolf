@@ -1,5 +1,7 @@
 package com.github.gchudnov.swearwolf.util.numerics
 
+import scala.collection.immutable.Seq
+
 sealed trait NumericOps:
 
   extension [T: Numeric](value: T)

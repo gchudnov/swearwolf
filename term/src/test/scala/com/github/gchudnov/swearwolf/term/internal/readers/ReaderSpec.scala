@@ -35,5 +35,5 @@ object ReaderSpec extends ZIOSpecDefault:
         val actual   = Reader.parseBytes(inputBytes)
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

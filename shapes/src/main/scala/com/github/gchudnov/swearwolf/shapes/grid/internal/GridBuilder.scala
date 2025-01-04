@@ -6,6 +6,8 @@ import com.github.gchudnov.swearwolf.shapes.styles.Symbols
 import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
 
+import scala.collection.immutable.Seq
+
 private[grid] object GridBuilder:
 
   def build(grid: Grid): Seq[Span] =
@@ -20,8 +22,9 @@ private[grid] object GridBuilder:
     val xis = Range(0, grid.size.width, grid.cell.width).toSet
     val yis = Range(0, grid.size.height, grid.cell.height).toSet
 
-    val top    = gd.topLeft + Range(1, grid.size.width - 1).map(i => if xis.contains(i) then gd.ixTop else gd.horz).mkString + gd.topRight
-    val bottom = gd.bottomLeft + Range(1, grid.size.width - 1).map(i => if xis.contains(i) then gd.ixBottom else gd.horz).mkString + gd.bottomRight
+    val top = gd.topLeft + Range(1, grid.size.width - 1).map(i => if xis.contains(i) then gd.ixTop else gd.horz).mkString + gd.topRight
+    val bottom =
+      gd.bottomLeft + Range(1, grid.size.width - 1).map(i => if xis.contains(i) then gd.ixBottom else gd.horz).mkString + gd.bottomRight
 
     val rows = Range(1, grid.size.height - 1).map { y =>
       Range(0, grid.size.width).map { x =>
@@ -52,7 +55,7 @@ private[grid] object GridBuilder:
           ix = Symbols.CharPlus,
           horz = Symbols.CharMinus,
           vert = Symbols.CharVertSeparator,
-          empty = Symbols.Empty
+          empty = Symbols.Empty,
         )
 
       case GridStyle.Dash2 =>
@@ -68,7 +71,7 @@ private[grid] object GridBuilder:
           ix = Symbols.BoxIntersect,
           horz = Symbols.BoxDash2Horz,
           vert = Symbols.BoxDash2Vert,
-          empty = Symbols.Empty
+          empty = Symbols.Empty,
         )
 
       case GridStyle.Dash2Bold =>
@@ -84,7 +87,7 @@ private[grid] object GridBuilder:
           ix = Symbols.BoxIntersectHeavy,
           horz = Symbols.BoxDash2HeavyHorz,
           vert = Symbols.BoxDash2HeavyVert,
-          empty = Symbols.Empty
+          empty = Symbols.Empty,
         )
 
       case GridStyle.Frame =>
@@ -100,7 +103,7 @@ private[grid] object GridBuilder:
           ix = Symbols.Frame_BDEFH,
           horz = Symbols.Frame_DEF,
           vert = Symbols.Frame_BEH,
-          empty = Symbols.Empty
+          empty = Symbols.Empty,
         )
 
       case GridStyle.Frame2 =>
@@ -116,7 +119,7 @@ private[grid] object GridBuilder:
           ix = Symbols.Frame_NQTPQR,
           horz = Symbols.Frame_PQR,
           vert = Symbols.Frame_NQT,
-          empty = Symbols.Empty
+          empty = Symbols.Empty,
         )
 
   private final case class GridDesc(
@@ -131,5 +134,5 @@ private[grid] object GridBuilder:
     ix: String,
     horz: String,
     vert: String,
-    empty: String
+    empty: String,
   )

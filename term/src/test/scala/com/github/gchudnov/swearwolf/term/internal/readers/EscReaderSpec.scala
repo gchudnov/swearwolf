@@ -186,5 +186,5 @@ object EscReaderSpec extends ZIOSpecDefault:
         val actual   = EscReader.read(inputBytes)
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

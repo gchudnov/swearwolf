@@ -15,6 +15,6 @@ abstract class AnyTermFactory[F[_]: MonadError]:
     path: Path,
     term: Term[F] = make(System.in, System.out),
     isTruncate: Boolean = true,
-    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter
+    fmt: DateTimeFormatter = LogTerm.defaultDateTimeFormatter,
   ): Term[F] =
     LogTerm.fileLog(term, path, isTruncate, fmt)

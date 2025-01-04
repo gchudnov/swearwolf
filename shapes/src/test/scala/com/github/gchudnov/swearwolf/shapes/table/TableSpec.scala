@@ -6,6 +6,7 @@ import com.github.gchudnov.swearwolf.shapes.table.{ Table, TableStyle }
 import com.github.gchudnov.swearwolf.shapes.table.internal.TableBuilder
 import zio.test.Assertion.*
 import zio.test.*
+import scala.collection.immutable.Seq
 
 object TableSpec extends ZIOSpecDefault:
   override def spec: Spec[TestEnvironment, Any] =
@@ -14,7 +15,7 @@ object TableSpec extends ZIOSpecDefault:
         val data = Seq(
           Seq[Any]("h1", "h2"),
           Seq[Any](10, "A"),
-          Seq[Any](20, "B")
+          Seq[Any](20, "B"),
         )
 
         val table = Table(data, TableStyle.Simple)
@@ -28,7 +29,7 @@ object TableSpec extends ZIOSpecDefault:
         val data = Seq(
           Seq[Any]("h1", "h2"),
           Seq[Any](10, "A"),
-          Seq[Any](20, "B")
+          Seq[Any](20, "B"),
         )
 
         val table = Table(data, TableStyle.Frame)
@@ -51,7 +52,7 @@ object TableSpec extends ZIOSpecDefault:
         val data = Seq(
           Seq[Any]("h1", "h2"),
           Seq[Any](10, "A"),
-          Seq[Any](20, "B")
+          Seq[Any](20, "B"),
         )
 
         val table = Table(data, TableStyle.Frame)
@@ -71,5 +72,5 @@ object TableSpec extends ZIOSpecDefault:
         val expected = Size(0, 0)
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

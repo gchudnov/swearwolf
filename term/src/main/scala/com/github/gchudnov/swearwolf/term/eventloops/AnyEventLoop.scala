@@ -8,6 +8,7 @@ import com.github.gchudnov.swearwolf.util.bytes.Bytes
 import com.github.gchudnov.swearwolf.util.func.MonadError
 
 import scala.annotation.tailrec
+import scala.collection.immutable.Seq
 
 /**
  * Any EventLoop
@@ -48,7 +49,7 @@ abstract class AnyEventLoop[F[_]](term: Term[F])(using ME: MonadError[F]) extend
         ME.succeed(Some(ks.head, Acc(ks.tail, rest)))
       case Acc(ks, rest) if ks.isEmpty =>
         val (xKs, xRest) = Reader.parseBytes(Bytes(rest))
-        if (xKs.nonEmpty) then iterate(Acc(xKs, xRest.asSeq))
+        if xKs.nonEmpty then iterate(Acc(xKs, xRest.asSeq))
         else
           term.read().flatMap {
             case Some(bytes) =>

@@ -12,4 +12,5 @@ import java.time.format.DateTimeFormatter
 /**
  * Synchronous Terminal
  */
-abstract class SyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(using ME: MonadError[F]) extends AnyTerm[F](in, out, isClose) {}
+abstract class SyncTerm[F[_]](in: InputStream, out: OutputStream, isClose: Boolean)(using ME: MonadError[F])
+    extends AnyTerm[F](in, out, isClose) {}

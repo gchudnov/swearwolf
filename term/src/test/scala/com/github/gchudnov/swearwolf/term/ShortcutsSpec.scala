@@ -22,5 +22,5 @@ object ShortcutsSpec extends ZIOSpecDefault:
         val expected = "SPACE + ⇧ + ↑"
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

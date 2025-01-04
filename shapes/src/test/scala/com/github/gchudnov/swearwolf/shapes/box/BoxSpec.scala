@@ -49,5 +49,5 @@ object BoxSpec extends ZIOSpecDefault:
         val expected = Resources.string("box/box-empty.txt").toTry.get
 
         assert(actual)(equalTo(expected))
-      }
+      },
     )

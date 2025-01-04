@@ -10,7 +10,8 @@ import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-final class FutureAsyncTerm(in: InputStream, out: OutputStream, isClose: Boolean) extends AsyncTerm[Future](in = in, out = out, isClose = isClose)
+final class FutureAsyncTerm(in: InputStream, out: OutputStream, isClose: Boolean)
+    extends AsyncTerm[Future](in = in, out = out, isClose = isClose)
 
 object FutureSyncTerm extends AnyTermFactory[Future]:
 

@@ -3,6 +3,7 @@ package com.github.gchudnov.swearwolf.util.styles
 import com.github.gchudnov.swearwolf.util.colors.Color
 import com.github.gchudnov.swearwolf.util.func.Monoid
 import com.github.gchudnov.swearwolf.util.show.Show
+import scala.collection.immutable.Seq
 
 sealed abstract class TextStyle extends Product with Serializable
 

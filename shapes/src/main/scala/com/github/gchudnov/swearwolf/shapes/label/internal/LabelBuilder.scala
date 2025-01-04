@@ -8,6 +8,8 @@ import com.github.gchudnov.swearwolf.util.spans.Span
 import com.github.gchudnov.swearwolf.util.spans.TextSpan
 import com.github.gchudnov.swearwolf.util.layout.Layout
 
+import scala.collection.immutable.Seq
+
 private[label] object LabelBuilder:
 
   def build(label: Label): Seq[Span] =
@@ -15,9 +17,10 @@ private[label] object LabelBuilder:
     lines.map(TextSpan(_))
 
   private def prepare(label: Label): Seq[String] =
-    val lines          = label.value.wrap(label.size.width)
-    val visibleLines   = lines.take(label.size.height)
-    val effectiveLines = if lines.size > visibleLines.size then visibleLines.dropRight(1) :+ visibleLines.last.forceEllipsisRight() else lines
-    val alignedLines   = effectiveLines.map(line => Layout.align(line, label.size.width, label.align))
+    val lines        = label.value.wrap(label.size.width)
+    val visibleLines = lines.take(label.size.height)
+    val effectiveLines =
+      if lines.size > visibleLines.size then visibleLines.dropRight(1) :+ visibleLines.last.forceEllipsisRight() else lines
+    val alignedLines = effectiveLines.map(line => Layout.align(line, label.size.width, label.align))
 
     alignedLines
